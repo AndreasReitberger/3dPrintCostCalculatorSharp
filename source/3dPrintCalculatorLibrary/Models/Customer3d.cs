@@ -1,7 +1,7 @@
 ﻿using AndreasReitberger.Models.CustomerAdditions;
+//using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
@@ -15,6 +15,7 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties
+        //[PrimaryKey]
         public Guid Id { get; set; }
         public string CustomerId
         { get; set; } = string.Empty;
@@ -63,8 +64,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Customer3d;
-            if (item == null)
+            if (obj is not Customer3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

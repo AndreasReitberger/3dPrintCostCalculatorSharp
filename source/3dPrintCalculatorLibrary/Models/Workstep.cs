@@ -1,16 +1,16 @@
 ﻿using AndreasReitberger.Enums;
 using AndreasReitberger.Models.WorkstepAdditions;
-using AndreasReitberger.Utilities;
-using System;
+using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
+//using SQLite;
+using System;
 
 namespace AndreasReitberger.Models
 {
     public class Workstep : BaseModel
     {
         #region Properties
-
+        //[PrimaryKey]
         public Guid Id
         { get; set; }
 
@@ -124,8 +124,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Workstep;
-            if (item == null)
+            if (obj is not Workstep item)
                 return false;
             return this.Id.Equals(item.Id);
         }

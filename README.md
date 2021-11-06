@@ -1,4 +1,4 @@
-# 3dPrintCostCalculatorSharp
+## 3dPrintCostCalculatorSharp
 A library to calculate 3d print costs, manager 3d printers & materials and many more!
 
 # Usage
@@ -80,3 +80,7 @@ _calculation.Calculate();
 ```
 
 That's it ;)
+
+# Dependencies
+
+RCoreSharp: https://github.com/AndreasReitberger/CoreSharp

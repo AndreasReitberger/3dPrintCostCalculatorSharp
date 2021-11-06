@@ -1,10 +1,12 @@
-﻿using System;
+﻿//using SQLite;
+using System;
 
 namespace AndreasReitberger.Models.WorkstepAdditions
 {
     public class WorkstepCategory
     {
         #region Properties
+        //[PrimaryKey]
         public Guid Id
         { get; set; } = Guid.NewGuid();
 
@@ -21,23 +23,9 @@ namespace AndreasReitberger.Models.WorkstepAdditions
         {
             return Name;
         }
-        /*
         public override bool Equals(object obj)
         {
-            var item = obj as WorkstepCategory;
-            if (item == null)
-                return false;
-            return this.Name.Equals(item.Name);
-        }
-        public override int GetHashCode()
-        {
-            return this.Name.GetHashCode();
-        }
-        */
-        public override bool Equals(object obj)
-        {
-            var item = obj as WorkstepCategory;
-            if (item == null)
+            if (obj is not WorkstepCategory item)
                 return false;
             return this.Id.Equals(item.Id);
         }

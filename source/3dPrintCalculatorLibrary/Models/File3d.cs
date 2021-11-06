@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Models.FileAdditions;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
+//using SQLite;
 using System;
 
 namespace AndreasReitberger.Models
@@ -8,8 +9,8 @@ namespace AndreasReitberger.Models
     public class File3d : BaseModel
     {
         #region Properties
-        public Guid Id
-        { get; set; }
+        //[PrimaryKey]
+        public Guid Id { get; set; }
 
         [JsonProperty(nameof(Name))]
         string _name = string.Empty;
@@ -73,7 +74,7 @@ namespace AndreasReitberger.Models
         
 
         [JsonProperty(nameof(Weight))]
-        ModelWeight _weight = new ModelWeight(-1, Enums.Unit.g);
+        ModelWeight _weight = new(-1, Enums.Unit.g);
         [JsonIgnore]
         public ModelWeight Weight
         {
@@ -165,8 +166,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as File3d;
-            if (item == null)
+            if (obj is not File3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

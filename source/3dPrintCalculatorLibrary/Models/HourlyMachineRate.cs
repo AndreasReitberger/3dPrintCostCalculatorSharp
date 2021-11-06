@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//using SQLite;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
@@ -25,6 +24,7 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties
+        //[PrimaryKey]
         public Guid Id { get; set; }
         public Guid PrinterId { get; set; }
 
@@ -255,14 +255,14 @@ namespace AndreasReitberger.Models
         {
             get
             {
-                return getMachineHourRate();
+                return GetMachineHourRate();
             }
         }
         public double TotalCosts
         {
             get
             {
-                return getTotalCosts();
+                return GetTotalCosts();
             }
         }
         #endregion
@@ -272,9 +272,9 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region PrivateMethods
-        double getMachineHourRate()
+        double GetMachineHourRate()
         {
-            double res = 0;
+            double res;
             try
             {
                 // If a fix machine hour rate was set, return this value.
@@ -291,9 +291,9 @@ namespace AndreasReitberger.Models
                 return 0;
             }
         }
-        double getTotalCosts()
+        double GetTotalCosts()
         {
-            double res = 0;
+            double res;
             try
             {
                 res = (ReplacementCosts + (CalcInterest +

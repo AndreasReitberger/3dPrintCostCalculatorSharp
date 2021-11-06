@@ -1,9 +1,7 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Enums;
 using AndreasReitberger.Utilities;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Models.FileAdditions

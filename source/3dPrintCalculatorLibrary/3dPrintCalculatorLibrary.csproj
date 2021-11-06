@@ -3,21 +3,23 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net472</TargetFrameworks>
     <RootNamespace>AndreasReitberger</RootNamespace>
-    <Version>1.0.8</Version>
+    <Version>1.1.0</Version>
     <Description>A simple C# library to calculate 3D printing costs.</Description>
     <Copyright>Andreas Reitberger</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.8.0</AssemblyVersion>
-    <FileVersion>1.0.8.0</FileVersion>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
     <Authors>Andreas Reitberger</Authors>
     <Company>Andreas Reitberger</Company>
     <PackageTags>3d, Printing, Gcode, Library, Costs, Calculator</PackageTags>
     <PackageProjectUrl>https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp</RepositoryUrl>
+    <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="UtilitiesSharpLibrary" Version="1.0.0" />
+    <PackageReference Include="RCoreSharp" Version="1.0.4" />
+    <!--<PackageReference Include="sqlite-net-pcl" Version="1.7.335" Condition="$(TargetFramework.StartsWith('netstandard2'))"/>-->
   </ItemGroup>
 </Project>

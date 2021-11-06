@@ -1,20 +1,22 @@
 ﻿using AndreasReitberger.Enums;
 using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
+//using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using AndreasReitberger.Utilities;
 
 namespace AndreasReitberger.Models
 {
     public class Calculation3d : BaseModel
-    { 
+    {
 
         #region Properties
-        public Guid Id
-        { get; set; } // = Guid.NewGuid();
+        //[PrimaryKey]
+        public Guid Id { get; set; }
 
         #region Basics
         /*
@@ -236,7 +238,7 @@ namespace AndreasReitberger.Models
         {
             get
             {
-                return getTotalQuantity();
+                return GetTotalQuantity();
             }
         }
         public double TotalPrintTime
@@ -244,7 +246,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalPrintTime();
+                    return GetTotalPrintTime();
                 else
                     return 0;
             }
@@ -254,7 +256,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalVolume();
+                    return GetTotalVolume();
                 else
                     return 0;
             }
@@ -264,7 +266,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalMaterialUsed();
+                    return GetTotalMaterialUsed();
                 else
                     return 0;
             }
@@ -274,7 +276,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Machine);
+                    return GetTotalCosts(CalculationAttributeType.Machine);
                 else
                     return 0;
             }
@@ -284,7 +286,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Material);
+                    return GetTotalCosts(CalculationAttributeType.Material);
                 else
                     return 0;
             }
@@ -294,7 +296,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Energy);
+                    return GetTotalCosts(CalculationAttributeType.Energy);
                 else
                     return 0;
             }
@@ -304,7 +306,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.FixCost);
+                    return GetTotalCosts(CalculationAttributeType.FixCost);
                 else
                     return 0;
             }
@@ -314,7 +316,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.CustomAddition);
+                    return GetTotalCosts(CalculationAttributeType.CustomAddition);
                 else
                     return 0;
             }
@@ -324,7 +326,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Workstep);
+                    return GetTotalCosts(CalculationAttributeType.Workstep);
                 else
                     return 0;
             }
@@ -334,7 +336,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Margin);
+                    return GetTotalCosts(CalculationAttributeType.Margin);
                 else
                     return 0;
             }
@@ -344,7 +346,7 @@ namespace AndreasReitberger.Models
             get
             {
                 if (IsCalculated)
-                    return getTotalCosts(CalculationAttributeType.Tax);
+                    return GetTotalCosts(CalculationAttributeType.Tax);
                 else
                     return 0;
             }
@@ -464,7 +466,7 @@ namespace AndreasReitberger.Models
                         }
                     }
 
-                    double totalMaterialUsed = getTotalMaterialUsed();
+                    double totalMaterialUsed = GetTotalMaterialUsed();
                     //((Volume * Material.Density * Material.UnitPrice) / (Material.PackageSize * Convert.ToDecimal(UnitFactor.getUnitFactor(Material.Unit)))) * Quantity * (1m + FailRate / 100m);
                     double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
                         Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
@@ -490,7 +492,7 @@ namespace AndreasReitberger.Models
                     }
                 }
             }
-            double totalPrintTime = getTotalPrintTime();
+            double totalPrintTime = GetTotalPrintTime();
             // Machine + Energy
             if (Printers.Count > 0)
             {
@@ -601,7 +603,7 @@ namespace AndreasReitberger.Models
                 CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin).ToList();
             if (customAdditionsBeforeMargin.Count > 0)
             {
-                SortedDictionary<int, double> additions = new SortedDictionary<int, double>();
+                SortedDictionary<int, double> additions = new();
                 foreach (CustomAddition ca in customAdditionsBeforeMargin)
                 {
                     if (additions.ContainsKey(ca.Order))
@@ -611,7 +613,7 @@ namespace AndreasReitberger.Models
                 }
                 foreach (KeyValuePair<int, double> pairs in additions)
                 {
-                    double costsSoFar = getTotalCosts();
+                    double costsSoFar = GetTotalCosts();
                     Costs.Add(new CalculationAttribute()
                     {
                         Attribute = string.Format("CustomAdditionPreMargin_Order{0}", pairs.Key),
@@ -624,21 +626,21 @@ namespace AndreasReitberger.Models
             var Margin = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             if (Margin != null && !Margin.SkipForCalculation)
             {
-                double costsSoFar = getTotalCosts();
+                double costsSoFar = GetTotalCosts();
                 if (ApplyEnhancedMarginSettings)
                 {
                     double excludedCosts = 0;
                     if (ExcludePrinterCostsFromMarginCalculation)
                     {
-                        excludedCosts += getTotalCosts(CalculationAttributeType.Machine);
+                        excludedCosts += GetTotalCosts(CalculationAttributeType.Machine);
                     }
                     if (ExcludeMaterialCostsFromMarginCalculation)
                     {
-                        excludedCosts += getTotalCosts(CalculationAttributeType.Material);
+                        excludedCosts += GetTotalCosts(CalculationAttributeType.Material);
                     }
                     if (ExcludeWorkstepsFromMarginCalculation)
                     {
-                        excludedCosts += getTotalCosts(CalculationAttributeType.Workstep);
+                        excludedCosts += GetTotalCosts(CalculationAttributeType.Workstep);
                     }
                     // Subtract costs 
                     if (excludedCosts > 0)
@@ -652,7 +654,7 @@ namespace AndreasReitberger.Models
                 CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
             if (customAdditionsAfterMargin.Count > 0)
             {
-                SortedDictionary<int, double> additions = new SortedDictionary<int, double>();
+                SortedDictionary<int, double> additions = new();
                 foreach (CustomAddition ca in customAdditionsAfterMargin)
                 {
                     if (additions.ContainsKey(ca.Order))
@@ -662,7 +664,7 @@ namespace AndreasReitberger.Models
                 }
                 foreach (KeyValuePair<int, double> pairs in additions)
                 {
-                    double costsSoFar = getTotalCosts();
+                    double costsSoFar = GetTotalCosts();
                     Costs.Add(new CalculationAttribute()
                     {
                         Attribute = string.Format("CustomAdditionPostMargin_Order{0}", pairs.Key),
@@ -673,18 +675,18 @@ namespace AndreasReitberger.Models
             }
 
             //Tax
-            var Tax = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
+            CalculationAttribute Tax = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
             if (Tax != null && !Tax.SkipForCalculation)
             {
-                double costsSoFar = getTotalCosts();
+                double costsSoFar = GetTotalCosts();
                 double tax = costsSoFar * Tax.Value / (Tax.IsPercentageValue ? 100.0 : 1.0);
                 Costs.Add(new CalculationAttribute() { Attribute = "Tax", Type = CalculationAttributeType.Tax, Value = tax });
             }
 
-            TotalCosts = getTotalCosts(CalculationAttributeType.All);
+            TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
         }
-        public int getTotalQuantity()
+        public int GetTotalQuantity()
         {
             try
             {
@@ -696,7 +698,7 @@ namespace AndreasReitberger.Models
                 return 0;
             }
         }
-        public double getTotalPrintTime()
+        public double GetTotalPrintTime()
         {
             try
             {
@@ -712,11 +714,11 @@ namespace AndreasReitberger.Models
                 return 0;
             }
         }
-        public double getTotalVolume()
+        public double GetTotalVolume()
         {
             try
             {
-                var volumes = Files.Select(value => Convert.ToDouble(value.Volume));
+                IEnumerable<double> volumes = Files.Select(value => Convert.ToDouble(value.Volume));
                 double total = 0;
                 foreach (var vol in volumes)
                     total += vol;
@@ -728,11 +730,11 @@ namespace AndreasReitberger.Models
                 return 0;
             }
         }
-        public double getTotalMaterialUsed()
+        public double GetTotalMaterialUsed()
         {
             try
             {
-                var materials = MaterialUsage.Select(value => Convert.ToDouble(value.Value));
+                IEnumerable<double> materials = MaterialUsage.Select(value => Convert.ToDouble(value.Value));
                 double total = 0;
                 foreach (var material in materials)
                     total += material;
@@ -744,16 +746,16 @@ namespace AndreasReitberger.Models
                 return 0;
             }
         }
-        public double getTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
+        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
             {
-                var costs = calculationAttributeType == CalculationAttributeType.All ?
+                IEnumerable<double> costs = calculationAttributeType == CalculationAttributeType.All ?
                     Costs.Select(value => Convert.ToDouble(value.Value)) :
                     Costs.Where(cost => cost.Type == calculationAttributeType).Select(value => Convert.ToDouble(value.Value))
                     ;
                 // Get costs of currently selected printer
-                var costsMachine = calculationAttributeType == CalculationAttributeType.All ?
+                IEnumerable<double> costsMachine = calculationAttributeType == CalculationAttributeType.All ?
                     OverallPrinterCosts.Where(cost => 
                         cost.Attribute == Printer.Name || 
                         cost.LinkedId == Printer.Id)
@@ -765,7 +767,7 @@ namespace AndreasReitberger.Models
                         )
                     .Select(value => Convert.ToDouble(value.Value))
                     ;
-                var costsMaterial = calculationAttributeType == CalculationAttributeType.All ?
+                IEnumerable<double> costsMaterial = calculationAttributeType == CalculationAttributeType.All ?
                     OverallMaterialCosts.Where(cost => 
                         cost.Attribute == Material.Name ||
                         cost.LinkedId == Material.Id)
@@ -799,8 +801,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Calculation3d;
-            if (item == null)
+            if (obj is not Calculation3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

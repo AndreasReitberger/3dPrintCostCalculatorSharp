@@ -1,8 +1,8 @@
 ﻿using AndreasReitberger.Enums;
 using AndreasReitberger.Models.MaterialAdditions;
+//using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
@@ -16,6 +16,7 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties
+        //[PrimaryKey]
         public Guid Id
         { get; set; }
         public string Name
@@ -63,8 +64,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Material3d;
-            if (item == null)
+            if (obj is not Material3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

@@ -1,13 +1,13 @@
-﻿using AndreasReitberger.Utilities;
+﻿using AndreasReitberger.Core.Utilities;
+//using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
     public class Maintenance3d : BaseModel
     {
         #region Properties
+        //[PrimaryKey]
         public Guid Id { get; set; }
         public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
@@ -27,8 +27,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Maintenance3d;
-            if (item == null)
+            if (obj is not Maintenance3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

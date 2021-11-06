@@ -5,6 +5,9 @@ using AndreasReitberger.Models;
 using AndreasReitberger.Models.MaterialAdditions;
 using AndreasReitberger.Models.PrinterAdditions;
 using AndreasReitberger;
+//using AndreasReitberger.Models.Database;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Library.UnitTestProject
 {
@@ -17,7 +20,7 @@ namespace Library.UnitTestProject
         {
             try
             {
-                var material = new Material3d()
+                Material3d material = new Material3d()
                 {
                     Id = Guid.NewGuid(),
                     Density = 1.24,
@@ -33,13 +36,13 @@ namespace Library.UnitTestProject
                         Type = Material3dFamily.Filament,
                     }
                 };
-                var printer = new Printer3d()
+                Printer3d printer = new Printer3d()
                 {
                     Id = Guid.NewGuid(),
                     Manufacturer = new Manufacturer()
                     {
                         Id = Guid.NewGuid(),
-                        isActive = true,
+                        IsActive = true,
                         Name = "Prusa"
                     },
                     Model = "XL MK1",
@@ -49,7 +52,7 @@ namespace Library.UnitTestProject
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
                 };
-                var file = new File3d()
+                File3d file = new File3d()
                 {
                     Id = Guid.NewGuid(),
                     PrintTime = 10.25,
@@ -94,8 +97,7 @@ namespace Library.UnitTestProject
         {
             try
             {
-
-                var material = new Material3d
+                Material3d material = new Material3d
                 {
                     Id = Guid.NewGuid(),
                     Density = 1.24,
@@ -111,13 +113,13 @@ namespace Library.UnitTestProject
                         Type = Material3dFamily.Filament,
                     }
                 };
-                var printer = new Printer3d()
+                Printer3d printer = new Printer3d()
                 {
                     Id = Guid.NewGuid(),
                     Manufacturer = new Manufacturer()
                     {
                         Id = Guid.NewGuid(),
-                        isActive = true,
+                        IsActive = true,
                         Name = "Prusa"
                     },
                     Model = "XL MK1",
@@ -127,14 +129,14 @@ namespace Library.UnitTestProject
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
                 };
-                var file = new File3d()
+                File3d file = new File3d()
                 {
                     Id = Guid.NewGuid(),
                     PrintTime = 10.25,
                     Volume = 12.36,
                     Quantity = 3,
                 };
-                var file2 = new File3d()
+                File3d file2 = new File3d()
                 {
                     Id = Guid.NewGuid(),
                     PrintTime = 10.25,
@@ -159,8 +161,8 @@ namespace Library.UnitTestProject
 
                 _calculation.Calculate();
 
-                Calculator3dExporter.Save(_calculation, @"C:\Users\andyr\Desktop\mycalc.3dcx");
-                Calculator3dExporter.Load(@"C:\Users\andyr\Desktop\mycalc.3dcx", out Calculation3d calculation);
+                Calculator3dExporter.Save(_calculation, @"mycalc.3dcx");
+                Calculator3dExporter.Load(@"mycalc.3dcx", out Calculation3d calculation);
                 Assert.IsTrue(calculation != null);
             }
             catch (Exception exc)

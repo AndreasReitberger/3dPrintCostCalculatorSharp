@@ -5,7 +5,7 @@ namespace AndreasReitberger.Utilities
 {
     public class UnitFactor
     {
-        public static Dictionary<Unit, int> UnitFactors = new Dictionary<Unit, int>()
+        public static Dictionary<Unit, int> UnitFactors = new()
         {
             {Unit.g, 1 },
             {Unit.kg, 1000 },

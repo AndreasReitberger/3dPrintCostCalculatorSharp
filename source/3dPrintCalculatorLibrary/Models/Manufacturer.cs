@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using SQLite;
+using System;
 
 namespace AndreasReitberger.Models
 {
@@ -14,13 +13,14 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties 
+        //[PrimaryKey]
         public Guid Id
         { get; set; }
         public string Name
         { get; set; }
         public string DebitorNumber
         { get; set; }
-        public bool isActive
+        public bool IsActive
         { get; set; }
         public string Website
         { get; set; }
@@ -37,8 +37,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Manufacturer;
-            if (item == null)
+            if (obj is not Manufacturer item)
                 return false;
             return this.Id.Equals(item.Id);
         }

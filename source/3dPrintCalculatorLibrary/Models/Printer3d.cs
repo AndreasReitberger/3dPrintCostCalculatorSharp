@@ -1,11 +1,11 @@
 ﻿using AndreasReitberger.Enums;
 using AndreasReitberger.Models.PrinterAdditions;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
+//using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 
 namespace AndreasReitberger.Models
 {
@@ -13,6 +13,7 @@ namespace AndreasReitberger.Models
     {
 
         #region Properties
+        //[PrimaryKey]
         public Guid Id { get; set; }
 
         [JsonProperty(nameof(Model))]
@@ -88,7 +89,7 @@ namespace AndreasReitberger.Models
         }
 
         [JsonProperty(nameof(Attributes))]
-        List<Printer3dAttribute> _attributes = new List<Printer3dAttribute>();
+        List<Printer3dAttribute> _attributes = new();
         [JsonIgnore]
         public List<Printer3dAttribute> Attributes
         {
@@ -106,7 +107,7 @@ namespace AndreasReitberger.Models
         }
 
         [JsonProperty(nameof(BuildVolume))]
-        BuildVolume _buildVolume = new BuildVolume(0, 0, 0);
+        BuildVolume _buildVolume = new(0, 0, 0);
         [JsonIgnore]
         public BuildVolume BuildVolume
         {
@@ -133,7 +134,7 @@ namespace AndreasReitberger.Models
         }
 
         [JsonProperty(nameof(Maintenances))]
-        ObservableCollection<Maintenance3d> _maintenances = new ObservableCollection<Maintenance3d>();
+        ObservableCollection<Maintenance3d> _maintenances = new();
         [JsonIgnore]
         public ObservableCollection<Maintenance3d> Maintenances
         {
@@ -142,7 +143,7 @@ namespace AndreasReitberger.Models
         }
 
         [JsonProperty(nameof(SlicerConfig))]
-        Printer3dSlicerConfig _slicerConfig = new Printer3dSlicerConfig();
+        Printer3dSlicerConfig _slicerConfig = new();
         [JsonIgnore]
         public Printer3dSlicerConfig SlicerConfig
         {
@@ -185,8 +186,7 @@ namespace AndreasReitberger.Models
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Printer3d;
-            if (item == null)
+            if (obj is not Printer3d item)
                 return false;
             return this.Id.Equals(item.Id);
         }

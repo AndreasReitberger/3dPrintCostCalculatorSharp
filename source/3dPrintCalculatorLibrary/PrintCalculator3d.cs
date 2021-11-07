@@ -14,7 +14,7 @@ namespace AndreasReitberger
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var Costs = new ObservableCollection<Calculation3dChartItem>(
                 calculation.Costs.Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
-            return Costs;          
+            return Costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMaterialUsage(Calculation3d calculation)
         {
@@ -28,9 +28,9 @@ namespace AndreasReitberger
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var MachineCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallPrinterCosts
                 .Where(cost => (
-                    cost.Type == CalculationAttributeType.Machine || 
-                    cost.Type == CalculationAttributeType.Energy || 
-                    cost.Type == CalculationAttributeType.ProcedureSpecificAddition) && 
+                    cost.Type == CalculationAttributeType.Machine ||
+                    cost.Type == CalculationAttributeType.Energy ||
+                    cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
                 (cost.LinkedId == calculation.Printer.Id || cost.Attribute == calculation.Printer.Name)
                 )
                 .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
@@ -42,7 +42,7 @@ namespace AndreasReitberger
             var MaterialCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallMaterialCosts
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Material ||
-                    cost.Type == CalculationAttributeType.ProcedureSpecificAddition) && 
+                    cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
                 (cost.LinkedId == calculation.Material.Id || cost.Attribute == calculation.Material.Name))
                 .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
             return MaterialCosts;
@@ -51,8 +51,8 @@ namespace AndreasReitberger
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
-                .Where(cost => 
-                    cost.Type == CalculationAttributeType.Workstep || 
+                .Where(cost =>
+                    cost.Type == CalculationAttributeType.Workstep ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition)
                 .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
             return WorkstepCosts;

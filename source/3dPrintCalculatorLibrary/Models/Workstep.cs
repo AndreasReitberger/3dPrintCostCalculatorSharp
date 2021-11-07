@@ -29,7 +29,8 @@ namespace AndreasReitberger.Models
         public double Price
         {
             get { return _price; }
-            set { 
+            set
+            {
                 SetProperty(ref _price, value);
                 TotalCosts = CalcualteTotalCosts();
             }
@@ -72,7 +73,8 @@ namespace AndreasReitberger.Models
         public double Duration
         {
             get { return _duration; }
-            set { 
+            set
+            {
                 SetProperty(ref _duration, value);
                 TotalCosts = CalcualteTotalCosts();
             }
@@ -110,7 +112,7 @@ namespace AndreasReitberger.Models
                     return Price * Convert.ToDouble(Quantity);
                 return Duration * Price * Convert.ToDouble(Quantity);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return 0;
             }

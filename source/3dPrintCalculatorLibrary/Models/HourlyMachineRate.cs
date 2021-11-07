@@ -237,7 +237,7 @@ namespace AndreasReitberger.Models
                 }
             }
         }
-        
+
         double _fixMachineHourRate = -1;
         public double FixMachineHourRate
         {
@@ -247,7 +247,7 @@ namespace AndreasReitberger.Models
                 if (_fixMachineHourRate == value) return;
                 _fixMachineHourRate = value;
                 OnPropertyChanged();
-                
+
             }
         }
 

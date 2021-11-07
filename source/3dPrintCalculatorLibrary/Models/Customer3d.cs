@@ -22,7 +22,7 @@ namespace AndreasReitberger.Models
 
         public bool IsCompany
         { get; set; } = false;
-        public string Salutation 
+        public string Salutation
         { get; set; } = string.Empty;
 
         public string Name

@@ -7,10 +7,10 @@ namespace AndreasReitberger.Utilities
     {
         public static Dictionary<Unit, int> UnitFactors = new()
         {
-            {Unit.g, 1 },
-            {Unit.kg, 1000 },
-            {Unit.ml, 1 },
-            {Unit.l, 1000 },
+            { Unit.g, 1 },
+            { Unit.kg, 1000 },
+            { Unit.ml, 1 },
+            { Unit.l, 1000 },
         };
         public static int GetUnitFactor(Unit unit)
         {

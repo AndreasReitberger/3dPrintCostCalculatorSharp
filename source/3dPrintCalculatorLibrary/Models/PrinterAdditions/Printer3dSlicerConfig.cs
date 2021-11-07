@@ -14,7 +14,7 @@ namespace AndreasReitberger.Models.PrinterAdditions
         public double AMax_eExtrude { get; set; } = 1250;
         public double AMax_eRetract { get; set; } = 1250;
         public double PrintDurationCorrection { get; set; } = 1;
-        
+
         #endregion
     }
 }

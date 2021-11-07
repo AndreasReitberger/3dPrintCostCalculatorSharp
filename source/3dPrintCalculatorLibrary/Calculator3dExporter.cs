@@ -10,11 +10,11 @@ namespace AndreasReitberger
     //#if net472
     public static class Calculator3dExporter
     {
-        #region Variables
+    #region Variables
         //static string _fileExtension = "";
         static readonly string _encryptionPhrase = "U4fRwU^K#.fA+$8y";
         //static readonly DESCryptoServiceProvider key = new();
-        #endregion
+    #endregion
 
         public static bool Save(Calculation3d calc, string path)
         {
@@ -121,5 +121,5 @@ namespace AndreasReitberger
             return (Calculation3d[])xmlser.Deserialize(cs);
         }
     }
-    #endif
+#endif
 }

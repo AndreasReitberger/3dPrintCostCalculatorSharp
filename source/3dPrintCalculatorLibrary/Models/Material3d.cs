@@ -43,9 +43,9 @@ namespace AndreasReitberger.Models
         { get; set; }
         public double UnitPrice
         { get; set; } = 0;
-        public double Tax 
+        public double Tax
         { get; set; } = 0;
-        public bool PriceIncludesTax 
+        public bool PriceIncludesTax
         { get; set; } = true;
         public string Uri
         { get; set; } = string.Empty;

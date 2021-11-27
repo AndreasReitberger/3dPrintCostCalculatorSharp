@@ -71,7 +71,7 @@ namespace AndreasReitberger.Models
                 SetProperty(ref _volume, value);
             }
         }
-        
+
 
         [JsonProperty(nameof(Weight))]
         ModelWeight _weight = new(-1, Enums.Unit.g);

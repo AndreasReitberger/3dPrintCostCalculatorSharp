@@ -72,11 +72,11 @@ namespace AndreasReitberger.Models.FileAdditions
         #region Methods
         void RecalculateWeight()
         {
-            if(_recalculateWeightInGramm)
+            if (_recalculateWeightInGramm)
             {
                 _recalculateWeightInGramm = false;
                 WeightInGramm = Weight * UnitFactor.GetUnitFactor(Unit);
-            }           
+            }
         }
         #endregion
 

@@ -51,7 +51,7 @@ namespace AndreasReitberger.Models
             get { return _price; }
             set { SetProperty(ref _price, value); }
         }
-        
+
         [JsonProperty(nameof(Tax))]
         double _tax = 0;
         [JsonIgnore]
@@ -60,7 +60,7 @@ namespace AndreasReitberger.Models
             get { return _tax; }
             set { SetProperty(ref _tax, value); }
         }
-        
+
         [JsonProperty(nameof(PriceIncludesTax))]
         bool _priceIncludesTax = true;
         [JsonIgnore]

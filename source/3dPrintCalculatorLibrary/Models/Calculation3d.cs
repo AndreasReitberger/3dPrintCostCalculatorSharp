@@ -24,21 +24,22 @@ namespace AndreasReitberger.Models
          */
         [JsonProperty(nameof(Name))]
         string _name = string.Empty;
-        
+
         [JsonIgnore]
         public string Name
         {
             get { return _name; }
             set { SetProperty(ref _name, value); }
         }
-        
+
         [JsonProperty(nameof(Printer))]
         Printer3d _printer;
         [JsonIgnore]
         public Printer3d Printer
         {
             get { return _printer; }
-            set { 
+            set
+            {
                 SetProperty(ref _printer, value);
                 // Recalculate on change
                 if (IsCalculated)
@@ -47,13 +48,14 @@ namespace AndreasReitberger.Models
             }
         }
         [JsonProperty(nameof(Material))]
-        
+
         Material3d material;
         [JsonIgnore]
         public Material3d Material
         {
             get { return material; }
-            set { 
+            set
+            {
                 SetProperty(ref material, value);
                 // Recalculate on change
                 if (IsCalculated)
@@ -146,29 +148,29 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Details
-        public ObservableCollection<Printer3d> Printers 
-        { get; set; } = new ObservableCollection<Printer3d>();   
-        public ObservableCollection<Material3d> Materials 
+        public ObservableCollection<Printer3d> Printers
+        { get; set; } = new ObservableCollection<Printer3d>();
+        public ObservableCollection<Material3d> Materials
         { get; set; } = new ObservableCollection<Material3d>();
-        public ObservableCollection<CustomAddition> CustomAdditions 
+        public ObservableCollection<CustomAddition> CustomAdditions
         { get; set; } = new ObservableCollection<CustomAddition>();
-        public ObservableCollection<Workstep> WorkSteps 
+        public ObservableCollection<Workstep> WorkSteps
         { get; set; } = new ObservableCollection<Workstep>();
-        public ObservableCollection<CalculationAttribute> PrintTimes 
+        public ObservableCollection<CalculationAttribute> PrintTimes
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> MaterialUsage 
+        public ObservableCollection<CalculationAttribute> MaterialUsage
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> OverallMaterialCosts 
+        public ObservableCollection<CalculationAttribute> OverallMaterialCosts
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> OverallPrinterCosts 
+        public ObservableCollection<CalculationAttribute> OverallPrinterCosts
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> Costs 
+        public ObservableCollection<CalculationAttribute> Costs
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> FixCosts 
+        public ObservableCollection<CalculationAttribute> FixCosts
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<CalculationAttribute> Rates 
+        public ObservableCollection<CalculationAttribute> Rates
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-        public ObservableCollection<File3d> Files 
+        public ObservableCollection<File3d> Files
         { get; set; } = new ObservableCollection<File3d>();
         #endregion
 
@@ -229,7 +231,7 @@ namespace AndreasReitberger.Models
             set { SetProperty(ref _procedure, value); }
         }
 
-        public ObservableCollection<CalculationProcedureAttribute> ProcedureAttributes 
+        public ObservableCollection<CalculationProcedureAttribute> ProcedureAttributes
         { get; set; } = new ObservableCollection<CalculationProcedureAttribute>();
         #endregion
 
@@ -416,7 +418,7 @@ namespace AndreasReitberger.Models
                         double _volume = file.Volume;
                         _weight = _volume * Convert.ToDouble(Material.Density);
                     }
-                    else if(file.Weight !=  null)
+                    else if (file.Weight != null)
                     {
                         _weight = file.Weight.Weight * Convert.ToDouble(UnitFactor.GetUnitFactor(file.Weight.Unit));
                     }
@@ -450,7 +452,7 @@ namespace AndreasReitberger.Models
                                 if (refreshRatio != null)
                                 {
                                     // this value is in liter
-                                    
+
                                     var materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
                                         usage.Attribute == material.Name);
                                     if (materialPrintObject != null)
@@ -472,21 +474,23 @@ namespace AndreasReitberger.Models
                         Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
                     double totalCosts = Convert.ToDouble(
                         totalMaterialUsed * pricePerGramm);
-                    OverallMaterialCosts.Add(new CalculationAttribute() { 
+                    OverallMaterialCosts.Add(new CalculationAttribute()
+                    {
                         LinkedId = material.Id,
-                        Attribute = material.Name, 
-                        Type = CalculationAttributeType.Material, 
+                        Attribute = material.Name,
+                        Type = CalculationAttributeType.Material,
                         Value = totalCosts,
                     });
-                    if(refreshed > 0)
+                    if (refreshed > 0)
                     {
                         double refreshCosts = Convert.ToDouble(
                         refreshed * pricePerGramm);
-                        OverallMaterialCosts.Add(new CalculationAttribute() {
+                        OverallMaterialCosts.Add(new CalculationAttribute()
+                        {
                             LinkedId = material.Id,
-                            Attribute = $"{material.Name} (Refreshed)", 
-                            Type = CalculationAttributeType.Material, 
-                            Value = refreshCosts, 
+                            Attribute = $"{material.Name} (Refreshed)",
+                            Type = CalculationAttributeType.Material,
+                            Value = refreshCosts,
                         });
 
                     }
@@ -506,10 +510,11 @@ namespace AndreasReitberger.Models
                         double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * totalPrintTime;
                         if (machineHourRate > 0)
                         {
-                            OverallPrinterCosts.Add(new CalculationAttribute() {
+                            OverallPrinterCosts.Add(new CalculationAttribute()
+                            {
                                 LinkedId = printer.Id,
-                                Attribute = printer.Name, 
-                                Type = CalculationAttributeType.Machine, 
+                                Attribute = printer.Name,
+                                Type = CalculationAttributeType.Machine,
                                 Value = machineHourRate,
                             });
                         }
@@ -521,10 +526,11 @@ namespace AndreasReitberger.Models
                         double totalEnergyCost = consumption * EnergyCostsPerkWh;
                         if (totalEnergyCost > 0)
                         {
-                            OverallPrinterCosts.Add(new CalculationAttribute() {
+                            OverallPrinterCosts.Add(new CalculationAttribute()
+                            {
                                 LinkedId = printer.Id,
-                                Attribute = printer.Name, 
-                                Type = CalculationAttributeType.Energy, 
+                                Attribute = printer.Name,
+                                Type = CalculationAttributeType.Energy,
                                 Value = totalEnergyCost,
                             });
                         }
@@ -535,7 +541,7 @@ namespace AndreasReitberger.Models
                         // Filter for the current printer procedure
                         var attributes = ProcedureAttributes.Where(
                             attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer).ToList();
-                        foreach(var attribute in attributes)
+                        foreach (var attribute in attributes)
                         {
                             foreach (var parameter in attribute.Parameters)
                             {
@@ -561,39 +567,42 @@ namespace AndreasReitberger.Models
                         case CalculationType.PerHour:
                             double totalPerHour = ws.TotalCosts;
                             //double totalPerHour = Convert.ToDouble(ws.Duration) * Convert.ToDouble(ws.Price);
-                            Costs.Add(new CalculationAttribute() { 
+                            Costs.Add(new CalculationAttribute()
+                            {
                                 LinkedId = ws.Id,
-                                Attribute = ws.Name, 
-                                Type = CalculationAttributeType.Workstep, 
+                                Attribute = ws.Name,
+                                Type = CalculationAttributeType.Workstep,
                                 Value = totalPerHour,
                             });
                             break;
                         case CalculationType.PerJob:
                             double totalPerJob = ws.TotalCosts;
                             //double totalPerJob = Convert.ToDouble(ws.Price);
-                            Costs.Add(new CalculationAttribute() {
+                            Costs.Add(new CalculationAttribute()
+                            {
                                 LinkedId = ws.Id,
-                                Attribute = ws.Name, 
-                                Type = CalculationAttributeType.Workstep, 
+                                Attribute = ws.Name,
+                                Type = CalculationAttributeType.Workstep,
                                 Value = totalPerJob,
                             });
                             break;
                         case CalculationType.PerPiece:
                             double totalPerPiece = ws.TotalCosts * quantity;
-                            Costs.Add(new CalculationAttribute() {
+                            Costs.Add(new CalculationAttribute()
+                            {
                                 LinkedId = ws.Id,
-                                Attribute = ws.Name, 
-                                Type = CalculationAttributeType.Workstep, 
-                                Value = totalPerPiece, 
+                                Attribute = ws.Name,
+                                Type = CalculationAttributeType.Workstep,
+                                Value = totalPerPiece,
                             });
                             break;
                     }
                 }
             }
-            if( ApplyProcedureSpecificAdditions && ProcedureAttributes.Count > 0)
+            if (ApplyProcedureSpecificAdditions && ProcedureAttributes.Count > 0)
             {
                 var attributes = ProcedureAttributes.Where(attr => attr.Family == Procedure);
-                foreach(var attribute in attributes)
+                foreach (var attribute in attributes)
                 {
 
                 }
@@ -644,7 +653,7 @@ namespace AndreasReitberger.Models
                     }
                     // Subtract costs 
                     if (excludedCosts > 0)
-                          costsSoFar -= excludedCosts;
+                        costsSoFar -= excludedCosts;
                 }
                 double margin = costsSoFar * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
                 Costs.Add(new CalculationAttribute() { Attribute = "Margin", Type = CalculationAttributeType.Margin, Value = margin });
@@ -756,24 +765,24 @@ namespace AndreasReitberger.Models
                     ;
                 // Get costs of currently selected printer
                 IEnumerable<double> costsMachine = calculationAttributeType == CalculationAttributeType.All ?
-                    OverallPrinterCosts.Where(cost => 
-                        cost.Attribute == Printer.Name || 
+                    OverallPrinterCosts.Where(cost =>
+                        cost.Attribute == Printer.Name ||
                         cost.LinkedId == Printer.Id)
                     .Select(value => Convert.ToDouble(value.Value)) :
 
-                    OverallPrinterCosts.Where(cost => 
-                        cost.Type == calculationAttributeType && 
+                    OverallPrinterCosts.Where(cost =>
+                        cost.Type == calculationAttributeType &&
                         (cost.Attribute == Printer.Name || cost.LinkedId == Printer.Id)
                         )
                     .Select(value => Convert.ToDouble(value.Value))
                     ;
                 IEnumerable<double> costsMaterial = calculationAttributeType == CalculationAttributeType.All ?
-                    OverallMaterialCosts.Where(cost => 
+                    OverallMaterialCosts.Where(cost =>
                         cost.Attribute == Material.Name ||
                         cost.LinkedId == Material.Id)
                     .Select(value => Convert.ToDouble(value.Value)) :
 
-                    OverallMaterialCosts.Where(cost => cost.Type == calculationAttributeType && 
+                    OverallMaterialCosts.Where(cost => cost.Type == calculationAttributeType &&
                         (cost.Attribute == Material.Name || cost.LinkedId == Material.Id)
                         ).Select(value => Convert.ToDouble(value.Value))
                     ;

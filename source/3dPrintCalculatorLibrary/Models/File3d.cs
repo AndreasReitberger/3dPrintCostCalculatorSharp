@@ -1,16 +1,23 @@
 ﻿using AndreasReitberger.Models.FileAdditions;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-//using SQLite;
+using SQLite;
 using System;
+using SQLiteNetExtensions.Attributes;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Models
 {
+    [Table("Files")]
     public class File3d : BaseModel
     {
         #region Properties
-        //[PrimaryKey]
-        public Guid Id { get; set; }
+        [PrimaryKey]
+        public Guid Id
+        { get; set; }
+
+        [ForeignKey(typeof(Calculation3d))]
+        public Guid CalculationId { get; set; }
 
         [JsonProperty(nameof(Name))]
         string _name = string.Empty;
@@ -26,7 +33,7 @@ namespace AndreasReitberger.Models
 
         [JsonProperty(nameof(File))]
         object _file;
-        [JsonIgnore]
+        [JsonIgnore, Ignore]
         public object File
         {
             get { return _file; }
@@ -72,10 +79,13 @@ namespace AndreasReitberger.Models
             }
         }
 
+        [JsonIgnore, XmlIgnore]
+        public Guid ModelWeightId { get; set; }
 
         [JsonProperty(nameof(Weight))]
         ModelWeight _weight = new(-1, Enums.Unit.g);
         [JsonIgnore]
+        [ManyToOne(nameof(ModelWeightId))]
         public ModelWeight Weight
         {
             get { return _weight; }
@@ -84,27 +94,6 @@ namespace AndreasReitberger.Models
                 SetProperty(ref _weight, value);
             }
         }
-
-        #region Units
-        /*
-        [JsonProperty(nameof(PrintTime))]
-        ObservableCollection<Unit> _units = new ObservableCollection<Unit>(
-            Enum.GetValues(typeof(Unit)).Cast<Unit>().ToList()
-            );
-        [JsonIgnore]
-        public ObservableCollection<Unit> Units
-        {
-            get => _units;
-            set
-            {
-                if (_units == value) return;
-                _units = value;
-                OnPropertyChanged();
-
-            }
-        }
-        */
-        #endregion
 
         [JsonProperty(nameof(PrintTime))]
         double _printTime = 0;
@@ -156,7 +145,10 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Constructor
-        public File3d() { }
+        public File3d()
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Overrides

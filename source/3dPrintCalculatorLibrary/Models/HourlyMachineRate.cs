@@ -1,105 +1,67 @@
-﻿//using SQLite;
+﻿using AndreasReitberger.Core.Utilities;
+using Newtonsoft.Json;
+using SQLite;
 using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace AndreasReitberger.Models
 {
-    public class HourlyMachineRate : INotifyPropertyChanged, ICloneable
+    [Table("HourlyMachineRates")]
+    public class HourlyMachineRate : BaseModel // INotifyPropertyChanged, ICloneable
     {
-        #region Clone
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-        #endregion
-
-        #region Events
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         #region Properties
-        //[PrimaryKey]
-        public Guid Id { get; set; }
-        public Guid PrinterId { get; set; }
+        [PrimaryKey]
+        public Guid Id
+        { get; set; }
 
+        public Guid PrinterId
+        { get; set; }
+
+        [JsonProperty(nameof(Name))]
         string _name = string.Empty;
+        [JsonIgnore]
         public string Name
         {
-            get => _name;
-            set
-            {
-                if (_name != value)
-                {
-                    _name = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
         }
 
+        [JsonProperty(nameof(PerYear))]
         bool _perYear = true;
+        [JsonIgnore]
         public bool PerYear
         {
-            get => _perYear;
-            set
-            {
-                if (_perYear != value)
-                {
-                    _perYear = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _perYear; }
+            set { SetProperty(ref _perYear, value); }
         }
 
+        [JsonProperty(nameof(MachineHours))]
         double _machineHours = 0;
-
+        [JsonIgnore]
         public double MachineHours
         {
-            get => _machineHours;
-            set
-            {
-                if (_machineHours != value)
-                {
-                    _machineHours = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _machineHours; }
+            set { SetProperty(ref _machineHours, value); }
         }
 
+        [JsonProperty(nameof(ReplacementCosts))]
         double _replacementCosts = 0;
+        [JsonIgnore]
         public double ReplacementCosts
         {
-            get => _replacementCosts;
-            set
-            {
-                if (_replacementCosts != value)
-                {
-                    _replacementCosts = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _replacementCosts; }
+            set { SetProperty(ref _replacementCosts, value); }
         }
 
-
+        [JsonProperty(nameof(UsefulLifeYears))]
         int _usefulLife = 4;
+        [JsonIgnore]
         public int UsefulLifeYears
         {
-            get => _usefulLife;
-            set
-            {
-                if (_usefulLife != value)
-                {
-                    _usefulLife = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _usefulLife; }
+            set { SetProperty(ref _usefulLife, value); }
         }
 
+        [Ignore, JsonIgnore]
         public double CalcDepreciation
         {
             get
@@ -111,19 +73,15 @@ namespace AndreasReitberger.Models
             }
         }
 
+        [JsonProperty(nameof(InterestRate))]
         double _interestRate = 3;
+        [JsonIgnore]
         public double InterestRate
         {
-            get => _interestRate;
-            set
-            {
-                if (_interestRate != value)
-                {
-                    _interestRate = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _interestRate; }
+            set { SetProperty(ref _interestRate, value); }
         }
+        [Ignore, JsonIgnore]
         public double CalcInterest
         {
             get
@@ -137,120 +95,80 @@ namespace AndreasReitberger.Models
             }
         }
 
+        [JsonProperty(nameof(MaintenanceCosts))]
         double _maintenanceCosts = 0;
+        [JsonIgnore]
         public double MaintenanceCosts
         {
-            get => _maintenanceCosts;
-            set
-            {
-                if (_maintenanceCosts != value)
-                {
-                    _maintenanceCosts = value;
-                    OnPropertyChanged();
-                }
-            }
-
+            get { return _maintenanceCosts; }
+            set { SetProperty(ref _maintenanceCosts, value); }
         }
 
+        [JsonProperty(nameof(LocationCosts))]
         double _locationCosts = 0;
+        [JsonIgnore]
         public double LocationCosts
         {
-            get => _locationCosts;
-            set
-            {
-                if (_locationCosts != value)
-                {
-                    _locationCosts = value;
-                    OnPropertyChanged();
-
-                }
-            }
+            get { return _locationCosts; }
+            set { SetProperty(ref _locationCosts, value); }
         }
 
+        [JsonProperty(nameof(EnergyCosts))]
         double _energyCosts = 0;
+        [JsonIgnore]
         public double EnergyCosts
         {
-            get => _energyCosts;
-            set
-            {
-                if (_energyCosts != value)
-                {
-                    _energyCosts = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _energyCosts; }
+            set { SetProperty(ref _energyCosts, value); }
         }
 
         //Additonal
+        [JsonProperty(nameof(AdditionalCosts))]
         double _additionalCosts = 0;
+        [JsonIgnore]
         public double AdditionalCosts
         {
-            get => _additionalCosts;
-            set
-            {
-                if (_additionalCosts != value)
-                {
-                    _additionalCosts = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _additionalCosts; }
+            set { SetProperty(ref _additionalCosts, value); }
         }
 
+        [JsonProperty(nameof(MaintenanceCostsVariable))]
         double _maintenanceCostsVariable = 0;
+        [JsonIgnore]
         public double MaintenanceCostsVariable
         {
-            get => _maintenanceCostsVariable;
-            set
-            {
-                if (_maintenanceCostsVariable != value)
-                {
-                    _maintenanceCostsVariable = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _maintenanceCostsVariable; }
+            set { SetProperty(ref _maintenanceCostsVariable, value); }
         }
 
+        [JsonProperty(nameof(EnergyCostsVariable))]
         double _energyCostsVariable = 0;
+        [JsonIgnore]
         public double EnergyCostsVariable
         {
-            get => _energyCostsVariable;
-            set
-            {
-                if (_energyCostsVariable != value)
-                {
-                    _energyCostsVariable = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _energyCostsVariable; }
+            set { SetProperty(ref _energyCostsVariable, value); }
         }
 
+        [JsonProperty(nameof(AdditionalCostsVariable))]
         double _additionalCostsVariable = 0;
+        [JsonIgnore]
         public double AdditionalCostsVariable
         {
-            get => _additionalCostsVariable;
-            set
-            {
-                if (_additionalCostsVariable != value)
-                {
-                    _additionalCostsVariable = value;
-                    OnPropertyChanged();
-                }
-            }
+            get { return _additionalCostsVariable; }
+            set { SetProperty(ref _additionalCostsVariable, value); }
         }
 
+        [JsonProperty(nameof(FixMachineHourRate))]
         double _fixMachineHourRate = -1;
+        [JsonIgnore]
         public double FixMachineHourRate
         {
-            get => _fixMachineHourRate;
-            set
-            {
-                if (_fixMachineHourRate == value) return;
-                _fixMachineHourRate = value;
-                OnPropertyChanged();
-
-            }
+            get { return _fixMachineHourRate; }
+            set { SetProperty(ref _fixMachineHourRate, value); }
         }
 
+        [Ignore, JsonIgnore]
         public double CalcMachineHourRate
         {
             get
@@ -258,6 +176,8 @@ namespace AndreasReitberger.Models
                 return GetMachineHourRate();
             }
         }
+        
+        [Ignore, JsonIgnore]
         public double TotalCosts
         {
             get
@@ -268,7 +188,10 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Constructor
-        public HourlyMachineRate() { }
+        public HourlyMachineRate()
+        { 
+            Id = Guid.NewGuid();
+        }
         #endregion
 
         #region PrivateMethods

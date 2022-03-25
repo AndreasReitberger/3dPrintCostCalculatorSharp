@@ -1,10 +1,11 @@
 ﻿using AndreasReitberger.Enums;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Models.CalculationAdditions
 {
+    [Table("CustomAdditions")]
     public class CustomAddition : ICloneable
     {
         #region Clone
@@ -15,6 +16,11 @@ namespace AndreasReitberger.Models.CalculationAdditions
         #endregion
 
         #region Properties
+        [PrimaryKey]
+        public Guid Id { get; set; }
+
+        [ForeignKey(typeof(Calculation3d))]
+        public Guid CalculationId { get; set; }
         public string Name { get; set; }
         public double Percentage { get; set; }
         public int Order { get; set; } = 0;
@@ -22,7 +28,10 @@ namespace AndreasReitberger.Models.CalculationAdditions
         #endregion
 
         #region Constructor
-        public CustomAddition() { }
+        public CustomAddition() 
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
     }
 }

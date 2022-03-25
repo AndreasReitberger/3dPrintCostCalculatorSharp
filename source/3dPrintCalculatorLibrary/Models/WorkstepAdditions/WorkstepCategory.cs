@@ -1,21 +1,25 @@
-﻿//using SQLite;
+﻿using SQLite;
 using System;
 
 namespace AndreasReitberger.Models.WorkstepAdditions
 {
+    [Table("WorkstepCategories")]
     public class WorkstepCategory
     {
         #region Properties
-        //[PrimaryKey]
+        [PrimaryKey]
         public Guid Id
-        { get; set; } = Guid.NewGuid();
+        { get; set; }// = Guid.NewGuid();
 
         public string Name
         { get; set; } = string.Empty;
         #endregion
 
         #region Constructors
-        public WorkstepCategory() { }
+        public WorkstepCategory()
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Overrides

@@ -1,9 +1,11 @@
-﻿//using SQLite;
+﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Models
 {
+    [Table("Suppliers")]
     public class Supplier : ICloneable
     {
         #region Clone
@@ -14,7 +16,7 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties 
-        //[PrimaryKey]
+        [PrimaryKey]
         public Guid Id
         { get; set; }
         public string Name
@@ -25,6 +27,7 @@ namespace AndreasReitberger.Models
         { get; set; }
         public string Website
         { get; set; }
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Manufacturer> Manufacturers
         { get; set; }
         #endregion

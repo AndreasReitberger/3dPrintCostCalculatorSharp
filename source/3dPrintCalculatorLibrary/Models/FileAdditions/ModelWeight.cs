@@ -2,12 +2,23 @@
 using AndreasReitberger.Enums;
 using AndreasReitberger.Utilities;
 using Newtonsoft.Json;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
+using System;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Models.FileAdditions
 {
+    [Table("ModelWeights")]
     public class ModelWeight : BaseModel
     {
+        #region Properties
+        [PrimaryKey]
+        public Guid Id { get; set; }
+
+        [ForeignKey(typeof(File3d))]
+        public Guid FileId { get; set; }
+
         bool _recalculateWeightInGramm = false;
 
         [JsonProperty(nameof(Weight))]
@@ -47,8 +58,7 @@ namespace AndreasReitberger.Models.FileAdditions
         [XmlIgnore]
         [JsonProperty(nameof(WeightInGramm))]
         double _weightInGramm = 0;
-        [JsonIgnore]
-        [XmlIgnore]
+        [JsonIgnore, XmlIgnore]
         public double WeightInGramm
         {
             get => _weightInGramm;
@@ -59,11 +69,16 @@ namespace AndreasReitberger.Models.FileAdditions
                 OnPropertyChanged();
             }
         }
+        #endregion
 
         #region Constructor
-        public ModelWeight() { }
+        public ModelWeight() 
+        {
+            Id = Guid.NewGuid();
+        }
         public ModelWeight(double weight, Unit unit)
         {
+            Id = Guid.NewGuid();
             Weight = weight;
             Unit = unit;
         }

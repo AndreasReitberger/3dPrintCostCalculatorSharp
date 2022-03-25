@@ -1,8 +1,10 @@
-﻿//using SQLite;
+﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace AndreasReitberger.Models
 {
+    [Table("Manufacturers")]
     public class Manufacturer : ICloneable
     {
         #region Clone
@@ -13,37 +15,46 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Properties 
-        //[PrimaryKey]
+        [PrimaryKey]
         public Guid Id
         { get; set; }
+        [ForeignKey(typeof(Supplier))]
+        public Guid SupplierId { get; set; }
         public string Name
-        { get; set; }
+        { get; set; } = string.Empty;
         public string DebitorNumber
-        { get; set; }
+        { get; set; } = string.Empty;
         public bool IsActive
-        { get; set; }
+        { get; set; } = true;
         public string Website
-        { get; set; }
+        { get; set; } = string.Empty;
+        public string Note
+        { get; set; } = string.Empty;
+        public string CountryCode
+        { get; set; } = string.Empty;
         #endregion
 
         #region Constructor
-        public Manufacturer() { }
+        public Manufacturer()
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Override
         public override string ToString()
         {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : string.Format("{0} ({1})", Name, DebitorNumber);
+            return string.IsNullOrEmpty(DebitorNumber) ? Name : $"{Name} ({DebitorNumber})";
         }
         public override bool Equals(object obj)
         {
             if (obj is not Manufacturer item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

@@ -2,16 +2,22 @@
 using AndreasReitberger.Models.WorkstepAdditions;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-//using SQLite;
+using SQLite;
 using System;
+using SQLiteNetExtensions.Attributes;
 
 namespace AndreasReitberger.Models
 {
+    [Table("Worksteps")]
     public class Workstep : BaseModel
     {
         #region Properties
-        //[PrimaryKey]
+        [PrimaryKey]
         public Guid Id
+        { get; set; }
+
+        [ForeignKey(typeof(Calculation3d))]
+        public Guid CalculationId 
         { get; set; }
 
         [JsonProperty(nameof(Name))]
@@ -49,9 +55,13 @@ namespace AndreasReitberger.Models
             }
         }
 
+        [JsonIgnore]
+        public Guid CategoryId { get; set; }
+
         [JsonProperty(nameof(Category))]
         WorkstepCategory _category;
         [JsonIgnore]
+        [ManyToOne(nameof(CategoryId))]
         public WorkstepCategory Category
         {
             get { return _category; }
@@ -97,6 +107,15 @@ namespace AndreasReitberger.Models
             get { return _totalCosts; }
             set { SetProperty(ref _totalCosts, value); }
         }
+
+        [JsonProperty(nameof(Note))]
+        public string _note = string.Empty;
+        [JsonIgnore]
+        public string Note
+        {
+            get { return _note; }
+            set { SetProperty(ref _note, value); }
+        }
         #endregion
 
         #region Constructors
@@ -122,17 +141,17 @@ namespace AndreasReitberger.Models
         #region Overrides
         public override string ToString()
         {
-            return string.Format("{0} ({1}) - {2:C2}", this.Name, this.Type, this.Price);
+            return string.Format("{0} ({1}) - {2:C2}", Name, Type, Price);
         }
         public override bool Equals(object obj)
         {
             if (obj is not Workstep item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

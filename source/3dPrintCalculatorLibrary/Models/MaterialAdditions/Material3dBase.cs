@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Enums;
+using SQLite;
 using System;
 
 namespace AndreasReitberger.Models.MaterialAdditions
@@ -6,6 +7,7 @@ namespace AndreasReitberger.Models.MaterialAdditions
     public class Material3dBase
     {
         #region Properties 
+        [PrimaryKey]
         public Guid Id
         { get; set; }
         public Material3dTypes Type
@@ -17,17 +19,22 @@ namespace AndreasReitberger.Models.MaterialAdditions
         #endregion
 
         #region Constructors
-        public Material3dBase() { }
-        public Material3dBase(Material3dTypes Type, string Material)
+        public Material3dBase() 
         {
-            this.Type = Type;
-            this.Material = Material;
+            Id = Guid.NewGuid();
         }
-        public Material3dBase(Material3dTypes Type, string Material, string Polymer)
+        public Material3dBase(Material3dTypes type, string material)
         {
-            this.Type = Type;
-            this.Material = Material;
-            this.Polymer = Polymer;
+            Id = Guid.NewGuid();
+            Type = type;
+            Material = material;
+        }
+        public Material3dBase(Material3dTypes type, string material, string polymer)
+        {
+            Id = Guid.NewGuid();
+            Type = type;
+            Material = material;
+            Polymer = polymer;
         }
         #endregion
 
@@ -38,14 +45,13 @@ namespace AndreasReitberger.Models.MaterialAdditions
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Material3dBase;
-            if (item == null)
+            if (obj is not Material3dBase item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

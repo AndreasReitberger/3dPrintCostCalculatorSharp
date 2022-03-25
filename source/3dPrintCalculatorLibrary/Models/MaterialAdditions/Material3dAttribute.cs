@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
+using System;
 
 namespace AndreasReitberger.Models.MaterialAdditions
 {
+    [Table("MaterialAttributes")]
     public class Material3dAttribute
     {
         #region Properties
+        [PrimaryKey]
+        public Guid Id { get; set; }
+        [ForeignKey(typeof(Material3d))]
+        public Guid MaterialId { get; set; }
         public string Attribute { get; set; }
-        //public Type ValueType { get; set; }
         public double Value { get; set; }
+        #endregion
+
+        #region Constructor
+        public Material3dAttribute()
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
     }
 }

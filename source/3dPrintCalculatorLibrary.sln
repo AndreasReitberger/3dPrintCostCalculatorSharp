@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary", "3dPrintCalculatorLibrary\3dPrintCalculatorLibrary.csproj", "{DFD7A630-1D47-46CF-86E0-CAAFEBF50EEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3dPrintCalculatorLibrary.Test", "3dPrintCalculatorLibrary.Test\3dPrintCalculatorLibrary.Test.csproj", "{70B0A793-EEE0-49E5-8A1B-4817D7C48B11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.NUnitTest", "3dPrintCalculatorLibrary.NUnitTest\3dPrintCalculatorLibrary.NUnitTest.csproj", "{A30455DB-BF38-4088-BDC1-17215ED75F91}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.DatabaseHandler", "3dPrintCalculatorLibrary.DatabaseHandler\3dPrintCalculatorLibrary.DatabaseHandler.csproj", "{E2509433-D57A-4095-9C7F-36DF1D77237F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{DFD7A630-1D47-46CF-86E0-CAAFEBF50EEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFD7A630-1D47-46CF-86E0-CAAFEBF50EEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFD7A630-1D47-46CF-86E0-CAAFEBF50EEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70B0A793-EEE0-49E5-8A1B-4817D7C48B11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70B0A793-EEE0-49E5-8A1B-4817D7C48B11}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70B0A793-EEE0-49E5-8A1B-4817D7C48B11}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70B0A793-EEE0-49E5-8A1B-4817D7C48B11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

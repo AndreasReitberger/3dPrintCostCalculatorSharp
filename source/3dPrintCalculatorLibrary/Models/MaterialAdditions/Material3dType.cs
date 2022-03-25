@@ -1,14 +1,17 @@
 ﻿using AndreasReitberger.Enums;
+using SQLite;
 using System;
 
 namespace AndreasReitberger.Models.MaterialAdditions
 {
+    [Table("MaterialTypes")]
     public class Material3dType
     {
         #region Properties 
+        [PrimaryKey]
         public Guid Id
         { get; set; }
-        public Material3dFamily Type
+        public Material3dFamily Family
         { get; set; }
         public string Material
         { get; set; }
@@ -17,37 +20,45 @@ namespace AndreasReitberger.Models.MaterialAdditions
         #endregion
 
         #region Constructors
-        public Material3dType() { }
-        public Material3dType(Guid Id, Material3dFamily Type, string Material)
+        public Material3dType()
         {
-            this.Id = Id;
-            this.Type = Type;
-            this.Material = Material;
+            Id = Guid.NewGuid();
         }
-        public Material3dType(Guid Id, Material3dFamily Type, string Material, string Polymer)
+        public Material3dType(Material3dFamily type, string material)
         {
-            this.Id = Id;
-            this.Type = Type;
-            this.Material = Material;
-            this.Polymer = Polymer;
+            Id = Guid.NewGuid();
+            Family = type;
+            Material = material;
+        }
+        public Material3dType(Guid id, Material3dFamily type, string material)
+        {
+            Id = id;
+            Family = type;
+            Material = material;
+        }
+        public Material3dType(Guid id, Material3dFamily type, string material, string polymer)
+        {
+            Id = id;
+            Family = type;
+            Material = material;
+            Polymer = polymer;
         }
         #endregion
 
         #region Override
         public override string ToString()
         {
-            return string.IsNullOrEmpty(Type.ToString()) ? Material : string.Format("{0} ({1})", Material, Type.ToString());
+            return string.IsNullOrEmpty(Family.ToString()) ? Material : string.Format("{0} ({1})", Material, Family.ToString());
         }
         public override bool Equals(object obj)
         {
-            var item = obj as Material3dType;
-            if (item == null)
+            if (obj is not Material3dType item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

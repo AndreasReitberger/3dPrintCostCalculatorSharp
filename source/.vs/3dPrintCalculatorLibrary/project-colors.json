@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "dfd7a630-1d47-46cf-86e0-caafebf50eeb": {
+      "ProjectGuid": "dfd7a630-1d47-46cf-86e0-caafebf50eeb",
+      "DisplayName": "3dPrintCalculatorLibrary",
+      "ColorIndex": 0
+    },
+    "a30455db-bf38-4088-bdc1-17215ed75f91": {
+      "ProjectGuid": "a30455db-bf38-4088-bdc1-17215ed75f91",
+      "DisplayName": "3dPrintCalculatorLibrary.NUnitTest",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}

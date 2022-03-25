@@ -1,9 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SQLite;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AndreasReitberger.Models.PrinterAdditions
 {
+    [Table("BuildVolumes")]
+    [Obsolete]
     public class BuildVolume : INotifyPropertyChanged
     {
         #region Events
@@ -16,7 +20,13 @@ namespace AndreasReitberger.Models.PrinterAdditions
         #endregion
 
         #region Properies
+        [PrimaryKey]
+        public Guid Id
+        { get; set; }
+
+        [JsonProperty(nameof(X))]
         double _x = 1;
+        [JsonIgnore]
         public double X
         {
             get => _x;
@@ -30,7 +40,10 @@ namespace AndreasReitberger.Models.PrinterAdditions
                 }
             }
         }
+
+        [JsonProperty(nameof(Y))]
         double _y = 1;
+        [JsonIgnore]
         public double Y
         {
             get => _y;
@@ -44,7 +57,10 @@ namespace AndreasReitberger.Models.PrinterAdditions
                 }
             }
         }
+
+        [JsonProperty(nameof(Z))]
         double _z = 1;
+        [JsonIgnore]
         public double Z
         {
             get => _z;
@@ -59,6 +75,7 @@ namespace AndreasReitberger.Models.PrinterAdditions
             }
         }
 
+        [JsonIgnore]
         public double Volume
         {
             get => Math.Round(X * Y * Z, 2);
@@ -66,9 +83,24 @@ namespace AndreasReitberger.Models.PrinterAdditions
         #endregion
 
         #region Constructors
-        public BuildVolume() { }
+        public BuildVolume()
+        {
+            Id = Guid.NewGuid();
+        }
+        public BuildVolume(Guid id)
+        {
+            Id = id;
+        }
         public BuildVolume(double x, double y, double z)
         {
+            Id = Guid.NewGuid();
+            X = x;
+            Y = y;
+            Z = z;
+        }
+        public BuildVolume(Guid id, double x, double y, double z)
+        {
+            Id = id;
             X = x;
             Y = y;
             Z = z;

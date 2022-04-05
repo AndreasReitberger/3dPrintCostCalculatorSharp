@@ -7,7 +7,7 @@
         NozzleWear,
         PrintSheetWear,
         HeatedBedTemperature,
-
+        MultiMaterial,
 
         // Resin
         GlovesCosts,

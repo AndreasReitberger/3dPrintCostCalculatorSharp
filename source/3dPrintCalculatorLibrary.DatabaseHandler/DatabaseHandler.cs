@@ -11,6 +11,7 @@ using AndreasReitberger.Models.PrinterAdditions;
 using AndreasReitberger.Models.Settings;
 using AndreasReitberger.Models.WorkstepAdditions;
 using SQLite;
+using System.Diagnostics;
 
 namespace AndreasReitberger
 {
@@ -350,6 +351,7 @@ namespace AndreasReitberger
 
         public async Task CloseDatabaseAsync()
         {
+            Database?.Close();
             await DatabaseAsync?.CloseAsync();
         }
 
@@ -445,11 +447,53 @@ namespace AndreasReitberger
             Database?.Backup(targetFolder, databaseName);
         }
 
-        public void Dispose()
+        public void Close()
         {
             Database?.Close();
             DatabaseAsync?.CloseAsync();
         }
+
+        public void Dispose()
+        {
+            Close();
+        }
+        #endregion
+
+        #region Static
+
+        public static async Task<Tuple<T, TimeSpan?>> StopWatchFunctionAsync<T>(Func<T> action, bool inNewTask = false)
+        {
+            Stopwatch timer = new();
+            timer.Start();
+            T result;
+            if (inNewTask)
+            {
+                result = await Task.Run(() =>
+                {
+                    return action();
+                });
+            }
+            else
+            {
+                result = action();
+            }
+            timer.Stop();
+            //var t = new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
+            return new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
+        }
+
+        public static T StopWatchFunction<T>(Func<T> action, out TimeSpan? duration)
+        {
+            Stopwatch timer = new();
+            timer.Start();
+            T result = action();
+
+            timer.Stop();
+            duration = timer?.Elapsed;
+
+            return result;
+        }
+
         #endregion
 
         #endregion

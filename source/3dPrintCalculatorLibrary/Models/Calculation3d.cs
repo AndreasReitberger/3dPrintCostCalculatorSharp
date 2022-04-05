@@ -1,14 +1,16 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Enums;
 using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Models.Events;
+using AndreasReitberger.Utilities;
 using Newtonsoft.Json;
 using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using AndreasReitberger.Utilities;
-using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Models
@@ -58,15 +60,18 @@ namespace AndreasReitberger.Models
             get { return _printer; }
             set
             {
-                SetProperty(ref _printer, value);
+                bool invalidate = SetProperty(ref _printer, value);
                 // Recalculate on change
-                if (IsCalculated)
+                if (invalidate && !RealculationRequired)
                 {
-                    NeedsReCalculation = true;
+                    RealculationRequired = true;
                     IsCalculated = false;
-                    //Calculate();
+                    OnPrinterChanged(new()
+                    {
+                        CalculationId = Id,
+                        Printer = value,
+                    });
                 }
-                //OnPropertyChanged(nameof(TotalCosts));
             }
         }
         
@@ -74,23 +79,26 @@ namespace AndreasReitberger.Models
         [JsonIgnore, XmlIgnore]
         public Guid MaterialId { get; set; }
 
-        Material3d material;
+        Material3d _material;
         [Ignore, JsonIgnore]
         //[ManyToOne(nameof(MaterialId))]
         public Material3d Material
         {
-            get { return material; }
+            get { return _material; }
             set
             {
-                SetProperty(ref material, value);
+                bool invalidate = SetProperty(ref _material, value);
                 // Recalculate on change
-                if (IsCalculated)
+                if (invalidate && !RealculationRequired)
                 {
-                    NeedsReCalculation = true;
+                    RealculationRequired = true;
                     IsCalculated = false;
-                    //Calculate();
+                    OnMaterialChanged(new()
+                    {
+                        CalculationId = Id,
+                        Material = value,
+                    });
                 }
-                //OnPropertyChanged(nameof(TotalCosts));
             }
         }
 
@@ -116,13 +124,24 @@ namespace AndreasReitberger.Models
             private set { SetProperty(ref _isCalculated, value); }
         }
 
-        [JsonProperty(nameof(NeedsReCalculation))]
-        bool _needsReCalculation = false;
+        [JsonProperty(nameof(RealculationRequired))]
+        bool _realculationRequired = false;
         [Ignore, JsonIgnore, XmlIgnore]
-        public bool NeedsReCalculation
+        public bool RealculationRequired
         {
-            get { return _needsReCalculation; }
-            private set { SetProperty(ref _needsReCalculation, value); }
+            get { return _realculationRequired; }
+            //private set { SetProperty(ref _realculationRequired, value); }
+            private set
+            {
+                SetProperty(ref _realculationRequired, value);
+                if (_realculationRequired)
+                {
+                    OnRecalculationNeeded(new()
+                    {
+                        CalculationId = Id,
+                    });
+                }
+            }
         }
 
         [JsonProperty(nameof(Quantity))]
@@ -188,6 +207,14 @@ namespace AndreasReitberger.Models
             set { SetProperty(ref _targetProcedure, value); }
         }
         */
+        [JsonIgnore]
+        bool _combineMaterialCosts = false;
+        [JsonIgnore]
+        public bool CombineMaterialCosts
+        {
+            get { return _combineMaterialCosts; }
+            set { SetProperty(ref _combineMaterialCosts, value); }
+        }
         #endregion
 
         #region Details
@@ -457,6 +484,40 @@ namespace AndreasReitberger.Models
 
         #endregion
 
+        #region EventHandlers
+        public event EventHandler Error;
+        protected virtual void OnError()
+        {
+            Error?.Invoke(this, EventArgs.Empty);
+        }
+        protected virtual void OnError(ErrorEventArgs e)
+        {
+            Error?.Invoke(this, e);
+        }
+        protected virtual void OnError(UnhandledExceptionEventArgs e)
+        {
+            Error?.Invoke(this, e);
+        }
+
+        public event EventHandler<CalculatorEventArgs> RecalculationNeeded;
+        protected virtual void OnRecalculationNeeded(CalculatorEventArgs e)
+        {
+            RecalculationNeeded?.Invoke(this, e);
+        }
+
+        public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
+        protected virtual void OnPrinterChanged(PrinterChangedEventArgs e)
+        {
+            PrinterChanged?.Invoke(this, e);
+        }
+
+        public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
+        protected virtual void OnMaterialChanged(MaterialChangedEventArgs e)
+        {
+            MaterialChanged?.Invoke(this, e);
+        }
+        #endregion
+
         #region Constructor
         public Calculation3d()
         {
@@ -472,6 +533,7 @@ namespace AndreasReitberger.Models
             OverallMaterialCosts.Clear();
             OverallPrinterCosts.Clear();
             Costs.Clear();
+            CombineMaterialCosts = false;
 
             int quantity = Files.Select(file => file.Quantity).ToList().Sum();
             // Handling fee
@@ -683,6 +745,34 @@ namespace AndreasReitberger.Models
                     }
                 }
             }
+
+            if (ApplyProcedureSpecificAdditions)
+            {
+                List<CalculationProcedureAttribute> multiMaterialAttributes = ProcedureAttributes
+                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)?.ToList();
+                for (int i = 0; i < multiMaterialAttributes?.Count; i++)
+                {
+                    CalculationProcedureAttribute attribute = multiMaterialAttributes[i];
+                    for (int j = 0; j < attribute.Parameters.Count; j++)
+                    {
+                        CalculationProcedureParameter parameter = attribute.Parameters[j];
+                        switch (parameter.Type)
+                        {
+                            case ProcedureParameter.MultiMaterialCalculation:
+                                if (Printer?.MaterialType == Material3dFamily.Filament)
+                                {
+                                    CombineMaterialCosts = parameter.Value > 0;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+
+
+            /*
             if (ApplyProcedureSpecificAdditions && ProcedureAttributes.Count > 0)
             {
                 IEnumerable<CalculationProcedureAttribute> attributes = ProcedureAttributes.Where(attr => attr.Family == Procedure);
@@ -691,6 +781,7 @@ namespace AndreasReitberger.Models
 
                 }
             }
+            */
             // Custom additions before margin
             List<CustomAddition> customAdditionsBeforeMargin =
                 CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin).ToList();
@@ -778,7 +869,7 @@ namespace AndreasReitberger.Models
 
             TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
-            NeedsReCalculation = false;
+            RealculationRequired = false;
         }
         public int GetTotalQuantity()
         {
@@ -882,7 +973,7 @@ namespace AndreasReitberger.Models
                 IEnumerable<double> costsMaterial =
                     OverallMaterialCosts.Where(cost =>
                         cost.Attribute == Material.Name ||
-                        cost.LinkedId == Material.Id)
+                        (CombineMaterialCosts || (cost.LinkedId == Material.Id)))
                     .Select(value => Convert.ToDouble(value.Value));
 
                 double total = 0;

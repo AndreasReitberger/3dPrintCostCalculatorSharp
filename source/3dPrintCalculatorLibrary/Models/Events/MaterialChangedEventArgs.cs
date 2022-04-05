@@ -2,11 +2,10 @@
 
 namespace AndreasReitberger.Models.Events
 {
-    public class DatabaseEventArgs : EventArgs
+    public class MaterialChangedEventArgs : CalculatorEventArgs
     {
         #region Properties
-        public string Message { get; set; } = string.Empty;
-        public TimeSpan? Duration { get; set; } = TimeSpan.FromSeconds(0);
+        public Material3d Material { get; set; }
         #endregion
 
         #region Overrides

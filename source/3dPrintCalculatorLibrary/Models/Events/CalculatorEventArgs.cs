@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace AndreasReitberger.Models.Events
 {
-    public class DatabaseEventArgs : EventArgs
+    public class CalculatorEventArgs : EventArgs
     {
         #region Properties
-        public string Message { get; set; } = string.Empty;
-        public TimeSpan? Duration { get; set; } = TimeSpan.FromSeconds(0);
+        public string Message { get; set; }
+        public Guid CalculationId { get; set; }
         #endregion
 
         #region Overrides

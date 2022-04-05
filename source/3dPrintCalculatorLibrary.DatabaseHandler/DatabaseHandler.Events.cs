@@ -11,6 +11,12 @@ namespace AndreasReitberger
             DataChanged?.Invoke(this, e);
         }
 
+        public event EventHandler<DatabaseEventArgs> QueryFinished;
+        protected virtual void OnQueryFinished(DatabaseEventArgs e)
+        {
+            QueryFinished?.Invoke(this, e);
+        }
+
         public event EventHandler<CalculationChangedDatabaseEventArgs> CalculationsChanged;
         protected virtual void OnCalculationsChanged(CalculationChangedDatabaseEventArgs e)
         {

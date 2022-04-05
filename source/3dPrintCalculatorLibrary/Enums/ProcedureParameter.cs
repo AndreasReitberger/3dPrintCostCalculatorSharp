@@ -9,6 +9,8 @@
         FilterCosts,
         NozzleWearCosts,
         PrintSheetWearCosts,
+        MultiMaterialChangeCosts,
+        MultiMaterialCalculation,
 
         PlainCosts = 999,
     }

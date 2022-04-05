@@ -2,11 +2,10 @@
 
 namespace AndreasReitberger.Models.Events
 {
-    public class DatabaseEventArgs : EventArgs
+    public class PrinterChangedEventArgs : CalculatorEventArgs
     {
         #region Properties
-        public string Message { get; set; } = string.Empty;
-        public TimeSpan? Duration { get; set; } = TimeSpan.FromSeconds(0);
+        public Printer3d Printer { get; set; }
         #endregion
 
         #region Overrides

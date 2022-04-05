@@ -43,7 +43,7 @@ namespace AndreasReitberger
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Material ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
-                (cost.LinkedId == calculation.Material.Id || cost.Attribute == calculation.Material.Name))
+                (calculation.CombineMaterialCosts || (cost.LinkedId == calculation.Material.Id || cost.Attribute == calculation.Material.Name)))
                 .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
             return MaterialCosts;
         }

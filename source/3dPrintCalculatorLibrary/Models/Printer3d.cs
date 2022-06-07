@@ -22,6 +22,11 @@ namespace AndreasReitberger.Models
         [ForeignKey(typeof(Calculation3d))]
         public Guid CalculationId { get; set; }
 
+        /*
+        [ManyToOne]
+        public Calculation3d Calculation { get; set; }
+        */
+
         [JsonProperty(nameof(Model)), XmlIgnore]
         public string _model = string.Empty;
         [JsonIgnore]

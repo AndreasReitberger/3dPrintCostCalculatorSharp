@@ -25,7 +25,10 @@ namespace AndreasReitberger.Models
         { get; set; }
 
         [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId 
+        public Guid CalculationId
+        { get; set; }
+        [ManyToOne]
+        public Calculation3d Calculation
         { get; set; }
         public string Name
         { get; set; } = string.Empty;

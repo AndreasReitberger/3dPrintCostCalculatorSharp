@@ -83,9 +83,9 @@ namespace AndreasReitberger.Models
         public string TechnicalDatasheet
         { get; set; } = string.Empty;
 
-        public Unit SppolWeightUnit
+        public Unit SpoolWeightUnit
         { get; set; } = Unit.g;
-        public double SppolWeight
+        public double SpoolWeight
         { get; set; } = 200;
         #endregion
 

@@ -472,5 +472,122 @@ namespace AndreasReitberger.NUnitTest
                 Assert.Fail(exc.Message);
             }
         }
+
+        [Test]
+        public void MultiFileDifferTest()
+        {
+            try
+            {
+                Material3d material = new Material3d()
+                {
+                    Id = Guid.NewGuid(),
+                    Density = 1.24,
+                    Name = "Test Material",
+                    Unit = Unit.kg,
+                    PackageSize = 1,
+                    UnitPrice = 30,
+                    TypeOfMaterial = new Material3dType()
+                    {
+                        Id = Guid.NewGuid(),
+                        Material = "PETG",
+                        Polymer = "",
+                        Family = Material3dFamily.Filament,
+                    }
+                };
+                Material3d material2 = new Material3d()
+                {
+                    Id = Guid.NewGuid(),
+                    Density = 1.14,
+                    Name = "Test Material #2",
+                    Unit = Unit.kg,
+                    PackageSize = 1,
+                    UnitPrice = 25,
+                    TypeOfMaterial = new Material3dType()
+                    {
+                        Id = Guid.NewGuid(),
+                        Material = "PLA",
+                        Polymer = "",
+                        Family = Material3dFamily.Filament,
+                    }
+                };
+                Printer3d printer = new Printer3d()
+                {
+                    Id = Guid.NewGuid(),
+                    Manufacturer = new Manufacturer()
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Name = "Prusa"
+                    },
+                    Model = "XL MK1",
+                    Price = 799,
+                    BuildVolume = new BuildVolume(25, 21, 21),
+                    MaterialType = Material3dFamily.Filament,
+                    Type = Printer3dType.FDM,
+                    PowerConsumption = 210,
+                };
+                File3d file = new File3d()
+                {
+                    Id = Guid.NewGuid(),
+                    FileName = "MyFirst.gcode",
+                    PrintTime = 10.25,
+                    Volume = 12.36,
+                    Quantity = 3,
+                };
+                File3d file2 = new File3d()
+                {
+                    Id = Guid.NewGuid(),
+                    FileName = "MySecond.gcode",
+                    PrintTime = 10.25,
+                    Volume = 12.36,
+                    Quantity = 3,
+                    MultiplyPrintTimeWithQuantity = false
+                };
+                File3d file3 = new File3d()
+                {
+                    Id = Guid.NewGuid(),
+                    FileName = "MyThird.gcode",
+                    PrintTime = 2.25,
+                    Volume = 3.36,
+                    Quantity = 25,
+                    MultiplyPrintTimeWithQuantity = true
+                };
+
+                _calculation = new Calculation3d();
+                // Add data
+                _calculation.Files.Add(file);
+                _calculation.Files.Add(file2);
+                _calculation.Files.Add(file3);
+                _calculation.Printers.Add(printer);
+                _calculation.Materials.Add(material);
+                _calculation.Materials.Add(material2);
+
+                // Add information
+                _calculation.FailRate = 25;
+                _calculation.EnergyCostsPerkWh = 0.30;
+                _calculation.ApplyenergyCost = true;
+                // Uses 75% of the max. power consumption set in the printer model (210 Watt)
+                _calculation.PowerLevel = 75;
+
+                _calculation.Calculate();
+
+                double total = _calculation.GetTotalCosts();
+
+                var materialCosts = PrintCalculator3d.GetMaterialCosts(_calculation);
+                var machineCosts = PrintCalculator3d.GetMachineCosts(_calculation);
+
+                _calculation.DifferFileCosts = true;
+                _calculation.Calculate();
+
+                double totalDiffer = _calculation.GetTotalCosts();
+
+                Assert.IsTrue(_calculation.IsCalculated);
+                Assert.IsTrue(total == totalDiffer);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
     }
 }

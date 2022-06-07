@@ -51,8 +51,8 @@ namespace AndreasReitberger.Models
             set { SetProperty(ref _created, value); }
         }
 
-        //[JsonIgnore, XmlIgnore]
-        //public Guid PrinterId { get; set; }
+        [JsonIgnore, XmlIgnore]
+        public Guid PrinterId { get; set; }
 
         [JsonProperty(nameof(Printer))]
         Printer3d _printer;
@@ -79,8 +79,8 @@ namespace AndreasReitberger.Models
             }
         }
         
-        //[JsonIgnore, XmlIgnore]
-        //public Guid MaterialId { get; set; }
+        [JsonIgnore, XmlIgnore]
+        public Guid MaterialId { get; set; }
 
         [JsonProperty(nameof(Material))]
         Material3d _material;

@@ -17,6 +17,9 @@ namespace AndreasReitberger.Models.CalculationAdditions
         [ForeignKey(typeof(Calculation3d))]
         public Guid CalculationId { get; set; }
 
+        public Guid FileId { get; set; }
+        public string FileName { get; set; }
+
         public Guid LinkedId { get; set; } = Guid.Empty;
         public string Attribute { get; set; }
         public CalculationAttributeType Type { get; set; }

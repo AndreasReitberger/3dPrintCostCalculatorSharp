@@ -221,6 +221,15 @@ namespace AndreasReitberger.Models
             get { return _combineMaterialCosts; }
             set { SetProperty(ref _combineMaterialCosts, value); }
         }
+
+        [JsonProperty(nameof(DifferFileCosts))]
+        bool _differFileCosts = true;
+        [JsonIgnore]
+        public bool DifferFileCosts
+        {
+            get { return _differFileCosts; }
+            set { SetProperty(ref _differFileCosts, value); }
+        }
         #endregion
 
         #region Details
@@ -538,8 +547,21 @@ namespace AndreasReitberger.Models
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
-                PrintTimes.Add(new CalculationAttribute() { Attribute = file.FileName, Value = printTime });
-                PrintTimes.Add(new CalculationAttribute() { Attribute = string.Format("FailRate_{0}", file.FileName), Value = printTime * FailRate / 100 });
+                PrintTimes.Add(new CalculationAttribute()
+                {
+                    Attribute = file.FileName,
+                    Value = printTime,
+                    FileId = file.Id,
+                    FileName = file.FileName,
+                });
+                PrintTimes.Add(new CalculationAttribute()
+                {
+                    Attribute = $"{file.FileName}_FailRate",
+                    Value = printTime * FailRate / 100,
+                    FileId = file.Id,
+                    FileName = file.FileName,
+                });
+                
                 if (Materials.Count > 0)
                 {
                     if (Material == null)
@@ -557,8 +579,22 @@ namespace AndreasReitberger.Models
                     }
                     // Needed material in g
                     double _material = _weight * file.Quantity;
-                    MaterialUsage.Add(new CalculationAttribute() { Attribute = Material.Name, Value = _material, Type = CalculationAttributeType.Material });
-                    MaterialUsage.Add(new CalculationAttribute() { Attribute = string.Format("FailRate_{0}", Material.Name), Value = _material * FailRate / 100, Type = CalculationAttributeType.Material });
+                    MaterialUsage.Add(new CalculationAttribute()
+                    {
+                        Attribute = Material.Name,
+                        Value = _material,
+                        Type = CalculationAttributeType.Material,
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
+                    MaterialUsage.Add(new CalculationAttribute()
+                    {
+                        Attribute = $"{Material.Name}_FailRate",
+                        Value = _material * FailRate / 100,
+                        Type = CalculationAttributeType.Material,
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
                 }
             }
             // Material
@@ -603,20 +639,43 @@ namespace AndreasReitberger.Models
                             }
                         }
                     }
-
-                    double totalMaterialUsed = GetTotalMaterialUsed();
-                    //((Volume * Material.Density * Material.UnitPrice) / (Material.PackageSize * Convert.ToDecimal(UnitFactor.getUnitFactor(Material.Unit)))) * Quantity * (1m + FailRate / 100m);
+                    
                     double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
                         Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
-                    double totalCosts = Convert.ToDouble(
-                        totalMaterialUsed * pricePerGramm);
-                    OverallMaterialCosts.Add(new CalculationAttribute()
+
+                    if (DifferFileCosts)
                     {
-                        LinkedId = material.Id,
-                        Attribute = material.Name,
-                        Type = CalculationAttributeType.Material,
-                        Value = totalCosts,
-                    });
+                        foreach (CalculationAttribute materialUsage in MaterialUsage)
+                        {
+                            double totalCosts = Convert.ToDouble(
+                            materialUsage.Value * pricePerGramm);
+                            OverallMaterialCosts.Add(new CalculationAttribute()
+                            {
+                                LinkedId = material.Id,
+                                Attribute = material.Name,
+                                Type = CalculationAttributeType.Material,
+                                Value = totalCosts,
+                                FileId = materialUsage.FileId,
+                                FileName = materialUsage.FileName,
+                            });
+                        }
+                    }
+                    else
+                    {
+                        double totalMaterialUsed = GetTotalMaterialUsed();
+                        //((Volume * Material.Density * Material.UnitPrice) / (Material.PackageSize * Convert.ToDecimal(UnitFactor.getUnitFactor(Material.Unit)))) * Quantity * (1m + FailRate / 100m);
+
+                        double totalCosts = Convert.ToDouble(
+                            totalMaterialUsed * pricePerGramm);
+                        OverallMaterialCosts.Add(new CalculationAttribute()
+                        {
+                            LinkedId = material.Id,
+                            Attribute = material.Name,
+                            Type = CalculationAttributeType.Material,
+                            Value = totalCosts,
+                        });
+                    }
+
                     if (refreshed > 0)
                     {
                         double refreshCosts = Convert.ToDouble(
@@ -643,35 +702,79 @@ namespace AndreasReitberger.Models
                     {
                         Printer = printer;
                     }
-
-                    if (printer.HourlyMachineRate != null)
+    
+                    if (DifferFileCosts)
                     {
-                        double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * totalPrintTime;
-                        if (machineHourRate > 0)
+                        foreach (CalculationAttribute printTime in PrintTimes)
                         {
-                            OverallPrinterCosts.Add(new CalculationAttribute()
+                            if (printer.HourlyMachineRate != null)
                             {
-                                LinkedId = printer.Id,
-                                Attribute = printer.Name,
-                                Type = CalculationAttributeType.Machine,
-                                Value = machineHourRate,
-                            });
+                                double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * printTime.Value;
+                                if (machineHourRate > 0)
+                                {
+                                    OverallPrinterCosts.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = printer.Name,
+                                        Type = CalculationAttributeType.Machine,
+                                        Value = machineHourRate,
+                                        FileId = printTime.FileId,
+                                        FileName = printTime.FileName,
+                                    });
+                                }
+                            }
+
+                            if (ApplyenergyCost)
+                            {
+                                double consumption = Convert.ToDouble(((printTime.Value * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
+                                double totalEnergyCost = consumption * EnergyCostsPerkWh;
+                                if (totalEnergyCost > 0)
+                                {
+                                    OverallPrinterCosts.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = printer.Name,
+                                        Type = CalculationAttributeType.Energy,
+                                        Value = totalEnergyCost,
+                                        FileId = printTime.FileId,
+                                        FileName = printTime.FileName,
+                                    });
+                                }
+                            }
                         }
                     }
-
-                    if (ApplyenergyCost)
+                    else
                     {
-                        double consumption = Convert.ToDouble(((totalPrintTime * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
-                        double totalEnergyCost = consumption * EnergyCostsPerkWh;
-                        if (totalEnergyCost > 0)
+                        if (printer.HourlyMachineRate != null)
                         {
-                            OverallPrinterCosts.Add(new CalculationAttribute()
+
+                            double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * totalPrintTime;
+                            if (machineHourRate > 0)
                             {
-                                LinkedId = printer.Id,
-                                Attribute = printer.Name,
-                                Type = CalculationAttributeType.Energy,
-                                Value = totalEnergyCost,
-                            });
+                                OverallPrinterCosts.Add(new CalculationAttribute()
+                                {
+                                    LinkedId = printer.Id,
+                                    Attribute = printer.Name,
+                                    Type = CalculationAttributeType.Machine,
+                                    Value = machineHourRate,
+                                });
+                            }
+                        }
+
+                        if (ApplyenergyCost)
+                        {
+                            double consumption = Convert.ToDouble(((totalPrintTime * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
+                            double totalEnergyCost = consumption * EnergyCostsPerkWh;
+                            if (totalEnergyCost > 0)
+                            {
+                                OverallPrinterCosts.Add(new CalculationAttribute()
+                                {
+                                    LinkedId = printer.Id,
+                                    Attribute = printer.Name,
+                                    Type = CalculationAttributeType.Energy,
+                                    Value = totalEnergyCost,
+                                });
+                            }
                         }
                     }
 

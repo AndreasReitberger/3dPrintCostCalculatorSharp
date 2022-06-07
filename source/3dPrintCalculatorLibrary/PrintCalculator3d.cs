@@ -13,14 +13,27 @@ namespace AndreasReitberger
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var Costs = new ObservableCollection<Calculation3dChartItem>(
-                calculation.Costs.Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                calculation.Costs.Select(cost => new Calculation3dChartItem() {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return Costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMaterialUsage(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var MaterialUsage = new ObservableCollection<Calculation3dChartItem>(
-                calculation.MaterialUsage.Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                calculation.MaterialUsage.Select(cost => new Calculation3dChartItem()
+                {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return MaterialUsage;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMachineCosts(Calculation3d calculation)
@@ -33,7 +46,14 @@ namespace AndreasReitberger
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
                 (cost.LinkedId == calculation.Printer.Id || cost.Attribute == calculation.Printer.Name)
                 )
-                .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                .Select(cost => new Calculation3dChartItem()
+                {
+                    Name = calculation.DifferFileCosts ? $"{cost.Attribute} ({cost.FileName})" : cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return MachineCosts;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMaterialCosts(Calculation3d calculation)
@@ -44,7 +64,14 @@ namespace AndreasReitberger
                     cost.Type == CalculationAttributeType.Material ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
                 (calculation.CombineMaterialCosts || (cost.LinkedId == calculation.Material.Id || cost.Attribute == calculation.Material.Name)))
-                .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                .Select(cost => new Calculation3dChartItem()
+                {
+                    Name = calculation.DifferFileCosts ? $"{cost.Attribute} ({cost.FileName})" : cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return MaterialCosts;
         }
         public static ObservableCollection<Calculation3dChartItem> GetWorkstepCosts(Calculation3d calculation)
@@ -54,7 +81,14 @@ namespace AndreasReitberger
                 .Where(cost =>
                     cost.Type == CalculationAttributeType.Workstep ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition)
-                .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                .Select(cost => new Calculation3dChartItem()
+                {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return WorkstepCosts;
         }
         public static ObservableCollection<Calculation3dChartItem> GetCustomAdditionsCosts(Calculation3d calculation)
@@ -62,7 +96,13 @@ namespace AndreasReitberger
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.CustomAddition)
-                .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                .Select(cost => new Calculation3dChartItem() {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return WorkstepCosts;
         }
         public static ObservableCollection<Calculation3dChartItem> GetRatesCosts(Calculation3d calculation)
@@ -70,9 +110,16 @@ namespace AndreasReitberger
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var RatesCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.Margin || cost.Type == CalculationAttributeType.Tax || cost.Type == CalculationAttributeType.CustomAddition)
-                .Select(cost => new Calculation3dChartItem() { Name = cost.Attribute, Value = cost.Value, AttributeType = cost.Type }));
+                .Select(cost => new Calculation3dChartItem()
+                {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
             return RatesCosts;
         }
-        #endregion
+#endregion
     }
 }

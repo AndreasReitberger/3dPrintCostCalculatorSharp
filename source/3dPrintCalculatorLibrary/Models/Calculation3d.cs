@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Enums;
 using AndreasReitberger.Models.CalculationAdditions;
+using AndreasReitberger.Models.CustomerAdditions;
 using AndreasReitberger.Models.Events;
 using AndreasReitberger.Models.MaterialAdditions;
 using AndreasReitberger.Models.PrinterAdditions;
@@ -223,30 +224,18 @@ namespace AndreasReitberger.Models
         #endregion
 
         #region Details
-        // Do not store in database, this collections will be filled after
-        // calling "Calculate()"
-        //[OneToMany(CascadeOperations = CascadeOperation.All)]
-        //[Ignore]
-        //[OneToMany(CascadeOperations = CascadeOperation.All)]
-        //public ObservableCollection<Printer3d> Printers
         [ManyToMany(typeof(Printer3dCalculation))]
         public List<Printer3d> Printers
         { get; set; } = new List<Printer3d>();
 
-        //[Ignore]
-        //[OneToMany(CascadeOperations = CascadeOperation.All)]
         [ManyToMany(typeof(Material3dCalculation))]
         public List<Material3d> Materials
         { get; set; } = new List<Material3d>();
 
-        //[Ignore]
-        //[OneToMany(CascadeOperations = CascadeOperation.All)]
-        [OneToMany]
+        [ManyToMany(typeof(CustomAdditionCalculation))]
         public List<CustomAddition> CustomAdditions
         { get; set; } = new List<CustomAddition>();
 
-        //[Ignore]
-        //[OneToMany(CascadeOperations = CascadeOperation.All)]
         [ManyToMany(typeof(WorkstepCalculation))]
         public List<Workstep> WorkSteps
         { get; set; } = new List<Workstep>();
@@ -270,12 +259,6 @@ namespace AndreasReitberger.Models
         [Ignore]
         public ObservableCollection<CalculationAttribute> Costs
         { get; set; } = new ObservableCollection<CalculationAttribute>();
-
-        /*
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<CalculationAttribute> FixCosts
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
-        */
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<CalculationAttribute> Rates

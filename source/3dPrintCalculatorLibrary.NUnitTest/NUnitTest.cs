@@ -515,7 +515,7 @@ namespace AndreasReitberger.NUnitTest
 
                 // Updat calculation
                 _calculation.Printer = null;
-                _calculation.Printers = new ObservableCollection<Printer3d>
+                _calculation.Printers = new List<Printer3d>
                 {
                     printerSla
                 };

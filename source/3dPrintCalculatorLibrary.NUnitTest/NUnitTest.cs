@@ -88,6 +88,20 @@ namespace AndreasReitberger.NUnitTest
                     List<Material3dType> types = await DatabaseHandler.Instance.GetMaterialTypesWithChildrenAsync();
                     Assert.IsTrue(materialTypes.Count == types?.Count);
 
+                    // Hourly Machine Rate
+                    HourlyMachineRate mhr = new HourlyMachineRate()
+                    {
+                        MachineHours = 200,
+                        PerYear = false,
+                        EnergyCosts = 50,
+                        LocationCosts = 20,
+                        MaintenanceCosts = 120,
+                    };
+                    await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(mhr);
+                    HourlyMachineRate hourlyMachineRate = await DatabaseHandler.Instance.GetHourlyMachineRateWithChildrenAsync(mhr.Id);
+                    List<HourlyMachineRate> hourlyMachineRates = await DatabaseHandler.Instance.GetHourlyMachineRatesWithChildrenAsync();
+                    Assert.IsTrue(hourlyMachineRates?.Count > 0);
+
                     // Printers
                     Printer3d prusaXL = new Printer3d()
                     {
@@ -96,18 +110,13 @@ namespace AndreasReitberger.NUnitTest
                         {
                             Name = "Prusa",
                         },
-                        BuildVolume = new BuildVolume()
-                        {
-                            X = 36,
-                            Y = 36,
-                            Z = 36
-                        },
                         Type = Printer3dType.FDM,
                         MaterialType = Material3dFamily.Filament,
                         Uri = "https://www.prusa3d.com/de/produkt/original-prusa-xl-3/#a_aid=AndreasReitberger",
                         Price = 2600,
                         PriceIncludesTax = true,
                         PowerConsumption = 300,
+                        HourlyMachineRate = hourlyMachineRate,
                     };
                     await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(prusaXL);
                     Printer3d printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
@@ -137,7 +146,58 @@ namespace AndreasReitberger.NUnitTest
                     List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
                     Assert.IsTrue(materials?.Count > 0);
 
+                    Calculation3d calculation = new Calculation3d
+                    {
+                        Printer = printer,
+                        Material = material,                       
+                    };
+                    calculation.Printers.Add(printer);
+                    calculation.Materials.Add(material);
+                    calculation.Files.Add(new File3d()
+                    {
+                        FileName = "TestFile",
+                        PrintTime = 10.5,
+                        Volume = 5.25,
+                        Quantity = 3,
+                    });
+                    calculation.Calculate();
+
+                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
+                    Calculation3d calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+
+                    List<Calculation3d> calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+
+                    Calculation3d calculation2 = new Calculation3d
+                    {
+                        Printer = printer,
+                        Material = material,
+                    };
+                    calculation2.Printers.Add(printer);
+                    calculation2.Materials.Add(material);
+                    calculation2.Files.Add(new File3d()
+                    {
+                        FileName = "TestFile",
+                        PrintTime = 25.5,
+                        Volume = 10.25,
+                        Quantity = 30,
+                    });
+                    calculation2.Calculate();
+
+                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation2);
+                    Calculation3d calcFromDB2 = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation2.Id);
+                    Assert.IsTrue(calculation2.TotalCosts == calcFromDB2.TotalCosts);
+
+                    calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+
+                    calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+
                     // Cleanup
+                    await DatabaseHandler.Instance.DeleteCalculationAsync(calculation);
+                    calculation = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    Assert.IsNull(calculation);
+
                     await DatabaseHandler.Instance.DeleteMaterialAsync(materialPETG);
                     material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
                     Assert.IsNull(material);
@@ -471,6 +531,86 @@ namespace AndreasReitberger.NUnitTest
             {
                 Assert.Fail(exc.Message);
             }
+        }
+
+        [Test]
+        public void DatabaseSaveAndLoadTest()
+        {
+            try
+            {
+                var calc = GetTestCalculation();
+            }
+            catch(Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        Calculation3d GetTestCalculation()
+        {
+            Material3d material = new Material3d()
+            {
+                Id = Guid.NewGuid(),
+                Density = 1.24,
+                Name = "Test Material",
+                Unit = Unit.kg,
+                PackageSize = 1,
+                UnitPrice = 30,
+                TypeOfMaterial = new Material3dType()
+                {
+                    Id = Guid.NewGuid(),
+                    Material = "PETG",
+                    Polymer = "",
+                    Family = Material3dFamily.Filament,
+                }
+            };
+            Printer3d printer = new Printer3d()
+            {
+                Id = Guid.NewGuid(),
+                Manufacturer = new Manufacturer()
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    Name = "Prusa"
+                },
+                Model = "XL MK1",
+                Price = 799,
+                MaterialType = Material3dFamily.Filament,
+                Type = Printer3dType.FDM,
+                PowerConsumption = 210,
+            };
+            File3d file = new File3d()
+            {
+                Id = Guid.NewGuid(),
+                PrintTime = 10.25,
+                Volume = 12.36,
+                Quantity = 3,
+            };
+            File3d file2 = new File3d()
+            {
+                Id = Guid.NewGuid(),
+                PrintTime = 10.25,
+                Volume = 12.36,
+                Quantity = 3,
+                MultiplyPrintTimeWithQuantity = false
+            };
+
+            _calculation = new Calculation3d();
+            // Add data
+            _calculation.Files.Add(file);
+            _calculation.Files.Add(file2);
+            _calculation.Printers.Add(printer);
+            _calculation.Materials.Add(material);
+
+            // Add information
+            _calculation.FailRate = 25;
+            _calculation.EnergyCostsPerkWh = 0.30;
+            _calculation.ApplyenergyCost = true;
+            // Uses 75% of the max. power consumption set in the printer model (210 Watt)
+            _calculation.PowerLevel = 75;
+
+            _calculation.Calculate();
+            return _calculation;
         }
     }
 }

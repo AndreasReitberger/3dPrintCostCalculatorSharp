@@ -2,6 +2,9 @@
 using AndreasReitberger.Enums;
 using AndreasReitberger.Models.CalculationAdditions;
 using AndreasReitberger.Models.Events;
+using AndreasReitberger.Models.MaterialAdditions;
+using AndreasReitberger.Models.PrinterAdditions;
+using AndreasReitberger.Models.WorkstepAdditions;
 using AndreasReitberger.Utilities;
 using Newtonsoft.Json;
 using SQLite;
@@ -47,8 +50,8 @@ namespace AndreasReitberger.Models
             set { SetProperty(ref _created, value); }
         }
 
-        [JsonIgnore, XmlIgnore]
-        public Guid PrinterId { get; set; }
+        //[JsonIgnore, XmlIgnore]
+        //public Guid PrinterId { get; set; }
 
         [JsonProperty(nameof(Printer))]
         Printer3d _printer;
@@ -75,11 +78,12 @@ namespace AndreasReitberger.Models
             }
         }
         
-        [JsonProperty(nameof(Material))]
-        [JsonIgnore, XmlIgnore]
-        public Guid MaterialId { get; set; }
+        //[JsonIgnore, XmlIgnore]
+        //public Guid MaterialId { get; set; }
 
+        [JsonProperty(nameof(Material))]
         Material3d _material;
+        
         [Ignore, JsonIgnore]
         //[ManyToOne(nameof(MaterialId))]
         public Material3d Material
@@ -107,6 +111,7 @@ namespace AndreasReitberger.Models
 
         [JsonProperty(nameof(Customer))]
         Customer3d _customer;
+        
         [JsonIgnore]
         [ManyToOne(nameof(CustomerId))]
         public Customer3d Customer
@@ -222,24 +227,29 @@ namespace AndreasReitberger.Models
         // calling "Calculate()"
         //[OneToMany(CascadeOperations = CascadeOperation.All)]
         //[Ignore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<Printer3d> Printers
-        { get; set; } = new ObservableCollection<Printer3d>();
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        //public ObservableCollection<Printer3d> Printers
+        [ManyToMany(typeof(Printer3dCalculation))]
+        public List<Printer3d> Printers
+        { get; set; } = new List<Printer3d>();
 
         //[Ignore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<Material3d> Materials
-        { get; set; } = new ObservableCollection<Material3d>();
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        [ManyToMany(typeof(Material3dCalculation))]
+        public List<Material3d> Materials
+        { get; set; } = new List<Material3d>();
 
         //[Ignore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<CustomAddition> CustomAdditions
-        { get; set; } = new ObservableCollection<CustomAddition>();
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        [OneToMany]
+        public List<CustomAddition> CustomAdditions
+        { get; set; } = new List<CustomAddition>();
 
         //[Ignore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<Workstep> WorkSteps
-        { get; set; } = new ObservableCollection<Workstep>();
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
+        [ManyToMany(typeof(WorkstepCalculation))]
+        public List<Workstep> WorkSteps
+        { get; set; } = new List<Workstep>();
 
         [Ignore]
         public ObservableCollection<CalculationAttribute> PrintTimes
@@ -268,12 +278,12 @@ namespace AndreasReitberger.Models
         */
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<CalculationAttribute> Rates
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        public List<CalculationAttribute> Rates
+        { get; set; } = new List<CalculationAttribute>();
 
         [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<File3d> Files
-        { get; set; } = new ObservableCollection<File3d>();
+        public List<File3d> Files
+        { get; set; } = new List<File3d>();
         #endregion
 
         #region AdditionalSettings
@@ -521,7 +531,7 @@ namespace AndreasReitberger.Models
         #region Constructor
         public Calculation3d()
         {
-
+            Id = Guid.NewGuid();
         }
         #endregion
 

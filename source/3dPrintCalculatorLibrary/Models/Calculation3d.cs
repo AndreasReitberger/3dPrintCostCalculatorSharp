@@ -249,6 +249,11 @@ namespace AndreasReitberger.Models
         public List<Workstep> WorkSteps
         { get; set; } = new List<Workstep>();
 
+        //[ManyToMany(typeof(WorkstepDurationCalculation))]
+        [OneToMany]
+        public List<WorkstepDuration> WorkStepDurations
+        { get; set; } = new List<WorkstepDuration>();
+
         [Ignore]
         public ObservableCollection<CalculationAttribute> PrintTimes
         { get; set; } = new ObservableCollection<CalculationAttribute>();
@@ -807,6 +812,11 @@ namespace AndreasReitberger.Models
                     switch (ws.CalculationType)
                     {
                         case CalculationType.PerHour:
+                            WorkstepDuration workstepDuration = WorkStepDurations?.FirstOrDefault(wsd => wsd.WorkstepId == ws.Id);
+                            if(workstepDuration != null)
+                            {
+                                ws.Duration = workstepDuration.Duration;
+                            }
                             double totalPerHour = ws.TotalCosts;
                             //double totalPerHour = Convert.ToDouble(ws.Duration) * Convert.ToDouble(ws.Price);
                             Costs.Add(new CalculationAttribute()

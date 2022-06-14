@@ -27,9 +27,11 @@ namespace AndreasReitberger.Models
         [ForeignKey(typeof(Calculation3d))]
         public Guid CalculationId
         { get; set; }
+        /*
         [ManyToOne]
-        public Calculation3d Calculation
+        public Calculation3d Calculation      
         { get; set; }
+        */
         public string Name
         { get; set; } = string.Empty;
         public string SKU

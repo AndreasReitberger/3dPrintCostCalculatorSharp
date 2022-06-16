@@ -3,56 +3,36 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net472;net5;net6</TargetFrameworks>
     <RootNamespace>AndreasReitberger</RootNamespace>
-    <Version>1.1.3</Version>
+    <Version>1.1.5</Version>
     <Description>A simple C# library to calculate 3D printing costs.</Description>
     <Copyright>Andreas Reitberger</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.1.3.0</AssemblyVersion>
-    <FileVersion>1.1.3.0</FileVersion>
+    <AssemblyVersion>1.1.5.0</AssemblyVersion>
+    <FileVersion>1.1.5.0</FileVersion>
     <Authors>Andreas Reitberger</Authors>
     <Company>Andreas Reitberger</Company>
     <PackageTags>3d, Printing, Gcode, Library, Costs, Calculator</PackageTags>
     <PackageProjectUrl>https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp</RepositoryUrl>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
     <DefineConstants>TRACE;DIFFER_FILES</DefineConstants>
-    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5|AnyCPU'">
 	  <DefineConstants>DIFFER_FILES</DefineConstants>
-	  <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net5|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6|AnyCPU'">
 	  <DefineConstants>DIFFER_FILES</DefineConstants>
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
 	  <DefineConstants>DIFFER_FILES</DefineConstants>
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net472|AnyCPU'">
-    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

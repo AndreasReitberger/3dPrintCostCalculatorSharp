@@ -10,14 +10,21 @@ namespace AndreasReitberger.Interface
         #region Properties
         public bool IsInitialized { get; }
         public string DatabasePath { get; }
-        public SQLiteAsyncConnection DatabaseAsync { get; }
+//#if DB_SYNC
         public SQLiteConnection Database { get; }
+//#else
+        public SQLiteAsyncConnection DatabaseAsync { get; }
+//#endif
         #endregion
 
         #region Methods
 
-        public Task InitTablesAsync();
+//#if DB_SYNC
+
         public void InitTables();
+//#else
+        public Task InitTablesAsync();
+//#endif
 
         public void InitDatabase(string databasePath);
 

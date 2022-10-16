@@ -8,8 +8,16 @@ using System.Linq;
 namespace AndreasReitberger.Models
 {
     [Table("Maintenances")]
-    public class Maintenance3d
+    public class Maintenance3d : ICloneable
     {
+
+        #region Clone
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+        #endregion
+
         #region Properties
         [PrimaryKey]
         public Guid Id { get; set; }

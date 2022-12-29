@@ -1,11 +1,11 @@
 ﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Enums;
+using AndreasReitberger.Print3d.Enums;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models.CalculationAdditions
+namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     [Table("CalculationProcedureParameter")]
     public class CalculationProcedureParameter

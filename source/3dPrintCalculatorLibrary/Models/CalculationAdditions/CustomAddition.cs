@@ -1,9 +1,9 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.CalculationAdditions
+namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     [Table("CustomAdditions")]
     public class CustomAddition : ICloneable

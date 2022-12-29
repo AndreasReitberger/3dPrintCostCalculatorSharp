@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace AndreasReitberger.Models.Events
+namespace AndreasReitberger.Print3d.Models.Events
 {
     public class MaterialsChangedDatabaseEventArgs : DatabaseEventArgs
     {

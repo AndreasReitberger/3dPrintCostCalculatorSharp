@@ -1,5 +1,5 @@
-﻿using AndreasReitberger.Enums;
-using AndreasReitberger.Models.MaterialAdditions;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Materials")]
     public class Material3d : ICloneable

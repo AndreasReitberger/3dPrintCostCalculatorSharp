@@ -1,6 +1,6 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 
-namespace AndreasReitberger.Models.CalculationAdditions
+namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     public class ProcedureSpecificAddition
     {

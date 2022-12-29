@@ -1,10 +1,10 @@
-﻿using AndreasReitberger.Models;
+﻿using AndreasReitberger.Print3d.Models;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger
+namespace AndreasReitberger.Print3d
 {
 #if NETFRAMEWORK
     //#if net472

@@ -5,7 +5,7 @@ using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("CalculationProfiles")]
     public class Calculation3dProfile : BaseModel

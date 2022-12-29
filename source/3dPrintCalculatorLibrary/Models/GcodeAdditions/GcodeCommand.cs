@@ -1,4 +1,4 @@
-﻿namespace AndreasReitberger.Models.GcodeAdditions
+﻿namespace AndreasReitberger.Print3d.Models.GcodeAdditions
 {
     public struct GcodeCommand
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AndreasReitberger.Models.GcodeAdditions
+namespace AndreasReitberger.Print3d.Models.GcodeAdditions
 {
     public class GcodeModel
     {

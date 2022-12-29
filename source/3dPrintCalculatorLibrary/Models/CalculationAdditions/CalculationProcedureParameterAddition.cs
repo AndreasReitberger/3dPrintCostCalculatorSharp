@@ -2,7 +2,7 @@
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.CalculationAdditions
+namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     [Table("CalculationProcedureParameterAddition")]
     public class CalculationProcedureParameterAddition

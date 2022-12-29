@@ -15,6 +15,13 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Copyright>Andreas Reitberger</Copyright>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <RootNamespace>AndreasReitberger.Print3d</RootNamespace>
+	  <Title>PrintCostCalculator.Database</Title>
+	  <Version>1.0.1</Version>
+	  <Description>A database (SQlite) handler for the PrintCostCalculator library.</Description>
+	  <RepositoryType>git</RepositoryType>
+	  <AssemblyVersion>1.0.1</AssemblyVersion>
+	  <FileVersion>1.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

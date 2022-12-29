@@ -1,12 +1,11 @@
 ﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Enums;
-using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Models.CustomerAdditions;
-using AndreasReitberger.Models.Events;
-using AndreasReitberger.Models.MaterialAdditions;
-using AndreasReitberger.Models.PrinterAdditions;
-using AndreasReitberger.Models.WorkstepAdditions;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models.CalculationAdditions;
+using AndreasReitberger.Print3d.Models.Events;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.PrinterAdditions;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
+using AndreasReitberger.Print3d.Utilities;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -17,7 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Calculations")]
     public class Calculation3d : BaseModel

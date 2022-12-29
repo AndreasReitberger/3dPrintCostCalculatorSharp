@@ -1,4 +1,4 @@
-﻿namespace AndreasReitberger.Enums
+﻿namespace AndreasReitberger.Print3d.Enums
 {
     public enum Material3dTypes
     {

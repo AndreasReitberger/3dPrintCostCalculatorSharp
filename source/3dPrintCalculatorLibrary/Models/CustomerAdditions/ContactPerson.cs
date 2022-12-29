@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace AndreasReitberger.Models.CustomerAdditions
+namespace AndreasReitberger.Print3d.Models.CustomerAdditions
 {
     [Table("ContactPersons")]
     public class ContactPerson

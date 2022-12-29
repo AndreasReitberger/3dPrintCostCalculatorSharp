@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using SQLite;
 using System;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("HourlyMachineRates")]
     public class HourlyMachineRate : BaseModel // INotifyPropertyChanged, ICloneable

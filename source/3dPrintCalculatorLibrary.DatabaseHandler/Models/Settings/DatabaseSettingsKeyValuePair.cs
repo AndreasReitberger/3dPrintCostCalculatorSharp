@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SQLite;
 
-namespace AndreasReitberger.Models.Settings
+namespace AndreasReitberger.Print3d.Models.Settings
 {
     [Table("settings")]
     public partial class DatabaseSettingsKeyValuePair

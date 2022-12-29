@@ -2,7 +2,7 @@
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.WorkstepAdditions
+namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
 {
     [Table("WorkstepDurations")]
     public class WorkstepDuration

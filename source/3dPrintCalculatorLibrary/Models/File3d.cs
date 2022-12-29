@@ -1,4 +1,4 @@
-﻿using AndreasReitberger.Models.FileAdditions;
+﻿using AndreasReitberger.Print3d.Models.FileAdditions;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using SQLite;
@@ -6,7 +6,7 @@ using System;
 using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Files")]
     public class File3d : BaseModel

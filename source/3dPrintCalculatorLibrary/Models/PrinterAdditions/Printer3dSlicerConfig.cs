@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace AndreasReitberger.Models.PrinterAdditions
+namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
     [Table("SlicerConfigurations")]
     public class Printer3dSlicerConfig

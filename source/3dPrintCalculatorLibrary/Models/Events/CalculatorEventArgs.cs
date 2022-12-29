@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace AndreasReitberger.Models.Events
+namespace AndreasReitberger.Print3d.Models.Events
 {
     public class CalculatorEventArgs : EventArgs
     {

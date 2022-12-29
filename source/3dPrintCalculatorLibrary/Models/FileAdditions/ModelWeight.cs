@@ -1,13 +1,13 @@
 ﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Enums;
-using AndreasReitberger.Utilities;
+using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Utilities;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models.FileAdditions
+namespace AndreasReitberger.Print3d.Models.FileAdditions
 {
     [Table("ModelWeights")]
     public class ModelWeight : BaseModel

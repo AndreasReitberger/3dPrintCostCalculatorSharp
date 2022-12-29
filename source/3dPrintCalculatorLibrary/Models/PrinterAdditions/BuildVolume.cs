@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AndreasReitberger.Models.PrinterAdditions
+namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
     [Table("BuildVolumes")]
     [Obsolete]

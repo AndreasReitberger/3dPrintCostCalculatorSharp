@@ -1,12 +1,12 @@
-﻿using AndreasReitberger.Enums;
-using AndreasReitberger.Models.WorkstepAdditions;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using SQLite;
 using System;
 using SQLiteNetExtensions.Attributes;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Worksteps")]
     public class Workstep : BaseModel

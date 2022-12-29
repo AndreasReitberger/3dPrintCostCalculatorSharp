@@ -1,5 +1,5 @@
 ﻿
-namespace AndreasReitberger
+namespace AndreasReitberger.Print3d
 {
     public partial class DatabaseHandler
     {

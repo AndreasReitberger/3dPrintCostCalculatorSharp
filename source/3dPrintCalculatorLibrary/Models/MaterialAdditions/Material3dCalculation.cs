@@ -1,7 +1,7 @@
 ﻿using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.MaterialAdditions
+namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
     public class Material3dCalculation
     {

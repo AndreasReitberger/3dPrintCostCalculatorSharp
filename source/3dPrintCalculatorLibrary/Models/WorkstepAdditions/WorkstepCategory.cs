@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace AndreasReitberger.Models.WorkstepAdditions
+namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
 {
     [Table("WorkstepCategories")]
     public class WorkstepCategory

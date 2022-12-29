@@ -1,10 +1,10 @@
-﻿using AndreasReitberger.Enums;
-using AndreasReitberger.Models;
-using AndreasReitberger.Utilities;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models;
+using AndreasReitberger.Print3d.Utilities;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace AndreasReitberger
+namespace AndreasReitberger.Print3d
 {
     public static class PrintCalculator3d
     {

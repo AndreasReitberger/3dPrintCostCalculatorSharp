@@ -2,7 +2,7 @@
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.MaintenanceAdditions
+namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
 {
     [Table("Spareparts")]
     public class Sparepart

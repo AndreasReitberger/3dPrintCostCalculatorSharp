@@ -2,7 +2,7 @@
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.PrinterAdditions
+namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
     [Table("PrinterAttributes")]
     public class Printer3dAttribute

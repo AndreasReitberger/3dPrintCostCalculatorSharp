@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
-namespace AndreasReitberger.Interface
+namespace AndreasReitberger.Print3d.Interface
 {
     public interface IDatabaseHandler : INotifyPropertyChanged, ICloneable, IDisposable
     {

@@ -1,14 +1,14 @@
 using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Enums;
-using AndreasReitberger.Models;
-using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Models.MaterialAdditions;
-using AndreasReitberger.Models.PrinterAdditions;
+using AndreasReitberger.Print3d;
+using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models;
+using AndreasReitberger.Print3d.Models.CalculationAdditions;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.PrinterAdditions;
 using NUnit.Framework;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 

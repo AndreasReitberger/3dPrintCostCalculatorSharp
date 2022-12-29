@@ -1,4 +1,4 @@
-﻿using AndreasReitberger.Models.CustomerAdditions;
+﻿using AndreasReitberger.Print3d.Models.CustomerAdditions;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Customers")]
     public class Customer3d : ICloneable

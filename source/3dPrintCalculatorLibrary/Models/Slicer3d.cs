@@ -1,8 +1,8 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using SQLite;
 using System;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Slicers")]
     public class Slicer3d

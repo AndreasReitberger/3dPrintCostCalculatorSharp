@@ -1,8 +1,8 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using SQLite;
 using System;
 
-namespace AndreasReitberger.Models.MaterialAdditions
+namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
     [Table("MaterialTypes")]
     public class Material3dType

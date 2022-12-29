@@ -1,7 +1,7 @@
 ﻿using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.PrinterAdditions
+namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
     public class Printer3dCalculation
     {

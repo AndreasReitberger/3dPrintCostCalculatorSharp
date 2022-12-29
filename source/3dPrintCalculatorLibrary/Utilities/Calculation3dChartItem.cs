@@ -1,7 +1,7 @@
-﻿using AndreasReitberger.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using System;
 
-namespace AndreasReitberger.Utilities
+namespace AndreasReitberger.Print3d.Utilities
 {
     public class Calculation3dChartItem
     {

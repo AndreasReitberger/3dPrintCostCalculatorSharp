@@ -4,7 +4,7 @@ using SQLiteNetExtensions.Attributes;
 using System;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models.SlicerAdditions
+namespace AndreasReitberger.Print3d.Models.SlicerAdditions
 {
     [Table("SlicerCommands")]
     public class Slicer3dCommand

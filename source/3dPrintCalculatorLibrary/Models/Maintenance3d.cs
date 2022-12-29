@@ -1,11 +1,11 @@
-﻿using AndreasReitberger.Models.MaintenanceAdditions;
+﻿using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Maintenances")]
     public class Maintenance3d : ICloneable

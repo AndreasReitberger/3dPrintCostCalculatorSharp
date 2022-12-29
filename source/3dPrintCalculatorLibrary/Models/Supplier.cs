@@ -3,7 +3,7 @@ using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Suppliers")]
     public class Supplier : ICloneable

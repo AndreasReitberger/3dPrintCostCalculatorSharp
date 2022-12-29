@@ -1,5 +1,5 @@
-﻿using AndreasReitberger.Enums;
-using AndreasReitberger.Models.PrinterAdditions;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Models.PrinterAdditions;
 using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using SQLite;
@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Models
+namespace AndreasReitberger.Print3d.Models
 {
     [Table("Printers")]
     public class Printer3d : BaseModel

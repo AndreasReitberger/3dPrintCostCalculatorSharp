@@ -1,12 +1,12 @@
-﻿using AndreasReitberger.Models;
-using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Models.CustomerAdditions;
-using AndreasReitberger.Models.Events;
-using AndreasReitberger.Models.MaterialAdditions;
-using AndreasReitberger.Models.WorkstepAdditions;
+﻿using AndreasReitberger.Print3d.Models;
+using AndreasReitberger.Print3d.Models.CalculationAdditions;
+using AndreasReitberger.Print3d.Models.CustomerAdditions;
+using AndreasReitberger.Print3d.Models.Events;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using SQLiteNetExtensionsAsync.Extensions;
 
-namespace AndreasReitberger
+namespace AndreasReitberger.Print3d
 {
     public partial class DatabaseHandler
     {

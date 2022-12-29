@@ -1,19 +1,19 @@
 ﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Interface;
-using AndreasReitberger.Models;
-using AndreasReitberger.Models.CalculationAdditions;
-using AndreasReitberger.Models.CustomerAdditions;
-using AndreasReitberger.Models.Events;
-using AndreasReitberger.Models.FileAdditions;
-using AndreasReitberger.Models.MaintenanceAdditions;
-using AndreasReitberger.Models.MaterialAdditions;
-using AndreasReitberger.Models.PrinterAdditions;
-using AndreasReitberger.Models.Settings;
-using AndreasReitberger.Models.WorkstepAdditions;
+using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Models;
+using AndreasReitberger.Print3d.Models.CalculationAdditions;
+using AndreasReitberger.Print3d.Models.CustomerAdditions;
+using AndreasReitberger.Print3d.Models.Events;
+using AndreasReitberger.Print3d.Models.FileAdditions;
+using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.PrinterAdditions;
+using AndreasReitberger.Print3d.Models.Settings;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using SQLite;
 using System.Diagnostics;
 
-namespace AndreasReitberger
+namespace AndreasReitberger.Print3d
 {
     public partial class DatabaseHandler : BaseModel, IDatabaseHandler
     {

@@ -1,7 +1,7 @@
 ﻿using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.WorkstepAdditions
+namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
 {
     public class WorkstepDurationCalculation
     {

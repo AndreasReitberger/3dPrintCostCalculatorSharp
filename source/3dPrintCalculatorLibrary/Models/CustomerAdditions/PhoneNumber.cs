@@ -2,7 +2,7 @@
 using SQLiteNetExtensions.Attributes;
 using System;
 
-namespace AndreasReitberger.Models.CustomerAdditions
+namespace AndreasReitberger.Print3d.Models.CustomerAdditions
 {
     [Table("PhoneNumbers")]
     public class PhoneNumber

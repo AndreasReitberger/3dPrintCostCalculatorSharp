@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
-namespace AndreasReitberger.Models.Events
+namespace AndreasReitberger.Print3d.Models.Events
 {
     public class PrintersChangedDatabaseEventArgs : DatabaseEventArgs
     {

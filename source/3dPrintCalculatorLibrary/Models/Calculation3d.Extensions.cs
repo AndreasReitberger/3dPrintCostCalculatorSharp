@@ -472,17 +472,29 @@ namespace AndreasReitberger.Print3d.Models
                             .Where(cost => cost.Type == calculationAttributeType && cost.FileId == fileId))
                         .Select(value => Convert.ToDouble(value.Value));
 
-                IEnumerable<double> costsMachine =
-                    OverallPrinterCosts.Where(cost =>
-                        cost.Attribute == Printer.Name ||
-                        cost.LinkedId == Printer.Id)
-                    .Select(value => Convert.ToDouble(value.Value))
+                IEnumerable<double> costsMachine = fileId == Guid.Empty
+                   ? OverallPrinterCosts
+                       .Where(cost =>
+                            cost.Attribute == Printer.Name ||
+                            cost.LinkedId == Printer.Id)
+                       .Select(value => Convert.ToDouble(value.Value)) :
+                    OverallPrinterCosts
+                        .Where(cost =>
+                            (cost.Attribute == Printer.Name ||
+                            cost.LinkedId == Printer.Id) && cost.FileId == fileId)
+                       .Select(value => Convert.ToDouble(value.Value))
                     ;
-                IEnumerable<double> costsMaterial =
-                    OverallMaterialCosts.Where(cost =>
-                        cost.Attribute == Material.Name ||
-                        (CombineMaterialCosts || (cost.LinkedId == Material.Id)))
-                    .Select(value => Convert.ToDouble(value.Value));
+                IEnumerable<double> costsMaterial = fileId == Guid.Empty
+                    ? OverallMaterialCosts
+                        .Where(cost =>
+                            cost.Attribute == Material.Name ||
+                            (CombineMaterialCosts || (cost.LinkedId == Material.Id)))
+                        .Select(value => Convert.ToDouble(value.Value)) :
+                        OverallMaterialCosts
+                        .Where(cost =>
+                            (cost.Attribute == Material.Name ||
+                            (CombineMaterialCosts || (cost.LinkedId == Material.Id))) && cost.FileId == fileId)
+                        .Select(value => Convert.ToDouble(value.Value));
 
                 double total = 0;
                 foreach (var cost in costs)

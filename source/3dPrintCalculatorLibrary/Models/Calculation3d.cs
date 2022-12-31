@@ -19,7 +19,7 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Calculations")]
-    public class Calculation3d : BaseModel
+    public partial class Calculation3d : BaseModel
     {
 
         #region Properties
@@ -558,18 +558,20 @@ namespace AndreasReitberger.Print3d.Models
                     FileId = file.Id,
                     FileName = file.FileName,
                 });
-                PrintTimes.Add(new CalculationAttribute()
+                if (FailRate > 0)
                 {
-                    Attribute = $"{file.FileName}_FailRate",
-                    Value = printTime * FailRate / 100,
-                    FileId = file.Id,
-                    FileName = file.FileName,
-                });
+                    PrintTimes.Add(new CalculationAttribute()
+                    {
+                        Attribute = $"{file.FileName}_FailRate",
+                        Value = printTime * FailRate / 100,
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
+                }
                 
                 if (Materials.Count > 0)
                 {
-                    if (Material == null)
-                        Material = Materials[0];
+                    Material ??= Materials[0];
                     //((CONSUMED_MATERIAL[g] x PRICE[$/kg]) / 1000) x QUANTITY x (FAILRATE / 100)
                     double _weight = 0;
                     if (file.Volume > 0)
@@ -591,14 +593,17 @@ namespace AndreasReitberger.Print3d.Models
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
-                    MaterialUsage.Add(new CalculationAttribute()
+                    if (FailRate > 0)
                     {
-                        Attribute = $"{Material.Name}_FailRate",
-                        Value = _material * FailRate / 100,
-                        Type = CalculationAttributeType.Material,
-                        FileId = file.Id,
-                        FileName = file.FileName,
-                    });
+                        MaterialUsage.Add(new CalculationAttribute()
+                        {
+                            Attribute = $"{Material.Name}_FailRate",
+                            Value = _material * FailRate / 100,
+                            Type = CalculationAttributeType.Material,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
                 }
             }
             // Material
@@ -609,10 +614,7 @@ namespace AndreasReitberger.Print3d.Models
                 foreach (Material3d material in Materials)
                 {
                     // Set first materials as default
-                    if (Material == null)
-                    {
-                        Material = material;
-                    }
+                    Material ??= material;
 
                     double refreshed = 0;
                     if (ApplyProcedureSpecificAdditions && material.MaterialFamily == Material3dFamily.Powder)
@@ -702,11 +704,7 @@ namespace AndreasReitberger.Print3d.Models
                 Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id);
                 foreach (Printer3d printer in Printers)
                 {
-                    if (Printer == null)
-                    {
-                        Printer = printer;
-                    }
-    
+                    Printer ??= printer; 
                     if (DifferFileCosts)
                     {
                         foreach (CalculationAttribute printTime in PrintTimes)
@@ -727,7 +725,6 @@ namespace AndreasReitberger.Print3d.Models
                                     });
                                 }
                             }
-
                             if (ApplyenergyCost)
                             {
                                 double consumption = Convert.ToDouble(((printTime.Value * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
@@ -764,7 +761,6 @@ namespace AndreasReitberger.Print3d.Models
                                 });
                             }
                         }
-
                         if (ApplyenergyCost)
                         {
                             double consumption = Convert.ToDouble(((totalPrintTime * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
@@ -781,7 +777,6 @@ namespace AndreasReitberger.Print3d.Models
                             }
                         }
                     }
-
                     if (ApplyProcedureSpecificAdditions)
                     {
                         // Filter for the current printer procedure
@@ -875,7 +870,6 @@ namespace AndreasReitberger.Print3d.Models
                     }
                 }
             }
-
 
             /*
             if (ApplyProcedureSpecificAdditions && ProcedureAttributes.Count > 0)

@@ -17,7 +17,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         [ForeignKey(typeof(Calculation3d))]
         public Guid CalculationId { get; set; }
 
-        public Guid FileId { get; set; }
+        public Guid FileId { get; set; } = Guid.Empty;
         public string FileName { get; set; }
 
         public Guid LinkedId { get; set; } = Guid.Empty;

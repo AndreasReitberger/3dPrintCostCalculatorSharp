@@ -532,6 +532,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Methods
+        [Obsolete("This method is obsolete, please use `CalculateCosts()` instead.")]
         public void Calculate()
         {
             PrintTimes.Clear();
@@ -932,7 +933,7 @@ namespace AndreasReitberger.Print3d.Models
                 double margin = costsSoFar * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
                 Costs.Add(new CalculationAttribute() { Attribute = "Margin", Type = CalculationAttributeType.Margin, Value = margin });
             }
-            // Custom additions before margin
+            // Custom additions after margin
             List<CustomAddition> customAdditionsAfterMargin =
                 CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
             if (customAdditionsAfterMargin.Count > 0)
@@ -969,131 +970,6 @@ namespace AndreasReitberger.Print3d.Models
             TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
             RealculationRequired = false;
-        }
-        public int GetTotalQuantity()
-        {
-            try
-            {
-                int quantity = Files.Select(file => file.Quantity).ToList().Sum();
-                return quantity;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-        public double GetTotalPrintTime()
-        {
-            try
-            {
-                IEnumerable<double> times = PrintTimes.Select(value => Convert.ToDouble(value.Value));
-                double total = 0;
-                foreach (var time in times)
-                    total += time;
-
-                return total;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-        public double GetTotalVolume()
-        {
-            try
-            {
-                IEnumerable<double> volumes = Files.Select(value => Convert.ToDouble(value.Volume));
-                double total = 0;
-                foreach (var vol in volumes)
-                    total += vol;
-
-                return total;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-        public double GetTotalMaterialUsed()
-        {
-            try
-            {
-                IEnumerable<double> materials = MaterialUsage.Select(value => Convert.ToDouble(value.Value));
-                double total = 0;
-                foreach (var material in materials)
-                    total += material;
-
-                return total;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
-        }
-        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
-        {
-            try
-            {
-                IEnumerable<double> costs = calculationAttributeType == CalculationAttributeType.All ?
-                    Costs.Select(value => Convert.ToDouble(value.Value)) :
-                    Costs.Where(cost => cost.Type == calculationAttributeType).Select(value => Convert.ToDouble(value.Value))
-                    ;
-                // Get costs of currently selected printer
-                /*
-                IEnumerable<double> costsMachine = calculationAttributeType == CalculationAttributeType.All ?
-                    OverallPrinterCosts.Where(cost =>
-                        cost.Attribute == Printer.Name ||
-                        cost.LinkedId == Printer.Id)
-                    .Select(value => Convert.ToDouble(value.Value)) :
-
-                    OverallPrinterCosts.Where(cost =>
-                        (cost.Type == calculationAttributeType || cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
-                        (cost.Attribute == Printer.Name || cost.LinkedId == Printer.Id)
-                        )
-                    .Select(value => Convert.ToDouble(value.Value))
-                    ;
-                IEnumerable<double> costsMaterial = calculationAttributeType == CalculationAttributeType.All ?
-                    OverallMaterialCosts.Where(cost =>
-                        cost.Attribute == Material.Name ||
-                        cost.LinkedId == Material.Id)
-                    .Select(value => Convert.ToDouble(value.Value)) :
-
-                    OverallMaterialCosts.Where(cost => cost.Type == calculationAttributeType &&
-                        (cost.Attribute == Material.Name || cost.LinkedId == Material.Id)
-                        ).Select(value => Convert.ToDouble(value.Value))
-                    ;
-                */
-                IEnumerable<double> costsMachine = 
-                    OverallPrinterCosts.Where(cost =>
-                        cost.Attribute == Printer.Name ||
-                        cost.LinkedId == Printer.Id)
-                    .Select(value => Convert.ToDouble(value.Value))
-                    ;
-                IEnumerable<double> costsMaterial =
-                    OverallMaterialCosts.Where(cost =>
-                        cost.Attribute == Material.Name ||
-                        (CombineMaterialCosts || (cost.LinkedId == Material.Id)))
-                    .Select(value => Convert.ToDouble(value.Value));
-
-                double total = 0;
-                foreach (var cost in costs)
-                    total += cost;
-                if (calculationAttributeType == CalculationAttributeType.Machine || calculationAttributeType == CalculationAttributeType.All)
-                {
-                    foreach (var cost in costsMachine)
-                        total += cost;
-                }
-                if (calculationAttributeType == CalculationAttributeType.Material || calculationAttributeType == CalculationAttributeType.All)
-                {
-                    foreach (var cost in costsMaterial)
-                        total += cost;
-                }
-                return total;
-            }
-            catch (Exception)
-            {
-                return 0;
-            }
         }
         #endregion
 

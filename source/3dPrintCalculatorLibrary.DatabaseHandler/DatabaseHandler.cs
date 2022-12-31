@@ -269,6 +269,11 @@ namespace AndreasReitberger.Print3d
             Database?.CreateTable<PhoneNumber>();
             Database?.CreateTable<ContactPerson>();
             Database?.CreateTable<Calculation3dProfile>();
+            Database?.CreateTable<Printer3dCalculation>();
+            Database?.CreateTable<Material3dCalculation>();
+            Database?.CreateTable<WorkstepCalculation>();
+            Database?.CreateTable<CustomAdditionCalculation>();
+            Database?.CreateTable<WorkstepDuration>();
 
             Database?.CreateTable<DatabaseSettingsKeyValuePair>();
         }
@@ -305,6 +310,11 @@ namespace AndreasReitberger.Print3d
             await DatabaseAsync?.CreateTableAsync<PhoneNumber>();
             await DatabaseAsync?.CreateTableAsync<ContactPerson>();
             await DatabaseAsync?.CreateTableAsync<Calculation3dProfile>();
+            await DatabaseAsync?.CreateTableAsync<Printer3dCalculation>();
+            await DatabaseAsync?.CreateTableAsync<Material3dCalculation>();
+            await DatabaseAsync?.CreateTableAsync<WorkstepCalculation>();
+            await DatabaseAsync?.CreateTableAsync<CustomAdditionCalculation>();
+            await DatabaseAsync?.CreateTableAsync<WorkstepDuration>();
 
             await DatabaseAsync?.CreateTableAsync<DatabaseSettingsKeyValuePair>();
         }

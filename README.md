@@ -1,10 +1,7 @@
 ## 3dPrintCostCalculatorSharp
 A library to calculate 3d print costs, manager 3d printers & materials and many more!
 
-[![.NET](https://github.com/AndreasReitberger/
-3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml/badge.svg)]([https://github.com/AndreasReitberger/
-3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml](https://github.com/AndreasReitberger/
-3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml))
+[![.NET](https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml/badge.svg)]([https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml](https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml))
 
 # Nuget
 Get the latest version from nuget.org<br>

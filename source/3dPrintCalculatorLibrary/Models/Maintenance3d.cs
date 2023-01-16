@@ -2,15 +2,12 @@
 using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Maintenances")]
     public partial class Maintenance3d : ObservableObject, ICloneable, IMaintenance3d
     {
         #region Clone
@@ -22,11 +19,9 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Printer3d))]
         public Guid printerId;
 
         [ObservableProperty]
@@ -41,7 +36,6 @@ namespace AndreasReitberger.Print3d.Models
         public double additionalCosts;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Sparepart> spareparts = new();
 
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;

@@ -1,29 +1,23 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Models.PrinterAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 using AndreasReitberger.Print3d.Interface;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Printers")]
     public partial class Printer3d : ObservableObject, IPrinter3d
     {
 
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
         public Guid calculationId;
 
         [ObservableProperty]
@@ -40,7 +34,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(ManufacturerId))]
         Manufacturer manufacturer;
 
         [ObservableProperty]
@@ -65,7 +58,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<Printer3dAttribute> attributes = new();
 
         [ObservableProperty]
@@ -109,12 +101,10 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(HourlyMachineRateId))]
         HourlyMachineRate hourlyMachineRate;
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         ObservableCollection<Maintenance3d> maintenances = new();
 
 
@@ -124,7 +114,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(SlicerConfigId))]
         Printer3dSlicerConfig slicerConfig = new();
 
         [ObservableProperty]

@@ -2,19 +2,15 @@
 using AndreasReitberger.Print3d.Interface;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("CalculationProfiles")]
     public partial class Calculation3dProfile : ObservableObject, ICalculation3dProfile
     {
         #region Properties
-        [ObservableProperty]
-        [property: PrimaryKey]
+        [ObservableProperty]      
         public Guid id;
 
         [ObservableProperty]
@@ -22,8 +18,7 @@ namespace AndreasReitberger.Print3d.Models
         string name = string.Empty;
 
         #region Linked Customer
-        [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        [ObservableProperty]      
         public List<Customer3d> customers = new();
         #endregion
 

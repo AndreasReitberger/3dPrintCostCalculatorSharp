@@ -11,7 +11,7 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
+        
         public Guid id;
 
         [ObservableProperty]

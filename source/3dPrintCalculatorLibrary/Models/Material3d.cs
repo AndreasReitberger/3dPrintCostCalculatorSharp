@@ -2,16 +2,12 @@
 using AndreasReitberger.Print3d.Interface;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Materials")]
     public partial class Material3d : ObservableObject, ICloneable, IMaterial3d
     {
         #region Clone
@@ -23,11 +19,9 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
         public Guid calculationId;
 
         [ObservableProperty]
@@ -49,15 +43,12 @@ namespace AndreasReitberger.Print3d.Models
         public double factorLToKg = 1;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Material3dAttribute> attributes = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Material3dProcedureAttribute> procedureAttributes = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Material3dColor> colors = new();
 
         [ObservableProperty]
@@ -68,7 +59,6 @@ namespace AndreasReitberger.Print3d.Models
         public Guid materialTypeId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialTypeId))]
         public Material3dType typeOfMaterial;
 
         [ObservableProperty]
@@ -76,7 +66,6 @@ namespace AndreasReitberger.Print3d.Models
         public Guid manufacturerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId))]
         public Manufacturer manufacturer;
 
         [ObservableProperty]
@@ -90,6 +79,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         public string uri = string.Empty;
+        
         [ObservableProperty]
         public string colorCode = string.Empty;
 

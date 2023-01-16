@@ -9,8 +9,6 @@ using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,19 +18,14 @@ using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Calculations")]
     public partial class Calculation3d : ObservableObject, ICalculation3d
     {
 
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         #region Basics
-        /*
-         * Otherwise cannot be deserialized with JsonConverter
-         */
         [ObservableProperty]
         [property: JsonIgnore]
         string name = string.Empty;
@@ -95,11 +88,11 @@ namespace AndreasReitberger.Print3d.Models
         Customer3d customer;
         
         [ObservableProperty]
-        [property: Ignore, JsonIgnore, XmlIgnore]
+        [property: JsonIgnore, XmlIgnore]
         bool isCalculated = false;
 
         [ObservableProperty]
-        [property: Ignore, JsonIgnore, XmlIgnore]
+        [property: JsonIgnore, XmlIgnore]
         bool realculationRequired = false;
         partial void OnRealculationRequiredChanged(bool value)
         {
@@ -148,51 +141,39 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Details
         [ObservableProperty]
-        [property: ManyToMany(typeof(Printer3dCalculation))]
         public List<Printer3d> printers= new();
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(Material3dCalculation))]
         public List<Material3d> materials = new();
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(CustomAdditionCalculation))]
         public List<CustomAddition> customAdditions = new();
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(WorkstepCalculation))]
         public List<Workstep> workSteps = new();
 
         [ObservableProperty]
-        [property: OneToMany]
         public List<WorkstepDuration> workStepDurations = new();
 
         [ObservableProperty]
-        [property: Ignore]
         public ObservableCollection<CalculationAttribute> printTimes = new();
 
         [ObservableProperty]
-        [property: Ignore]
         public ObservableCollection<CalculationAttribute> materialUsage = new();
 
         [ObservableProperty]
-        [property: Ignore]
         public ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
 
         [ObservableProperty]
-        [property: Ignore]
         public ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
 
         [ObservableProperty]
-        [property: Ignore]
         public ObservableCollection<CalculationAttribute> costs = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<CalculationAttribute> rates = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<File3d> files = new();
         #endregion
 
@@ -225,15 +206,14 @@ namespace AndreasReitberger.Print3d.Models
         Material3dFamily _procedure = Material3dFamily.Misc;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
         #endregion
 
         #region Calculated
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public int TotalQuantity => GetTotalQuantity();
 
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalPrintTime
         {
             get
@@ -244,7 +224,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalVolume
         {
             get
@@ -255,7 +235,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalMaterialUsed
         {
             get
@@ -266,7 +246,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double MachineCosts
         {
             get
@@ -277,7 +257,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double MaterialCosts
         {
             get
@@ -288,7 +268,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double EnergyCosts
         {
             get
@@ -299,7 +279,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double HandlingCosts
         {
             get
@@ -310,7 +290,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CustomAdditionCosts
         {
             get
@@ -321,7 +301,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double WorkstepCosts
         {
             get
@@ -332,7 +312,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalculatedMargin
         {
             get
@@ -343,7 +323,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalculatedTax
         {
             get
@@ -354,7 +334,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CostsPerPiece
         {
             get

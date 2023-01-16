@@ -2,17 +2,14 @@
 using AndreasReitberger.Print3d.Interface;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Slicers")]
     public partial class Slicer3d : ObservableObject, ISlicer3d
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]

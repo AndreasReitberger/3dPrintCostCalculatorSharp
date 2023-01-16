@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
+        
         public Guid id;
 
         [ObservableProperty]
@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         public ProcedureAttribute attribute;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        
         public List<CalculationProcedureParameter> parameters = new();
 
         [ObservableProperty]

@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Models.SlicerAdditions
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
+        
         public Guid id;
 
         [ObservableProperty]

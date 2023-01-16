@@ -2,15 +2,12 @@
 using AndreasReitberger.Print3d.Models.CustomerAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Customers")]
     public partial class Customer3d : ObservableObject, ICloneable, ICustomer3d
     {
         #region Clone
@@ -22,11 +19,9 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
         public Guid calculationProfileId;
 
         [ObservableProperty]
@@ -52,19 +47,15 @@ namespace AndreasReitberger.Print3d.Models
         public Guid contactPersonId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ContactPersonId))]
         public ContactPerson contactPerson;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Address> addresses = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<Email> emailAddresses = new();
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         public List<PhoneNumber> phoneNumbers = new();
 
         [ObservableProperty]

@@ -1,18 +1,14 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interface;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("HourlyMachineRates")]
     public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
@@ -39,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models
         [property: JsonIgnore]
         int usefulLifeYears = 4;
 
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalcDepreciation
         {
             get
@@ -55,7 +51,7 @@ namespace AndreasReitberger.Print3d.Models
         [property: JsonIgnore]
         double interestRate = 3;
 
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalcInterest
         {
             get
@@ -101,10 +97,10 @@ namespace AndreasReitberger.Print3d.Models
         [property: JsonIgnore]
         double fixMachineHourRate = -1;
 
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalcMachineHourRate => GetMachineHourRate();
         
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalCosts => GetTotalCosts();
         #endregion
 

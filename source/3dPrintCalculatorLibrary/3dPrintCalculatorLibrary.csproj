@@ -40,6 +40,7 @@
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0-preview3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="RCoreSharp" Version="1.0.8" />
+	<!--
     <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
     <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
     <PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
@@ -48,6 +49,7 @@
     <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="2.1.2" />
     <PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.2" />
     <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3" Version="2.1.2" />
+	-->
     <!--<PackageReference Include="sqlite-net-pcl" Version="1.7.335" Condition="$(TargetFramework.StartsWith('netstandard2'))"/>-->
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>

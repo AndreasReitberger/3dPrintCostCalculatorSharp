@@ -1,25 +1,19 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-using SQLite;
 using System;
-using SQLiteNetExtensions.Attributes;
 using AndreasReitberger.Print3d.Interface;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Worksteps")]
     public partial class Workstep : ObservableObject, IWorkstep
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
         public Guid calculationId;
 
         [ObservableProperty]
@@ -48,7 +42,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(CategoryId))]
         WorkstepCategory category;
 
         [ObservableProperty]

@@ -1,25 +1,17 @@
-﻿using AndreasReitberger.Print3d.Models.FileAdditions;
-using AndreasReitberger.Core.Utilities;
-using Newtonsoft.Json;
-using SQLite;
-using System;
-using SQLiteNetExtensions.Attributes;
-using System.Xml.Serialization;
-using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Files")]
     public partial class File3d : ObservableObject, IFile3d
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
         public Guid calculationId;
 
         [ObservableProperty]

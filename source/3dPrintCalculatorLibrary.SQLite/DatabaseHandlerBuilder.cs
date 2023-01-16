@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     _databaseHandler.Database = new(_databaseHandler.DatabasePath);
                     _databaseHandler.DatabaseAsync = new(_databaseHandler.DatabasePath);
                     _databaseHandler.IsInitialized = true;
-                    if(_databaseHandler.Tables?.Count > 0)
+                    if (_databaseHandler.Tables?.Count > 0)
                     {
                         _databaseHandler.CreateTables(_databaseHandler.Tables);
                     }

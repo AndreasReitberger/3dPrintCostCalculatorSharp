@@ -199,7 +199,7 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         [property: JsonIgnore]
         double powderInBuildArea = 0;
- 
+
         #endregion
 
         #endregion
@@ -209,7 +209,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor
-        public Calculation3dProfile() 
+        public Calculation3dProfile()
         {
             Id = Guid.NewGuid();
         }

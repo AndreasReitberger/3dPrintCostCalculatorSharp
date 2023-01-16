@@ -72,10 +72,10 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [JsonIgnore]
         public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
-        
+
         [JsonIgnore]
         public string MainAddress => GetAddress(0);
-        
+
         #endregion
 
         #region Constructor

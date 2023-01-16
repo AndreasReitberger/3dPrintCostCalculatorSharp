@@ -91,7 +91,7 @@ namespace AndreasReitberger.Print3d.SQLite
         [property: JsonIgnore]
         [property: ManyToOne(nameof(CustomerId))]
         Customer3d customer;
-        
+
         [ObservableProperty]
         [property: Ignore, JsonIgnore, XmlIgnore]
         bool isCalculated = false;
@@ -147,7 +147,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Details
         [ObservableProperty]
         [property: ManyToMany(typeof(Printer3dCalculation))]
-        public List<Printer3d> printers= new();
+        public List<Printer3d> printers = new();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(Material3dCalculation))]
@@ -447,7 +447,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         FileName = file.FileName,
                     });
                 }
-                
+
                 if (Materials.Count > 0)
                 {
                     Material ??= Materials[0];
@@ -524,7 +524,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             }
                         }
                     }
-                    
+
                     double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
                         Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
 
@@ -583,7 +583,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id);
                 foreach (Printer3d printer in Printers)
                 {
-                    Printer ??= printer; 
+                    Printer ??= printer;
                     if (DifferFileCosts)
                     {
                         foreach (CalculationAttribute printTime in PrintTimes)
@@ -686,7 +686,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     {
                         case CalculationType.PerHour:
                             WorkstepDuration workstepDuration = WorkStepDurations?.FirstOrDefault(wsd => wsd.WorkstepId == ws.Id);
-                            if(workstepDuration != null)
+                            if (workstepDuration != null)
                             {
                                 ws.Duration = workstepDuration.Duration;
                             }

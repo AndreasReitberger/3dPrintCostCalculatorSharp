@@ -79,7 +79,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         public string uri = string.Empty;
-        
+
         [ObservableProperty]
         public string colorCode = string.Empty;
 

@@ -103,14 +103,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [Ignore, JsonIgnore]
         public double CalcMachineHourRate => GetMachineHourRate();
-        
+
         [Ignore, JsonIgnore]
         public double TotalCosts => GetTotalCosts();
         #endregion
 
         #region Constructor
         public HourlyMachineRate()
-        { 
+        {
             Id = Guid.NewGuid();
         }
         #endregion

@@ -99,14 +99,14 @@ namespace AndreasReitberger.Print3d.Models
 
         [JsonIgnore]
         public double CalcMachineHourRate => GetMachineHourRate();
-        
+
         [JsonIgnore]
         public double TotalCosts => GetTotalCosts();
         #endregion
 
         #region Constructor
         public HourlyMachineRate()
-        { 
+        {
             Id = Guid.NewGuid();
         }
         #endregion

@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         #endregion
 
         #region Constructors
-        public Material3dBase() 
+        public Material3dBase()
         {
             Id = Guid.NewGuid();
         }

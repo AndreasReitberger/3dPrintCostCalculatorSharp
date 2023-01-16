@@ -516,7 +516,7 @@ namespace AndreasReitberger.Print3d.Models
                 return 0;
             }
         }
-        
+
         public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             return GetTotalCosts(Guid.Empty, calculationAttributeType);
@@ -568,7 +568,7 @@ namespace AndreasReitberger.Print3d.Models
                 return 0;
             }
         }
-        
+
         public double GetTotalMaterialUsed()
         {
             try

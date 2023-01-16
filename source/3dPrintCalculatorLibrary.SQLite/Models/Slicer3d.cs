@@ -41,7 +41,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor 
-        public Slicer3d() 
+        public Slicer3d()
         {
             Id = Guid.NewGuid();
         }

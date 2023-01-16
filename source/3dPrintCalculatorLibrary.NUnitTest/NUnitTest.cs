@@ -148,7 +148,7 @@ namespace AndreasReitberger.NUnitTest
                     Calculation3d calculation = new Calculation3d
                     {
                         Printer = printer,
-                        Material = material,                       
+                        Material = material,
                     };
                     calculation.Printers.Add(printer);
                     calculation.Materials.Add(material);
@@ -335,7 +335,7 @@ namespace AndreasReitberger.NUnitTest
                 _calculation2.CalculateCosts();
                 Assert.IsTrue(_calculation2.IsCalculated);
                 Assert.IsTrue(totalCosts == _calculation2.TotalCosts);
-                
+
                 costsCalc = new()
                 {
                     _calculation2.MachineCosts,
@@ -581,7 +581,7 @@ namespace AndreasReitberger.NUnitTest
             {
                 var calc = GetTestCalculation();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Assert.Fail(exc.Message);
             }
@@ -653,7 +653,7 @@ namespace AndreasReitberger.NUnitTest
             _calculation.CalculateCosts();
             return _calculation;
         }
-      
+
         public void MultiFileDifferTest()
         {
             try

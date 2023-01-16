@@ -42,7 +42,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor
-        public Maintenance3d() 
+        public Maintenance3d()
         {
             Id = Guid.NewGuid();
         }

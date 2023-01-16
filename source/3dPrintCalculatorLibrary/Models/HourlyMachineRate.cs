@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Print3d.Interface;
 using Newtonsoft.Json;
 using SQLite;
 using System;
@@ -6,7 +7,7 @@ using System;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("HourlyMachineRates")]
-    public class HourlyMachineRate : BaseModel // INotifyPropertyChanged, ICloneable
+    public class HourlyMachineRate : BaseModel, IHourlyMachineRate
     {
         #region Properties
         [PrimaryKey]

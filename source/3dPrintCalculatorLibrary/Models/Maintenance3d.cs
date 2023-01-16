@@ -1,4 +1,5 @@
-﻿using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
+﻿using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Maintenances")]
-    public class Maintenance3d : ICloneable
+    public class Maintenance3d : ICloneable, IMaintenance3d
     {
 
         #region Clone

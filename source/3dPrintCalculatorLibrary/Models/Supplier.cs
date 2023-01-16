@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Suppliers")]
-    public class Supplier : ICloneable
+    public class Supplier : ICloneable, ISupplier
     {
         #region Clone
         public object Clone()

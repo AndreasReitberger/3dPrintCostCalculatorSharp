@@ -8,11 +8,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
+using AndreasReitberger.Print3d.Interface;
 
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Printers")]
-    public class Printer3d : BaseModel
+    public class Printer3d : BaseModel, IPrinter3d
     {
 
         #region Properties

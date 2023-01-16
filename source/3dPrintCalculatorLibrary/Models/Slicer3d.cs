@@ -1,11 +1,12 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
 using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Slicers")]
-    public class Slicer3d
+    public class Slicer3d : ISlicer3d
     {
         #region Properties
         [PrimaryKey]

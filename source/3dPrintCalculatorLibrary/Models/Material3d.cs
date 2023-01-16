@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using Newtonsoft.Json;
 using SQLite;
@@ -10,7 +11,7 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Materials")]
-    public class Material3d : ICloneable
+    public class Material3d : ICloneable, IMaterial3d
     {
         #region Clone
         public object Clone()

@@ -311,7 +311,7 @@ namespace AndreasReitberger.NUnitTest
                 // Add information
                 _calculation.FailRate = 25;
                 _calculation.EnergyCostsPerkWh = 0.30;
-                _calculation.ApplyenergyCost = true;
+                _calculation.ApplyEnergyCost = true;
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
@@ -416,7 +416,7 @@ namespace AndreasReitberger.NUnitTest
                 // Add information
                 _calculation.FailRate = 25;
                 _calculation.EnergyCostsPerkWh = 0.30;
-                _calculation.ApplyenergyCost = true;
+                _calculation.ApplyEnergyCost = true;
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
@@ -512,7 +512,7 @@ namespace AndreasReitberger.NUnitTest
                 // Add information
                 _calculation.FailRate = 25;
                 _calculation.EnergyCostsPerkWh = 0.30;
-                _calculation.ApplyenergyCost = true;
+                _calculation.ApplyEnergyCost = true;
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
@@ -645,7 +645,7 @@ namespace AndreasReitberger.NUnitTest
             // Add information
             _calculation.FailRate = 25;
             _calculation.EnergyCostsPerkWh = 0.30;
-            _calculation.ApplyenergyCost = true;
+            _calculation.ApplyEnergyCost = true;
             // Uses 75% of the max. power consumption set in the printer model (210 Watt)
             _calculation.PowerLevel = 75;
 
@@ -744,7 +744,7 @@ namespace AndreasReitberger.NUnitTest
                 // Add information
                 _calculation.FailRate = 25;
                 _calculation.EnergyCostsPerkWh = 0.30;
-                _calculation.ApplyenergyCost = true;
+                _calculation.ApplyEnergyCost = true;
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 

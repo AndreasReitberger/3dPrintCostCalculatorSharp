@@ -1,4 +1,6 @@
 ﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -8,123 +10,66 @@ using System.Collections.Generic;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("CalculationProfiles")]
-    public class Calculation3dProfile : BaseModel
+    public partial class Calculation3dProfile : ObservableObject, ICalculation3dProfile
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [JsonProperty(nameof(Name))]
-        string _name = string.Empty;
-        [JsonIgnore]
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string name = string.Empty;
 
         #region Linked Customer
-        /*
-        [JsonIgnore, XmlIgnore]
-        public Guid CustomerId { get; set; }
-
-        [JsonProperty(nameof(Customer))]
-        Customer3d _customer;
-        [JsonIgnore]
-        [ManyToOne(nameof(CustomerId))]
-        public Customer3d Customer
-        {
-            get { return _customer; }
-            set { SetProperty(ref _customer, value); }
-        }
-        */
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Customer3d> Customers { get; set; } = new();
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Customer3d> customers = new();
         #endregion
 
         #region Presets
 
         #region Rates
 
-        [JsonProperty(nameof(FailRate))]
-        double _failRate = 0;
-        [JsonIgnore]
-        public double FailRate
-        {
-            get { return _failRate; }
-            set { SetProperty(ref _failRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double failRate = 0;
 
-        [JsonProperty(nameof(ApplyTaxRate))]
-        bool _applyTaxRate = false;
-        [JsonIgnore]
-        public bool ApplyTaxRate
-        {
-            get { return _applyTaxRate; }
-            set { SetProperty(ref _applyTaxRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyTaxRate = false;
 
-        [JsonProperty(nameof(TaxRate))]
-        double _taxRate = 0;
-        [JsonIgnore]
-        public double TaxRate
-        {
-            get { return _taxRate; }
-            set { SetProperty(ref _taxRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double taxRate = 0;
 
-        [JsonProperty(nameof(MarginRate))]
-        double _marginRate = 0;
-        [JsonIgnore]
-        public double MarginRate
-        {
-            get { return _marginRate; }
-            set { SetProperty(ref _marginRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double marginRate = 0;
 
         #endregion
 
         #region Handling
 
-        [JsonProperty(nameof(HandlingsFee))]
-        double _handlingsFee = 0;
-        [JsonIgnore]
-        public double HandlingsFee
-        {
-            get { return _handlingsFee; }
-            set { SetProperty(ref _handlingsFee, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double handlingsFee = 0;
 
         #endregion
 
         #region Energy
 
-        [JsonProperty(nameof(ApplyenergyCost))]
-        bool _applyEnergyCost = false;
-        [JsonIgnore]
-        public bool ApplyenergyCost
-        {
-            get { return _applyEnergyCost; }
-            set { SetProperty(ref _applyEnergyCost, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyEnergyCost = false;
 
-        [JsonProperty(nameof(PowerLevel))]
-        int _powerLevel = 0;
-        [JsonIgnore]
-        public int PowerLevel
-        {
-            get { return _powerLevel; }
-            set { SetProperty(ref _powerLevel, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int powerLevel = 0;
 
-        [JsonProperty(nameof(EnergyCostsPerkWh))]
-        double _energyCostsPerkWh = 0;
-        [JsonIgnore]
-        public double EnergyCostsPerkWh
-        {
-            get { return _energyCostsPerkWh; }
-            set { SetProperty(ref _energyCostsPerkWh, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double energyCostsPerkWh = 0;
 
         #endregion
 
@@ -132,273 +77,129 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Filament
 
-        [JsonProperty(nameof(ApplyNozzleWearCosts))]
-        bool _applyNozzleWearCosts = false;
-        [JsonIgnore]
-        public bool ApplyNozzleWearCosts
-        {
-            get { return _applyNozzleWearCosts; }
-            set { SetProperty(ref _applyNozzleWearCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyNozzleWearCosts = false;
 
-        [JsonProperty(nameof(NozzleReplacementCosts))]
-        double _nozzleReplacementCosts = 0;
-        [JsonIgnore]
-        public double NozzleReplacementCosts
-        {
-            get { return _nozzleReplacementCosts; }
-            set { SetProperty(ref _nozzleReplacementCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double nozzleReplacementCosts = 0;
 
-        [JsonProperty(nameof(NozzleWearFactorPerPrintJob))]
-        double _nozzleWearFactorPerPrintJob = 0;
-        [JsonIgnore]
-        public double NozzleWearFactorPerPrintJob
-        {
-            get { return _nozzleWearFactorPerPrintJob; }
-            set { SetProperty(ref _nozzleWearFactorPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double nozzleWearFactorPerPrintJob = 0;
 
-        [JsonProperty(nameof(NozzleWearCostsPerPrintJob))]
-        double _nozzleWearCostsPerPrintJob = 0;
-        [JsonIgnore]
-        public double NozzleWearCostsPerPrintJob
-        {
-            get { return _nozzleWearCostsPerPrintJob; }
-            set { SetProperty(ref _nozzleWearCostsPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double nozzleWearCostsPerPrintJob = 0;
 
-        [JsonProperty(nameof(ApplyPrintSheetWearCosts))]
-        bool _applyPrintSheetWearCosts = false;
-        [JsonIgnore]
-        public bool ApplyPrintSheetWearCosts
-        {
-            get { return _applyPrintSheetWearCosts; }
-            set { SetProperty(ref _applyPrintSheetWearCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyPrintSheetWearCosts = false;
 
-        [JsonProperty(nameof(PrintSheetReplacementCosts))]
-        double _printSheetReplacementCosts = 0;
-        [JsonIgnore]
-        public double PrintSheetReplacementCosts
-        {
-            get { return _printSheetReplacementCosts; }
-            set { SetProperty(ref _printSheetReplacementCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double printSheetReplacementCosts = 0;
 
-        [JsonProperty(nameof(PrintSheetWearFactorPerPrintJob))]
-        double _printSheetWearFactorPerPrintJob = 0;
-        [JsonIgnore]
-        public double PrintSheetWearFactorPerPrintJob
-        {
-            get { return _printSheetWearFactorPerPrintJob; }
-            set { SetProperty(ref _printSheetWearFactorPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double printSheetWearFactorPerPrintJob = 0;
 
-        [JsonProperty(nameof(PrintSheetWearCostsPerPrintJob))]
-        double _printSheetWearCostsPerPrintJob = 0;
-        [JsonIgnore]
-        public double PrintSheetWearCostsPerPrintJob
-        {
-            get { return _printSheetWearCostsPerPrintJob; }
-            set { SetProperty(ref _printSheetWearCostsPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double printSheetWearCostsPerPrintJob = 0;
 
-        [JsonProperty(nameof(ApplyMultiMaterialCosts))]
-        bool _applyMultiMaterialCosts = false;
-        [JsonIgnore]
-        public bool ApplyMultiMaterialCosts
-        {
-            get { return _applyMultiMaterialCosts; }
-            set { SetProperty(ref _applyMultiMaterialCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyMultiMaterialCosts = false;
 
-        [JsonProperty(nameof(MultiMaterialChangeCosts))]
-        double _multiMaterialChangeCosts = 0;
-        [JsonIgnore]
-        public double MultiMaterialChangeCosts
-        {
-            get { return _multiMaterialChangeCosts; }
-            set { SetProperty(ref _multiMaterialChangeCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double multiMaterialChangeCosts = 0;
 
-        [JsonProperty(nameof(MultiMaterialAllSelectetMaterialsAreUsed))]
-        bool _multiMaterialAllSelectetMaterialsAreUsed = false;
-        [JsonIgnore]
-        public bool MultiMaterialAllSelectetMaterialsAreUsed
-        {
-            get { return _multiMaterialAllSelectetMaterialsAreUsed; }
-            set { SetProperty(ref _multiMaterialAllSelectetMaterialsAreUsed, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool multiMaterialAllSelectetMaterialsAreUsed = false;
 
-        [JsonProperty(nameof(MultiMaterialChangesPerPrint))]
-        double _multiMaterialChangesPerPrint = 0;
-        [JsonIgnore]
-        public double MultiMaterialChangesPerPrint
-        {
-            get { return _multiMaterialChangesPerPrint; }
-            set { SetProperty(ref _multiMaterialChangesPerPrint, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double multiMaterialChangesPerPrint = 0;
+
         #endregion
 
         #region Resin
 
-        [JsonProperty(nameof(ApplyResinGlovesCosts))]
-        bool _applyResinGlovesCosts = false;
-        [JsonIgnore]
-        public bool ApplyResinGlovesCosts
-        {
-            get { return _applyResinGlovesCosts; }
-            set { SetProperty(ref _applyResinGlovesCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyResinGlovesCosts = false;
 
-        [JsonProperty(nameof(GlovesPerPrintJob))]
-        int _glovesPerPrintJob = 0;
-        [JsonIgnore]
-        public int GlovesPerPrintJob
-        {
-            get { return _glovesPerPrintJob; }
-            set { SetProperty(ref _glovesPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int glovesPerPrintJob = 0;
 
-        [JsonProperty(nameof(GlovesInPackage))]
-        int _glovesInPackage = 0;
-        [JsonIgnore]
-        public int GlovesInPackage
-        {
-            get { return _glovesInPackage; }
-            set { SetProperty(ref _glovesInPackage, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int glovesInPackage = 0;
 
-        [JsonProperty(nameof(GlovesPackagePrice))]
-        double _glovesPackagePrice = 0;
-        [JsonIgnore]
-        public double GlovesPackagePrice
-        {
-            get { return _glovesPackagePrice; }
-            set { SetProperty(ref _glovesPackagePrice, value); }
-        }
-        
-        [JsonProperty(nameof(ApplyResinFilterCosts))]
-        bool _applyResinFilterCosts = false;
-        [JsonIgnore]
-        public bool ApplyResinFilterCosts
-        {
-            get { return _applyResinFilterCosts; }
-            set { SetProperty(ref _applyResinFilterCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double glovesPackagePrice = 0;
 
-        [JsonProperty(nameof(FiltersPerPrintJob))]
-        double _filtersPerPrintJob = 0;
-        [JsonIgnore]
-        public double FiltersPerPrintJob
-        {
-            get { return _filtersPerPrintJob; }
-            set { SetProperty(ref _filtersPerPrintJob, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyResinFilterCosts = false;
 
-        [JsonProperty(nameof(FiltersInPackage))]
-        int _filtersInPackage = 0;
-        [JsonIgnore]
-        public int FiltersInPackage
-        {
-            get { return _filtersInPackage; }
-            set { SetProperty(ref _filtersInPackage, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double filtersPerPrintJob = 0;
 
-        [JsonProperty(nameof(FiltersPackagePrice))]
-        double _filtersPackagePrice = 0;
-        [JsonIgnore]
-        public double FiltersPackagePrice
-        {
-            get { return _filtersPackagePrice; }
-            set { SetProperty(ref _filtersPackagePrice, value); }
-        }
-              
-        [JsonProperty(nameof(ApplyResinWashingCosts))]
-        bool _applyResinWashingCosts = false;
-        [JsonIgnore]
-        public bool ApplyResinWashingCosts
-        {
-            get { return _applyResinWashingCosts; }
-            set { SetProperty(ref _applyResinWashingCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int filtersInPackage = 0;
 
-        [JsonProperty(nameof(IsopropanolContainerContent))]
-        double _isopropanolContainerContent = 0;
-        [JsonIgnore]
-        public double IsopropanolContainerContent
-        {
-            get { return _isopropanolContainerContent; }
-            set { SetProperty(ref _isopropanolContainerContent, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double filtersPackagePrice = 0;
 
-        [JsonProperty(nameof(IsopropanolContainerPrice))]
-        double _isopropanolContainerPrice = 0;
-        [JsonIgnore]
-        public double IsopropanolContainerPrice
-        {
-            get { return _isopropanolContainerPrice; }
-            set { SetProperty(ref _isopropanolContainerPrice, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyResinWashingCosts = false;
 
-        [JsonProperty(nameof(IsopropanolPerPrintJob))]
-        double _isopropanolPerPrintJob = 0;
-        [JsonIgnore]
-        public double IsopropanolPerPrintJob
-        {
-            get { return _isopropanolPerPrintJob; }
-            set { SetProperty(ref _isopropanolPerPrintJob, value); }
-        }
-        
-        [JsonProperty(nameof(ApplyResinCuringCosts))]
-        bool _applyResinCuringCosts = false;
-        [JsonIgnore]
-        public bool ApplyResinCuringCosts
-        {
-            get { return _applyResinCuringCosts; }
-            set { SetProperty(ref _applyResinCuringCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double isopropanolContainerContent = 0;
 
-        [JsonProperty(nameof(CuringCostsPerHour))]
-        double _curingCostsPerHour = 0;
-        [JsonIgnore]
-        public double CuringCostsPerHour
-        {
-            get { return _curingCostsPerHour; }
-            set { SetProperty(ref _curingCostsPerHour, value); }
-        }   
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double isopropanolContainerPrice = 0;
 
-        [JsonProperty(nameof(CuringDurationInMintues))]
-        double _curingDurationInMintues = 0;
-        [JsonIgnore]
-        public double CuringDurationInMintues
-        {
-            get { return _curingDurationInMintues; }
-            set { SetProperty(ref _curingDurationInMintues, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double isopropanolPerPrintJob = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyResinCuringCosts = false;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double curingCostsPerHour = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double curingDurationInMintues = 0;
         #endregion
 
         #region Powder
 
-        [JsonProperty(nameof(ApplySLSRefreshing))]
-        bool _applySLSRefreshing = false;
-        [JsonIgnore]
-        public bool ApplySLSRefreshing
-        {
-            get { return _applySLSRefreshing; }
-            set { SetProperty(ref _applySLSRefreshing, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applySLSRefreshing = false;
 
-        [JsonProperty(nameof(PowderInBuildArea))]
-        double _powderInBuildArea = 0;
-        [JsonIgnore]
-        public double PowderInBuildArea
-        {
-            get { return _powderInBuildArea; }
-            set { SetProperty(ref _powderInBuildArea, value); }
-        }
-
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double powderInBuildArea = 0;
+ 
         #endregion
 
         #endregion

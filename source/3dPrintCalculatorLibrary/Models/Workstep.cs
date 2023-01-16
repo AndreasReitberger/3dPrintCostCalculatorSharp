@@ -5,11 +5,12 @@ using Newtonsoft.Json;
 using SQLite;
 using System;
 using SQLiteNetExtensions.Attributes;
+using AndreasReitberger.Print3d.Interface;
 
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Worksteps")]
-    public class Workstep : BaseModel
+    public class Workstep : BaseModel, IWorkstep
     {
         #region Properties
         [PrimaryKey]

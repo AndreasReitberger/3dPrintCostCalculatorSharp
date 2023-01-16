@@ -38,7 +38,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor 
-        public Slicer3d() 
+        public Slicer3d()
         {
             Id = Guid.NewGuid();
         }

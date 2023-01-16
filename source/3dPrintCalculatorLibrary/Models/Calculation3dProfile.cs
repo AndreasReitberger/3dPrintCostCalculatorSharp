@@ -10,7 +10,7 @@ namespace AndreasReitberger.Print3d.Models
     public partial class Calculation3dProfile : ObservableObject, ICalculation3dProfile
     {
         #region Properties
-        [ObservableProperty]      
+        [ObservableProperty]
         public Guid id;
 
         [ObservableProperty]
@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.Models
         string name = string.Empty;
 
         #region Linked Customer
-        [ObservableProperty]      
+        [ObservableProperty]
         public List<Customer3d> customers = new();
         #endregion
 
@@ -194,7 +194,7 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         [property: JsonIgnore]
         double powderInBuildArea = 0;
- 
+
         #endregion
 
         #endregion
@@ -204,7 +204,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor
-        public Calculation3dProfile() 
+        public Calculation3dProfile()
         {
             Id = Guid.NewGuid();
         }

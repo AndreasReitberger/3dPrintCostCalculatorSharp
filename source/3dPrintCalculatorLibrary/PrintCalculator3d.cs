@@ -13,7 +13,8 @@ namespace AndreasReitberger.Print3d
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var Costs = new ObservableCollection<Calculation3dChartItem>(
-                calculation.Costs.Select(cost => new Calculation3dChartItem() {
+                calculation.Costs.Select(cost => new Calculation3dChartItem()
+                {
                     Name = cost.Attribute,
                     Value = cost.Value,
                     AttributeType = cost.Type,
@@ -96,7 +97,8 @@ namespace AndreasReitberger.Print3d
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.CustomAddition)
-                .Select(cost => new Calculation3dChartItem() {
+                .Select(cost => new Calculation3dChartItem()
+                {
                     Name = cost.Attribute,
                     Value = cost.Value,
                     AttributeType = cost.Type,
@@ -120,6 +122,6 @@ namespace AndreasReitberger.Print3d
                 }));
             return RatesCosts;
         }
-#endregion
+        #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
         #endregion
 
         #region Constructors
-        public Material3dBase() 
+        public Material3dBase()
         {
             Id = Guid.NewGuid();
         }

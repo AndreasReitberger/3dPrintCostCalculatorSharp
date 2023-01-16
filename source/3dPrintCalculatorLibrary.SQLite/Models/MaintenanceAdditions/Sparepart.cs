@@ -29,8 +29,8 @@ namespace AndreasReitberger.Print3d.SQLite.MaintenanceAdditions
         #endregion
 
         #region Constructor
-        public Sparepart() 
-        { 
+        public Sparepart()
+        {
             Id = Guid.NewGuid();
         }
         #endregion

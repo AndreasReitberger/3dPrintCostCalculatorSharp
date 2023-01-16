@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         #endregion
 
         #region Constructor
-        public ModelWeight() 
+        public ModelWeight()
         {
             Id = Guid.NewGuid();
         }

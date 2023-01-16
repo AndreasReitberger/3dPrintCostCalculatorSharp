@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         #endregion
 
         #region Constructor
-        public CustomAddition() 
+        public CustomAddition()
         {
             Id = Guid.NewGuid();
         }

@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         #endregion
 
         #region Constructor
-        public CustomAddition() 
+        public CustomAddition()
         {
             Id = Guid.NewGuid();
         }

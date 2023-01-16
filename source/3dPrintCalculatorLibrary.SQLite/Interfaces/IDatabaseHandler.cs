@@ -10,21 +10,21 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         #region Properties
         public bool IsInitialized { get; }
         public string DatabasePath { get; }
-//#if DB_SYNC
+        //#if DB_SYNC
         public SQLiteConnection Database { get; }
-//#else
+        //#else
         public SQLiteAsyncConnection DatabaseAsync { get; }
-//#endif
+        //#endif
         #endregion
 
         #region Methods
 
-//#if DB_SYNC
+        //#if DB_SYNC
 
         public void InitTables();
-//#else
+        //#else
         public Task InitTablesAsync();
-//#endif
+        //#endif
 
         public void InitDatabase(string databasePath);
 

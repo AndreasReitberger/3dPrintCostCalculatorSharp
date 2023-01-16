@@ -52,7 +52,7 @@ namespace AndreasReitberger.Print3d.SQLite.FileAdditions
         #endregion
 
         #region Constructor
-        public ModelWeight() 
+        public ModelWeight()
         {
             Id = Guid.NewGuid();
         }

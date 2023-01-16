@@ -24,8 +24,8 @@ namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
         #endregion
 
         #region Constructor
-        public Sparepart() 
-        { 
+        public Sparepart()
+        {
             Id = Guid.NewGuid();
         }
         #endregion

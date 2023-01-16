@@ -86,7 +86,7 @@ namespace AndreasReitberger.Print3d.Models
         [property: JsonIgnore]
         [property: ManyToOne(nameof(CustomerId))]
         Customer3d customer;
-        
+
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
         bool isCalculated = false;
@@ -141,7 +141,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Details
         [ObservableProperty]
-        public List<Printer3d> printers= new();
+        public List<Printer3d> printers = new();
 
         [ObservableProperty]
         public List<Material3d> materials = new();
@@ -429,7 +429,7 @@ namespace AndreasReitberger.Print3d.Models
                         FileName = file.FileName,
                     });
                 }
-                
+
                 if (Materials.Count > 0)
                 {
                     Material ??= Materials[0];
@@ -506,7 +506,7 @@ namespace AndreasReitberger.Print3d.Models
                             }
                         }
                     }
-                    
+
                     double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
                         Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
 
@@ -565,7 +565,7 @@ namespace AndreasReitberger.Print3d.Models
                 Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id);
                 foreach (Printer3d printer in Printers)
                 {
-                    Printer ??= printer; 
+                    Printer ??= printer;
                     if (DifferFileCosts)
                     {
                         foreach (CalculationAttribute printTime in PrintTimes)
@@ -668,7 +668,7 @@ namespace AndreasReitberger.Print3d.Models
                     {
                         case CalculationType.PerHour:
                             WorkstepDuration workstepDuration = WorkStepDurations?.FirstOrDefault(wsd => wsd.WorkstepId == ws.Id);
-                            if(workstepDuration != null)
+                            if (workstepDuration != null)
                             {
                                 ws.Duration = workstepDuration.Duration;
                             }

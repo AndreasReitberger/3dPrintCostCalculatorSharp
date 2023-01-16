@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public string debitorNumber = string.Empty;
 
         [ObservableProperty]
-        public bool isActive = true; 
+        public bool isActive = true;
 
         [ObservableProperty]
         public string website = string.Empty;

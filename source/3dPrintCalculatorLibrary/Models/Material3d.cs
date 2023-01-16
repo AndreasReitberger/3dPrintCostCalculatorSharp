@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interface;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -11,7 +12,7 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Materials")]
-    public class Material3d : ICloneable, IMaterial3d
+    public partial class Material3d : ObservableObject, ICloneable, IMaterial3d
     {
         #region Clone
         public object Clone()
@@ -21,78 +22,91 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId
-        { get; set; }
-        /*
-        [ManyToOne]
-        public Calculation3d Calculation      
-        { get; set; }
-        */
-        public string Name
-        { get; set; } = string.Empty;
-        public string SKU
-        { get; set; } = string.Empty;
-        public Unit Unit
-        { get; set; } = Unit.kg;
-        public double PackageSize
-        { get; set; } = 1;
-        public double Density
-        { get; set; } = 1;
-        public double FactorLToKg
-        { get; set; } = 1;
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3d))]
+        public Guid calculationId;
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dAttribute> Attributes
-        { get; set; } = new List<Material3dAttribute>();
+        [ObservableProperty]
+        public string name = string.Empty;
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dProcedureAttribute> ProcedureAttributes
-        { get; set; } = new List<Material3dProcedureAttribute>();
+        [ObservableProperty]
+        public string sKU = string.Empty;
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dColor> Colors
-        { get; set; } = new List<Material3dColor>();
+        [ObservableProperty]
+        public Unit unit = Unit.kg;
 
-        public Material3dFamily MaterialFamily
-        { get; set; } = Material3dFamily.Filament;
+        [ObservableProperty]
+        public double packageSize = 1;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid MaterialTypeId { get; set; }
-        [ManyToOne(nameof(MaterialTypeId))]
-        public Material3dType TypeOfMaterial
-        { get; set; }
+        [ObservableProperty]
+        public double density = 1;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid ManufacturerId { get; set; }
-        [ManyToOne(nameof(ManufacturerId))]
-        public Manufacturer Manufacturer
-        { get; set; }
-        public double UnitPrice
-        { get; set; } = 0;
-        public double Tax
-        { get; set; } = 0;
-        public bool PriceIncludesTax
-        { get; set; } = true;
-        public string Uri
-        { get; set; } = string.Empty;
-        public string ColorCode
-        { get; set; } = string.Empty;
-        public string Note
-        { get; set; } = string.Empty;
-        public string SafetyDatasheet
-        { get; set; } = string.Empty;
-        public string TechnicalDatasheet
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public double factorLToKg = 1;
 
-        public Unit SpoolWeightUnit
-        { get; set; } = Unit.g;
-        public double SpoolWeight
-        { get; set; } = 200;
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Material3dAttribute> attributes = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Material3dProcedureAttribute> procedureAttributes = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Material3dColor> colors = new();
+
+        [ObservableProperty]
+        public Material3dFamily materialFamily = Material3dFamily.Filament;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid materialTypeId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(MaterialTypeId))]
+        public Material3dType typeOfMaterial;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid manufacturerId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ManufacturerId))]
+        public Manufacturer manufacturer;
+
+        [ObservableProperty]
+        public double unitPrice;
+
+        [ObservableProperty]
+        public double tax = 0;
+
+        [ObservableProperty]
+        public bool priceIncludesTax = true;
+
+        [ObservableProperty]
+        public string uri = string.Empty;
+        [ObservableProperty]
+        public string colorCode = string.Empty;
+
+        [ObservableProperty]
+        public string note = string.Empty;
+
+        [ObservableProperty]
+        public string safetyDatasheet = string.Empty;
+
+        [ObservableProperty]
+        public string technicalDatasheet = string.Empty;
+
+        [ObservableProperty]
+        public Unit spoolWeightUnit = Unit.g;
+
+        [ObservableProperty]
+        public double spoolWeight = 200;
         #endregion
 
         #region Constructor

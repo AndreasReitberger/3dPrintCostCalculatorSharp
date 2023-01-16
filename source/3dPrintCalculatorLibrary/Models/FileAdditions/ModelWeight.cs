@@ -1,6 +1,8 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
 using AndreasReitberger.Print3d.Utilities;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -10,65 +12,43 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.Models.FileAdditions
 {
     [Table("ModelWeights")]
-    public class ModelWeight : BaseModel
+    public partial class ModelWeight : ObservableObject, IModelWeight
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [ForeignKey(typeof(File3d))]
-        public Guid FileId { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(File3d))]
+        public Guid fileId;
 
-        bool _recalculateWeightInGramm = false;
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool recalculateWeightInGramm = false;
 
-        [JsonProperty(nameof(Weight))]
-        double _weight = 0;
-        [JsonIgnore]
-        public double Weight
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double weight = 0;
+        partial void OnWeightChanged(double value)
         {
-            get { return _weight; }
-            set
-            {
-                if (_weight == value) return;
-                _recalculateWeightInGramm = true;
-                _weight = value;
-                //SetProperty(ref _weight, value);
-                RecalculateWeight();
-                OnPropertyChanged();
-            }
+            RecalculateWeightInGramm = true;
+            RecalculateWeight();
         }
 
-        [JsonProperty(nameof(Unit))]
-        Unit _unit = Unit.g;
-        [JsonIgnore]
-        public Unit Unit
+        [ObservableProperty]
+        [property: JsonIgnore]
+        Unit unit = Unit.g;
+        partial void OnUnitChanged(Unit value)
         {
-            get { return _unit; }
-            set
-            {
-                if (_unit == value) return;
-                _recalculateWeightInGramm = true;
-                _unit = value;
-                RecalculateWeight();
-                //SetProperty(ref _unit, value);
-                OnPropertyChanged();
-            }
+            RecalculateWeightInGramm = true;
+            RecalculateWeight();
         }
 
-        [XmlIgnore]
-        [JsonProperty(nameof(WeightInGramm))]
-        double _weightInGramm = 0;
-        [JsonIgnore, XmlIgnore]
-        public double WeightInGramm
-        {
-            get => _weightInGramm;
-            set
-            {
-                if (_weightInGramm == value) return;
-                _weightInGramm = value;
-                OnPropertyChanged();
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double weightInGramm = 0;
+
         #endregion
 
         #region Constructor
@@ -87,9 +67,9 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         #region Methods
         void RecalculateWeight()
         {
-            if (_recalculateWeightInGramm)
+            if (RecalculateWeightInGramm)
             {
-                _recalculateWeightInGramm = false;
+                RecalculateWeightInGramm = false;
                 WeightInGramm = Weight * UnitFactor.GetUnitFactor(Unit);
             }
         }

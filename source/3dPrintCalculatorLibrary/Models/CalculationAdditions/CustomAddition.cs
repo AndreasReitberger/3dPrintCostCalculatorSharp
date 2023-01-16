@@ -1,4 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -6,7 +8,7 @@ using System;
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     [Table("CustomAdditions")]
-    public class CustomAddition : ICloneable
+    public partial class CustomAddition : ObservableObject, ICloneable, ICustomAddition
     {
         #region Clone
         public object Clone()
@@ -16,15 +18,25 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         #endregion
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId { get; set; }
-        public string Name { get; set; }
-        public double Percentage { get; set; }
-        public int Order { get; set; } = 0;
-        public CustomAdditionCalculationType CalculationType { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3d))]
+        public Guid calculationId;
+
+        [ObservableProperty]
+        public string name;
+
+        [ObservableProperty]
+        public double percentage;
+
+        [ObservableProperty]
+        public int order = 0;
+
+        [ObservableProperty]
+        public CustomAdditionCalculationType calculationType;
         #endregion
 
         #region Constructor

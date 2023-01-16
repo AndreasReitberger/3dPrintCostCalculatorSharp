@@ -1,20 +1,35 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
     [Table("SlicerConfigurations")]
-    public class Printer3dSlicerConfig
+    public partial class Printer3dSlicerConfig : ObservableObject, IPrinter3dSlicerConfig
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        public double AMax_xy { get; set; } = 1000;
-        public double AMax_z { get; set; } = 1000;
-        public double AMax_e { get; set; } = 5000;
-        public double AMax_eExtrude { get; set; } = 1250;
-        public double AMax_eRetract { get; set; } = 1250;
-        public double PrintDurationCorrection { get; set; } = 1;
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
+
+        [ObservableProperty]
+        public double aMax_xy = 1000;
+
+        [ObservableProperty]
+        public double aMax_z = 1000;
+
+        [ObservableProperty]
+        public double aMax_e = 5000;
+
+        [ObservableProperty]
+        public double aMax_eExtrude = 1250;
+
+        [ObservableProperty]
+        public double aMax_eRetract = 1250;
+
+        [ObservableProperty]
+        public double printDurationCorrection = 1;
 
         #endregion
 

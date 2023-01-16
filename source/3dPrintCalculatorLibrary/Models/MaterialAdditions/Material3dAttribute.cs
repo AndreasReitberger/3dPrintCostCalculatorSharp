@@ -1,19 +1,28 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
     [Table("MaterialAttributes")]
-    public class Material3dAttribute
+    public partial class Material3dAttribute : ObservableObject, IMaterial3dAttribute
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        [ForeignKey(typeof(Material3d))]
-        public Guid MaterialId { get; set; }
-        public string Attribute { get; set; }
-        public double Value { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Material3d))]
+        public Guid materialId;
+
+        [ObservableProperty]
+        public string attribute;
+
+        [ObservableProperty]
+        public double value;
         #endregion
 
         #region Constructor

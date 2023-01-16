@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Suppliers")]
-    public class Supplier : ICloneable, ISupplier
+    public partial class Supplier : ObservableObject, ICloneable, ISupplier
     {
         #region Clone
         public object Clone()
@@ -17,20 +18,25 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Properties 
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
-        public string Name
-        { get; set; }
-        public string DebitorNumber
-        { get; set; }
-        public bool IsActive
-        { get; set; }
-        public string Website
-        { get; set; }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Manufacturer> Manufacturers
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
+
+        [ObservableProperty]
+        public string name;
+
+        [ObservableProperty]
+        public string debitorNumber;
+
+        [ObservableProperty]
+        public bool isActive;
+
+        [ObservableProperty]
+        public string website;
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Manufacturer> manufacturers = new();
         #endregion
 
         #region Constructor

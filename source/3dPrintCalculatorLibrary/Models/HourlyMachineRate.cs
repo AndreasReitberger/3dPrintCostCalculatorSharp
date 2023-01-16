@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using System;
@@ -7,60 +8,36 @@ using System;
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("HourlyMachineRates")]
-    public class HourlyMachineRate : BaseModel, IHourlyMachineRate
+    public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        public Guid PrinterId
-        { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public Guid printerId;
 
-        [JsonProperty(nameof(Name))]
-        string _name = string.Empty;
-        [JsonIgnore]
-        public string Name
-        {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string name = string.Empty;
 
-        [JsonProperty(nameof(PerYear))]
-        bool _perYear = true;
-        [JsonIgnore]
-        public bool PerYear
-        {
-            get { return _perYear; }
-            set { SetProperty(ref _perYear, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool perYear = true;
 
-        [JsonProperty(nameof(MachineHours))]
-        double _machineHours = 0;
-        [JsonIgnore]
-        public double MachineHours
-        {
-            get { return _machineHours; }
-            set { SetProperty(ref _machineHours, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double machineHours = 0;
 
-        [JsonProperty(nameof(ReplacementCosts))]
-        double _replacementCosts = 0;
-        [JsonIgnore]
-        public double ReplacementCosts
-        {
-            get { return _replacementCosts; }
-            set { SetProperty(ref _replacementCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double replacementCosts = 0;
 
-        [JsonProperty(nameof(UsefulLifeYears))]
-        int _usefulLife = 4;
-        [JsonIgnore]
-        public int UsefulLifeYears
-        {
-            get { return _usefulLife; }
-            set { SetProperty(ref _usefulLife, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int usefulLifeYears = 4;
 
         [Ignore, JsonIgnore]
         public double CalcDepreciation
@@ -74,14 +51,10 @@ namespace AndreasReitberger.Print3d.Models
             }
         }
 
-        [JsonProperty(nameof(InterestRate))]
-        double _interestRate = 3;
-        [JsonIgnore]
-        public double InterestRate
-        {
-            get { return _interestRate; }
-            set { SetProperty(ref _interestRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double interestRate = 3;
+
         [Ignore, JsonIgnore]
         public double CalcInterest
         {
@@ -96,96 +69,43 @@ namespace AndreasReitberger.Print3d.Models
             }
         }
 
-        [JsonProperty(nameof(MaintenanceCosts))]
-        double _maintenanceCosts = 0;
-        [JsonIgnore]
-        public double MaintenanceCosts
-        {
-            get { return _maintenanceCosts; }
-            set { SetProperty(ref _maintenanceCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double maintenanceCosts = 0;
 
-        [JsonProperty(nameof(LocationCosts))]
-        double _locationCosts = 0;
-        [JsonIgnore]
-        public double LocationCosts
-        {
-            get { return _locationCosts; }
-            set { SetProperty(ref _locationCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double locationCosts = 0;
 
-        [JsonProperty(nameof(EnergyCosts))]
-        double _energyCosts = 0;
-        [JsonIgnore]
-        public double EnergyCosts
-        {
-            get { return _energyCosts; }
-            set { SetProperty(ref _energyCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double energyCosts = 0;
 
-        //Additonal
-        [JsonProperty(nameof(AdditionalCosts))]
-        double _additionalCosts = 0;
-        [JsonIgnore]
-        public double AdditionalCosts
-        {
-            get { return _additionalCosts; }
-            set { SetProperty(ref _additionalCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double additionalCosts = 0;
 
-        [JsonProperty(nameof(MaintenanceCostsVariable))]
-        double _maintenanceCostsVariable = 0;
-        [JsonIgnore]
-        public double MaintenanceCostsVariable
-        {
-            get { return _maintenanceCostsVariable; }
-            set { SetProperty(ref _maintenanceCostsVariable, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double maintenanceCostsVariable = 0;
 
-        [JsonProperty(nameof(EnergyCostsVariable))]
-        double _energyCostsVariable = 0;
-        [JsonIgnore]
-        public double EnergyCostsVariable
-        {
-            get { return _energyCostsVariable; }
-            set { SetProperty(ref _energyCostsVariable, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double energyCostsVariable = 0;
 
-        [JsonProperty(nameof(AdditionalCostsVariable))]
-        double _additionalCostsVariable = 0;
-        [JsonIgnore]
-        public double AdditionalCostsVariable
-        {
-            get { return _additionalCostsVariable; }
-            set { SetProperty(ref _additionalCostsVariable, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double additionalCostsVariable = 0;
 
-        [JsonProperty(nameof(FixMachineHourRate))]
-        double _fixMachineHourRate = -1;
-        [JsonIgnore]
-        public double FixMachineHourRate
-        {
-            get { return _fixMachineHourRate; }
-            set { SetProperty(ref _fixMachineHourRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double fixMachineHourRate = -1;
 
         [Ignore, JsonIgnore]
-        public double CalcMachineHourRate
-        {
-            get
-            {
-                return GetMachineHourRate();
-            }
-        }
+        public double CalcMachineHourRate => GetMachineHourRate();
         
         [Ignore, JsonIgnore]
-        public double TotalCosts
-        {
-            get
-            {
-                return GetTotalCosts();
-            }
-        }
+        public double TotalCosts => GetTotalCosts();
         #endregion
 
         #region Constructor

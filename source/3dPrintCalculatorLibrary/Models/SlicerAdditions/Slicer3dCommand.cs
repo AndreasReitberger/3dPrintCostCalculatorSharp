@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -7,32 +9,32 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.Models.SlicerAdditions
 {
     [Table("SlicerCommands")]
-    public class Slicer3dCommand
+    public partial class Slicer3dCommand : ObservableObject, ISlicer3dCommand
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid SlicerId 
-        { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid slicerId;
 
-        [ManyToOne(nameof(SlicerId))]
-        public Slicer3d Slicer 
-        { get; set; }
+        [ObservableProperty]
+        [property: ManyToOne(nameof(SlicerId))]
+        public Slicer3d slicer;
 
-        public string Name 
-        { get; set; }       
+        [ObservableProperty]
+        public string name;
 
-        public string Command 
-        { get; set; }
+        [ObservableProperty]
+        public string command;
 
-        public string OutputFilePatternString 
-        { get; set; }
+        [ObservableProperty]
+        public string outputFilePatternString;
 
-        public bool AutoAddFilePath 
-        { get; set; }
+        [ObservableProperty]
+        public bool autoAddFilePath;
 
         #endregion
 

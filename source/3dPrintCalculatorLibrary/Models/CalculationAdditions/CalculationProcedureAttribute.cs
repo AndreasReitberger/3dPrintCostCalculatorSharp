@@ -1,4 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -7,25 +9,29 @@ using System.Collections.Generic;
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     [Table("CalculationProcedureAttribute")]
-    public class CalculationProcedureAttribute
+    public partial class CalculationProcedureAttribute : ObservableObject, ICalculationProcedureAttribute
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId
-        { get; set; }
-        public Material3dFamily Family
-        { get; set; }
-        public ProcedureAttribute Attribute 
-        { get; set; }
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<CalculationProcedureParameter> Parameters
-        { get; set; } = new List<CalculationProcedureParameter>();
-        public CalculationLevel Level
-        { get; set; } = CalculationLevel.Printer;
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3d))]
+        public Guid calculationId;
+
+        [ObservableProperty]
+        public Material3dFamily family;
+
+        [ObservableProperty]
+        public ProcedureAttribute attribute;
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<CalculationProcedureParameter> parameters = new();
+
+        [ObservableProperty]
+        public CalculationLevel level = CalculationLevel.Printer;
         #endregion
 
         #region Constructor

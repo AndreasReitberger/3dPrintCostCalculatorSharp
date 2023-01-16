@@ -2,14 +2,13 @@
 
 namespace AndreasReitberger.Print3d.Interface
 {
-    public interface ISparepart
+    public interface ICalculationProcedureParameterAddition
     {
         #region Properties
         public Guid Id { get; set; }
-        public Guid MaintenanceId { get; set; }
+        public Guid CalculationProcedureParameterId{ get; set; }
         public string Name { get; set; }
-        public string Partnumber { get; set; }
-        public double Costs { get; set; }
+        public double Value { get; set; }
         #endregion
     }
 }

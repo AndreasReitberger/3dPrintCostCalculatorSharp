@@ -1,18 +1,20 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
 {
     [Table("WorkstepCategories")]
-    public class WorkstepCategory
+    public partial class WorkstepCategory : ObservableObject, IWorkstepCategory
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }// = Guid.NewGuid();
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        public string Name
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public string name = string.Empty;
         #endregion
 
         #region Constructors

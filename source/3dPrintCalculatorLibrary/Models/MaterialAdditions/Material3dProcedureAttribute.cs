@@ -1,4 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -6,7 +8,7 @@ using System;
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
     [Table("MaterialProcedureAttributes")]
-    public class Material3dProcedureAttribute
+    public partial class Material3dProcedureAttribute : ObservableObject, IMaterial3dProcedureAttribute
     {
         #region Properties
         [PrimaryKey]

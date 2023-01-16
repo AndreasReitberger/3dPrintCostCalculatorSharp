@@ -1,41 +1,43 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
     [Table("Slicers")]
-    public class Slicer3d : ISlicer3d
+    public partial class Slicer3d : ObservableObject, ISlicer3d
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        public Slicer SlicerName
-        { get; set; } = Slicer.Unkown;
+        [ObservableProperty]
+        public Slicer slicerName = Slicer.Unkown;
 
-        public SlicerExecutionType ExecutionType
-        { get; set; } = SlicerExecutionType.GUI;
+        [ObservableProperty]
+        public SlicerExecutionType executionType = SlicerExecutionType.GUI;
 
-        public string InstallationPath
-        { get; set; }
+        [ObservableProperty]
+        public string installationPath;
 
-        public string DownloadUri
-        { get; set; }
+        [ObservableProperty]
+        public string downloadUri;
 
-        public string Author
-        { get; set; }
+        [ObservableProperty]
+        public string author;
 
-        public string RepoUri
-        { get; set; }
+        [ObservableProperty]
+        public string repoUri;
 
-        public Version Version
-        { get; set; }
+        [ObservableProperty]
+        public Version version;
 
-        public Version LatestVersion
-        { get; set; }
+        [ObservableProperty]
+        public Version latestVersion;
         #endregion
 
         #region Constructor 

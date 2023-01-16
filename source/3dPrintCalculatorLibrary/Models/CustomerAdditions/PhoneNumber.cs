@@ -1,19 +1,25 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.CustomerAdditions
 {
     [Table("PhoneNumbers")]
-    public class PhoneNumber
+    public partial class PhoneNumber : ObservableObject, IPhoneNumber
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        [ForeignKey(typeof(Customer3d))]
-        public Guid CustomerId { get; set; }
-        public string Phone { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Customer3d))]
+        public Guid customerId;
+
+        [ObservableProperty]
+        public string phone;
         #endregion
 
         #region Constructor

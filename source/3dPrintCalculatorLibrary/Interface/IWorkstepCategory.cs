@@ -2,14 +2,11 @@
 
 namespace AndreasReitberger.Print3d.Interface
 {
-    public interface ISparepart
+    public interface IWorkstepCategory
     {
         #region Properties
         public Guid Id { get; set; }
-        public Guid MaintenanceId { get; set; }
         public string Name { get; set; }
-        public string Partnumber { get; set; }
-        public double Costs { get; set; }
         #endregion
     }
 }

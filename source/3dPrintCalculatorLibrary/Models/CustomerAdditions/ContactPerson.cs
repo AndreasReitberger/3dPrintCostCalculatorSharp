@@ -1,20 +1,35 @@
-﻿using SQLite;
+﻿using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
+using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.CustomerAdditions
 {
     [Table("ContactPersons")]
-    public class ContactPerson
+    public partial class ContactPerson : ObservableObject, IPerson
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        public string Salutation { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
-        public bool ShowOnDocuments { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
+
+        [ObservableProperty]
+        public string salutation;
+
+        [ObservableProperty]
+        public string firstName;
+
+        [ObservableProperty]
+        public string lastName;
+
+        [ObservableProperty]
+        public string email;
+
+        [ObservableProperty]
+        public string phoneNumber;
+
+        [ObservableProperty]
+        public bool showOnDocuments;
         #endregion
 
         #region Constructor

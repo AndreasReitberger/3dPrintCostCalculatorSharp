@@ -1,14 +1,23 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interface;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
-    public class ProcedureSpecificAddition
+    public partial class ProcedureSpecificAddition : ObservableObject, IProcedureSpecificAddition
     {
         #region Properties
-        public Printer3dType Procedure { get; set; } = Printer3dType.FDM;
-        public ProcedureSpecificCalculationType CalculationType { get; set; } = ProcedureSpecificCalculationType.PerPart;
-        public double Addition { get; set; }
-        public bool IsPercantageAddition { get; set; }
+        [ObservableProperty]
+        public Printer3dType procedure = Printer3dType.FDM;
+
+        [ObservableProperty]
+        public ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
+
+        [ObservableProperty]
+        public double addition;
+
+        [ObservableProperty]
+        public bool isPercantageAddition;
         #endregion
     }
 }

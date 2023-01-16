@@ -1,19 +1,20 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.CustomerAdditions
 {
-    [Table("EmailAddresses")]
-    public class Email
+    public partial class Email : ObservableObject, IEmail
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Customer3d))]
-        public Guid CustomerId { get; set; }
-        public string EmailAddress { get; set; }
+        [ObservableProperty]
+        public Guid customerId;
+
+        [ObservableProperty]
+        public string emailAddress;
         #endregion
 
         #region Constructor

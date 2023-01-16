@@ -1,24 +1,23 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
-    [Table("CalculationProcedureParameterAddition")]
-    public class CalculationProcedureParameterAddition
+    public partial class CalculationProcedureParameterAddition : ObservableObject, ICalculationProcedureParameterAddition
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(CalculationProcedureParameter))]
-        public Guid CalculationProcedureParameterId
-        { get; set; }
-        public string Name
-        { get; set; }
-        public double Value
-        { get; set; } = 0;
+        [ObservableProperty]
+        public Guid calculationProcedureParameterId;
+
+        [ObservableProperty]
+        public string name;
+
+        [ObservableProperty]
+        public double value = 0;
 
         #endregion
 

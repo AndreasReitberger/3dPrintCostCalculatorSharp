@@ -1,19 +1,23 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
-    [Table("PrinterAttributes")]
-    public class Printer3dAttribute
+    public partial class Printer3dAttribute : ObservableObject, IPrinter3dAttribute
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        [ForeignKey(typeof(Printer3d))]
-        public Guid PrinterId { get; set; }
-        public string Attribute { get; set; }
-        public double Value { get; set; }
+        [ObservableProperty]
+        public Guid id;
+
+        [ObservableProperty]
+        public Guid printerId;
+
+        [ObservableProperty]
+        public string attribute;
+
+        [ObservableProperty]
+        public double value;
         #endregion
 
         #region Constructor

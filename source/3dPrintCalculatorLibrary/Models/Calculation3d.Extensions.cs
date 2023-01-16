@@ -196,7 +196,7 @@ namespace AndreasReitberger.Print3d.Models
                                 }
                             }
                             // Add energy costs if applied
-                            if (ApplyenergyCost)
+                            if (ApplyEnergyCost)
                             {
                                 double consumption = Convert.ToDouble(((pt?.Value * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
                                 double totalEnergyCost = consumption * EnergyCostsPerkWh;

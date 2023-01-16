@@ -1,15 +1,14 @@
-﻿using AndreasReitberger.Print3d.Models.CustomerAdditions;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Models.CustomerAdditions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Customers")]
-    public class Customer3d : ICloneable
+    public partial class Customer3d : ObservableObject, ICloneable, ICustomer3d
     {
         #region Clone
         public object Clone()
@@ -19,60 +18,55 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3dProfile))]
-        public Guid CalculationProfileId { get; set; }
+        [ObservableProperty]
+        public Guid calculationProfileId;
 
-        public string CustomerId
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public string customerId = string.Empty;
 
-        public bool IsCompany
-        { get; set; } = false;
-        public string Salutation
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public bool isCompany = false;
 
-        public string Name
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public string salutation = string.Empty;
 
-        public string LastName
-        { get; set; } = string.Empty;
-        public string VAT
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public string name = string.Empty;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid ContactPersonId { get; set; }
-        [ManyToOne(nameof(ContactPersonId))]
-        public ContactPerson ContactPerson
-        { get; set; }
+        [ObservableProperty]
+        public string lastName = string.Empty;
 
-        //[ManyToMany(typeof(Address))]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Address> Addresses { get; set; } = new List<Address>();
+        [ObservableProperty]
+        public string vAT = string.Empty;
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Email> EmailAddresses { get; set; } = new();
-        //public List<string> EmailAddresses { get; set; } = new List<string>();
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid contactPersonId;
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<PhoneNumber> PhoneNumbers { get; set; } = new();
-        //public List<string> PhoneNumbers { get; set; } = new List<string>();
+        [ObservableProperty]
+        public ContactPerson contactPerson;
+
+        [ObservableProperty]
+        public List<Address> addresses = new();
+
+        [ObservableProperty]
+        public List<Email> emailAddresses = new();
+
+        [ObservableProperty]
+        public List<PhoneNumber> phoneNumbers = new();
+
+        [ObservableProperty]
+        public string handler = string.Empty;
+
+        [JsonIgnore]
+        public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
         
-        public string Handler
-        { get; set; } = string.Empty;
-
         [JsonIgnore]
-        public string FullName
-        {
-            get => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
-        }
-
-        [JsonIgnore]
-        public string MainAddress
-        {
-            get => GetAddress(0);
-        }
+        public string MainAddress => GetAddress(0);
+        
         #endregion
 
         #region Constructor

@@ -1,154 +1,81 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Models.PrinterAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
+using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Printers")]
-    public class Printer3d : BaseModel
+    public partial class Printer3d : ObservableObject, IPrinter3d
     {
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId { get; set; }
+        [ObservableProperty]
+        public Guid calculationId;
 
-        /*
-        [ManyToOne]
-        public Calculation3d Calculation { get; set; }
-        */
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public string model = string.Empty;
 
-        [JsonProperty(nameof(Model)), XmlIgnore]
-        public string _model = string.Empty;
-        [JsonIgnore]
-        public string Model
-        {
-            get { return _model; }
-            set { SetProperty(ref _model, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        Printer3dType type = Printer3dType.FDM;
 
-        [JsonProperty(nameof(Type))]
-        Printer3dType _type = Printer3dType.FDM;
-        [JsonIgnore]
-        public Printer3dType Type
-        {
-            get { return _type; }
-            set { SetProperty(ref _type, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid manufacturerId;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid ManufacturerId { get; set; }
-        
-        [JsonProperty(nameof(Manufacturer))]
+        [ObservableProperty]
+        [property: JsonIgnore]
         Manufacturer manufacturer;
-        [JsonIgnore]
-        [ManyToOne(nameof(ManufacturerId))]
-        public Manufacturer Manufacturer
-        {
-            get { return manufacturer; }
-            set { SetProperty(ref manufacturer, value); }
-        }
 
-        [JsonProperty(nameof(Price))]
-        double _price = 0;
-        [JsonIgnore]
-        public double Price
-        {
-            get { return _price; }
-            set { SetProperty(ref _price, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double price = 0;
 
-        [JsonProperty(nameof(Tax))]
-        double _tax = 0;
-        [JsonIgnore]
-        public double Tax
-        {
-            get { return _tax; }
-            set { SetProperty(ref _tax, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double tax = 0;
 
-        [JsonProperty(nameof(PriceIncludesTax))]
-        bool _priceIncludesTax = true;
-        [JsonIgnore]
-        public bool PriceIncludesTax
-        {
-            get { return _priceIncludesTax; }
-            set { SetProperty(ref _priceIncludesTax, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool priceIncludesTax = true;
 
-        [JsonProperty(nameof(Uri))]
-        string _uri = string.Empty;
-        [JsonIgnore]
-        public string Uri
-        {
-            get { return _uri; }
-            set { SetProperty(ref _uri, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string uri = string.Empty;
 
-        [JsonProperty(nameof(MaterialType))]
-        Material3dFamily _materialType = Material3dFamily.Filament;
-        [JsonIgnore]
-        public Material3dFamily MaterialType
-        {
-            get { return _materialType; }
-            set { SetProperty(ref _materialType, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        Material3dFamily materialType = Material3dFamily.Filament;
 
-        [JsonProperty(nameof(Attributes))]
-        List<Printer3dAttribute> _attributes = new();
-        [JsonIgnore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Printer3dAttribute> Attributes
-        {
-            get { return _attributes; }
-            set { SetProperty(ref _attributes, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        List<Printer3dAttribute> attributes = new();
 
-        [JsonProperty(nameof(PowerConsumption))]
-        double _powerConsumption = 0;
-        [JsonIgnore]
-        public double PowerConsumption
-        {
-            get { return _powerConsumption; }
-            set { SetProperty(ref _powerConsumption, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double powerConsumption = 0;
 
-        [JsonProperty(nameof(Width))]
-        double _width = 1;
-        [JsonIgnore]
-        public double Width
-        {
-            get { return _width; }
-            set { SetProperty(ref _width, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double width = 1;
 
-        [JsonProperty(nameof(Depth))]
-        double _depth = 1;
-        [JsonIgnore]
-        public double Depth
-        {
-            get { return _depth; }
-            set { SetProperty(ref _depth, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double depth = 1;
 
-        [JsonProperty(nameof(Height))]
-        double _height = 1;
-        [JsonIgnore]
-        public double Height
-        {
-            get { return _height; }
-            set { SetProperty(ref _height, value); }
-        }
-        /**/
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double height = 1;
+        /*
         [JsonIgnore, XmlIgnore]
         public Guid BuildVolumeId { get; set; }
 
@@ -162,81 +89,46 @@ namespace AndreasReitberger.Print3d.Models
             get { return _buildVolume; }
             set { SetProperty(ref _buildVolume, value); }
         }
-        
+        */
 
-        [JsonProperty(nameof(UseFixedMachineHourRating))]
-        bool _useFixedMachineHourRating = false;
-        [JsonIgnore]
-        public bool UseFixedMachineHourRating
-        {
-            get { return _useFixedMachineHourRating; }
-            set { SetProperty(ref _useFixedMachineHourRating, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool useFixedMachineHourRating = false;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid HourlyMachineRateId { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid hourlyMachineRateId;
 
-        [JsonProperty(nameof(HourlyMachineRate))]
-        HourlyMachineRate _hourlyMachineRate;
-        [JsonIgnore]
-        [ManyToOne(nameof(HourlyMachineRateId))]
-        public HourlyMachineRate HourlyMachineRate
-        {
-            get { return _hourlyMachineRate; }
-            set { SetProperty(ref _hourlyMachineRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        HourlyMachineRate hourlyMachineRate;
 
-        [JsonProperty(nameof(Maintenances))]
-        ObservableCollection<Maintenance3d> _maintenances = new();
-        [JsonIgnore]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<Maintenance3d> Maintenances
-        {
-            get { return _maintenances; }
-            set { SetProperty(ref _maintenances, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        ObservableCollection<Maintenance3d> maintenances = new();
 
-        [JsonIgnore, XmlIgnore]
-        public Guid SlicerConfigId { get; set; }
 
-        [JsonProperty(nameof(SlicerConfig))]
-        Printer3dSlicerConfig _slicerConfig = new();
-        [JsonIgnore]
-        [ManyToOne(nameof(SlicerConfigId))]
-        public Printer3dSlicerConfig SlicerConfig
-        {
-            get { return _slicerConfig; }
-            set { SetProperty(ref _slicerConfig, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid slicerConfigId;
 
-        [JsonProperty(nameof(Image))]
-        byte[] _image = new byte[0];
-        [JsonIgnore]
-        public byte[] Image
-        {
-            get { return _image; }
-            set { SetProperty(ref _image, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        Printer3dSlicerConfig slicerConfig = new();
 
-        [JsonProperty(nameof(Note))]
-        public string _note = string.Empty;
-        [JsonIgnore]
-        public string Note
-        {
-            get { return _note; }
-            set { SetProperty(ref _note, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        byte[] image = Array.Empty<byte>();
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public string note = string.Empty;
 
         [JsonIgnore]
-        public string Name
-        {
-            get => (Manufacturer != null && !string.IsNullOrEmpty(Manufacturer.Name)) ? string.Format("{0}, {1}", Manufacturer.Name, Model) : Model;
-        }
+        public string Name => (Manufacturer != null && !string.IsNullOrEmpty(Manufacturer.Name)) ? string.Format("{0}, {1}", Manufacturer.Name, Model) : Model;
+
         [JsonIgnore]
-        public double Volume
-        {
-            get => CalculateVolume();
-        }
+        public double Volume => CalculateVolume();
         #endregion
 
         #region Constructor

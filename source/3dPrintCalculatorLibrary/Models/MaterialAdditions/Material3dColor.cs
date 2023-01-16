@@ -1,25 +1,26 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
-    [Table("MaterialColors")]
-    public class Material3dColor
+    public partial class Material3dColor : ObservableObject, IMaterial3dColor
     {
         #region Properties 
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
-        [ForeignKey(typeof(Material3d))]
-        public Guid MaterialId 
-        { get; set; }
-        public string Name
-        { get; set; }
-        public string HexColorCode
-        { get; set; }
-        public string SKU
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
+
+        [ObservableProperty]
+        public Guid materialId;
+
+        [ObservableProperty]
+        public string name;
+
+        [ObservableProperty]
+        public string hexColorCode;
+
+        [ObservableProperty]
+        public string sKU;
         #endregion
 
         #region Constructors

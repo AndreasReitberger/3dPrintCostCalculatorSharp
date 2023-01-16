@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
-using SQLite;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
-    [Table("BuildVolumes")]
     [Obsolete]
     public class BuildVolume : INotifyPropertyChanged
     {
@@ -20,7 +18,6 @@ namespace AndreasReitberger.Print3d.Models.PrinterAdditions
         #endregion
 
         #region Properies
-        [PrimaryKey]
         public Guid Id
         { get; set; }
 

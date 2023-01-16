@@ -1,35 +1,29 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Enums;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
-    [Table("CalculationProcedureParameter")]
-    public class CalculationProcedureParameter
+    public partial class CalculationProcedureParameter : ObservableObject, ICalculationProcedureParameter
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(CalculationProcedureAttribute))]
-        public Guid CalculationProcedureAttributeId
-        { get; set; }
-        public ProcedureParameter Type
-        { get; set; }
-        public double Value
-        { get; set; } = 0;
-        
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<CalculationProcedureParameterAddition> Additions
-        { get; set; } = new();
+        [ObservableProperty]
+        public Guid calculationProcedureAttributeId;
 
-        [Ignore, Obsolete("Replaced by 'Additions' due to database upgrade")]
-        public SerializableDictionary<string, double> AdditionalInformation
-        { get; set; } = new SerializableDictionary<string, double>();
+        [ObservableProperty]
+        public ProcedureParameter type;
+
+        [ObservableProperty]
+        public double value = 0;
+
+        [ObservableProperty]
+        public List<CalculationProcedureParameterAddition> additions = new();
+
         #endregion
 
         #region Constructor

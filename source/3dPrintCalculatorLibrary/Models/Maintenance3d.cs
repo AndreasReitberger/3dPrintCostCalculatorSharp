@@ -1,16 +1,15 @@
-﻿using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Models.MaintenanceAdditions;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Maintenances")]
-    public class Maintenance3d : ICloneable
+    public partial class Maintenance3d : ObservableObject, ICloneable, IMaintenance3d
     {
-
         #region Clone
         public object Clone()
         {
@@ -19,21 +18,25 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Printer3d))]
-        public Guid PrinterId { get; set; }
+        [ObservableProperty]
+        public Guid printerId;
 
-        public string Description { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public DateTime Date { get; set; }
-        public double Duration { get; set; }
+        [ObservableProperty]
+        public string description = string.Empty;
+        [ObservableProperty]
+        public string category = string.Empty;
+        [ObservableProperty]
+        public DateTime date;
+        [ObservableProperty]
+        public double duration;
+        [ObservableProperty]
+        public double additionalCosts;
 
-        public double AdditionalCosts { get; set; }
-
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Sparepart> Spareparts { get; set; } = new();
+        [ObservableProperty]
+        public List<Sparepart> spareparts = new();
 
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
         #endregion

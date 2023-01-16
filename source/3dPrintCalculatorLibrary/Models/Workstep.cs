@@ -1,121 +1,72 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
-using SQLite;
 using System;
-using SQLiteNetExtensions.Attributes;
+using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Worksteps")]
-    public class Workstep : BaseModel
+    public partial class Workstep : ObservableObject, IWorkstep
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId 
-        { get; set; }
+        [ObservableProperty]
+        public Guid calculationId;
 
-        [JsonProperty(nameof(Name))]
-        string _name = string.Empty;
-        [JsonIgnore]
-        public string Name
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string name = string.Empty;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double price = 0;
+        partial void OnPriceChanged(double value)
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            TotalCosts = CalcualteTotalCosts();
         }
 
-        [JsonProperty(nameof(Price))]
-        double _price = 0;
-        [JsonIgnore]
-        public double Price
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int quantity = 1;
+        partial void OnQuantityChanged(int value)
         {
-            get { return _price; }
-            set
-            {
-                SetProperty(ref _price, value);
-                TotalCosts = CalcualteTotalCosts();
-            }
+            TotalCosts = CalcualteTotalCosts();
         }
 
-        [JsonProperty(nameof(Quantity))]
-        int _quantity = 1;
-        [JsonIgnore]
-        public int Quantity
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public Guid categoryId;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        WorkstepCategory category;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        CalculationType calculationType;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double duration = 0;
+        partial void OnDurationChanged(double value)
         {
-            get { return _quantity; }
-            set
-            {
-                SetProperty(ref _quantity, value);
-                TotalCosts = CalcualteTotalCosts();
-            }
+            TotalCosts = CalcualteTotalCosts();
         }
 
-        [JsonIgnore]
-        public Guid CategoryId { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        WorkstepType type;
 
-        [JsonProperty(nameof(Category))]
-        WorkstepCategory _category;
-        [JsonIgnore]
-        [ManyToOne(nameof(CategoryId))]
-        public WorkstepCategory Category
-        {
-            get { return _category; }
-            set { SetProperty(ref _category, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double totalCosts = 0;
 
-        [JsonProperty(nameof(CalculationType))]
-        CalculationType _calculationType;
-        [JsonIgnore]
-        public CalculationType CalculationType
-        {
-            get { return _calculationType; }
-            set { SetProperty(ref _calculationType, value); }
-        }
-
-        [JsonProperty(nameof(Duration))]
-        double _duration = 0;
-        [JsonIgnore]
-        public double Duration
-        {
-            get { return _duration; }
-            set
-            {
-                SetProperty(ref _duration, value);
-                TotalCosts = CalcualteTotalCosts();
-            }
-        }
-
-        [JsonProperty(nameof(Type))]
-        WorkstepType _type;
-        [JsonIgnore]
-        public WorkstepType Type
-        {
-            get { return _type; }
-            set { SetProperty(ref _type, value); }
-        }
-
-        [JsonProperty(nameof(TotalCosts))]
-        double _totalCosts = 0;
-        [JsonIgnore]
-        public double TotalCosts
-        {
-            get { return _totalCosts; }
-            set { SetProperty(ref _totalCosts, value); }
-        }
-
-        [JsonProperty(nameof(Note))]
-        public string _note = string.Empty;
-        [JsonIgnore]
-        public string Note
-        {
-            get { return _note; }
-            set { SetProperty(ref _note, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public string note = string.Empty;
         #endregion
 
         #region Constructors

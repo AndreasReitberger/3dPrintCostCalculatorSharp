@@ -1,11 +1,10 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Manufacturers")]
-    public class Manufacturer : ICloneable
+    public partial class Manufacturer : ObservableObject, ICloneable, IManufacturer
     {
         #region Clone
         public object Clone()
@@ -15,23 +14,29 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Properties 
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
-        [ForeignKey(typeof(Supplier))]
-        public Guid SupplierId { get; set; }
-        public string Name
-        { get; set; } = string.Empty;
-        public string DebitorNumber
-        { get; set; } = string.Empty;
-        public bool IsActive
-        { get; set; } = true;
-        public string Website
-        { get; set; } = string.Empty;
-        public string Note
-        { get; set; } = string.Empty;
-        public string CountryCode
-        { get; set; } = string.Empty;
+        [ObservableProperty]
+        public Guid id;
+
+        [ObservableProperty]
+        public Guid supplierId;
+
+        [ObservableProperty]
+        public string name = string.Empty;
+
+        [ObservableProperty]
+        public string debitorNumber = string.Empty;
+
+        [ObservableProperty]
+        public bool isActive = true; 
+
+        [ObservableProperty]
+        public string website = string.Empty;
+
+        [ObservableProperty]
+        public string note = string.Empty;
+
+        [ObservableProperty]
+        public string countryCode = string.Empty;
         #endregion
 
         #region Constructor

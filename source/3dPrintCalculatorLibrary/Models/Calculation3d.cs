@@ -1,14 +1,14 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.CalculationAdditions;
 using AndreasReitberger.Print3d.Models.Events;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using AndreasReitberger.Print3d.Models.PrinterAdditions;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using AndreasReitberger.Print3d.Utilities;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,342 +18,202 @@ using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Calculations")]
-    public partial class Calculation3d : BaseModel
+    public partial class Calculation3d : ObservableObject, ICalculation3d
     {
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
         #region Basics
-        /*
-         * Otherwise cannot be deserialized with JsonConverter
-         */
-        [JsonProperty(nameof(Name))]
-        string _name = string.Empty;
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string name = string.Empty;
 
+        [ObservableProperty]
+        [property: JsonIgnore]
+        DateTime created = DateTime.Now;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public Guid printerId;
+
+        [ObservableProperty]
+        [property: JsonIgnore, Ignore]
         [JsonIgnore]
-        public string Name
+        Printer3d printer;
+        partial void OnPrinterChanged(Printer3d value)
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
-        }
-
-        [JsonProperty(nameof(Created))]
-        DateTime _created = DateTime.Now;
-
-        [JsonIgnore]
-        public DateTime Created
-        {
-            get { return _created; }
-            set { SetProperty(ref _created, value); }
-        }
-
-        [JsonIgnore, XmlIgnore]
-        public Guid PrinterId { get; set; }
-
-        [JsonProperty(nameof(Printer))]
-        Printer3d _printer;
-        
-        [Ignore, JsonIgnore]
-        //[ManyToOne(nameof(PrinterId))]
-        public Printer3d Printer
-        {
-            get { return _printer; }
-            set
+            if (!RealculationRequired)
             {
-                bool invalidate = SetProperty(ref _printer, value);
-                // Recalculate on change
-                if (invalidate && !RealculationRequired)
+                RealculationRequired = true;
+                IsCalculated = false;
+                OnPrinterChangedEvent(new()
                 {
-                    RealculationRequired = true;
-                    IsCalculated = false;
-                    OnPrinterChanged(new()
-                    {
-                        CalculationId = Id,
-                        Printer = value,
-                    });
-                }
-            }
-        }
-        
-        [JsonIgnore, XmlIgnore]
-        public Guid MaterialId { get; set; }
-
-        [JsonProperty(nameof(Material))]
-        Material3d _material;
-        
-        [Ignore, JsonIgnore]
-        //[ManyToOne(nameof(MaterialId))]
-        public Material3d Material
-        {
-            get { return _material; }
-            set
-            {
-                bool invalidate = SetProperty(ref _material, value);
-                // Recalculate on change
-                if (invalidate && !RealculationRequired)
-                {
-                    RealculationRequired = true;
-                    IsCalculated = false;
-                    OnMaterialChanged(new()
-                    {
-                        CalculationId = Id,
-                        Material = value,
-                    });
-                }
+                    CalculationId = Id,
+                    Printer = value,
+                });
             }
         }
 
-        [JsonIgnore, XmlIgnore]
-        public Guid CustomerId { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public Guid materialId;
 
-        [JsonProperty(nameof(Customer))]
-        Customer3d _customer;
-        
+        [ObservableProperty]
+        [property: JsonIgnore, Ignore]
         [JsonIgnore]
-        [ManyToOne(nameof(CustomerId))]
-        public Customer3d Customer
+        Material3d material;
+        partial void OnMaterialChanged(Material3d value)
         {
-            get { return _customer; }
-            set { SetProperty(ref _customer, value); }
-        }
-
-        [JsonProperty(nameof(IsCalculated))]
-        bool _isCalculated = false;
-        [Ignore, JsonIgnore, XmlIgnore]
-        public bool IsCalculated
-        {
-            get { return _isCalculated; }
-            private set { SetProperty(ref _isCalculated, value); }
-        }
-
-        [JsonProperty(nameof(RealculationRequired))]
-        bool _realculationRequired = false;
-        [Ignore, JsonIgnore, XmlIgnore]
-        public bool RealculationRequired
-        {
-            get { return _realculationRequired; }
-            //private set { SetProperty(ref _realculationRequired, value); }
-            private set
+            if (!RealculationRequired)
             {
-                SetProperty(ref _realculationRequired, value);
-                if (_realculationRequired)
+                RealculationRequired = true;
+                IsCalculated = false;
+                OnMaterialChangedEvent(new()
                 {
-                    OnRecalculationNeeded(new()
-                    {
-                        CalculationId = Id,
-                    });
-                }
+                    CalculationId = Id,
+                    Material = value,
+                });
             }
         }
 
-        [JsonProperty(nameof(Quantity))]
-        int _quantity = 1;
-        [JsonIgnore]
-        public int Quantity
+        [ObservableProperty]
+        [property: JsonIgnore]
+        public Guid customerId;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [property: ManyToOne(nameof(CustomerId))]
+        Customer3d customer;
+        
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        bool isCalculated = false;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        bool realculationRequired = false;
+        partial void OnRealculationRequiredChanged(bool value)
         {
-            get { return _quantity; }
-            set { SetProperty(ref _quantity, value); }
+            if (value)
+            {
+                OnRecalculationNeeded(new()
+                {
+                    CalculationId = Id,
+                });
+            }
         }
 
-        [JsonProperty(nameof(PowerLevel))]
-        double _powerLevel = 0;
-        [JsonIgnore]
-        public double PowerLevel
-        {
-            get { return _powerLevel; }
-            set { SetProperty(ref _powerLevel, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int quantity = 1;
 
-        [JsonProperty(nameof(FailRate))]
-        double _failRate = 0;
-        [JsonIgnore]
-        public double FailRate
-        {
-            get { return _failRate; }
-            set { SetProperty(ref _failRate, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double powerLevel = 0;
 
-        [JsonProperty(nameof(EnergyCostsPerkWh))]
-        double _energyCostsPerkWh = 0;
-        [JsonIgnore]
-        public double EnergyCostsPerkWh
-        {
-            get { return _energyCostsPerkWh; }
-            set { SetProperty(ref _energyCostsPerkWh, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double failRate = 0;
 
-        [JsonProperty(nameof(ApplyenergyCost))]
-        bool _applyEnergyCost = false;
-        [JsonIgnore]
-        public bool ApplyenergyCost
-        {
-            get { return _applyEnergyCost; }
-            set { SetProperty(ref _applyEnergyCost, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double energyCostsPerkWh = 0;
 
-        [JsonProperty(nameof(TotalCosts))]
-        double _totalCosts = 0;
-        [JsonIgnore]
-        public double TotalCosts
-        {
-            get { return _totalCosts; }
-            set { SetProperty(ref _totalCosts, value); }
-        }
-        /*
-        [JsonProperty(nameof(TargetProcedure))]
-        Printer3dType _targetProcedure;
-        [JsonIgnore]
-        public Printer3dType TargetProcedure
-        {
-            get { return _targetProcedure; }
-            set { SetProperty(ref _targetProcedure, value); }
-        }
-        */
-        [JsonIgnore]
-        bool _combineMaterialCosts = false;
-        [JsonIgnore]
-        public bool CombineMaterialCosts
-        {
-            get { return _combineMaterialCosts; }
-            set { SetProperty(ref _combineMaterialCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyEnergyCost = false;
 
-        [JsonProperty(nameof(DifferFileCosts))]
-        bool _differFileCosts = true;
-        [JsonIgnore]
-        public bool DifferFileCosts
-        {
-            get { return _differFileCosts; }
-            set { SetProperty(ref _differFileCosts, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double totalCosts = 0;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool combineMaterialCosts = false;
+
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool differFileCosts = true;
+
         #endregion
 
         #region Details
-        [ManyToMany(typeof(Printer3dCalculation))]
-        public List<Printer3d> Printers
-        { get; set; } = new List<Printer3d>();
+        [ObservableProperty]
+        public List<Printer3d> printers= new();
 
-        [ManyToMany(typeof(Material3dCalculation))]
-        public List<Material3d> Materials
-        { get; set; } = new List<Material3d>();
+        [ObservableProperty]
+        public List<Material3d> materials = new();
 
-        [ManyToMany(typeof(CustomAdditionCalculation))]
-        public List<CustomAddition> CustomAdditions
-        { get; set; } = new List<CustomAddition>();
+        [ObservableProperty]
+        public List<CustomAddition> customAdditions = new();
 
-        [ManyToMany(typeof(WorkstepCalculation))]
-        public List<Workstep> WorkSteps
-        { get; set; } = new List<Workstep>();
+        [ObservableProperty]
+        public List<Workstep> workSteps = new();
 
-        //[ManyToMany(typeof(WorkstepDurationCalculation))]
-        [OneToMany]
-        public List<WorkstepDuration> WorkStepDurations
-        { get; set; } = new List<WorkstepDuration>();
+        [ObservableProperty]
+        public List<WorkstepDuration> workStepDurations = new();
 
-        [Ignore]
-        public ObservableCollection<CalculationAttribute> PrintTimes
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationAttribute> printTimes = new();
 
-        [Ignore]
-        public ObservableCollection<CalculationAttribute> MaterialUsage
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationAttribute> materialUsage = new();
 
-        [Ignore]
-        public ObservableCollection<CalculationAttribute> OverallMaterialCosts
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
 
-        [Ignore]
-        public ObservableCollection<CalculationAttribute> OverallPrinterCosts
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
 
-        [Ignore]
-        public ObservableCollection<CalculationAttribute> Costs
-        { get; set; } = new ObservableCollection<CalculationAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationAttribute> costs = new();
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<CalculationAttribute> Rates
-        { get; set; } = new List<CalculationAttribute>();
+        [ObservableProperty]
+        public List<CalculationAttribute> rates = new();
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<File3d> Files
-        { get; set; } = new List<File3d>();
+        [ObservableProperty]
+        public List<File3d> files = new();
         #endregion
 
         #region AdditionalSettings
-        [JsonProperty(nameof(ApplyEnhancedMarginSettings))]
-        bool _applyEnhancedMarginSettings = false;
-        [JsonIgnore]
-        public bool ApplyEnhancedMarginSettings
-        {
-            get { return _applyEnhancedMarginSettings; }
-            set { SetProperty(ref _applyEnhancedMarginSettings, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyEnhancedMarginSettings = false;
 
-        [JsonProperty(nameof(ExcludePrinterCostsFromMarginCalculation))]
-        bool _excludePrinterCostsFromMarginCalculation = false;
-        [JsonIgnore]
-        public bool ExcludePrinterCostsFromMarginCalculation
-        {
-            get { return _excludePrinterCostsFromMarginCalculation; }
-            set { SetProperty(ref _excludePrinterCostsFromMarginCalculation, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool excludePrinterCostsFromMarginCalculation = false;
 
-        [JsonProperty(nameof(ExcludeMaterialCostsFromMarginCalculation))]
-        bool _excludeMaterialCostsFromMarginCalculation = false;
-        [JsonIgnore]
-        public bool ExcludeMaterialCostsFromMarginCalculation
-        {
-            get { return _excludeMaterialCostsFromMarginCalculation; }
-            set { SetProperty(ref _excludeMaterialCostsFromMarginCalculation, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool excludeMaterialCostsFromMarginCalculation = false;
 
-        [JsonProperty(nameof(ExcludeWorkstepsFromMarginCalculation))]
-        bool _excludeWorkstepsFromMarginCalculation = false;
-        [JsonIgnore]
-        public bool ExcludeWorkstepsFromMarginCalculation
-        {
-            get { return _excludeWorkstepsFromMarginCalculation; }
-            set { SetProperty(ref _excludeWorkstepsFromMarginCalculation, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool excludeWorkstepsFromMarginCalculation = false;
+
         #endregion
 
         #region ProcedureSpecific
-        [JsonProperty(nameof(ApplyProcedureSpecificAdditions))]
-        bool _applyProcedureSpecificAdditions = false;
-        [JsonIgnore]
-        public bool ApplyProcedureSpecificAdditions
-        {
-            get { return _applyProcedureSpecificAdditions; }
-            set { SetProperty(ref _applyProcedureSpecificAdditions, value); }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool applyProcedureSpecificAdditions = false;
 
-        [JsonProperty(nameof(Procedure))]
+        [ObservableProperty]
+        [property: JsonIgnore]
         Material3dFamily _procedure = Material3dFamily.Misc;
-        [JsonIgnore]
-        public Material3dFamily Procedure
-        {
-            get { return _procedure; }
-            set { SetProperty(ref _procedure, value); }
-        }
 
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<CalculationProcedureAttribute> ProcedureAttributes
-        { get; set; } = new ObservableCollection<CalculationProcedureAttribute>();
+        [ObservableProperty]
+        public ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
         #endregion
 
         #region Calculated
-        [Ignore, JsonIgnore]
-        public int TotalQuantity
-        {
-            get
-            {
-                return GetTotalQuantity();
-            }
-        }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
+        public int TotalQuantity => GetTotalQuantity();
+
+        [JsonIgnore]
         public double TotalPrintTime
         {
             get
@@ -364,7 +224,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalVolume
         {
             get
@@ -375,7 +235,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double TotalMaterialUsed
         {
             get
@@ -386,7 +246,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double MachineCosts
         {
             get
@@ -397,7 +257,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double MaterialCosts
         {
             get
@@ -408,7 +268,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double EnergyCosts
         {
             get
@@ -419,7 +279,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double HandlingCosts
         {
             get
@@ -430,7 +290,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CustomAdditionCosts
         {
             get
@@ -441,7 +301,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double WorkstepCosts
         {
             get
@@ -452,7 +312,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalculatedMargin
         {
             get
@@ -463,7 +323,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CalculatedTax
         {
             get
@@ -474,7 +334,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [Ignore, JsonIgnore]
+        [JsonIgnore]
         public double CostsPerPiece
         {
             get
@@ -512,13 +372,13 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
-        protected virtual void OnPrinterChanged(PrinterChangedEventArgs e)
+        protected virtual void OnPrinterChangedEvent(PrinterChangedEventArgs e)
         {
             PrinterChanged?.Invoke(this, e);
         }
 
         public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
-        protected virtual void OnMaterialChanged(MaterialChangedEventArgs e)
+        protected virtual void OnMaterialChangedEvent(MaterialChangedEventArgs e)
         {
             MaterialChanged?.Invoke(this, e);
         }
@@ -726,7 +586,7 @@ namespace AndreasReitberger.Print3d.Models
                                     });
                                 }
                             }
-                            if (ApplyenergyCost)
+                            if (ApplyEnergyCost)
                             {
                                 double consumption = Convert.ToDouble(((printTime.Value * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
                                 double totalEnergyCost = consumption * EnergyCostsPerkWh;
@@ -762,7 +622,7 @@ namespace AndreasReitberger.Print3d.Models
                                 });
                             }
                         }
-                        if (ApplyenergyCost)
+                        if (ApplyEnergyCost)
                         {
                             double consumption = Convert.ToDouble(((totalPrintTime * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
                             double totalEnergyCost = consumption * EnergyCostsPerkWh;

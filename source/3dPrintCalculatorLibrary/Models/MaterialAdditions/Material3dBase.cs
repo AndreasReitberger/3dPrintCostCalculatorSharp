@@ -1,13 +1,12 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
+    [Obsolete]
     public class Material3dBase
     {
         #region Properties 
-        [PrimaryKey]
         public Guid Id
         { get; set; }
         public Material3dTypes Type

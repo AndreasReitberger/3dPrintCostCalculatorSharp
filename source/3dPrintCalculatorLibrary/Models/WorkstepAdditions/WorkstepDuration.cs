@@ -1,29 +1,26 @@
-﻿using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
 {
-    [Table("WorkstepDurations")]
-    public class WorkstepDuration
+    public partial class WorkstepDuration : ObservableObject, IWorkstepDuration
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId
-        { get; set; }
+        [ObservableProperty]
+        public Guid calculationId;
 
-        [ManyToOne]
-        public Calculation3d Calculation { get; set; }
+        [ObservableProperty]
+        public Calculation3d calculation;
 
-        public Guid WorkstepId
-        { get; set; }
+        [ObservableProperty]
+        public Guid workstepId;
 
-        public double Duration
-        { get; set; } = 0;
+        [ObservableProperty]
+        public double duration = 0;
         #endregion
 
         #region Constructors

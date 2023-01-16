@@ -1,147 +1,64 @@
-﻿using AndreasReitberger.Print3d.Models.FileAdditions;
-using AndreasReitberger.Core.Utilities;
-using Newtonsoft.Json;
-using SQLite;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Models.FileAdditions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using SQLiteNetExtensions.Attributes;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    [Table("Files")]
-    public class File3d : BaseModel
+    public partial class File3d : ObservableObject, IFile3d
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
+        [ObservableProperty]
+        public Guid id;
 
-        [ForeignKey(typeof(Calculation3d))]
-        public Guid CalculationId { get; set; }
+        [ObservableProperty]
+        public Guid calculationId;
 
-        [JsonProperty(nameof(Name))]
-        string _name = string.Empty;
-        [JsonIgnore]
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                SetProperty(ref _name, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string name = string.Empty;
 
-        [JsonProperty(nameof(File))]
-        object _file;
-        [JsonIgnore, Ignore]
-        public object File
-        {
-            get { return _file; }
-            set
-            {
-                SetProperty(ref _file, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        object file;
 
-        [JsonProperty(nameof(FileName))]
-        string _fileName = string.Empty;
-        [JsonIgnore]
-        public string FileName
-        {
-            get { return _fileName; }
-            set
-            {
-                SetProperty(ref _fileName, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string fileName = string.Empty;
 
-        [JsonProperty(nameof(FilePath))]
-        string _filePath = string.Empty;
-        [JsonIgnore]
-        public string FilePath
-        {
-            get { return _filePath; }
-            set
-            {
-                SetProperty(ref _filePath, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        string filePath = string.Empty;
 
-        [JsonProperty(nameof(Volume))]
-        double _volume = 0;
-        [JsonIgnore]
-        public double Volume
-        {
-            get { return _volume; }
-            set
-            {
-                SetProperty(ref _volume, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double volume = 0;
 
-        [JsonIgnore, XmlIgnore]
-        public Guid ModelWeightId { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        public Guid modelWeightId;
 
-        [JsonProperty(nameof(Weight))]
-        ModelWeight _weight = new(-1, Enums.Unit.g);
-        [JsonIgnore]
-        [ManyToOne(nameof(ModelWeightId))]
-        public ModelWeight Weight
-        {
-            get { return _weight; }
-            set
-            {
-                SetProperty(ref _weight, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        [property: ManyToOne(nameof(ModelWeightId))]
+        ModelWeight weight = new(-1, Enums.Unit.g);
 
-        [JsonProperty(nameof(PrintTime))]
-        double _printTime = 0;
-        [JsonIgnore]
-        public double PrintTime
-        {
-            get { return _printTime; }
-            set
-            {
-                SetProperty(ref _printTime, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double printTime = 0;
 
-        [JsonProperty(nameof(Quantity))]
-        int _quantity = 1;
-        [JsonIgnore]
-        public int Quantity
-        {
-            get { return _quantity; }
-            set
-            {
-                SetProperty(ref _quantity, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        int quantity = 1;
 
-        [JsonProperty(nameof(MultiplyPrintTimeWithQuantity))]
-        bool _multiplyPrintTimeWithQuantity = true;
-        [JsonIgnore]
-        public bool MultiplyPrintTimeWithQuantity
-        {
-            get { return _multiplyPrintTimeWithQuantity; }
-            set
-            {
-                SetProperty(ref _multiplyPrintTimeWithQuantity, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        bool multiplyPrintTimeWithQuantity = true;
 
-        [JsonProperty(nameof(PrintTimeQuantityFactor))]
-        double _printTimeQuantityFactor = 1;
-        [JsonIgnore]
-        public double PrintTimeQuantityFactor
-        {
-            get { return _printTimeQuantityFactor; }
-            set
-            {
-                SetProperty(ref _printTimeQuantityFactor, value);
-            }
-        }
+        [ObservableProperty]
+        [property: JsonIgnore]
+        double printTimeQuantityFactor = 1;
+
         #endregion
 
         #region Constructor

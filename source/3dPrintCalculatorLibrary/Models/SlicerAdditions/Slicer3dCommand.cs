@@ -1,19 +1,15 @@
-﻿using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models.SlicerAdditions
 {
-    [Table("SlicerCommands")]
     public partial class Slicer3dCommand : ObservableObject, ISlicer3dCommand
     {
         #region Properties
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]
@@ -21,7 +17,6 @@ namespace AndreasReitberger.Print3d.Models.SlicerAdditions
         public Guid slicerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(SlicerId))]
         public Slicer3d slicer;
 
         [ObservableProperty]

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<TargetFrameworks>netstandard2.1;net472;net6;net7</TargetFrameworks>
+	<TargetFrameworks>netstandard2.1;net472;net7</TargetFrameworks>
 	<RootNamespace>AndreasReitberger</RootNamespace>
 	<Version>1.2.0-preview</Version>
 	<Description>A simple C# library to calculate 3D printing costs.</Description>
@@ -20,6 +20,7 @@
 	<RootNamespace>AndreasReitberger.Print3d.SQLite</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>3dPrintCalculatorLibrary.SQLite</Title>
   </PropertyGroup>
 
 	<ItemGroup>

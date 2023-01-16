@@ -1,16 +1,13 @@
-﻿using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.PrinterAdditions
 {
-    [Table("SlicerConfigurations")]
     public partial class Printer3dSlicerConfig : ObservableObject, IPrinter3dSlicerConfig
     {
         #region Properties
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]

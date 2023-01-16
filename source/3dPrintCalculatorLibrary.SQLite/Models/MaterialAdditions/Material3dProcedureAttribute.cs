@@ -1,5 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -11,16 +11,23 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
     public partial class Material3dProcedureAttribute : ObservableObject, IMaterial3dProcedureAttribute
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        [ForeignKey(typeof(Material3d))]
-        public Guid MaterialId { get; set; }
 
-        public Material3dFamily Family { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        public Guid id;
 
-        public ProcedureAttribute Attribute { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Material3d))]
+        public Guid materialId;
 
-        public double Value { get; set; }
+        [ObservableProperty]
+        public Material3dFamily family;
+
+        [ObservableProperty]
+        public ProcedureAttribute attribute;
+
+        [ObservableProperty]
+        public double value;
         #endregion
 
         #region Constructor

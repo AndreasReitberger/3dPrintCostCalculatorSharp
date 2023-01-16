@@ -7,9 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.NUnitTest", "3dPrintCalculatorLibrary.NUnitTest\3dPrintCalculatorLibrary.NUnitTest.csproj", "{A30455DB-BF38-4088-BDC1-17215ED75F91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.DatabaseHandler", "3dPrintCalculatorLibrary.DatabaseHandler\3dPrintCalculatorLibrary.DatabaseHandler.csproj", "{E2509433-D57A-4095-9C7F-36DF1D77237F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3dPrintCalculatorLibrary.SQLite", "3dPrintCalculatorLibrary.SQLite\3dPrintCalculatorLibrary.SQLite.csproj", "{A1422614-8919-48B7-BAFD-F9E292C9B74C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.SQLite", "3dPrintCalculatorLibrary.SQLite\3dPrintCalculatorLibrary.SQLite.csproj", "{A1422614-8919-48B7-BAFD-F9E292C9B74C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A30455DB-BF38-4088-BDC1-17215ED75F91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E2509433-D57A-4095-9C7F-36DF1D77237F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Release|Any CPU.ActiveCfg = Release|Any CPU

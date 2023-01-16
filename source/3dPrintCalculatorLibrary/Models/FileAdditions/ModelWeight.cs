@@ -1,26 +1,21 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models.FileAdditions
 {
-    [Table("ModelWeights")]
     public partial class ModelWeight : ObservableObject, IModelWeight
     {
         #region Properties
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(File3d))]
         public Guid fileId;
 
         [ObservableProperty]

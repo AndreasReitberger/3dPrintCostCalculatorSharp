@@ -1,4 +1,4 @@
-﻿using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;

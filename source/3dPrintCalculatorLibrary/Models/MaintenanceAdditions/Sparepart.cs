@@ -1,21 +1,16 @@
-﻿using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
 {
-    [Table("Spareparts")]
     public partial class Sparepart : ObservableObject, ISparepart
     {
         #region Properties
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Maintenance3d))]
         public Guid maintenanceId;
 
         [ObservableProperty]

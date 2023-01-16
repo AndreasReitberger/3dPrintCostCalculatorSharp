@@ -1,10 +1,9 @@
 using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d;
 using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Models;
-using AndreasReitberger.Print3d.Models.CalculationAdditions;
-using AndreasReitberger.Print3d.Models.MaterialAdditions;
-using AndreasReitberger.Print3d.Models.PrinterAdditions;
+using AndreasReitberger.Print3d.SQLite;
+using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using NUnit.Framework;
 using SQLite;
 using System;
@@ -160,7 +159,7 @@ namespace AndreasReitberger.NUnitTest
                         Volume = 5.25,
                         Quantity = 3,
                     });
-                    calculation.Calculate();
+                    calculation.CalculateCosts();
 
                     await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
                     Calculation3d calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
@@ -268,7 +267,9 @@ namespace AndreasReitberger.NUnitTest
                     },
                     Model = "XL MK1",
                     Price = 799,
-                    BuildVolume = new BuildVolume(25, 21, 21),
+                    Width = 25,
+                    Height = 21,
+                    Depth = 21,
                     MaterialType = Material3dFamily.Filament,
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
@@ -385,7 +386,9 @@ namespace AndreasReitberger.NUnitTest
                     },
                     Model = "XL MK1",
                     Price = 799,
-                    BuildVolume = new BuildVolume(25, 21, 21),
+                    Height = 25,
+                    Width = 21,
+                    Depth = 21,
                     MaterialType = Material3dFamily.Filament,
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
@@ -465,7 +468,6 @@ namespace AndreasReitberger.NUnitTest
                     },
                     Model = "XL MK1",
                     Price = 799,
-                    BuildVolume = new BuildVolume(25, 21, 21),
                     MaterialType = Material3dFamily.Filament,
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
@@ -481,7 +483,6 @@ namespace AndreasReitberger.NUnitTest
                     },
                     Model = "SL1 Speed",
                     Price = 1799,
-                    BuildVolume = new BuildVolume(25, 21, 21),
                     MaterialType = Material3dFamily.Resin,
                     Type = Printer3dType.SLA,
                     PowerConsumption = 210,
@@ -518,22 +519,22 @@ namespace AndreasReitberger.NUnitTest
 
                 _calculation.ApplyProcedureSpecificAdditions = true;
                 // Needed if the calculation is reloaded later
-                SerializableDictionary<string, double> additionalInfo = new SerializableDictionary<string, double>
+                List<CalculationProcedureParameterAddition> additionalInfo = new()
                 {
-                    { "replacementcosts", 20 },
-                    { "wearfactor", 0.5 }
+                    new CalculationProcedureParameterAddition("replacementcosts", 20),
+                    new CalculationProcedureParameterAddition( "wearfactor", 0.5 ),
                 };
 
                 //List<CalculationProcedureParameter> paramters = new List<CalculationProcedureParameter>();
                 List<CalculationProcedureParameter> parameters = new List<CalculationProcedureParameter>
-            {
-                new CalculationProcedureParameter()
                 {
-                    Type = ProcedureParameter.NozzleWearCosts,
-                    Value = 2,
-                    AdditionalInformation = additionalInfo,
-                }
-            };
+                    new CalculationProcedureParameter()
+                    {
+                        Type = ProcedureParameter.NozzleWearCosts,
+                        Value = 2,
+                        Additions = additionalInfo,
+                    }
+                };
 
                 _calculation.ProcedureAttributes.Add(
                     new CalculationProcedureAttribute()
@@ -545,7 +546,7 @@ namespace AndreasReitberger.NUnitTest
                     }
                 );
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
 
                 CalculationAttribute wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
@@ -560,7 +561,7 @@ namespace AndreasReitberger.NUnitTest
                     printerSla
                 };
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
                 wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
@@ -649,7 +650,7 @@ namespace AndreasReitberger.NUnitTest
             // Uses 75% of the max. power consumption set in the printer model (210 Watt)
             _calculation.PowerLevel = 75;
 
-            _calculation.Calculate();
+            _calculation.CalculateCosts();
             return _calculation;
         }
       
@@ -700,7 +701,6 @@ namespace AndreasReitberger.NUnitTest
                     },
                     Model = "XL MK1",
                     Price = 799,
-                    BuildVolume = new BuildVolume(25, 21, 21),
                     MaterialType = Material3dFamily.Filament,
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
@@ -748,7 +748,7 @@ namespace AndreasReitberger.NUnitTest
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
 
                 double total = _calculation.GetTotalCosts();
 
@@ -756,7 +756,7 @@ namespace AndreasReitberger.NUnitTest
                 var machineCosts = PrintCalculator3d.GetMachineCosts(_calculation);
 
                 _calculation.DifferFileCosts = true;
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
 
                 double totalDiffer = _calculation.GetTotalCosts();
 

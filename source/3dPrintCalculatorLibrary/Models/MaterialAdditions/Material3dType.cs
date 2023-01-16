@@ -1,17 +1,14 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
-    [Table("MaterialTypes")]
     public partial class Material3dType : ObservableObject, IMaterial3dType
     {
         #region Properties 
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]

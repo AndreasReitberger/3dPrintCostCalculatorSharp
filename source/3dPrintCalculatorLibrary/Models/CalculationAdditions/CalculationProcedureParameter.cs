@@ -1,24 +1,18 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
-    [Table("CalculationProcedureParameter")]
     public partial class CalculationProcedureParameter : ObservableObject, ICalculationProcedureParameter
     {
         #region Properties
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(CalculationProcedureAttribute))]
         public Guid calculationProcedureAttributeId;
 
         [ObservableProperty]
@@ -28,7 +22,6 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         public double value = 0;
 
         [ObservableProperty]
-        
         public List<CalculationProcedureParameterAddition> additions = new();
 
         #endregion

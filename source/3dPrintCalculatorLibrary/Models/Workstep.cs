@@ -2,7 +2,7 @@
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using Newtonsoft.Json;
 using System;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models

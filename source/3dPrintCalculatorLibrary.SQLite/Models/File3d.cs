@@ -5,7 +5,7 @@ using SQLite;
 using System;
 using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.SQLite
         string name = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        [property: JsonIgnore, Ignore]
         object file;
 
         [ObservableProperty]

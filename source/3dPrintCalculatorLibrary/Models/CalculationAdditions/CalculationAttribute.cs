@@ -1,24 +1,19 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
-    [Table("CalculationAttributes")]
     public partial class CalculationAttribute : ObservableObject, ICalculationAttribute
     {
         #region Properties
 
         [ObservableProperty]
-        
         public Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
         public Guid calculationId;
 
         [ObservableProperty]

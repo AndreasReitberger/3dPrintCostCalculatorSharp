@@ -62,7 +62,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 if (Materials.Count > 0)
                 {
                     //Material ??= Materials[0];
-                    Material = Materials?.FirstOrDefault(material => material.Id == Material?.Id);
+                    Material = Materials?.FirstOrDefault(material => material.Id == Material?.Id) ?? Materials?.FirstOrDefault();
                     //((CONSUMED_MATERIAL[g] x PRICE[$/kg]) / 1000) x QUANTITY x (FAILRATE / 100)
 
                     // Calculate the total weight for the current file
@@ -172,7 +172,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 if (Printers.Count > 0)
                 {
                     // Check if selected material is still in the collection
-                    Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id);
+                    Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id) ?? Printers?.FirstOrDefault();
                     foreach (Printer3d printer in Printers)
                     {
                         Printer ??= printer;

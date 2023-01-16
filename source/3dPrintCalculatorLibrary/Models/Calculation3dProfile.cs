@@ -1,5 +1,5 @@
 ﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;

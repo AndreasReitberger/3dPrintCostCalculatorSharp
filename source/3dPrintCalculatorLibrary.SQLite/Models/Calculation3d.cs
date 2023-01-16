@@ -1,6 +1,6 @@
 ﻿using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interface;
+using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
@@ -21,7 +21,7 @@ using System.Xml.Serialization;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("Calculations")]
-    public partial class Calculation3d : ObservableObject, ICalculation3d
+    public partial class Calculation3d : ObservableObject, ICalculation3d, ICloneable
     {
 
         #region Properties
@@ -47,7 +47,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: JsonIgnore, Ignore]
-        [JsonIgnore]
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
         {
@@ -69,7 +68,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: JsonIgnore, Ignore]
-        [JsonIgnore]
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
         {
@@ -850,6 +848,13 @@ namespace AndreasReitberger.Print3d.SQLite
             TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
             RealculationRequired = false;
+        }
+        #endregion
+
+        #region Clone
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AndreasReitberger.Print3d.Enums
+﻿namespace AndreasReitberger.Print3d.Enums
 {
     public enum CalculationAttributeType
     {
@@ -16,5 +12,6 @@ namespace AndreasReitberger.Print3d.Enums
         CustomAddition,
         FixCost,
         ProcedureSpecificAddition,
+        AdditionalItem,
     }
 }

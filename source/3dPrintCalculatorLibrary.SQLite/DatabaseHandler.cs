@@ -17,7 +17,7 @@ namespace AndreasReitberger.Print3d.SQLite
     public partial class DatabaseHandler : ObservableObject, IDatabaseHandler
     {
         #region Instance
-        static DatabaseHandler _instance = null;
+        static DatabaseHandler? _instance;
         static readonly object Lock = new();
         public static DatabaseHandler Instance
         {
@@ -145,7 +145,6 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             Database?.CreateTable<Manufacturer>();
             Database?.CreateTable<Supplier>();
-            //Database?.CreateTable<BuildVolume>();
             Database?.CreateTable<Printer3d>();
             Database?.CreateTable<Printer3dAttribute>();
             Database?.CreateTable<Printer3dSlicerConfig>();
@@ -178,49 +177,52 @@ namespace AndreasReitberger.Print3d.SQLite
             Database?.CreateTable<WorkstepCalculation>();
             Database?.CreateTable<CustomAdditionCalculation>();
             Database?.CreateTable<WorkstepDuration>();
+            Database?.CreateTable<Item3d>();
+            Database?.CreateTable<Item3dUsage>();
 
             Database?.CreateTable<DatabaseSettingsKeyValuePair>();
         }
 
         public async Task InitTablesAsync()
         {
-            await DatabaseAsync?.CreateTableAsync<Manufacturer>();
-            await DatabaseAsync?.CreateTableAsync<Supplier>();
-            //await DatabaseAsync?.CreateTableAsync<BuildVolume>();
-            await DatabaseAsync?.CreateTableAsync<Printer3d>();
-            await DatabaseAsync?.CreateTableAsync<Printer3dAttribute>();
-            await DatabaseAsync?.CreateTableAsync<Printer3dSlicerConfig>();
-            await DatabaseAsync?.CreateTableAsync<Maintenance3d>();
-            await DatabaseAsync?.CreateTableAsync<Sparepart>();
-            await DatabaseAsync?.CreateTableAsync<Material3dColor>();
-            await DatabaseAsync?.CreateTableAsync<Material3dType>();
-            await DatabaseAsync?.CreateTableAsync<Material3dAttribute>();
-            await DatabaseAsync?.CreateTableAsync<Material3dProcedureAttribute>();
-            await DatabaseAsync?.CreateTableAsync<Material3d>();
-            await DatabaseAsync?.CreateTableAsync<WorkstepCategory>();
-            await DatabaseAsync?.CreateTableAsync<Workstep>();
-            await DatabaseAsync?.CreateTableAsync<HourlyMachineRate>();
-            await DatabaseAsync?.CreateTableAsync<Customer3d>();
-            await DatabaseAsync?.CreateTableAsync<CustomAddition>();
-            await DatabaseAsync?.CreateTableAsync<CalculationAttribute>();
-            await DatabaseAsync?.CreateTableAsync<CalculationProcedureAttribute>();
-            await DatabaseAsync?.CreateTableAsync<CalculationProcedureParameter>();
-            await DatabaseAsync?.CreateTableAsync<CalculationProcedureParameterAddition>();
-            await DatabaseAsync?.CreateTableAsync<Calculation3d>();
-            await DatabaseAsync?.CreateTableAsync<File3d>();
-            await DatabaseAsync?.CreateTableAsync<ModelWeight>();
-            await DatabaseAsync?.CreateTableAsync<Address>();
-            await DatabaseAsync?.CreateTableAsync<Email>();
-            await DatabaseAsync?.CreateTableAsync<PhoneNumber>();
-            await DatabaseAsync?.CreateTableAsync<ContactPerson>();
-            await DatabaseAsync?.CreateTableAsync<Calculation3dProfile>();
-            await DatabaseAsync?.CreateTableAsync<Printer3dCalculation>();
-            await DatabaseAsync?.CreateTableAsync<Material3dCalculation>();
-            await DatabaseAsync?.CreateTableAsync<WorkstepCalculation>();
-            await DatabaseAsync?.CreateTableAsync<CustomAdditionCalculation>();
-            await DatabaseAsync?.CreateTableAsync<WorkstepDuration>();
+            await DatabaseAsync.CreateTableAsync<Manufacturer>();
+            await DatabaseAsync.CreateTableAsync<Supplier>();
+            await DatabaseAsync.CreateTableAsync<Printer3d>();
+            await DatabaseAsync.CreateTableAsync<Printer3dAttribute>();
+            await DatabaseAsync.CreateTableAsync<Printer3dSlicerConfig>();
+            await DatabaseAsync.CreateTableAsync<Maintenance3d>();
+            await DatabaseAsync.CreateTableAsync<Sparepart>();
+            await DatabaseAsync.CreateTableAsync<Material3dColor>();
+            await DatabaseAsync.CreateTableAsync<Material3dType>();
+            await DatabaseAsync.CreateTableAsync<Material3dAttribute>();
+            await DatabaseAsync.CreateTableAsync<Material3dProcedureAttribute>();
+            await DatabaseAsync.CreateTableAsync<Material3d>();
+            await DatabaseAsync.CreateTableAsync<WorkstepCategory>();
+            await DatabaseAsync.CreateTableAsync<Workstep>();
+            await DatabaseAsync.CreateTableAsync<HourlyMachineRate>();
+            await DatabaseAsync.CreateTableAsync<Customer3d>();
+            await DatabaseAsync.CreateTableAsync<CustomAddition>();
+            await DatabaseAsync.CreateTableAsync<CalculationAttribute>();
+            await DatabaseAsync.CreateTableAsync<CalculationProcedureAttribute>();
+            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameter>();
+            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameterAddition>();
+            await DatabaseAsync.CreateTableAsync<Calculation3d>();
+            await DatabaseAsync.CreateTableAsync<File3d>();
+            await DatabaseAsync.CreateTableAsync<ModelWeight>();
+            await DatabaseAsync.CreateTableAsync<Address>();
+            await DatabaseAsync.CreateTableAsync<Email>();
+            await DatabaseAsync.CreateTableAsync<PhoneNumber>();
+            await DatabaseAsync.CreateTableAsync<ContactPerson>();
+            await DatabaseAsync.CreateTableAsync<Calculation3dProfile>();
+            await DatabaseAsync.CreateTableAsync<Printer3dCalculation>();
+            await DatabaseAsync.CreateTableAsync<Material3dCalculation>();
+            await DatabaseAsync.CreateTableAsync<WorkstepCalculation>();
+            await DatabaseAsync.CreateTableAsync<CustomAdditionCalculation>();
+            await DatabaseAsync.CreateTableAsync<WorkstepDuration>();
+            await DatabaseAsync.CreateTableAsync<Item3d>();
+            await DatabaseAsync.CreateTableAsync<Item3dUsage>();
 
-            await DatabaseAsync?.CreateTableAsync<DatabaseSettingsKeyValuePair>();
+            await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
         }
 
         public void CreateTable(Type table)
@@ -266,7 +268,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task CloseDatabaseAsync()
         {
             Database?.Close();
-            await DatabaseAsync?.CloseAsync();
+            await DatabaseAsync.CloseAsync();
         }
 
         public List<TableMapping> GetTableMappings(string databasePath = "")
@@ -275,7 +277,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 InitDatabase(databasePath);
             }
-            return DatabaseAsync?.TableMappings.ToList();
+            return DatabaseAsync.TableMappings.ToList();
         }
 
         public async Task RebuildAllTableAsync()
@@ -288,7 +290,7 @@ namespace AndreasReitberger.Print3d.SQLite
             //List<Task> tasks = new();
             foreach (TableMapping mapping in DatabaseAsync.TableMappings)
             {
-                await DatabaseAsync?.DropTableAsync(mapping);
+                await DatabaseAsync.DropTableAsync(mapping);
                 //tasks.Add(Database?.DeleteAllAsync(mapping));
             }
             //await Task.WhenAll(tasks);
@@ -300,7 +302,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 try
                 {
-                    await DatabaseAsync?.DropTableAsync(mapping);
+                    await DatabaseAsync.DropTableAsync(mapping);
                 }
                 catch (Exception)
                 {
@@ -313,7 +315,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             try
             {
-                int result = await DatabaseAsync?.DropTableAsync(mapping);
+                int result = await DatabaseAsync.DropTableAsync(mapping);
                 return result > 0;
             }
             catch (Exception)
@@ -327,13 +329,13 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             foreach (TableMapping mapping in DatabaseAsync.TableMappings)
             {
-                await DatabaseAsync?.DeleteAllAsync(mapping);
+                await DatabaseAsync.DeleteAllAsync(mapping);
             }
         }
 
         public async Task ClearTableAsync(TableMapping mapping)
         {
-            await DatabaseAsync?.DeleteAllAsync(mapping);
+            await DatabaseAsync.DeleteAllAsync(mapping);
         }
 
         public async Task TryClearAllTableAsync()
@@ -342,7 +344,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 try
                 {
-                    await DatabaseAsync?.DeleteAllAsync(mapping);
+                    await DatabaseAsync.DeleteAllAsync(mapping);
                 }
                 catch (Exception)
                 {
@@ -353,7 +355,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task BackupDatabaseAsync(string targetFolder, string databaseName)
         {
-            await DatabaseAsync?.BackupAsync(targetFolder, databaseName);
+            await DatabaseAsync.BackupAsync(targetFolder, databaseName);
         }
 
         public void BackupDatabase(string targetFolder, string databaseName)

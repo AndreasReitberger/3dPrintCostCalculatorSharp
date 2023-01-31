@@ -2,6 +2,8 @@
 using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -40,7 +42,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(ModelWeightId))]
         ModelWeight weight = new(-1, Enums.Unit.g);
 
         [ObservableProperty]

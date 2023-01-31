@@ -2,11 +2,9 @@
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
-using System.Collections.Generic;
+using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite

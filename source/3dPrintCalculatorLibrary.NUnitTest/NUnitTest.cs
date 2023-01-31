@@ -145,10 +145,34 @@ namespace AndreasReitberger.NUnitTest
                     List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
                     Assert.IsTrue(materials?.Count > 0);
 
-                    Calculation3d calculation = new Calculation3d
+                    // Additional items
+                    Item3d item = new()
+                    {
+                        Name = "70x4mm Screws",
+                        SKU = "SC2565263189",
+                        PackagePrice= 30,
+                        PackageSize = 100,
+                    };
+                    Item3d item2 = new()
+                    {
+                        Name = "50x3mm Screws",
+                        SKU = "SC23425435345",
+                        PackagePrice= 35,
+                        PackageSize = 200,
+                    };
+
+                    await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
+                    var items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
+                    Assert.IsTrue(items?.Count == 2);
+                    
+                    List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));
+                    await DatabaseHandler.Instance.SetItemUsagesWithChildrenAsync(usages);
+
+                    Calculation3d calculation = new()
                     {
                         Printer = printer,
                         Material = material,
+                        AdditionalItems = usages,
                     };
                     calculation.Printers.Add(printer);
                     calculation.Materials.Add(material);
@@ -159,6 +183,13 @@ namespace AndreasReitberger.NUnitTest
                         Volume = 5.25,
                         Quantity = 3,
                     });
+                    calculation.AdditionalItems.Add(new Item3dUsage()
+                    {
+                        Item = item,
+                        LinkedToFile = true,
+                        File = calculation.Files.First()
+                    });
+
                     calculation.CalculateCosts();
 
                     await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
@@ -352,7 +383,6 @@ namespace AndreasReitberger.NUnitTest
                 Assert.Fail(exc.Message);
             }
         }
-
 
         [Test]
         public void ExportCalculation()
@@ -589,7 +619,7 @@ namespace AndreasReitberger.NUnitTest
 
         Calculation3d GetTestCalculation()
         {
-            Material3d material = new Material3d()
+            Material3d material = new()
             {
                 Id = Guid.NewGuid(),
                 Density = 1.24,
@@ -605,7 +635,7 @@ namespace AndreasReitberger.NUnitTest
                     Family = Material3dFamily.Filament,
                 }
             };
-            Printer3d printer = new Printer3d()
+            Printer3d printer = new()
             {
                 Id = Guid.NewGuid(),
                 Manufacturer = new Manufacturer()
@@ -620,14 +650,14 @@ namespace AndreasReitberger.NUnitTest
                 Type = Printer3dType.FDM,
                 PowerConsumption = 210,
             };
-            File3d file = new File3d()
+            File3d file = new()
             {
                 Id = Guid.NewGuid(),
                 PrintTime = 10.25,
                 Volume = 12.36,
                 Quantity = 3,
             };
-            File3d file2 = new File3d()
+            File3d file2 = new()
             {
                 Id = Guid.NewGuid(),
                 PrintTime = 10.25,

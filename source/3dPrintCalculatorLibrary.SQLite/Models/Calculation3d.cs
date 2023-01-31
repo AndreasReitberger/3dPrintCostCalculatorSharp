@@ -166,6 +166,10 @@ namespace AndreasReitberger.Print3d.SQLite
         public List<WorkstepDuration> workStepDurations = new();
 
         [ObservableProperty]
+        [property: OneToMany]
+        public List<Item3dUsage> additionalItems = new();
+
+        [ObservableProperty]
         [property: Ignore]
         public ObservableCollection<CalculationAttribute> printTimes = new();
 

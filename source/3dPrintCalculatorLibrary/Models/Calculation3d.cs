@@ -39,7 +39,7 @@ namespace AndreasReitberger.Print3d.Models
         public Guid printerId;
 
         [ObservableProperty]
-        [property: JsonIgnore, Ignore]
+        [property: JsonIgnore]
         [JsonIgnore]
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
@@ -61,7 +61,7 @@ namespace AndreasReitberger.Print3d.Models
         public Guid materialId;
 
         [ObservableProperty]
-        [property: JsonIgnore, Ignore]
+        [property: JsonIgnore]
         [JsonIgnore]
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
@@ -84,7 +84,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        [property: ManyToOne(nameof(CustomerId))]
         Customer3d customer;
 
         [ObservableProperty]
@@ -154,6 +153,9 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         public List<WorkstepDuration> workStepDurations = new();
+
+        [ObservableProperty]
+        public List<Item3dUsage> additionalItems = new();
 
         [ObservableProperty]
         public ObservableCollection<CalculationAttribute> printTimes = new();

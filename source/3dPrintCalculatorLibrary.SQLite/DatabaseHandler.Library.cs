@@ -656,34 +656,107 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<List<CustomAddition>> GetCustomAdditionsWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<CustomAddition>(recursive: true)
                 ;
         }
 
         public async Task<CustomAddition> GetCustomAdditionWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<CustomAddition>(id, recursive: true)
                 ;
         }
 
         public async Task SetCustomAdditionWithChildrenAsync(CustomAddition customAddition)
         {
-            await DatabaseAsync?.InsertOrReplaceWithChildrenAsync(customAddition, recursive: true);
+            await DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(customAddition, recursive: true);
         }
 
-        public async Task SetCustomAdditionsWithChildrenAsync(List<CustomAddition> additions, bool replaceExisting = true)
+        public async Task SetCustomAdditionsWithChildrenAsync(List<CustomAddition> items, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(additions);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(additions);
+                await DatabaseAsync.InsertAllWithChildrenAsync(items);
         }
 
         public async Task<int> DeleteCustomAdditionAsync(CustomAddition customAddition)
         {
-            return await DatabaseAsync?.DeleteAsync<CustomAddition>(customAddition?.Id);
+            return await DatabaseAsync.DeleteAsync<CustomAddition>(customAddition?.Id);
+        }
+
+        #endregion
+
+        #region Items
+
+        public async Task<List<Item3d>> GetItemsWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Item3d>(recursive: true)
+                ;
+        }
+
+        public async Task<Item3d> GetItemWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Item3d>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetItemWithChildrenAsync(Item3d item)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(item, recursive: true);
+        }
+
+        public async Task SetItemsWithChildrenAsync(List<Item3d> items, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(items);
+        }
+
+        public async Task<int> DeleteItemAsync(Item3d item)
+        {
+            return await DatabaseAsync.DeleteAsync<CustomAddition>(item?.Id);
+        }
+
+        #endregion
+
+        #region Item Usages
+
+        public async Task<List<Item3dUsage>> GetItemUsagesWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Item3dUsage>(recursive: true)
+                ;
+        }
+
+        public async Task<Item3dUsage> GetItemUsageWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Item3dUsage>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetItemUsageWithChildrenAsync(Item3dUsage item)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(item, recursive: true);
+        }
+
+        public async Task SetItemUsagesWithChildrenAsync(List<Item3dUsage> items, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(items);
+        }
+
+        public async Task<int> DeleteItemUsageAsync(Item3dUsage itemUsage)
+        {
+            return await DatabaseAsync.DeleteAsync<CustomAddition>(itemUsage?.Id);
         }
 
         #endregion

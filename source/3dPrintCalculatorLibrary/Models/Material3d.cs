@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {

@@ -25,7 +25,7 @@ namespace AndreasReitberger.Print3d.Models
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
-                PrintTimes.Add(new CalculationAttribute()
+                PrintTimes?.Add(new CalculationAttribute()
                 {
                     Attribute = file.FileName,
                     Value = printTime,
@@ -37,7 +37,7 @@ namespace AndreasReitberger.Print3d.Models
                 CalculationAttribute HandlingsFee = Rates.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
                 if (HandlingsFee != null && HandlingsFee.Value > 0)
                 {
-                    Costs.Add(new CalculationAttribute()
+                    Costs?.Add(new CalculationAttribute()
                     {
                         Attribute = "HandlingFee",
                         Type = CalculationAttributeType.FixCost,
@@ -49,7 +49,7 @@ namespace AndreasReitberger.Print3d.Models
 
                 if (FailRate > 0)
                 {
-                    PrintTimes.Add(new CalculationAttribute()
+                    PrintTimes?.Add(new CalculationAttribute()
                     {
                         Attribute = $"{file.FileName}_FailRate",
                         Value = printTime * FailRate / 100,
@@ -59,10 +59,10 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 // Calculate all material costs
-                if (Materials.Count > 0)
+                if (Materials?.Count > 0)
                 {
                     //Material ??= Materials[0];
-                    Material = Materials?.FirstOrDefault(material => material.Id == Material?.Id);
+                    Material = Materials.FirstOrDefault(material => material.Id == Material?.Id) ?? Materials.FirstOrDefault();
                     //((CONSUMED_MATERIAL[g] x PRICE[$/kg]) / 1000) x QUANTITY x (FAILRATE / 100)
 
                     // Calculate the total weight for the current file
@@ -78,7 +78,7 @@ namespace AndreasReitberger.Print3d.Models
                     }
                     // Needed material in g
                     double _material = _weight * file.Quantity;
-                    MaterialUsage.Add(new CalculationAttribute()
+                    MaterialUsage?.Add(new CalculationAttribute()
                     {
                         Attribute = Material.Name,
                         Value = _material,
@@ -88,7 +88,7 @@ namespace AndreasReitberger.Print3d.Models
                     });
                     if (FailRate > 0)
                     {
-                        MaterialUsage.Add(new CalculationAttribute()
+                        MaterialUsage?.Add(new CalculationAttribute()
                         {
                             Attribute = $"{Material.Name}_FailRate",
                             Value = _material * FailRate / 100,
@@ -169,10 +169,10 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 // Calculate all machine costs (print time and energy costs)
-                if (Printers.Count > 0)
+                if (Printers?.Count > 0)
                 {
                     // Check if selected material is still in the collection
-                    Printer = Printers?.FirstOrDefault(printer => printer.Id == Printer?.Id);
+                    Printer = Printers.FirstOrDefault(printer => printer.Id == Printer?.Id) ?? Printers.FirstOrDefault();
                     foreach (Printer3d printer in Printers)
                     {
                         Printer ??= printer;
@@ -184,7 +184,7 @@ namespace AndreasReitberger.Print3d.Models
                                 double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * pt.Value;
                                 if (machineHourRate > 0)
                                 {
-                                    OverallPrinterCosts.Add(new CalculationAttribute()
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
                                     {
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
@@ -202,7 +202,7 @@ namespace AndreasReitberger.Print3d.Models
                                 double totalEnergyCost = consumption * EnergyCostsPerkWh;
                                 if (totalEnergyCost > 0)
                                 {
-                                    OverallPrinterCosts.Add(new CalculationAttribute()
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
                                     {
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
@@ -223,7 +223,7 @@ namespace AndreasReitberger.Print3d.Models
                             {
                                 foreach (CalculationProcedureParameter parameter in attribute.Parameters)
                                 {
-                                    OverallPrinterCosts.Add(new CalculationAttribute()
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
                                     {
                                         LinkedId = printer.Id,
                                         Attribute = parameter.Type.ToString(),
@@ -239,17 +239,38 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 // Worksteps
-                if (WorkSteps.Count > 0)
+                if (WorkSteps?.Count > 0)
                 {
                     // Only take the worksteps, which are set as `PerPiece` here
-                    foreach (Workstep ws in WorkSteps?.Where(ws => ws.CalculationType == CalculationType.PerPiece))
+                    foreach (Workstep ws in WorkSteps.Where(ws => ws.CalculationType == CalculationType.PerPiece))
                     {
                         double totalPerPiece = ws.TotalCosts * file.Quantity;
-                        Costs.Add(new CalculationAttribute()
+                        Costs?.Add(new CalculationAttribute()
                         {
                             LinkedId = ws.Id,
                             Attribute = ws.Name,
                             Type = CalculationAttributeType.Workstep,
+                            Value = totalPerPiece,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+
+                // Additional items
+                if (AdditionalItems?.Count > 0)
+                {
+                    foreach (Item3dUsage item in AdditionalItems.Where(usage => usage.LinkedToFile))
+                    {
+                        // If the item is not for the current file, continue
+                        if (item?.Item == null || file.Id != item.File.Id) continue;
+
+                        double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = item.Id,
+                            Attribute = item.Item.Name,
+                            Type = CalculationAttributeType.AdditionalItem,
                             Value = totalPerPiece,
                             FileId = file.Id,
                             FileName = file.FileName,
@@ -377,14 +398,14 @@ namespace AndreasReitberger.Print3d.Models
             }
 
             // Worksteps
-            if (WorkSteps.Count > 0)
+            if (WorkSteps?.Count > 0)
             {
-                foreach (Workstep ws in WorkSteps?.Where(ws => ws.CalculationType != CalculationType.PerPiece))
+                foreach (Workstep ws in WorkSteps.Where(ws => ws.CalculationType != CalculationType.PerPiece))
                 {
                     switch (ws.CalculationType)
                     {
                         case CalculationType.PerHour:
-                            WorkstepDuration workstepDuration = WorkStepDurations?.FirstOrDefault(wsd => wsd.WorkstepId == ws.Id);
+                            WorkstepDuration workstepDuration = WorkStepDurations.FirstOrDefault(wsd => wsd.WorkstepId == ws.Id);
                             if (workstepDuration != null)
                             {
                                 ws.Duration = workstepDuration.Duration;
@@ -393,7 +414,7 @@ namespace AndreasReitberger.Print3d.Models
                             //double totalPerHour = Convert.ToDouble(ws.Duration) * Convert.ToDouble(ws.Price);
                             if (totalPerHour > 0)
                             {
-                                Costs.Add(new CalculationAttribute()
+                                Costs?.Add(new CalculationAttribute()
                                 {
                                     LinkedId = ws.Id,
                                     Attribute = ws.Name,
@@ -405,7 +426,7 @@ namespace AndreasReitberger.Print3d.Models
                         case CalculationType.PerJob:
                             double totalPerJob = ws.TotalCosts;
                             //double totalPerJob = Convert.ToDouble(ws.Price);
-                            Costs.Add(new CalculationAttribute()
+                            Costs?.Add(new CalculationAttribute()
                             {
                                 LinkedId = ws.Id,
                                 Attribute = ws.Name,
@@ -417,6 +438,25 @@ namespace AndreasReitberger.Print3d.Models
                             // Nothing to do here
                             break;
                     }
+                }
+            }
+
+            // Additional items
+            if (AdditionalItems?.Count > 0)
+            {
+                foreach (Item3dUsage item in AdditionalItems.Where(usage => !usage.LinkedToFile))
+                {
+                    // If the item is not for the current file, continue
+                    if (item?.Item == null) continue;
+
+                    double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity;
+                    Costs?.Add(new CalculationAttribute()
+                    {
+                        LinkedId = item.Id,
+                        Attribute = item.Item.Name,
+                        Type = CalculationAttributeType.AdditionalItem,
+                        Value = totalPerPiece,
+                    });
                 }
             }
 

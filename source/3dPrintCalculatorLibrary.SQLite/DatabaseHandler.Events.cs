@@ -5,6 +5,12 @@ namespace AndreasReitberger.Print3d.SQLite
     public partial class DatabaseHandler
     {
         #region Events
+        public event EventHandler<ErrorEventArgs> ErrorEvent;
+        protected virtual void OnErrorEvent(ErrorEventArgs e)
+        {
+            ErrorEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<DatabaseEventArgs> DataChanged;
         protected virtual void OnDataChangedEvent(DatabaseEventArgs e)
         {

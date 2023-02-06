@@ -1,5 +1,7 @@
 using AndreasReitberger.Core.Utilities;
 using AndreasReitberger.Print3d.Enums;
+//using AndreasReitberger.Print3d.Models;
+using AndreasReitberger.Print3d.Models.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
@@ -792,6 +794,50 @@ namespace AndreasReitberger.NUnitTest
 
                 Assert.IsTrue(_calculation.IsCalculated);
                 Assert.IsTrue(total == totalDiffer);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public void StorageTest()
+        {
+            try
+            {
+                double startAmount = 2.68;
+                Print3d.Models.Material3d material = new()
+                {
+                    Name = "Test",
+                    SKU = "Some material number",
+                    PackageSize = 1,
+                    Unit = Unit.Kilogramm,
+                    UnitPrice = 29.99,
+                    PriceIncludesTax = true,
+                };
+                Print3d.Models.StorageAdditions.Storage3dItem item = new()
+                {
+                    Material = material,
+                    Amount = startAmount,
+                };
+
+                Print3d.Models.Storage3d storage = new()
+                {
+                    Name = "Main material storage",
+                    Items = new() { item },
+                };
+
+                storage.AddToStock(material, 750, Unit.Gramm);
+                var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                // Check if the addition was successfully
+                Assert.IsTrue(newItem.Amount == startAmount + 0.75);
+
+                // Just to check if the unit conversion is working
+                storage.TakeFromStock(material, 0.001, Unit.MetricTons);
+                newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                // Check if the addition was successfully
+                Assert.IsTrue(newItem.Amount == startAmount + 0.75 - 1);
             }
             catch (Exception exc)
             {

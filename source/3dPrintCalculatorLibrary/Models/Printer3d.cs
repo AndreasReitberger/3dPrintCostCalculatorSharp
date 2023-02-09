@@ -75,21 +75,6 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         [property: JsonIgnore]
         double height = 1;
-        /*
-        [JsonIgnore, XmlIgnore]
-        public Guid BuildVolumeId { get; set; }
-
-        [JsonProperty(nameof(BuildVolume))]
-        BuildVolume _buildVolume = new(0, 0, 0);
-        [JsonIgnore, Ignore]
-        //[ManyToOne(nameof(BuildVolumeId))]
-        [Obsolete("Use the x,y,z properties instead")]
-        public BuildVolume BuildVolume
-        {
-            get { return _buildVolume; }
-            set { SetProperty(ref _buildVolume, value); }
-        }
-        */
 
         [ObservableProperty]
         [property: JsonIgnore]

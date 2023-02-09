@@ -42,7 +42,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        ModelWeight weight = new(-1, Enums.Unit.g);
+        ModelWeight weight = new(-1, Enums.Unit.Gramm);
 
         [ObservableProperty]
         [property: JsonIgnore]

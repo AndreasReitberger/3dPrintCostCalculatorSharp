@@ -1,25 +1,27 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Models.StorageAdditions;
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
 
-namespace AndreasReitberger.Print3d.Models
+namespace AndreasReitberger.Print3d.SQLite
 {
+    [Table("Storages")]
     public partial class Storage3d : ObservableObject, IStorage3d
     {
         #region Properties
         [ObservableProperty]
+        [property: PrimaryKey]
         Guid id;
 
         [ObservableProperty]
         string name;
 
         [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         ObservableCollection<Storage3dItem> items = new();
         #endregion
 

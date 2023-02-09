@@ -2,6 +2,7 @@
 using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using SQLiteNetExtensionsAsync.Extensions;
 
@@ -690,7 +691,6 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Items
-
         public async Task<List<Item3d>> GetItemsWithChildrenAsync()
         {
             return await DatabaseAsync
@@ -726,7 +726,6 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Item Usages
-
         public async Task<List<Item3dUsage>> GetItemUsagesWithChildrenAsync()
         {
             return await DatabaseAsync
@@ -756,7 +755,112 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteItemUsageAsync(Item3dUsage itemUsage)
         {
-            return await DatabaseAsync.DeleteAsync<CustomAddition>(itemUsage?.Id);
+            return await DatabaseAsync.DeleteAsync<Item3dUsage>(itemUsage?.Id);
+        }
+
+        #endregion
+
+        #region Storage Items
+        public async Task<List<Storage3dItem>> GetStorageItemsWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Storage3dItem>(recursive: true)
+                ;
+        }
+
+        public async Task<Storage3dItem> GetStorageItemWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Storage3dItem>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetStorageItemWithChildrenAsync(Storage3dItem item)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(item, recursive: true);
+        }
+
+        public async Task SetStorageItemsWithChildrenAsync(List<Storage3dItem> items, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(items);
+        }
+
+        public async Task<int> DeleteStorageItemAsync(Storage3dItem item)
+        {
+            return await DatabaseAsync.DeleteAsync<Storage3dItem>(item?.Id);
+        }
+
+        #endregion
+
+        #region Storage Transaction
+        public async Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Storage3dTransaction>(recursive: true)
+                ;
+        }
+
+        public async Task<Storage3dTransaction> GetStorageTransactionWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Storage3dTransaction>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetStorageTransactionWithChildrenAsync(Storage3dTransaction transaction)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(transaction, recursive: true);
+        }
+
+        public async Task SetStorageTransactionsWithChildrenAsync(List<Storage3dTransaction> transactions, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(transactions);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(transactions);
+        }
+
+        public async Task<int> DeleteStorageTransactionAsync(Storage3dTransaction transaction)
+        {
+            return await DatabaseAsync.DeleteAsync<Storage3dTransaction>(transaction?.Id);
+        }
+
+        #endregion
+
+        #region Storage
+        public async Task<List<Storage3d>> GetStoragesWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Storage3d>(recursive: true)
+                ;
+        }
+
+        public async Task<Storage3d> GetStorageWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Storage3d>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetStorageWithChildrenAsync(Storage3d storage)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(storage, recursive: true);
+        }
+
+        public async Task SetStorageWithChildrenAsync(List<Storage3d> storages, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(storages);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(storages);
+        }
+
+        public async Task<int> DeleteStorageAsync(Storage3d storage)
+        {
+            return await DatabaseAsync.DeleteAsync<Storage3d>(storage?.Id);
         }
 
         #endregion

@@ -1,14 +1,21 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 
-namespace AndreasReitberger.Print3d.Models.StorageAdditions
+namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
+    [Table("StorageItems")]
     public partial class Storage3dItem : ObservableObject, IStorage3dItem
     {
         #region Properties
         [ObservableProperty]
+        [property: PrimaryKey]
         Guid id;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Storage3d))]
+        Guid storageId;
 
         [ObservableProperty]
         string name;
@@ -17,6 +24,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         public Guid materialId;
 
         [ObservableProperty]
+        [property: ManyToOne(nameof(MaterialId))]
         Material3d material;
 
         [ObservableProperty]

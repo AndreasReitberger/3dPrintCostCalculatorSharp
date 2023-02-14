@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    public partial class Printer3d : ObservableObject, IPrinter3d
+    public partial class Printer3d : ObservableObject, IPrinter3d, ICloneable
     {
 
         #region Properties
@@ -151,6 +151,10 @@ namespace AndreasReitberger.Print3d.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
 

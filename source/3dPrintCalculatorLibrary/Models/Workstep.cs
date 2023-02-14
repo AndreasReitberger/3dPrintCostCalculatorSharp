@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    public partial class Workstep : ObservableObject, IWorkstep
+    public partial class Workstep : ObservableObject, IWorkstep, ICloneable
     {
         #region Properties
         [ObservableProperty]
@@ -103,6 +103,10 @@ namespace AndreasReitberger.Print3d.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
     }

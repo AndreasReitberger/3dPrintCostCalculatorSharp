@@ -1,6 +1,4 @@
-﻿using AndreasReitberger.Print3d.SQLite;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
 

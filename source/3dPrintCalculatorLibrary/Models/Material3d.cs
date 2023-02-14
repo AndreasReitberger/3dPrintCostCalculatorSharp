@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    public partial class Material3d : ObservableObject, ICloneable, IMaterial3d
+    public partial class Material3d : ObservableObject, IMaterial3d, ICloneable
     {
         #region Clone
         public object Clone()

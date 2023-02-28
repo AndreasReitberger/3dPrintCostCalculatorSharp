@@ -33,7 +33,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         #region Ctor
         public Storage3dItem()
-        { 
+        {
             Id = Guid.NewGuid();
         }
         #endregion

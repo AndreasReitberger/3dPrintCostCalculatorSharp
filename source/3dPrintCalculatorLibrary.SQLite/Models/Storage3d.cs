@@ -139,7 +139,7 @@ namespace AndreasReitberger.Print3d.SQLite
             }
             else return null;
         }
-        
+
         public bool UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogramm)
         {
             if (amount > 0)
@@ -147,7 +147,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 AddToStock(item: item, amount: amount, unit: unit);
                 return true;
             }
-            else if(amount < 0)
+            else if (amount < 0)
             {
                 return TakeFromStock(item: item, amount: Math.Abs(amount), unit: unit);
             }

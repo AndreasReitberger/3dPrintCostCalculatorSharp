@@ -91,8 +91,8 @@ namespace AndreasReitberger.Print3d.Models
         }
         */
 
-        [ObservableProperty]
-        [property: JsonIgnore]
+        [ObservableProperty, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
+        [property: JsonIgnore, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
         bool useFixedMachineHourRating = false;
 
         [ObservableProperty]

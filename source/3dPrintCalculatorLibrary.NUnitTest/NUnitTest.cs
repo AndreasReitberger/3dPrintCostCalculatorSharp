@@ -614,7 +614,7 @@ namespace AndreasReitberger.NUnitTest
                     };
                 }
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Assert.Fail(exc.Message, exc);
             }

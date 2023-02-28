@@ -25,7 +25,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
 
         #region Ctor
         public Storage3dItem()
-        { 
+        {
             Id = Guid.NewGuid();
         }
         #endregion

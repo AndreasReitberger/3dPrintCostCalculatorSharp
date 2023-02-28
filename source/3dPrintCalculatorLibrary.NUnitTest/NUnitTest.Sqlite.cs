@@ -145,21 +145,21 @@ namespace AndreasReitberger.NUnitTest
                     {
                         Name = "70x4mm Screws",
                         SKU = "SC2565263189",
-                        PackagePrice= 30,
+                        PackagePrice = 30,
                         PackageSize = 100,
                     };
                     Item3d item2 = new()
                     {
                         Name = "50x3mm Screws",
                         SKU = "SC23425435345",
-                        PackagePrice= 35,
+                        PackagePrice = 35,
                         PackageSize = 200,
                     };
 
                     await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
                     var items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
                     Assert.IsTrue(items?.Count == 2);
-                    
+
                     List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));
                     await DatabaseHandler.Instance.SetItemUsagesWithChildrenAsync(usages);
 
@@ -821,7 +821,7 @@ namespace AndreasReitberger.NUnitTest
                         PriceIncludesTax = true,
                     };
                     await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
-                    
+
                     Storage3dItem item = new()
                     {
                         Material = material,
@@ -869,7 +869,7 @@ namespace AndreasReitberger.NUnitTest
                     };
                 }
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Assert.Fail(exc.Message, exc);
             }

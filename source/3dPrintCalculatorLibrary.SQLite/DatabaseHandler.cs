@@ -7,6 +7,7 @@ using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
@@ -179,6 +180,9 @@ namespace AndreasReitberger.Print3d.SQLite
             Database?.CreateTable<WorkstepDuration>();
             Database?.CreateTable<Item3d>();
             Database?.CreateTable<Item3dUsage>();
+            Database?.CreateTable<Storage3dItem>();
+            Database?.CreateTable<Storage3dTransaction>();
+            Database?.CreateTable<Storage3d>();
 
             Database?.CreateTable<DatabaseSettingsKeyValuePair>();
         }
@@ -221,6 +225,9 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CreateTableAsync<WorkstepDuration>();
             await DatabaseAsync.CreateTableAsync<Item3d>();
             await DatabaseAsync.CreateTableAsync<Item3dUsage>();
+            await DatabaseAsync.CreateTableAsync<Storage3dItem>();
+            await DatabaseAsync.CreateTableAsync<Storage3dTransaction>();
+            await DatabaseAsync.CreateTableAsync<Storage3d>();
 
             await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
         }

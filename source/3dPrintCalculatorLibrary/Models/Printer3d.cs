@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
-    public partial class Printer3d : ObservableObject, IPrinter3d
+    public partial class Printer3d : ObservableObject, IPrinter3d, ICloneable
     {
 
         #region Properties
@@ -75,21 +75,6 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         [property: JsonIgnore]
         double height = 1;
-        /*
-        [JsonIgnore, XmlIgnore]
-        public Guid BuildVolumeId { get; set; }
-
-        [JsonProperty(nameof(BuildVolume))]
-        BuildVolume _buildVolume = new(0, 0, 0);
-        [JsonIgnore, Ignore]
-        //[ManyToOne(nameof(BuildVolumeId))]
-        [Obsolete("Use the x,y,z properties instead")]
-        public BuildVolume BuildVolume
-        {
-            get { return _buildVolume; }
-            set { SetProperty(ref _buildVolume, value); }
-        }
-        */
 
         [ObservableProperty, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
         [property: JsonIgnore, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
@@ -166,6 +151,10 @@ namespace AndreasReitberger.Print3d.Models
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
 

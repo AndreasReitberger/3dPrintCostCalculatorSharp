@@ -1,17 +1,263 @@
-using AndreasReitberger.Print3d;
 using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Models;
-using AndreasReitberger.Print3d.Models.CalculationAdditions;
-using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite;
+using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using NUnit.Framework;
+using SQLite;
 
 namespace AndreasReitberger.NUnitTest
 {
-    public class Tests
+    public class TestsSqlite
     {
         [SetUp]
         public void Setup()
         {
+        }
+
+        [Test]
+        public async Task DatabaseTestsAsync()
+        {
+            try
+            {
+                string databasePath = "testdatabase.db";
+                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
+                if (DatabaseHandler.Instance.IsInitialized)
+                {
+                    // Clear all tables
+                    await DatabaseHandler.Instance.TryClearAllTableAsync();
+                    await DatabaseHandler.Instance.TryDropAllTableAsync();
+
+                    // Recreate tables
+                    await DatabaseHandler.Instance.RebuildAllTableAsync();
+
+                    // Manufacturers
+                    Manufacturer prusa = new()
+                    {
+                        Name = "Prusa",
+                        DebitorNumber = "CZ000001",
+                        Website = "https://shop.prusa3d.com/en/#a_aid=AndreasReitberger",
+                        IsActive = true,
+                    };
+                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(prusa);
+                    Manufacturer addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
+                    Assert.IsNotNull(addedManufacturer);
+                    Assert.IsTrue(
+                        prusa.Name == addedManufacturer.Name &&
+                        prusa.DebitorNumber == addedManufacturer.DebitorNumber &&
+                        prusa.Website == addedManufacturer.Website
+                        );
+                    List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
+                    Assert.IsTrue(manufacturers?.Count > 0);
+
+                    List<Material3dType> materialTypes = new()
+                    {
+                        new Material3dType()
+                        {
+                            Material = "ABS",
+                            Family = Material3dFamily.Filament,
+                        },
+                        new Material3dType()
+                        {
+                            Material = "ASA",
+                            Family = Material3dFamily.Filament,
+                        },
+                        new Material3dType()
+                        {
+                            Material = "PLA",
+                            Family = Material3dFamily.Filament,
+                        },
+                        new Material3dType()
+                        {
+                            Material = "PETG",
+                            Family = Material3dFamily.Filament,
+                        },
+                        new Material3dType()
+                        {
+                            Material = "PET",
+                            Family = Material3dFamily.Filament,
+                        },
+                    };
+                    await DatabaseHandler.Instance.SetMaterialTypesWithChildrenAsync(materialTypes);
+                    List<Material3dType> types = await DatabaseHandler.Instance.GetMaterialTypesWithChildrenAsync();
+                    Assert.IsTrue(materialTypes.Count == types?.Count);
+
+                    // Hourly Machine Rate
+                    HourlyMachineRate mhr = new()
+                    {
+                        MachineHours = 200,
+                        PerYear = false,
+                        EnergyCosts = 50,
+                        LocationCosts = 20,
+                        MaintenanceCosts = 120,
+                    };
+                    await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(mhr);
+                    HourlyMachineRate hourlyMachineRate = await DatabaseHandler.Instance.GetHourlyMachineRateWithChildrenAsync(mhr.Id);
+                    List<HourlyMachineRate> hourlyMachineRates = await DatabaseHandler.Instance.GetHourlyMachineRatesWithChildrenAsync();
+                    Assert.IsTrue(hourlyMachineRates?.Count > 0);
+
+                    // Printers
+                    Printer3d prusaXL = new()
+                    {
+                        Model = "XL",
+                        Manufacturer = new()
+                        {
+                            Name = "Prusa",
+                        },
+                        Type = Printer3dType.FDM,
+                        MaterialType = Material3dFamily.Filament,
+                        Uri = "https://www.prusa3d.com/de/produkt/original-prusa-xl-3/#a_aid=AndreasReitberger",
+                        Price = 2600,
+                        PriceIncludesTax = true,
+                        PowerConsumption = 300,
+                        HourlyMachineRate = hourlyMachineRate,
+                    };
+                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(prusaXL);
+                    Printer3d printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
+                    List<Printer3d> printers = await DatabaseHandler.Instance.GetPrintersWithChildrenAsync();
+                    Assert.IsTrue(printers?.Count > 0);
+
+                    // Materials
+                    Material3d materialPETG = new()
+                    {
+                        Name = "Prusament PETG 1kg",
+                        Density = 1.24,
+                        Manufacturer = prusa,
+                        MaterialFamily = Material3dFamily.Filament,
+                        TypeOfMaterial = new Material3dType()
+                        {
+                            Material = "PETG",
+                            Family = Material3dFamily.Filament,
+                        },
+                        UnitPrice = 30,
+                        PriceIncludesTax = true,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogramm,
+                        Uri = "https://www.prusa3d.com/product/prusament-petg-anthracite-grey-1kg/#a_aid=AndreasReitberger"
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(materialPETG);
+                    Material3d material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
+                    List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
+                    Assert.IsTrue(materials?.Count > 0);
+
+                    // Additional items
+                    Item3d item = new()
+                    {
+                        Name = "70x4mm Screws",
+                        SKU = "SC2565263189",
+                        PackagePrice= 30,
+                        PackageSize = 100,
+                    };
+                    Item3d item2 = new()
+                    {
+                        Name = "50x3mm Screws",
+                        SKU = "SC23425435345",
+                        PackagePrice= 35,
+                        PackageSize = 200,
+                    };
+
+                    await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
+                    var items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
+                    Assert.IsTrue(items?.Count == 2);
+                    
+                    List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));
+                    await DatabaseHandler.Instance.SetItemUsagesWithChildrenAsync(usages);
+
+                    Calculation3d calculation = new()
+                    {
+                        Printer = printer,
+                        Material = material,
+                        AdditionalItems = usages,
+                    };
+                    calculation.Printers.Add(printer);
+                    calculation.Materials.Add(material);
+                    calculation.Files.Add(new File3d()
+                    {
+                        FileName = "TestFile",
+                        PrintTime = 10.5,
+                        Volume = 5.25,
+                        Quantity = 3,
+                    });
+                    calculation.AdditionalItems.Add(new Item3dUsage()
+                    {
+                        Item = item,
+                        LinkedToFile = true,
+                        File = calculation.Files.First()
+                    });
+
+                    calculation.CalculateCosts();
+
+                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
+                    Calculation3d calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+
+                    List<Calculation3d> calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+
+                    Calculation3d calculation2 = new()
+                    {
+                        Printer = printer,
+                        Material = material,
+                    };
+                    calculation2.Printers.Add(printer);
+                    calculation2.Materials.Add(material);
+                    calculation2.Files.Add(new File3d()
+                    {
+                        FileName = "TestFile",
+                        PrintTime = 25.5,
+                        Volume = 10.25,
+                        Quantity = 30,
+                    });
+                    calculation2.CalculateCosts();
+
+                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation2);
+                    Calculation3d calcFromDB2 = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation2.Id);
+                    Assert.IsTrue(calculation2.TotalCosts == calcFromDB2.TotalCosts);
+
+                    calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+
+                    calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+
+                    // Cleanup
+                    await DatabaseHandler.Instance.DeleteCalculationAsync(calculation);
+                    //calculation = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    //Assert.IsNull(calculation);
+
+                    await DatabaseHandler.Instance.DeleteMaterialAsync(materialPETG);
+                    //material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
+                    //Assert.IsNull(material);
+
+                    await DatabaseHandler.Instance.DeletePrinterAsync(prusaXL);
+                    //printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
+                    //Assert.IsNull(printer);
+
+                    await DatabaseHandler.Instance.DeleteManufacturerAsync(prusa);
+                    //addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
+                    //Assert.IsNull(addedManufacturer);
+                }
+                else
+                {
+                    Assert.Fail($"Database not initialized: {databasePath}");
+                }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public void DatabaseBuilderTest()
+        {
+            string databasePath = "testdatabase.db";
+            using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                .WithDatabasePath(databasePath)
+                .WithTable(typeof(Manufacturer))
+                .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
+                .Build();
+
+            List<TableMapping> mappings = handler.GetTableMappings();
+            Assert.IsTrue(mappings?.Count > 0);
         }
 
         private Calculation3d _calculation;
@@ -549,53 +795,62 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
-        public void StorageTest()
+        public async Task StorageDatabaseTest()
         {
             try
             {
-                double startAmount = 2.68;
-                Print3d.Models.Material3d material = new()
+                string databasePath = "testdatabase.db";
+                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
+                if (DatabaseHandler.Instance.IsInitialized)
                 {
-                    Name = "Test",
-                    SKU = "Some material number",
-                    PackageSize = 1,
-                    Unit = Unit.Kilogramm,
-                    UnitPrice = 29.99,
-                    PriceIncludesTax = true,
-                };
-                Print3d.Models.StorageAdditions.Storage3dItem item = new()
-                {
-                    Material = material,
-                    Amount = startAmount,
-                };
+                    // Clear all tables
+                    await DatabaseHandler.Instance.TryClearAllTableAsync();
+                    await DatabaseHandler.Instance.TryDropAllTableAsync();
 
-                Print3d.Models.Storage3d storage = new()
-                {
-                    Name = "Main material storage",
-                    Items = new() { item },
-                };
+                    // Recreate tables
+                    await DatabaseHandler.Instance.RebuildAllTableAsync();
 
-                storage.AddToStock(material, 750, Unit.Gramm);
-                var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
-                // Check if the addition was successfully
-                Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
+                    double startAmount = 2.68;
+                    Material3d material = new()
+                    {
+                        Name = "Test",
+                        SKU = "Some material number",
+                        PackageSize = 1,
+                        Unit = Unit.Kilogramm,
+                        UnitPrice = 29.99,
+                        PriceIncludesTax = true,
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+                    
+                    Storage3dItem item = new()
+                    {
+                        Material = material,
+                        Amount = startAmount,
+                    };
+                    await DatabaseHandler.Instance.SetStorageItemWithChildrenAsync(item);
+                    Storage3d storage = new()
+                    {
+                        Name = "Main material storage",
+                        Items = new() { item },
+                    };
+                    await DatabaseHandler.Instance.SetStorageWithChildrenAsync(storage);
 
-                // Just to check if the unit conversion is working
-                storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
-                newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
-                // Check if the addition was successfully
-                Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                    storage.AddToStock(material, 750, Unit.Gramm);
+                    var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                    // Check if the addition was successfully
+                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
+
+                    // Just to check if the unit conversion is working
+                    storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
+                    newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                    // Check if the addition was successfully
+                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                }
             }
             catch (Exception exc)
             {
                 Assert.Fail(exc.Message);
             }
-        }
-
-        [Test]
-        public void StorageDatabaseTest()
-        {
-
         }
 
         [Test]
@@ -608,7 +863,7 @@ namespace AndreasReitberger.NUnitTest
 
                 foreach (var material in calculation.Materials)
                 {
-                    Print3d.Models.StorageAdditions.Storage3dItem item = new()
+                    Storage3dItem item = new()
                     {
                         Material = material,
                     };

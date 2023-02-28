@@ -8,7 +8,7 @@ using System;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("HourlyMachineRates")]
-    public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate
+    public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate, ICloneable
     {
         #region Properties
         [ObservableProperty]
@@ -153,11 +153,16 @@ namespace AndreasReitberger.Print3d.SQLite
         }
         #endregion
 
-        #region overrides
+        #region Overrides
         public override string ToString()
         {
             //return string.Format("{0} {1}", CalcMachineHourRate, CurrencySymbol);
             return string.Format("{0:C2}", CalcMachineHourRate);
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
     }

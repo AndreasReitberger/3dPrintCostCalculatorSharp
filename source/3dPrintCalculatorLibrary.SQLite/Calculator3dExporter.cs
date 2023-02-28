@@ -1,12 +1,10 @@
-﻿using AndreasReitberger.Print3d.SQLite;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
-#if NETFRAMEWORK
+#if NETFRAMEWORK || NET7_0_OR_GREATER 
     //#if net472
     public static class Calculator3dExporter
     {

@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("Worksteps")]
-    public partial class Workstep : ObservableObject, IWorkstep
+    public partial class Workstep : ObservableObject, IWorkstep, ICloneable
     {
         #region Properties
         [ObservableProperty]
@@ -110,6 +110,10 @@ namespace AndreasReitberger.Print3d.SQLite
         public override int GetHashCode()
         {
             return Id.GetHashCode();
+        }
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
         #endregion
     }

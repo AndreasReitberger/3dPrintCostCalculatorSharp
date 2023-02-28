@@ -21,7 +21,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public double Width { get; set; }
         public double Depth { get; set; }
         public double Height { get; set; }
-        public bool UseFixedMachineHourRating { get; set; }
+        //public bool UseFixedMachineHourRating { get; set; }
         public Guid HourlyMachineRateId { get; set; }
         //public IHourlyMachineRate HourlyMachineRate { get; set; }
         public Guid SlicerConfigId { get; set; }

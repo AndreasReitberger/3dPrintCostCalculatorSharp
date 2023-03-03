@@ -21,92 +21,92 @@ namespace AndreasReitberger.Print3d.Models
         public Guid calculationId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         public string model = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         Printer3dType type = Printer3dType.FDM;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
+        //[property: JsonIgnore, XmlIgnore]
         public Guid manufacturerId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         Manufacturer manufacturer;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double price = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double tax = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         bool priceIncludesTax = true;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         string uri = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         Material3dFamily materialType = Material3dFamily.Filament;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         List<Printer3dAttribute> attributes = new();
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double powerConsumption = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double width = 1;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double depth = 1;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         double height = 1;
 
         [ObservableProperty, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
-        [property: JsonIgnore, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
+        //[property: JsonIgnore, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
         bool useFixedMachineHourRating = false;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
+        //[property: JsonIgnore, XmlIgnore]
         public Guid hourlyMachineRateId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         HourlyMachineRate hourlyMachineRate;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         ObservableCollection<Maintenance3d> maintenances = new();
 
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
+        //[property: JsonIgnore, XmlIgnore]
         public Guid slicerConfigId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         Printer3dSlicerConfig slicerConfig = new();
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         byte[] image = Array.Empty<byte>();
 
         [ObservableProperty]
-        [property: JsonIgnore]
+        //[property: JsonIgnore]
         public string note = string.Empty;
 
         [JsonIgnore]

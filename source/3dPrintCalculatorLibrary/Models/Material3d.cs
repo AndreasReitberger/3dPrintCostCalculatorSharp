@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.Models
         public string sKU = string.Empty;
 
         [ObservableProperty]
-        public Unit unit = Unit.kg;
+        public Unit unit = Unit.Kilogramm;
 
         [ObservableProperty]
         public double packageSize = 1;
@@ -56,14 +56,12 @@ namespace AndreasReitberger.Print3d.Models
         public Material3dFamily materialFamily = Material3dFamily.Filament;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
         public Guid materialTypeId;
 
         [ObservableProperty]
         public Material3dType typeOfMaterial;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
         public Guid manufacturerId;
 
         [ObservableProperty]
@@ -94,7 +92,7 @@ namespace AndreasReitberger.Print3d.Models
         public string technicalDatasheet = string.Empty;
 
         [ObservableProperty]
-        public Unit spoolWeightUnit = Unit.g;
+        public Unit spoolWeightUnit = Unit.Gramm;
 
         [ObservableProperty]
         public double spoolWeight = 200;

@@ -23,7 +23,6 @@ namespace AndreasReitberger.Print3d.SQLite
         public Guid calculationId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
@@ -31,40 +30,31 @@ namespace AndreasReitberger.Print3d.SQLite
         object file;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string fileName = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string filePath = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double volume = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
         public Guid modelWeightId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [property: ManyToOne(nameof(ModelWeightId))]
-        ModelWeight weight = new(-1, Enums.Unit.g);
+        ModelWeight weight = new(-1, Enums.Unit.Gramm);
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double printTime = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int quantity = 1;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool multiplyPrintTimeWithQuantity = true;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double printTimeQuantityFactor = 1;
 
         #endregion

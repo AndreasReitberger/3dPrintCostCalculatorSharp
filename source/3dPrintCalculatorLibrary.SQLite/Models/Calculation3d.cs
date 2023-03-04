@@ -34,19 +34,15 @@ namespace AndreasReitberger.Print3d.SQLite
          * Otherwise cannot be deserialized with JsonConverter
          */
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        DateTime created = DateTime.Now;
+        DateTimeOffset created = DateTime.Now;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid printerId;
 
         [ObservableProperty]
-        [property: JsonIgnore, Ignore]
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
         {
@@ -63,11 +59,9 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid materialId;
 
         [ObservableProperty]
-        [property: JsonIgnore, Ignore]
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
         {
@@ -84,11 +78,9 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid customerId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [property: ManyToOne(nameof(CustomerId))]
         Customer3d customer;
 
@@ -111,35 +103,27 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int quantity = 1;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double powerLevel = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double failRate = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double energyCostsPerkWh = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool applyEnergyCost = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double totalCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool combineMaterialCosts = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool differFileCosts = true;
 
         #endregion
@@ -200,30 +184,24 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region AdditionalSettings
         [ObservableProperty]
-        [property: JsonIgnore]
         bool applyEnhancedMarginSettings = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool excludePrinterCostsFromMarginCalculation = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool excludeMaterialCostsFromMarginCalculation = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool excludeWorkstepsFromMarginCalculation = false;
 
         #endregion
 
         #region ProcedureSpecific
         [ObservableProperty]
-        [property: JsonIgnore]
         bool applyProcedureSpecificAdditions = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         Material3dFamily _procedure = Material3dFamily.Misc;
 
         [ObservableProperty]

@@ -23,11 +23,9 @@ namespace AndreasReitberger.Print3d.SQLite
         public Guid calculationId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double price = 0;
         partial void OnPriceChanged(double value)
         {
@@ -35,7 +33,6 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int quantity = 1;
         partial void OnQuantityChanged(int value)
         {
@@ -43,20 +40,16 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid categoryId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         [property: ManyToOne(nameof(CategoryId))]
         WorkstepCategory category;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         CalculationType calculationType;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double duration = 0;
         partial void OnDurationChanged(double value)
         {
@@ -64,15 +57,12 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         WorkstepType type;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double totalCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public string note = string.Empty;
         #endregion
 

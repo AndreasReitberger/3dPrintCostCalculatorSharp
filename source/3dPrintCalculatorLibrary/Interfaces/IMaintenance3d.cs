@@ -9,7 +9,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public Guid PrinterId { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public double Duration { get; set; }
         public double AdditionalCosts { get; set; }
         public double Costs { get; }

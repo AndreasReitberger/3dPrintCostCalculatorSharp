@@ -19,11 +19,9 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         public Guid fileId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool recalculateWeightInGramm = false;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double weight = 0;
         partial void OnWeightChanged(double value)
         {
@@ -32,8 +30,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        Unit unit = Unit.g;
+        Unit unit = Unit.Gramm;
         partial void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;
@@ -41,7 +38,6 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double weightInGramm = 0;
 
         #endregion

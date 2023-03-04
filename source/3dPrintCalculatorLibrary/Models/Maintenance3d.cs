@@ -29,13 +29,13 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         public string category = string.Empty;
-        
+
         [ObservableProperty]
         public DateTimeOffset date;
-        
+
         [ObservableProperty]
         public double duration;
-        
+
         [ObservableProperty]
         public double additionalCosts;
 

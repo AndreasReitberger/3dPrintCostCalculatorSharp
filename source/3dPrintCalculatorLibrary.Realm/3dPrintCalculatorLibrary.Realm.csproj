@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\common.props" />
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;net7</TargetFrameworks>
+    <RootNamespace>AndreasReitberger</RootNamespace>
+
+    <Description>A simple C# library to calculate 3D printing costs.</Description>    
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags>3d, Printing, Gcode, Library, Costs, Calculator, Realm</PackageTags>
+
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+	<RootNamespace>AndreasReitberger.Print3d.Realm</RootNamespace>
+	<Title>3dPrintCalculatorLibrary.Realm</Title>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
+    <DefineConstants>TRACE;DIFFER_FILES</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net5|AnyCPU'">
+	  <DefineConstants>DIFFER_FILES</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6|AnyCPU'">
+	  <DefineConstants>DIFFER_FILES</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net472|AnyCPU'">
+	  <DefineConstants>DIFFER_FILES</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="RCoreSharp" Version="1.0.8" />
+    <PackageReference Include="Realm" Version="10.20.0" />
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\3dPrintCalculatorLibrary\3dPrintCalculatorLibrary.csproj" />
+  </ItemGroup>
+</Project>

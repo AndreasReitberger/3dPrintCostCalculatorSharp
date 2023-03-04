@@ -1,9 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Models.WorkstepAdditions;
-using Newtonsoft.Json;
-using System;
 using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -17,11 +16,9 @@ namespace AndreasReitberger.Print3d.Models
         public Guid calculationId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double price = 0;
         partial void OnPriceChanged(double value)
         {
@@ -29,7 +26,6 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int quantity = 1;
         partial void OnQuantityChanged(int value)
         {
@@ -37,19 +33,15 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid categoryId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         WorkstepCategory category;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         CalculationType calculationType;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double duration = 0;
         partial void OnDurationChanged(double value)
         {
@@ -57,15 +49,12 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         WorkstepType type;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double totalCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public string note = string.Empty;
         #endregion
 

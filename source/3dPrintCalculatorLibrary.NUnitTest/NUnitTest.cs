@@ -353,19 +353,6 @@ namespace AndreasReitberger.NUnitTest
             }
         }
 
-        [Test]
-        public void DatabaseSaveAndLoadTest()
-        {
-            try
-            {
-                var calc = GetTestCalculation();
-            }
-            catch (Exception exc)
-            {
-                Assert.Fail(exc.Message);
-            }
-        }
-
         Calculation3d GetTestCalculation()
         {
             Material3d material = new()
@@ -590,12 +577,6 @@ namespace AndreasReitberger.NUnitTest
             {
                 Assert.Fail(exc.Message);
             }
-        }
-
-        [Test]
-        public void StorageDatabaseTest()
-        {
-
         }
 
         [Test]

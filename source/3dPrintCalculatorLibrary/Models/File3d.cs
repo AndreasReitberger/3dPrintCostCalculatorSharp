@@ -17,7 +17,6 @@ namespace AndreasReitberger.Print3d.Models
         public Guid calculationId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
@@ -25,39 +24,30 @@ namespace AndreasReitberger.Print3d.Models
         object file;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string fileName = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string filePath = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double volume = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
         public Guid modelWeightId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         ModelWeight weight = new(-1, Enums.Unit.Gramm);
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double printTime = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int quantity = 1;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool multiplyPrintTimeWithQuantity = true;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double printTimeQuantityFactor = 1;
 
         #endregion
@@ -72,17 +62,17 @@ namespace AndreasReitberger.Print3d.Models
         #region Overrides
         public override string ToString()
         {
-            return this.Name;
+            return Name;
         }
         public override bool Equals(object obj)
         {
             if (obj is not File3d item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

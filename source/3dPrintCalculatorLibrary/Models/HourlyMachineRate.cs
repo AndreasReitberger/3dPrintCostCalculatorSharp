@@ -12,27 +12,21 @@ namespace AndreasReitberger.Print3d.Models
         public Guid id;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         public Guid printerId;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         string name = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         bool perYear = true;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double machineHours = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double replacementCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         int usefulLifeYears = 4;
 
         [JsonIgnore]
@@ -48,7 +42,6 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double interestRate = 3;
 
         [JsonIgnore]
@@ -66,35 +59,27 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double maintenanceCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double locationCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double energyCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double additionalCosts = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double maintenanceCostsVariable = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double energyCostsVariable = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double additionalCostsVariable = 0;
 
         [ObservableProperty]
-        [property: JsonIgnore]
         double fixMachineHourRate = -1;
 
         [JsonIgnore]

@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Basics
         string Name { get; set; }
-        DateTime Created { get; set; }
+        DateTimeOffset Created { get; set; }
         public Guid PrinterId { get; set; }
         //IPrinter3d Printer { get; set; }
         public Guid MaterialId { get; set; }

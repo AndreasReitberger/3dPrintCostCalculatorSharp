@@ -31,12 +31,16 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         public string description = string.Empty;
+
         [ObservableProperty]
         public string category = string.Empty;
+
         [ObservableProperty]
-        public DateTime date;
+        public DateTimeOffset date;
+
         [ObservableProperty]
         public double duration;
+
         [ObservableProperty]
         public double additionalCosts;
 

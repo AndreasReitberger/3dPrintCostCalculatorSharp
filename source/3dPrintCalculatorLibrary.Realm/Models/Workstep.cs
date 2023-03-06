@@ -11,9 +11,9 @@ namespace AndreasReitberger.Print3d.Realm
     {
         #region Properties
         [PrimaryKey]
-        public Guid Id{ get; set; }
+        public Guid Id { get; set; }
 
-        public Guid CalculationId{ get; set; }
+        public Guid CalculationId { get; set; }
         [Required]
         public string Name { get; set; } = string.Empty;
 
@@ -51,7 +51,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public WorkstepCategory Category { get; set; }
 
-        public int CalculationTypeId { get;set; }
+        public int CalculationTypeId { get; set; }
         public CalculationType CalculationType
         {
             get => (CalculationType)CalculationTypeId;

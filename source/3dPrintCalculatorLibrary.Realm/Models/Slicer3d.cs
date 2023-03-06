@@ -33,7 +33,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string RepoUri { get; set; }
 
-        public Version Version 
+        public Version Version
         {
             get => Version.Parse(VersionString);
             set => VersionString = value?.ToString();

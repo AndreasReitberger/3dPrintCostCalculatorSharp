@@ -3,13 +3,10 @@ using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.CalculationAdditions;
 using AndreasReitberger.Print3d.Realm.Events;
 using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
-using AndreasReitberger.Print3d.Utilities;
 using Newtonsoft.Json;
 using Realms;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using ErrorEventArgs = System.IO.ErrorEventArgs;
 
 namespace AndreasReitberger.Print3d.Realm

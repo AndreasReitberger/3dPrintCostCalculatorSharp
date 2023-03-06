@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         #region Basics
         [ObservableProperty]
@@ -30,7 +30,7 @@ namespace AndreasReitberger.Print3d.Models
         DateTimeOffset created = DateTime.Now;
 
         [ObservableProperty]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
         Printer3d printer;
@@ -119,43 +119,43 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Details
         [ObservableProperty]
-        public List<Printer3d> printers = new();
+        List<Printer3d> printers = new();
 
         [ObservableProperty]
-        public List<Material3d> materials = new();
+        List<Material3d> materials = new();
 
         [ObservableProperty]
-        public List<CustomAddition> customAdditions = new();
+        List<CustomAddition> customAdditions = new();
 
         [ObservableProperty]
-        public List<Workstep> workSteps = new();
+        List<Workstep> workSteps = new();
 
         [ObservableProperty]
-        public List<WorkstepDuration> workStepDurations = new();
+        List<WorkstepDuration> workStepDurations = new();
 
         [ObservableProperty]
-        public List<Item3dUsage> additionalItems = new();
+        List<Item3dUsage> additionalItems = new();
 
         [ObservableProperty]
-        public ObservableCollection<CalculationAttribute> printTimes = new();
+        ObservableCollection<CalculationAttribute> printTimes = new();
 
         [ObservableProperty]
-        public ObservableCollection<CalculationAttribute> materialUsage = new();
+        ObservableCollection<CalculationAttribute> materialUsage = new();
 
         [ObservableProperty]
-        public ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
+        ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
 
         [ObservableProperty]
-        public ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
+        ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
 
         [ObservableProperty]
-        public ObservableCollection<CalculationAttribute> costs = new();
+        ObservableCollection<CalculationAttribute> costs = new();
 
         [ObservableProperty]
-        public List<CalculationAttribute> rates = new();
+        List<CalculationAttribute> rates = new();
 
         [ObservableProperty]
-        public List<File3d> files = new();
+        List<File3d> files = new();
         #endregion
 
         #region AdditionalSettings
@@ -181,7 +181,7 @@ namespace AndreasReitberger.Print3d.Models
         Material3dFamily _procedure = Material3dFamily.Misc;
 
         [ObservableProperty]
-        public ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
+        ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
         #endregion
 
         #region Calculated

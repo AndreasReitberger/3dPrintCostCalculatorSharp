@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         #region Basics
         /*
@@ -40,9 +40,10 @@ namespace AndreasReitberger.Print3d.SQLite
         DateTimeOffset created = DateTime.Now;
 
         [ObservableProperty]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
+        [property: Ignore]
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
         {
@@ -62,6 +63,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public Guid materialId;
 
         [ObservableProperty]
+        [property: Ignore]
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
         {
@@ -78,7 +80,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        public Guid customerId;
+        Guid customerId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(CustomerId))]
@@ -131,55 +133,55 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Details
         [ObservableProperty]
         [property: ManyToMany(typeof(Printer3dCalculation))]
-        public List<Printer3d> printers = new();
+        List<Printer3d> printers = new();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(Material3dCalculation))]
-        public List<Material3d> materials = new();
+        List<Material3d> materials = new();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(CustomAdditionCalculation))]
-        public List<CustomAddition> customAdditions = new();
+        List<CustomAddition> customAdditions = new();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(WorkstepCalculation))]
-        public List<Workstep> workSteps = new();
+        List<Workstep> workSteps = new();
 
         [ObservableProperty]
         [property: OneToMany]
-        public List<WorkstepDuration> workStepDurations = new();
+        List<WorkstepDuration> workStepDurations = new();
 
         [ObservableProperty]
         [property: OneToMany]
-        public List<Item3dUsage> additionalItems = new();
+        List<Item3dUsage> additionalItems = new();
 
         [ObservableProperty]
         [property: Ignore]
-        public ObservableCollection<CalculationAttribute> printTimes = new();
+        ObservableCollection<CalculationAttribute> printTimes = new();
 
         [ObservableProperty]
         [property: Ignore]
-        public ObservableCollection<CalculationAttribute> materialUsage = new();
+        ObservableCollection<CalculationAttribute> materialUsage = new();
 
         [ObservableProperty]
         [property: Ignore]
-        public ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
+        ObservableCollection<CalculationAttribute> overallMaterialCosts = new();
 
         [ObservableProperty]
         [property: Ignore]
-        public ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
+        ObservableCollection<CalculationAttribute> overallPrinterCosts = new();
 
         [ObservableProperty]
         [property: Ignore]
-        public ObservableCollection<CalculationAttribute> costs = new();
+        ObservableCollection<CalculationAttribute> costs = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<CalculationAttribute> rates = new();
+        List<CalculationAttribute> rates = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<File3d> files = new();
+        List<File3d> files = new();
         #endregion
 
         #region AdditionalSettings
@@ -206,7 +208,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
+        ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
         #endregion
 
         #region Calculated

@@ -1,14 +1,15 @@
 using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.SQLite;
-using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.StorageAdditions;
+using AndreasReitberger.Print3d.Realm;
+using AndreasReitberger.Print3d.Realm.CalculationAdditions;
+using AndreasReitberger.Print3d.Realm.MaterialAdditions;
+using AndreasReitberger.Print3d.Realm.StorageAdditions;
 using NUnit.Framework;
+using Realms;
 using SQLite;
 
 namespace AndreasReitberger.NUnitTest
 {
-    public class TestsSqlite
+    public class TestsRealm
     {
         [SetUp]
         public void Setup()
@@ -20,17 +21,19 @@ namespace AndreasReitberger.NUnitTest
         {
             try
             {
-                string databasePath = "testdatabase.db";
-                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
-                if (DatabaseHandler.Instance.IsInitialized)
+                string databasePath = "testdatabase.realm";
+
+                // https://www.mongodb.com/docs/realm/sdk/dotnet/quick-start/
+                var config = new RealmConfiguration(databasePath);
+                // Start with a clear database
+                if (File.Exists(config.DatabasePath))
                 {
-                    // Clear all tables
-                    await DatabaseHandler.Instance.TryClearAllTableAsync();
-                    await DatabaseHandler.Instance.TryDropAllTableAsync();
-
-                    // Recreate tables
-                    await DatabaseHandler.Instance.RebuildAllTableAsync();
-
+                    File.Delete(config.DatabasePath);
+                }
+                using var realm = await Realm.GetInstanceAsync(config);
+                if (!realm.IsClosed)
+                {
+                    realm.Write(() => realm.RemoveAll());
                     // Manufacturers
                     Manufacturer prusa = new()
                     {
@@ -39,15 +42,16 @@ namespace AndreasReitberger.NUnitTest
                         Website = "https://shop.prusa3d.com/en/#a_aid=AndreasReitberger",
                         IsActive = true,
                     };
-                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(prusa);
-                    Manufacturer addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
+                    realm.Write(() => realm.Add(prusa));
+                    Manufacturer addedManufacturer = realm.Find<Manufacturer>(prusa.Id);
                     Assert.IsNotNull(addedManufacturer);
                     Assert.IsTrue(
                         prusa.Name == addedManufacturer.Name &&
                         prusa.DebitorNumber == addedManufacturer.DebitorNumber &&
                         prusa.Website == addedManufacturer.Website
                         );
-                    List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
+
+                    List<Manufacturer> manufacturers = realm.All<Manufacturer>().ToList();
                     Assert.IsTrue(manufacturers?.Count > 0);
 
                     List<Material3dType> materialTypes = new()
@@ -78,8 +82,10 @@ namespace AndreasReitberger.NUnitTest
                             Family = Material3dFamily.Filament,
                         },
                     };
-                    await DatabaseHandler.Instance.SetMaterialTypesWithChildrenAsync(materialTypes);
-                    List<Material3dType> types = await DatabaseHandler.Instance.GetMaterialTypesWithChildrenAsync();
+
+                    List<Material3dType> types = realm.All<Material3dType>().ToList();
+                    realm.Write(() => realm.Add(materialTypes));
+                    types = realm.All<Material3dType>().ToList();
                     Assert.IsTrue(materialTypes.Count == types?.Count);
 
                     // Hourly Machine Rate
@@ -91,9 +97,9 @@ namespace AndreasReitberger.NUnitTest
                         LocationCosts = 20,
                         MaintenanceCosts = 120,
                     };
-                    await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(mhr);
-                    HourlyMachineRate hourlyMachineRate = await DatabaseHandler.Instance.GetHourlyMachineRateWithChildrenAsync(mhr.Id);
-                    List<HourlyMachineRate> hourlyMachineRates = await DatabaseHandler.Instance.GetHourlyMachineRatesWithChildrenAsync();
+                    realm.Write(() => realm.Add(mhr));
+                    HourlyMachineRate hourlyMachineRate = realm.Find<HourlyMachineRate>(mhr.Id);
+                    List<HourlyMachineRate> hourlyMachineRates = realm.All<HourlyMachineRate>().ToList();
                     Assert.IsTrue(hourlyMachineRates?.Count > 0);
 
                     // Printers
@@ -112,9 +118,9 @@ namespace AndreasReitberger.NUnitTest
                         PowerConsumption = 300,
                         HourlyMachineRate = hourlyMachineRate,
                     };
-                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(prusaXL);
-                    Printer3d printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
-                    List<Printer3d> printers = await DatabaseHandler.Instance.GetPrintersWithChildrenAsync();
+                    realm.Write(() => realm.Add(prusaXL));
+                    Printer3d printer = realm.Find<Printer3d>(prusaXL.Id);
+                    List<Printer3d> printers = realm.All<Printer3d>().ToList();
                     Assert.IsTrue(printers?.Count > 0);
 
                     // Materials
@@ -135,9 +141,9 @@ namespace AndreasReitberger.NUnitTest
                         Unit = Unit.Kilogramm,
                         Uri = "https://www.prusa3d.com/product/prusament-petg-anthracite-grey-1kg/#a_aid=AndreasReitberger"
                     };
-                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(materialPETG);
-                    Material3d material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
-                    List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
+                    realm.Write(() => realm.Add(materialPETG));
+                    Material3d material = realm.Find<Material3d>(materialPETG.Id);
+                    List<Material3d> materials = realm.All<Material3d>().ToList();
                     Assert.IsTrue(materials?.Count > 0);
 
                     // Additional items
@@ -156,19 +162,20 @@ namespace AndreasReitberger.NUnitTest
                         PackageSize = 200,
                     };
 
-                    await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
-                    List<Item3d>? items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
+                    realm.Write(() => realm.Add(new List<Item3d>() { item, item2 }));
+                    List<Item3d> items = realm.All<Item3d>().ToList();
                     Assert.IsTrue(items?.Count == 2);
 
                     List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));
-                    await DatabaseHandler.Instance.SetItemUsagesWithChildrenAsync(usages);
+                    realm.Write(() => realm.Add(usages));
 
                     Calculation3d calculation = new()
                     {
                         Printer = printer,
                         Material = material,
-                        AdditionalItems = usages,
+                        //AdditionalItems = usages,
                     };
+                    usages.ForEach(usage => calculation.AdditionalItems.Add(usage));
                     calculation.Printers.Add(printer);
                     calculation.Materials.Add(material);
                     calculation.Files.Add(new File3d()
@@ -187,11 +194,12 @@ namespace AndreasReitberger.NUnitTest
 
                     calculation.CalculateCosts();
 
-                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
-                    Calculation3d calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    realm.Write(() => realm.Add(calculation));
+                    Calculation3d calcFromDB = realm.Find<Calculation3d>(calculation.Id);
+                    realm.Write(() => calcFromDB.CalculateCosts());
                     Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
 
-                    List<Calculation3d> calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+                    List<Calculation3d> calculations = realm.All<Calculation3d>().ToList();
 
                     Calculation3d calculation2 = new()
                     {
@@ -209,31 +217,34 @@ namespace AndreasReitberger.NUnitTest
                     });
                     calculation2.CalculateCosts();
 
-                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation2);
-                    Calculation3d calcFromDB2 = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation2.Id);
+                    realm.Write(() => realm.Add(calculation2));
+                    Calculation3d calcFromDB2 = realm.Find<Calculation3d>(calculation2.Id);
                     Assert.IsTrue(calculation2.TotalCosts == calcFromDB2.TotalCosts);
 
-                    calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                    calcFromDB = realm.Find<Calculation3d>(calculation.Id);
                     Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
 
-                    calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
+                    calculations = realm.All<Calculation3d>().ToList();
 
                     // Cleanup
-                    await DatabaseHandler.Instance.DeleteCalculationAsync(calculation);
-                    //calculation = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
-                    //Assert.IsNull(calculation);
+                    realm.Write(() =>
+                    {
+                        realm.Remove(calculation);
+                        //calculation = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
+                        //Assert.IsNull(calculation);
 
-                    await DatabaseHandler.Instance.DeleteMaterialAsync(materialPETG);
-                    //material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
-                    //Assert.IsNull(material);
+                        realm.Remove(materialPETG);
+                        //material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
+                        //Assert.IsNull(material);
 
-                    await DatabaseHandler.Instance.DeletePrinterAsync(prusaXL);
-                    //printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
-                    //Assert.IsNull(printer);
+                        realm.Remove(prusaXL);
+                        //printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
+                        //Assert.IsNull(printer);
 
-                    await DatabaseHandler.Instance.DeleteManufacturerAsync(prusa);
-                    //addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
-                    //Assert.IsNull(addedManufacturer);
+                        realm.Remove(prusa);
+                        //addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
+                        //Assert.IsNull(addedManufacturer);
+                    });
                 }
                 else
                 {
@@ -244,20 +255,6 @@ namespace AndreasReitberger.NUnitTest
             {
                 Assert.Fail(exc.Message);
             }
-        }
-
-        [Test]
-        public void DatabaseBuilderTest()
-        {
-            string databasePath = "testdatabase.db";
-            using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
-                .WithDatabasePath(databasePath)
-                .WithTable(typeof(Manufacturer))
-                .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
-                .Build();
-
-            List<TableMapping> mappings = handler.GetTableMappings();
-            Assert.IsTrue(mappings?.Count > 0);
         }
 
         private Calculation3d _calculation;
@@ -342,7 +339,7 @@ namespace AndreasReitberger.NUnitTest
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
                 double totalCosts = _calculation.TotalCosts;
                 Assert.IsTrue(_calculation.IsCalculated);
 
@@ -448,7 +445,7 @@ namespace AndreasReitberger.NUnitTest
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
 #if NETFRAMEWORK
                 Calculator3dExporter.Save(_calculation, @"mycalc.3dcx");
                 Calculator3dExporter.Load(@"mycalc.3dcx", out Calculation3d calculation);
@@ -549,31 +546,31 @@ namespace AndreasReitberger.NUnitTest
                     new CalculationProcedureParameterAddition("replacementcosts", 20),
                     new CalculationProcedureParameterAddition( "wearfactor", 0.5 ),
                 };
-
-                //List<CalculationProcedureParameter> paramters = new List<CalculationProcedureParameter>();
-                List<CalculationProcedureParameter> parameters = new List<CalculationProcedureParameter>
+                var nozzleWear = new CalculationProcedureParameter()
                 {
-                    new CalculationProcedureParameter()
-                    {
-                        Type = ProcedureParameter.NozzleWearCosts,
-                        Value = 2,
-                        Additions = additionalInfo,
-                    }
+                    Type = ProcedureParameter.NozzleWearCosts,
+                    Value = 2,
+                    //Additions = additionalInfo,
                 };
-
-                _calculation.ProcedureAttributes.Add(
-                    new CalculationProcedureAttribute()
-                    {
-                        Attribute = ProcedureAttribute.NozzleWear,
-                        Family = Material3dFamily.Filament,
-                        Parameters = parameters,
-                        Level = CalculationLevel.Printer,
-                    }
-                );
+                nozzleWear.AddRange(additionalInfo);
+                List<CalculationProcedureParameter> parameters = new()
+                {
+                    nozzleWear
+                };
+                var attributes = new CalculationProcedureAttribute()
+                {
+                    Attribute = ProcedureAttribute.NozzleWear,
+                    Family = Material3dFamily.Filament,
+                    //Parameters = parameters,
+                    Level = CalculationLevel.Printer,
+                };
+                attributes.AddRange(parameters);
+                _calculation.ProcedureAttributes.Add(attributes);
 
                 _calculation.CalculateCosts();
 
                 CalculationAttribute wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
+                item.LinkedId == _calculation.Printer.Id &&
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
@@ -581,13 +578,12 @@ namespace AndreasReitberger.NUnitTest
 
                 // Updat calculation
                 _calculation.Printer = null;
-                _calculation.Printers = new List<Printer3d>
-                {
-                    printerSla
-                };
+                _calculation.Printers.Add(printerSla);
+                _calculation.Printer = _calculation.Printers[^1];
 
                 _calculation.CalculateCosts();
                 wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
+                item.LinkedId == _calculation.Printer.Id &&
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
@@ -597,86 +593,6 @@ namespace AndreasReitberger.NUnitTest
             {
                 Assert.Fail(exc.Message);
             }
-        }
-
-        [Test]
-        public void DatabaseSaveAndLoadTest()
-        {
-            try
-            {
-                var calc = GetTestCalculation();
-            }
-            catch (Exception exc)
-            {
-                Assert.Fail(exc.Message);
-            }
-        }
-
-        Calculation3d GetTestCalculation()
-        {
-            Material3d material = new()
-            {
-                Id = Guid.NewGuid(),
-                Density = 1.24,
-                Name = "Test Material",
-                Unit = Unit.Kilogramm,
-                PackageSize = 1,
-                UnitPrice = 30,
-                TypeOfMaterial = new Material3dType()
-                {
-                    Id = Guid.NewGuid(),
-                    Material = "PETG",
-                    Polymer = "",
-                    Family = Material3dFamily.Filament,
-                }
-            };
-            Printer3d printer = new()
-            {
-                Id = Guid.NewGuid(),
-                Manufacturer = new Manufacturer()
-                {
-                    Id = Guid.NewGuid(),
-                    IsActive = true,
-                    Name = "Prusa"
-                },
-                Model = "XL MK1",
-                Price = 799,
-                MaterialType = Material3dFamily.Filament,
-                Type = Printer3dType.FDM,
-                PowerConsumption = 210,
-            };
-            File3d file = new()
-            {
-                Id = Guid.NewGuid(),
-                PrintTime = 10.25,
-                Volume = 12.36,
-                Quantity = 3,
-            };
-            File3d file2 = new()
-            {
-                Id = Guid.NewGuid(),
-                PrintTime = 10.25,
-                Volume = 12.36,
-                Quantity = 3,
-                MultiplyPrintTimeWithQuantity = false
-            };
-
-            _calculation = new Calculation3d();
-            // Add data
-            _calculation.Files.Add(file);
-            _calculation.Files.Add(file2);
-            _calculation.Printers.Add(printer);
-            _calculation.Materials.Add(material);
-
-            // Add information
-            _calculation.FailRate = 25;
-            _calculation.EnergyCostsPerkWh = 0.30;
-            _calculation.ApplyEnergyCost = true;
-            // Uses 75% of the max. power consumption set in the printer model (210 Watt)
-            _calculation.PowerLevel = 75;
-
-            _calculation.CalculateCosts();
-            return _calculation;
         }
 
         public void MultiFileDifferTest()
@@ -799,17 +715,18 @@ namespace AndreasReitberger.NUnitTest
         {
             try
             {
-                string databasePath = "testdatabase.db";
-                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
-                if (DatabaseHandler.Instance.IsInitialized)
+                string databasePath = "testdatabase.realm";
+                // https://www.mongodb.com/docs/realm/sdk/dotnet/quick-start/
+                var config = new RealmConfiguration(databasePath);
+                // Start with a clear database
+                if (File.Exists(config.DatabasePath))
                 {
-                    // Clear all tables
-                    await DatabaseHandler.Instance.TryClearAllTableAsync();
-                    await DatabaseHandler.Instance.TryDropAllTableAsync();
-
-                    // Recreate tables
-                    await DatabaseHandler.Instance.RebuildAllTableAsync();
-
+                    File.Delete(config.DatabasePath);
+                }
+                using var realm = await Realm.GetInstanceAsync(config);
+                if (!realm.IsClosed)
+                {
+                    realm.Write(() => realm.RemoveAll());
                     double startAmount = 2.68;
                     Material3d material = new()
                     {
@@ -820,59 +737,39 @@ namespace AndreasReitberger.NUnitTest
                         UnitPrice = 29.99,
                         PriceIncludesTax = true,
                     };
-                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+                    realm.Write(() => realm.Add(material));
 
                     Storage3dItem item = new()
                     {
                         Material = material,
                         Amount = startAmount,
                     };
-                    await DatabaseHandler.Instance.SetStorageItemWithChildrenAsync(item);
+                    realm.Write(() => realm.Add(item));
                     Storage3d storage = new()
                     {
                         Name = "Main material storage",
-                        Items = new() { item },
                     };
-                    await DatabaseHandler.Instance.SetStorageWithChildrenAsync(storage);
-
-                    storage.AddToStock(material, 750, Unit.Gramm);
-                    var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
-                    // Check if the addition was successfully
-                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
-
-                    // Just to check if the unit conversion is working
-                    storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
-                    newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
-                    // Check if the addition was successfully
-                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                    storage.Items.Add(item);
+                    realm.Write(() =>
+                    {
+                        realm.Add(storage);
+                        storage.AddToStock(material, 750, Unit.Gramm);
+                        var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
+                        // Check if the addition was successfully
+                        Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
+                    
+                        // Just to check if the unit conversion is working
+                        storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
+                        newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
+                        // Check if the addition was successfully
+                        Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                    });
                 }
             }
             catch (Exception exc)
             {
                 Assert.Fail(exc.Message);
             }
-        }
-
-        [Test]
-        public void TakeCalculationAmountFromStorageTest()
-        {
-            try
-            {
-                Calculation3d calculation = GetTestCalculation();
-                Assert.IsNotNull(calculation);
-
-                foreach (var material in calculation.Materials)
-                {
-                    Storage3dItem item = new()
-                    {
-                        Material = material,
-                    };
-                }
-            }
-            catch (Exception exc)
-            {
-                Assert.Fail(exc.Message, exc);
-            }
-        }
+        }      
     }
 }

@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
         public Guid CalculationId { get; set; }
 
         public Guid FileId { get; set; } = Guid.Empty;
-        [Required]
+
         public string FileName { get; set; }
 
         public Guid LinkedId { get; set; } = Guid.Empty;

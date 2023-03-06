@@ -11,34 +11,34 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         #region Properties
 
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Guid fileId = Guid.Empty;
+        Guid fileId = Guid.Empty;
 
         [ObservableProperty]
-        public string fileName;
+        string fileName;
 
         [ObservableProperty]
-        public Guid linkedId = Guid.Empty;
+        Guid linkedId = Guid.Empty;
 
         [ObservableProperty]
-        public string attribute;
+        string attribute;
 
         [ObservableProperty]
-        public CalculationAttributeType type;
+        CalculationAttributeType type;
 
         [ObservableProperty]
-        public double value;
+        double value;
 
         [ObservableProperty]
-        public bool isPercentageValue = false;
+        bool isPercentageValue = false;
 
         [ObservableProperty]
-        public bool skipForCalculation = false;
+        bool skipForCalculation = false;
         #endregion
 
         #region Constructor

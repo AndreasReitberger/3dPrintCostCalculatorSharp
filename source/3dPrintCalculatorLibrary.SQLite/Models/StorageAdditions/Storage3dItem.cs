@@ -21,7 +21,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         string name;
 
         [ObservableProperty]
-        public Guid materialId;
+        Guid materialId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(MaterialId))]

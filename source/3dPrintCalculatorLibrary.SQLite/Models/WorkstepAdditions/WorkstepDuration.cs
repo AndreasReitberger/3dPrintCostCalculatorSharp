@@ -12,21 +12,21 @@ namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         [property: ManyToOne]
-        public Calculation3d calculation;
+        Calculation3d calculation;
 
         [ObservableProperty]
-        public Guid workstepId;
+        Guid workstepId;
 
         [ObservableProperty]
-        public double duration = 0;
+        double duration = 0;
         #endregion
 
         #region Constructors

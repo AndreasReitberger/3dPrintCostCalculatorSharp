@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         string name;
 
         [ObservableProperty]
-        public Guid materialId;
+        Guid materialId;
 
         [ObservableProperty]
         Material3d material;

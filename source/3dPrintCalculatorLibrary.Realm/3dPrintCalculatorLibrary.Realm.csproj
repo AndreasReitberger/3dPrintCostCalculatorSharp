@@ -39,10 +39,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\3dPrintCalculatorLibrary\3dPrintCalculatorLibrary.csproj" />
   </ItemGroup>
 </Project>

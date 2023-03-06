@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 
@@ -23,7 +22,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Calculation3d? calculation;
 
         [ObservableProperty]
-        DateTime dateTime;
+        DateTimeOffset dateTime;
 
         [ObservableProperty]
         Guid storageItemId;

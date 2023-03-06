@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite.MaintenanceAdditions
 {
@@ -12,20 +11,20 @@ namespace AndreasReitberger.Print3d.SQLite.MaintenanceAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Maintenance3d))]
-        public Guid maintenanceId;
+        Guid maintenanceId;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string partnumber = string.Empty;
+        string partnumber = string.Empty;
 
         [ObservableProperty]
-        public double costs;
+        double costs;
         #endregion
 
         #region Constructor

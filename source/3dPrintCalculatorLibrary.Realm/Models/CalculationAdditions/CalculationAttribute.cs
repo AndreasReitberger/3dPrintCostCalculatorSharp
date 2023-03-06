@@ -1,44 +1,39 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class CalculationAttribute : ObservableObject, ICalculationAttribute
+    public partial class CalculationAttribute : RealmObject, ICalculationAttribute
     {
         #region Properties
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid id;
+        public Guid CalculationId { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid FileId { get; set; } = Guid.Empty;
+        [Required]
+        public string FileName { get; set; }
 
-        [ObservableProperty]
-        public Guid fileId = Guid.Empty;
+        public Guid LinkedId { get; set; } = Guid.Empty;
 
-        [ObservableProperty]
-        public string fileName;
+        public string Attribute { get; set; }
 
-        [ObservableProperty]
-        public Guid linkedId = Guid.Empty;
+        public CalculationAttributeType Type
+        {
+            get => (CalculationAttributeType)TypeId;
+            set { TypeId = (int)value; }
+        }
+        public int TypeId { get; set; }
 
-        [ObservableProperty]
-        public string attribute;
+        public double Value { get; set; }
 
-        [ObservableProperty]
-        public CalculationAttributeType type;
+        public bool IsPercentageValue { get; set; } = false;
 
-        [ObservableProperty]
-        public double value;
-
-        [ObservableProperty]
-        public bool isPercentageValue = false;
-
-        [ObservableProperty]
-        public bool skipForCalculation = false;
+        public bool SkipForCalculation { get; set; } = false;
         #endregion
 
         #region Constructor

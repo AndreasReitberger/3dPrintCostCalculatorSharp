@@ -10,26 +10,25 @@ namespace AndreasReitberger.Print3d.Models.SlicerAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        public Guid slicerId;
+        Guid slicerId;
 
         [ObservableProperty]
-        public Slicer3d slicer;
+        Slicer3d slicer;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public string command;
+        string command;
 
         [ObservableProperty]
-        public string outputFilePatternString;
+        string outputFilePatternString;
 
         [ObservableProperty]
-        public bool autoAddFilePath;
+        bool autoAddFilePath;
 
         #endregion
 

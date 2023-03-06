@@ -1,44 +1,54 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using Realms;
 using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Realm.FileAdditions
 {
-    public partial class ModelWeight : ObservableObject, IModelWeight
+    public partial class ModelWeight : RealmObject, IModelWeight
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid fileId;
+        public Guid FileId { get; set; }
 
-        [ObservableProperty]
-        bool recalculateWeightInGramm = false;
+        public bool RecalculateWeightInGramm { get; set; } = false;
 
-        [ObservableProperty]
-        double weight = 0;
-        partial void OnWeightChanged(double value)
+        double weight { get; set; } = 0;
+        public double Weight
+        {
+            get => weight;
+            set
+            {
+                weight = value;
+                OnWeightChanged(value);
+            }
+        }
+        void OnWeightChanged(double value)
         {
             RecalculateWeightInGramm = true;
             RecalculateWeight();
         }
 
-        [ObservableProperty]
-        Unit unit = Unit.Gramm;
-        partial void OnUnitChanged(Unit value)
+        public Unit Unit
+        {
+            get => (Unit)UnitId;
+            set
+            {
+                UnitId = (int)value;
+                OnUnitChanged(value);
+            }
+        }
+        int UnitId { get; set; } = (int)Unit.Gramm;
+        void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;
             RecalculateWeight();
         }
 
-        [ObservableProperty]
-        double weightInGramm = 0;
+        public double WeightInGramm { get; set; } = 0;
 
         #endregion
 

@@ -1,26 +1,22 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.StorageAdditions
 {
-    public partial class Storage3dItem : ObservableObject, IStorage3dItem
+    public partial class Storage3dItem : RealmObject, IStorage3dItem
     {
         #region Properties
-        [ObservableProperty]
-        Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        string name;
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        public Guid materialId;
+        public Guid MaterialId { get; set; }
 
-        [ObservableProperty]
-        Material3d material;
+        public Material3d Material { get; set; }
 
-        [ObservableProperty]
-        double amount;
+        public double Amount { get; set; }
         #endregion
 
         #region Ctor

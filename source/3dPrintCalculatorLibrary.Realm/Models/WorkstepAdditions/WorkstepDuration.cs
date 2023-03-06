@@ -1,26 +1,22 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.WorkstepAdditions
 {
-    public partial class WorkstepDuration : ObservableObject, IWorkstepDuration
+    public partial class WorkstepDuration : RealmObject, IWorkstepDuration
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
 
-        [ObservableProperty]
-        public Calculation3d calculation;
+        public Calculation3d Calculation { get; set; }
 
-        [ObservableProperty]
-        public Guid workstepId;
+        public Guid WorkstepId { get; set; }
 
-        [ObservableProperty]
-        public double duration = 0;
+        public double Duration { get; set; } = 0;
         #endregion
 
         #region Constructors

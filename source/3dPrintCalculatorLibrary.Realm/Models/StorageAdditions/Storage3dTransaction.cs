@@ -1,30 +1,30 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.StorageAdditions
 {
-    public partial class Storage3dTransaction : ObservableObject, IStorage3dTransaction
+    public partial class Storage3dTransaction : RealmObject, IStorage3dTransaction
     {
         #region Properties
-        [ObservableProperty]
-        Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        Guid? calculationId;
+        public Guid? CalculationId { get; set; }
 
-        [ObservableProperty]
-        DateTime dateTime;
+        public DateTimeOffset DateTime { get; set; }
 
-        [ObservableProperty]
-        Storage3dItem item;
+        public Storage3dItem Item { get; set; }
 
-        [ObservableProperty]
-        double amount;
+        public double Amount { get; set; }
 
-        [ObservableProperty]
-        Unit unit;
+        public Unit Unit
+        {
+            get => (Unit)UnitId;
+            set { UnitId = (int)value; }
+        }
+        public int UnitId { get; set; }
         #endregion
 
         #region Ctor

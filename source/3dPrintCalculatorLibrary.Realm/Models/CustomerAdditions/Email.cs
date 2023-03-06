@@ -1,20 +1,18 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.CustomerAdditions
 {
-    public partial class Email : ObservableObject, IEmail
+    public partial class Email : RealmObject, IEmail
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid customerId;
+        public Guid CustomerId { get; set; }
 
-        [ObservableProperty]
-        public string emailAddress;
+        public string EmailAddress { get; set; }
         #endregion
 
         #region Constructor

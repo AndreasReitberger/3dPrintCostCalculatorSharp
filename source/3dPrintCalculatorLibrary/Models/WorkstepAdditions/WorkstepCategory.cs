@@ -8,10 +8,10 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
         #endregion
 
         #region Constructors

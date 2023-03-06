@@ -1,23 +1,20 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.PrinterAdditions
 {
-    public partial class Printer3dAttribute : ObservableObject, IPrinter3dAttribute
+    public partial class Printer3dAttribute : RealmObject, IPrinter3dAttribute
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid printerId;
+        public Guid PrinterId { get; set; }
 
-        [ObservableProperty]
-        public string attribute;
+        public string Attribute { get; set; }
 
-        [ObservableProperty]
-        public double value;
+        public double Value { get; set; }
         #endregion
 
         #region Constructor

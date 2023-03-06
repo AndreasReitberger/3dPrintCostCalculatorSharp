@@ -11,25 +11,25 @@ namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string salutation;
+        string salutation;
 
         [ObservableProperty]
-        public string firstName;
+        string firstName;
 
         [ObservableProperty]
-        public string lastName;
+        string lastName;
 
         [ObservableProperty]
-        public string email;
+        string email;
 
         [ObservableProperty]
-        public string phoneNumber;
+        string phoneNumber;
 
         [ObservableProperty]
-        public bool showOnDocuments;
+        bool showOnDocuments;
         #endregion
 
         #region Constructor

@@ -1,31 +1,41 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class CalculationProcedureAttribute : ObservableObject, ICalculationProcedureAttribute
+    public partial class CalculationProcedureAttribute : RealmObject, ICalculationProcedureAttribute
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
 
-        [ObservableProperty]
-        public Material3dFamily family;
+        public Material3dFamily Family
+        {
+            get => (Material3dFamily)FamilyId;
+            set { FamilyId = (int)value; }
+        }
+        public int FamilyId { get; set; }
 
-        [ObservableProperty]
-        public ProcedureAttribute attribute;
+        public ProcedureAttribute Attribute
+        {
+            get => (ProcedureAttribute)AttributeId;
+            set { AttributeId = (int)value; }
+        }
+        public int AttributeId { get; set; }
 
-        [ObservableProperty]
-        public List<CalculationProcedureParameter> parameters = new();
+        public IList<CalculationProcedureParameter> Parameters { get; }
 
-        [ObservableProperty]
-        public CalculationLevel level = CalculationLevel.Printer;
+        public CalculationLevel Level
+        {
+            get => (CalculationLevel)LevelId;
+            set { LevelId = (int)value; }
+        }
+        public int LevelId { get; set; } = (int)CalculationLevel.Printer;
         #endregion
 
         #region Constructor

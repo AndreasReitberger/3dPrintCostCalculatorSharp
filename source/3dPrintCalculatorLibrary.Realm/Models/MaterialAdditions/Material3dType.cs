@@ -1,24 +1,26 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 {
-    public partial class Material3dType : ObservableObject, IMaterial3dType
+    public partial class Material3dType : RealmObject, IMaterial3dType
     {
         #region Properties 
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Material3dFamily family;
+        public Material3dFamily Family
+        {
+            get => (Material3dFamily)FamilyId;
+            set { FamilyId = (int)value; }
+        }
+        public int FamilyId { get; set; }
 
-        [ObservableProperty]
-        public string material;
+        public string Material { get; set; }
 
-        [ObservableProperty]
-        public string polymer;
+        public string Polymer { get; set; }
         #endregion
 
         #region Constructors

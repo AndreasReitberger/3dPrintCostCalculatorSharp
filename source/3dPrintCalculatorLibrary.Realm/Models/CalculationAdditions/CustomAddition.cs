@@ -1,11 +1,11 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class CustomAddition : ObservableObject, ICloneable, ICustomAddition
+    public partial class CustomAddition : RealmObject, ICloneable, ICustomAddition
     {
         #region Clone
         public object Clone()
@@ -15,23 +15,23 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
 
-        [ObservableProperty]
-        public string name;
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        public double percentage;
+        public double Percentage { get; set; }
 
-        [ObservableProperty]
-        public int order = 0;
+        public int Order { get; set; } = 0;
 
-        [ObservableProperty]
-        public CustomAdditionCalculationType calculationType;
+        public CustomAdditionCalculationType CalculationType
+        {
+            get => (CustomAdditionCalculationType)CalculationTypeId;
+            set { CalculationTypeId = (int)value; }
+        }
+        public int CalculationTypeId { get; set; }
         #endregion
 
         #region Constructor

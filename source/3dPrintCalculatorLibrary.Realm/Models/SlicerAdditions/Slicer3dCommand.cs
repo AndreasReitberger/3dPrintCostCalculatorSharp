@@ -1,35 +1,29 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Realm.SlicerAdditions
 {
-    public partial class Slicer3dCommand : ObservableObject, ISlicer3dCommand
+    public partial class Slicer3dCommand : RealmObject, ISlicer3dCommand
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        public Guid slicerId;
+        public Guid SlicerId { get; set; }
 
-        [ObservableProperty]
-        public Slicer3d slicer;
+        public Slicer3d Slicer { get; set; }
 
-        [ObservableProperty]
-        public string name;
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        public string command;
+        public string Command { get; set; }
 
-        [ObservableProperty]
-        public string outputFilePatternString;
+        public string OutputFilePatternString { get; set; }
 
-        [ObservableProperty]
-        public bool autoAddFilePath;
+        public bool AutoAddFilePath { get; set; }
 
         #endregion
 

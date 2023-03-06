@@ -8,25 +8,25 @@ namespace AndreasReitberger.Print3d.Models.PrinterAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public double aMax_xy = 1000;
+        double aMax_xy = 1000;
 
         [ObservableProperty]
-        public double aMax_z = 1000;
+        double aMax_z = 1000;
 
         [ObservableProperty]
-        public double aMax_e = 5000;
+        double aMax_e = 5000;
 
         [ObservableProperty]
-        public double aMax_eExtrude = 1250;
+        double aMax_eExtrude = 1250;
 
         [ObservableProperty]
-        public double aMax_eRetract = 1250;
+        double aMax_eRetract = 1250;
 
         [ObservableProperty]
-        public double printDurationCorrection = 1;
+        double printDurationCorrection = 1;
 
         #endregion
 

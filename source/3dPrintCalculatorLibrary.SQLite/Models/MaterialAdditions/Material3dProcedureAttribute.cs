@@ -14,20 +14,20 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Material3d))]
-        public Guid materialId;
+        Guid materialId;
 
         [ObservableProperty]
-        public Material3dFamily family;
+        Material3dFamily family;
 
         [ObservableProperty]
-        public ProcedureAttribute attribute;
+        ProcedureAttribute attribute;
 
         [ObservableProperty]
-        public double value;
+        double value;
         #endregion
 
         #region Constructor

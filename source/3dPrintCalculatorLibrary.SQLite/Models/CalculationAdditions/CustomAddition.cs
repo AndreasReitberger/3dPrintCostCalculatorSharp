@@ -20,23 +20,23 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public double percentage;
+        double percentage;
 
         [ObservableProperty]
-        public int order = 0;
+        int order = 0;
 
         [ObservableProperty]
-        public CustomAdditionCalculationType calculationType;
+        CustomAdditionCalculationType calculationType;
         #endregion
 
         #region Constructor

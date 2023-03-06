@@ -1,23 +1,20 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 {
-    public partial class Material3dAttribute : ObservableObject, IMaterial3dAttribute
+    public partial class Material3dAttribute : RealmObject, IMaterial3dAttribute
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid materialId;
+        public Guid MaterialId { get; set; }
 
-        [ObservableProperty]
-        public string attribute;
+        public string Attribute { get; set; }
 
-        [ObservableProperty]
-        public double value;
+        public double Value { get; set; }
         #endregion
 
         #region Constructor

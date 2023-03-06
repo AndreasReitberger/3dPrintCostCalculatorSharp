@@ -8,19 +8,19 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Calculation3d calculation;
+        Calculation3d calculation;
 
         [ObservableProperty]
-        public Guid workstepId;
+        Guid workstepId;
 
         [ObservableProperty]
-        public double duration = 0;
+        double duration = 0;
         #endregion
 
         #region Constructors

@@ -1,26 +1,21 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 {
-    public partial class Material3dColor : ObservableObject, IMaterial3dColor
+    public partial class Material3dColor : RealmObject, IMaterial3dColor
     {
         #region Properties 
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid materialId;
+        public Guid MaterialId { get; set; }
 
-        [ObservableProperty]
-        public string name;
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        public string hexColorCode;
+        public string HexColorCode { get; set; }
 
-        [ObservableProperty]
-        public string sKU;
         #endregion
 
         #region Constructors

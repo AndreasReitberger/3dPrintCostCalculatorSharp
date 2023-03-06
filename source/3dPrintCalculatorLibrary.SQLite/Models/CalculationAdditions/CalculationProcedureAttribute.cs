@@ -3,8 +3,6 @@ using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
-using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 {
@@ -14,24 +12,24 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Material3dFamily family;
+        Material3dFamily family;
 
         [ObservableProperty]
-        public ProcedureAttribute attribute;
+        ProcedureAttribute attribute;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<CalculationProcedureParameter> parameters = new();
+        List<CalculationProcedureParameter> parameters = new();
 
         [ObservableProperty]
-        public CalculationLevel level = CalculationLevel.Printer;
+        CalculationLevel level = CalculationLevel.Printer;
         #endregion
 
         #region Constructor

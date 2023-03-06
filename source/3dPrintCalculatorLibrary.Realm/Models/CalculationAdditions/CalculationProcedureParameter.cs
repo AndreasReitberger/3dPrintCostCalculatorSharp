@@ -1,28 +1,29 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class CalculationProcedureParameter : ObservableObject, ICalculationProcedureParameter
+    public partial class CalculationProcedureParameter : RealmObject, ICalculationProcedureParameter
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationProcedureAttributeId;
+        public Guid CalculationProcedureAttributeId { get; set; }
 
-        [ObservableProperty]
-        public ProcedureParameter type;
+        public ProcedureParameter Type
+        {
+            get => (ProcedureParameter)TypeId;
+            set { TypeId = (int)value; }
+        }
+        public int TypeId { get; set; }
 
-        [ObservableProperty]
-        public double value = 0;
+        public double Value { get; set; } = 0;
 
-        [ObservableProperty]
-        public List<CalculationProcedureParameterAddition> additions = new();
+        public IList<CalculationProcedureParameterAddition> Additions { get; }
 
         #endregion
 

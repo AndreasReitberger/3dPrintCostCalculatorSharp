@@ -1,7 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using Realms;
 using System;
 
@@ -35,9 +33,19 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string RepoUri { get; set; }
 
-        public Version Version { get; set; }
+        public Version Version 
+        {
+            get => Version.Parse(VersionString);
+            set => VersionString = value?.ToString();
+        }
+        public string VersionString { get; set; }
 
-        public Version LatestVersion { get; set; }
+        public Version LatestVersion
+        {
+            get => Version.Parse(LatestVersionString);
+            set => LatestVersionString = value?.ToString();
+        }
+        public string LatestVersionString { get; set; }
         #endregion
 
         #region Constructor 

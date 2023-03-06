@@ -1,6 +1,5 @@
-﻿using System;
+﻿using AndreasReitberger.Print3d.Models.GcodeAdditions;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AndreasReitberger.Print3d.Realm.GcodeAdditions
 {

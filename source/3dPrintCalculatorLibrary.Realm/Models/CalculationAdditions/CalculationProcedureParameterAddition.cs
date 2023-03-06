@@ -1,23 +1,20 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class CalculationProcedureParameterAddition : ObservableObject, ICalculationProcedureParameterAddition
+    public partial class CalculationProcedureParameterAddition : RealmObject, ICalculationProcedureParameterAddition
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationProcedureParameterId;
+        public Guid CalculationProcedureParameterId { get; set; }
 
-        [ObservableProperty]
-        public string name;
+        public string Name { get; set; }
 
-        [ObservableProperty]
-        public double value = 0;
+        public double Value { get; set; } = 0;
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
@@ -8,16 +9,19 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Printer3dType procedure = Printer3dType.FDM;
+        Guid id;
 
         [ObservableProperty]
-        public ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
+        Printer3dType procedure = Printer3dType.FDM;
 
         [ObservableProperty]
-        public double addition;
+        ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
 
         [ObservableProperty]
-        public bool isPercantageAddition;
+        double addition;
+
+        [ObservableProperty]
+        bool isPercantageAddition;
         #endregion
     }
 }

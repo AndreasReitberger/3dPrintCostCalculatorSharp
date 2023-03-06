@@ -1,23 +1,33 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
+using System;
 
 namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 {
-    public partial class ProcedureSpecificAddition : ObservableObject, IProcedureSpecificAddition
+    public partial class ProcedureSpecificAddition : RealmObject, IProcedureSpecificAddition
     {
         #region Properties
-        [ObservableProperty]
-        public Printer3dType procedure = Printer3dType.FDM;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
+        public Printer3dType Procedure
+        {
+            get => (Printer3dType)ProcedureId;
+            set { ProcedureId = (int)value; }
+        }
+        public int ProcedureId { get; set; } = (int)Printer3dType.FDM;
 
-        [ObservableProperty]
-        public double addition;
+        public ProcedureSpecificCalculationType CalculationType
+        {
+            get => (ProcedureSpecificCalculationType)ProcedureId;
+            set { ProcedureId = (int)value; }
+        }
+        public int CalculationTypeId { get; set; } = (int)ProcedureSpecificCalculationType.PerPart;
 
-        [ObservableProperty]
-        public bool isPercantageAddition;
+        public double Addition { get; set; }
+
+        public bool IsPercantageAddition { get; set; }
         #endregion
     }
 }

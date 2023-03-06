@@ -12,26 +12,26 @@ namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Customer3d))]
-        public Guid customerId;
+        Guid customerId;
 
         [ObservableProperty]
-        public string supplement;
+        string supplement;
 
         [ObservableProperty]
-        public string street;
+        string street;
 
         [ObservableProperty]
-        public string zip;
+        string zip;
 
         [ObservableProperty]
-        public string city;
+        string city;
 
         [ObservableProperty]
-        public string countryCode;
+        string countryCode;
         #endregion
 
         #region Constructor

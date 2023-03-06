@@ -12,17 +12,17 @@ namespace AndreasReitberger.Print3d.SQLite.PrinterAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Printer3d))]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
-        public string attribute;
+        string attribute;
 
         [ObservableProperty]
-        public double value;
+        double value;
         #endregion
 
         #region Constructor

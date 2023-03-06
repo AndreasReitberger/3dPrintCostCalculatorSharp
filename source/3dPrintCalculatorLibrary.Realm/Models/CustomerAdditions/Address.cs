@@ -1,32 +1,26 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.CustomerAdditions
 {
-    public partial class Address : ObservableObject, IAddress
+    public partial class Address : RealmObject, IAddress
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid customerId;
+        public Guid CustomerId { get; set; }
 
-        [ObservableProperty]
-        public string supplement;
+        public string Supplement { get; set; }
 
-        [ObservableProperty]
-        public string street;
+        public string Street { get; set; }
 
-        [ObservableProperty]
-        public string zip;
+        public string Zip { get; set; }
 
-        [ObservableProperty]
-        public string city;
+        public string City { get; set; }
 
-        [ObservableProperty]
-        public string countryCode;
+        public string CountryCode { get; set; }
         #endregion
 
         #region Constructor

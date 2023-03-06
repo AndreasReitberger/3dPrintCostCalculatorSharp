@@ -1,26 +1,22 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.MaintenanceAdditions
 {
-    public partial class Sparepart : ObservableObject, ISparepart
+    public partial class Sparepart : RealmObject, ISparepart
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid maintenanceId;
+        public Guid MaintenanceId { get; set; }
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string partnumber = string.Empty;
+        public string Partnumber { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public double costs;
+        public double Costs { get; set; }
         #endregion
 
         #region Constructor

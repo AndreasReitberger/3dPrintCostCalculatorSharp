@@ -15,35 +15,35 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Guid fileId = Guid.Empty;
+        Guid fileId = Guid.Empty;
 
         [ObservableProperty]
-        public string fileName;
+        string fileName;
 
         [ObservableProperty]
-        public Guid linkedId = Guid.Empty;
+        Guid linkedId = Guid.Empty;
 
         [ObservableProperty]
-        public string attribute;
+        string attribute;
 
         [ObservableProperty]
-        public CalculationAttributeType type;
+        CalculationAttributeType type;
 
         [ObservableProperty]
-        public double value;
+        double value;
 
         [ObservableProperty]
-        public bool isPercentageValue = false;
+        bool isPercentageValue = false;
 
         [ObservableProperty]
-        public bool skipForCalculation = false;
+        bool skipForCalculation = false;
         #endregion
 
         #region Constructor

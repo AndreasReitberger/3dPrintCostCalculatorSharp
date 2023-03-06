@@ -10,22 +10,22 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Material3dFamily family;
+        Material3dFamily family;
 
         [ObservableProperty]
-        public ProcedureAttribute attribute;
+        ProcedureAttribute attribute;
 
         [ObservableProperty]
-        public List<CalculationProcedureParameter> parameters = new();
+        List<CalculationProcedureParameter> parameters = new();
 
         [ObservableProperty]
-        public CalculationLevel level = CalculationLevel.Printer;
+        CalculationLevel level = CalculationLevel.Printer;
         #endregion
 
         #region Constructor

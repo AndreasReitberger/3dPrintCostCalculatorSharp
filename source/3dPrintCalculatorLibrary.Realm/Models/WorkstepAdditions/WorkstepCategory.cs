@@ -1,17 +1,17 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm.WorkstepAdditions
 {
-    public partial class WorkstepCategory : ObservableObject, IWorkstepCategory
+    public partial class WorkstepCategory : RealmObject, IWorkstepCategory
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        [Required]
+        public string Name { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

@@ -10,19 +10,19 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationProcedureAttributeId;
+        Guid calculationProcedureAttributeId;
 
         [ObservableProperty]
-        public ProcedureParameter type;
+        ProcedureParameter type;
 
         [ObservableProperty]
-        public double value = 0;
+        double value = 0;
 
         [ObservableProperty]
-        public List<CalculationProcedureParameterAddition> additions = new();
+        List<CalculationProcedureParameterAddition> additions = new();
 
         #endregion
 

@@ -11,13 +11,13 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public string key;
+        string key;
 
         [ObservableProperty]
-        public string jsonValue;
+        string jsonValue;
 
         [ObservableProperty]
-        public string valueType;
+        string valueType;
         #endregion
 
         #region Constructor

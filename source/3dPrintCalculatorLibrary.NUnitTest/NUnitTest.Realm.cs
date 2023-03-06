@@ -757,7 +757,7 @@ namespace AndreasReitberger.NUnitTest
                         var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
                         // Check if the addition was successfully
                         Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
-                    
+
                         // Just to check if the unit conversion is working
                         storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
                         newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
@@ -770,6 +770,6 @@ namespace AndreasReitberger.NUnitTest
             {
                 Assert.Fail(exc.Message);
             }
-        }      
+        }
     }
 }

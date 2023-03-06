@@ -29,7 +29,7 @@ namespace AndreasReitberger.Print3d.Realm
         public Unit Unit
         {
             get => (Unit)UnitId;
-            set { UnitId = (int)value; }    
+            set { UnitId = (int)value; }
         }
         public int UnitId { get; set; } = (int)Unit.Kilogramm;
         public double PackageSize { get; set; } = 1;

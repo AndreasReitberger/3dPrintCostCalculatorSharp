@@ -43,7 +43,7 @@ namespace AndreasReitberger.Print3d.Realm
         public Material3dFamily MaterialType
         {
             get => (Material3dFamily)MaterialTypeId;
-            set { MaterialTypeId  = (int)value; }
+            set { MaterialTypeId = (int)value; }
         }
         public int MaterialTypeId { get; set; } = (int)Material3dFamily.Filament;
 

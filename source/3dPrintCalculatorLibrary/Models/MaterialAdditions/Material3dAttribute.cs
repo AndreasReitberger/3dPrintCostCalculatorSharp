@@ -8,16 +8,16 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid materialId;
+        Guid materialId;
 
         [ObservableProperty]
-        public string attribute;
+        string attribute;
 
         [ObservableProperty]
-        public double value;
+        double value;
         #endregion
 
         #region Constructor

@@ -4,8 +4,6 @@ using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -20,82 +18,82 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string sKU = string.Empty;
+        string sKU = string.Empty;
 
         [ObservableProperty]
-        public Unit unit = Unit.Kilogramm;
+        Unit unit = Unit.Kilogramm;
 
         [ObservableProperty]
-        public double packageSize = 1;
+        double packageSize = 1;
 
         [ObservableProperty]
-        public double density = 1;
+        double density = 1;
 
         [ObservableProperty]
-        public double factorLToKg = 1;
+        double factorLToKg = 1;
 
         [ObservableProperty]
-        public List<Material3dAttribute> attributes = new();
+        List<Material3dAttribute> attributes = new();
 
         [ObservableProperty]
-        public List<Material3dProcedureAttribute> procedureAttributes = new();
+        List<Material3dProcedureAttribute> procedureAttributes = new();
 
         [ObservableProperty]
-        public List<Material3dColor> colors = new();
+        List<Material3dColor> colors = new();
 
         [ObservableProperty]
-        public Material3dFamily materialFamily = Material3dFamily.Filament;
+        Material3dFamily materialFamily = Material3dFamily.Filament;
 
         [ObservableProperty]
-        public Guid materialTypeId;
+        Guid materialTypeId;
 
         [ObservableProperty]
-        public Material3dType typeOfMaterial;
+        Material3dType typeOfMaterial;
 
         [ObservableProperty]
-        public Guid manufacturerId;
+        Guid manufacturerId;
 
         [ObservableProperty]
-        public Manufacturer manufacturer;
+        Manufacturer manufacturer;
 
         [ObservableProperty]
-        public double unitPrice;
+        double unitPrice;
 
         [ObservableProperty]
-        public double tax = 0;
+        double tax = 0;
 
         [ObservableProperty]
-        public bool priceIncludesTax = true;
+        bool priceIncludesTax = true;
 
         [ObservableProperty]
-        public string uri = string.Empty;
+        string uri = string.Empty;
 
         [ObservableProperty]
-        public string colorCode = string.Empty;
+        string colorCode = string.Empty;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [ObservableProperty]
-        public string safetyDatasheet = string.Empty;
+        string safetyDatasheet = string.Empty;
 
         [ObservableProperty]
-        public string technicalDatasheet = string.Empty;
+        string technicalDatasheet = string.Empty;
 
         [ObservableProperty]
-        public Unit spoolWeightUnit = Unit.Gramm;
+        Unit spoolWeightUnit = Unit.Gramm;
 
         [ObservableProperty]
-        public double spoolWeight = 200;
+        double spoolWeight = 200;
         #endregion
 
         #region Constructor

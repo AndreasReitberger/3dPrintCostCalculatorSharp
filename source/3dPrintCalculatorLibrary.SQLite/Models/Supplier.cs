@@ -20,23 +20,27 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties 
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public string debitorNumber;
+        string debitorNumber;
 
         [ObservableProperty]
-        public bool isActive;
+        bool isActive;
 
         [ObservableProperty]
-        public string website;
+        string website;
+
+        #endregion
+
+        #region Collections
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Manufacturer> manufacturers = new();
+        List<Manufacturer> manufacturers = new();
         #endregion
 
         #region Constructor

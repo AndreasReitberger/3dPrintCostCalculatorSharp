@@ -1,10 +1,7 @@
 ﻿using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using SQLite;
-using System;
 using SQLiteNetExtensions.Attributes;
-using System.Xml.Serialization;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -16,11 +13,11 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         string name = string.Empty;
@@ -39,7 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
         double volume = 0;
 
         [ObservableProperty]
-        public Guid modelWeightId;
+        Guid modelWeightId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ModelWeightId))]

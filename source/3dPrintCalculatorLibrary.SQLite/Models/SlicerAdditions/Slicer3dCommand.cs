@@ -14,27 +14,26 @@ namespace AndreasReitberger.Print3d.SQLite.SlicerAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        public Guid slicerId;
+        Guid slicerId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(SlicerId))]
-        public Slicer3d slicer;
+        Slicer3d slicer;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public string command;
+        string command;
 
         [ObservableProperty]
-        public string outputFilePatternString;
+        string outputFilePatternString;
 
         [ObservableProperty]
-        public bool autoAddFilePath;
+        bool autoAddFilePath;
 
         #endregion
 

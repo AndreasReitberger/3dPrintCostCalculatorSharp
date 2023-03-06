@@ -16,22 +16,22 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public double percentage;
+        double percentage;
 
         [ObservableProperty]
-        public int order = 0;
+        int order = 0;
 
         [ObservableProperty]
-        public CustomAdditionCalculationType calculationType;
+        CustomAdditionCalculationType calculationType;
         #endregion
 
         #region Constructor

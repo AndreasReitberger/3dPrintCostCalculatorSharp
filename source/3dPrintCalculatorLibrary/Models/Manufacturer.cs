@@ -15,28 +15,28 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid supplierId;
+        Guid supplierId;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string debitorNumber = string.Empty;
+        string debitorNumber = string.Empty;
 
         [ObservableProperty]
-        public bool isActive = true;
+        bool isActive = true;
 
         [ObservableProperty]
-        public string website = string.Empty;
+        string website = string.Empty;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [ObservableProperty]
-        public string countryCode = string.Empty;
+        string countryCode = string.Empty;
         #endregion
 
         #region Constructor

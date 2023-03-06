@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         Guid? calculationId;
 
         [ObservableProperty]
-        DateTime dateTime;
+        DateTimeOffset dateTime;
 
         [ObservableProperty]
         Storage3dItem item;

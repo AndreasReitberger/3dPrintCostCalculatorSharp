@@ -1,11 +1,8 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models.FileAdditions
 {
@@ -13,10 +10,10 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid fileId;
+        Guid fileId;
 
         [ObservableProperty]
         bool recalculateWeightInGramm = false;

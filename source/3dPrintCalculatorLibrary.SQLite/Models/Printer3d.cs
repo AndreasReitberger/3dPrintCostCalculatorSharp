@@ -1,13 +1,9 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-using AndreasReitberger.Core.Utilities;
 using Newtonsoft.Json;
 using SQLite;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using SQLiteNetExtensions.Attributes;
-using System.Xml.Serialization;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -20,20 +16,20 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string model = string.Empty;
+        string model = string.Empty;
 
         [ObservableProperty]
         Printer3dType type = Printer3dType.FDM;
 
         [ObservableProperty]
-        public Guid manufacturerId;
+        Guid manufacturerId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ManufacturerId))]
@@ -74,7 +70,7 @@ namespace AndreasReitberger.Print3d.SQLite
         bool useFixedMachineHourRating = false;
 
         [ObservableProperty]
-        public Guid hourlyMachineRateId;
+        Guid hourlyMachineRateId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(HourlyMachineRateId))]
@@ -84,9 +80,8 @@ namespace AndreasReitberger.Print3d.SQLite
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         ObservableCollection<Maintenance3d> maintenances = new();
 
-
         [ObservableProperty]
-        public Guid slicerConfigId;
+        Guid slicerConfigId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(SlicerConfigId))]
@@ -97,7 +92,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: JsonIgnore]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [JsonIgnore]
         public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer.Name}, {Model}" : Model;

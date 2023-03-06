@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 {
@@ -12,17 +11,17 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Material3d))]
-        public Guid materialId;
+        Guid materialId;
 
         [ObservableProperty]
-        public string attribute;
+        string attribute;
 
         [ObservableProperty]
-        public double value;
+        double value;
         #endregion
 
         #region Constructor

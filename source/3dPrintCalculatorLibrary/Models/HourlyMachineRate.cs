@@ -9,10 +9,10 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
         string name = string.Empty;

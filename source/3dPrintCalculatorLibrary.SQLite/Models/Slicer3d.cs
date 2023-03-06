@@ -1,9 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using SQLite;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -13,31 +11,31 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Slicer slicerName = Slicer.Unkown;
+        Slicer slicerName = Slicer.Unkown;
 
         [ObservableProperty]
-        public SlicerExecutionType executionType = SlicerExecutionType.GUI;
+        SlicerExecutionType executionType = SlicerExecutionType.GUI;
 
         [ObservableProperty]
-        public string installationPath;
+        string installationPath;
 
         [ObservableProperty]
-        public string downloadUri;
+        string downloadUri;
 
         [ObservableProperty]
-        public string author;
+        string author;
 
         [ObservableProperty]
-        public string repoUri;
+        string repoUri;
 
         [ObservableProperty]
-        public Version version;
+        Version version;
 
         [ObservableProperty]
-        public Version latestVersion;
+        Version latestVersion;
         #endregion
 
         #region Constructor 

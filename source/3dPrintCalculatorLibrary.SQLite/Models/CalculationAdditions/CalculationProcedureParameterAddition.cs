@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 {
@@ -12,17 +11,17 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(CalculationProcedureParameter))]
-        public Guid calculationProcedureParameterId;
+        Guid calculationProcedureParameterId;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public double value = 0;
+        double value = 0;
 
         #endregion
 

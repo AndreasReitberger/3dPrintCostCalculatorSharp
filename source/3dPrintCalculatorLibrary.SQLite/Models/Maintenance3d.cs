@@ -1,12 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -23,31 +19,32 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Printer3d))]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
-        public string description = string.Empty;
+        string description = string.Empty;
 
         [ObservableProperty]
-        public string category = string.Empty;
+        string category = string.Empty;
 
         [ObservableProperty]
-        public DateTimeOffset date;
+        DateTimeOffset date;
 
         [ObservableProperty]
-        public double duration;
+        double duration;
 
         [ObservableProperty]
-        public double additionalCosts;
+        double additionalCosts;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Sparepart> spareparts = new();
+        List<Sparepart> spareparts = new();
 
+        [Ignore]
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
         #endregion
 

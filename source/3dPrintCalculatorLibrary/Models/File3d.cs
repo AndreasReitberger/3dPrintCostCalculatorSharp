@@ -11,10 +11,10 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         string name = string.Empty;
@@ -33,7 +33,7 @@ namespace AndreasReitberger.Print3d.Models
         double volume = 0;
 
         [ObservableProperty]
-        public Guid modelWeightId;
+        Guid modelWeightId;
 
         [ObservableProperty]
         ModelWeight weight = new(-1, Enums.Unit.Gramm);

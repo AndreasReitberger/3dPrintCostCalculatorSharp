@@ -157,7 +157,7 @@ namespace AndreasReitberger.NUnitTest
                     };
 
                     await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
-                    var items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
+                    List<Item3d>? items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
                     Assert.IsTrue(items?.Count == 2);
 
                     List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));

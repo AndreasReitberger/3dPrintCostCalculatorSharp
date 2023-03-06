@@ -11,10 +11,10 @@ namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
         #endregion
 
         #region Constructors

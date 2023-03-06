@@ -120,7 +120,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public bool TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
-            return TakeFromStock(material: material, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
+            return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)

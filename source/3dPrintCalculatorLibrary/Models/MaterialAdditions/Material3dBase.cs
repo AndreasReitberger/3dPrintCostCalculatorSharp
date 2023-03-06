@@ -1,20 +1,24 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 {
     [Obsolete]
-    public class Material3dBase
+    public partial class Material3dBase : ObservableObject
     {
         #region Properties 
-        public Guid Id
-        { get; set; }
-        public Material3dTypes Type
-        { get; set; }
-        public string Material
-        { get; set; }
-        public string Polymer
-        { get; set; }
+        [ObservableProperty]
+        Guid id;
+
+        [ObservableProperty]
+        Material3dTypes type;
+
+        [ObservableProperty]
+        string material;
+
+        [ObservableProperty]
+        string polymer;
         #endregion
 
         #region Constructors

@@ -12,16 +12,16 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         #region Properties 
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Material3dFamily family;
+        Material3dFamily family;
 
         [ObservableProperty]
-        public string material;
+        string material;
 
         [ObservableProperty]
-        public string polymer;
+        string polymer;
         #endregion
 
         #region Constructors

@@ -1,21 +1,25 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 {
-    public class Material3dBase
+    [Obsolete]
+    public partial class Material3dBase : ObservableObject
     {
         #region Properties 
-        [PrimaryKey]
-        public Guid Id
-        { get; set; }
-        public Material3dTypes Type
-        { get; set; }
-        public string Material
-        { get; set; }
-        public string Polymer
-        { get; set; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        Guid id;
+
+        [ObservableProperty]
+        Material3dTypes type;
+
+        [ObservableProperty]
+        string material;
+
+        [ObservableProperty]
+        string polymer;
         #endregion
 
         #region Constructors

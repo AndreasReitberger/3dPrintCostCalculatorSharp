@@ -1,13 +1,9 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Enums;
+﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite.FileAdditions
 {
@@ -17,11 +13,11 @@ namespace AndreasReitberger.Print3d.SQLite.FileAdditions
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(File3d))]
-        public Guid fileId;
+        Guid fileId;
 
         [ObservableProperty]
         bool recalculateWeightInGramm = false;

@@ -96,7 +96,7 @@ namespace AndreasReitberger.NUnitTest
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
                 double totalCosts = _calculation.TotalCosts;
                 Assert.IsTrue(_calculation.IsCalculated);
 
@@ -202,7 +202,7 @@ namespace AndreasReitberger.NUnitTest
                 // Uses 75% of the max. power consumption set in the printer model (210 Watt)
                 _calculation.PowerLevel = 75;
 
-                _calculation.Calculate();
+                _calculation.CalculateCosts();
 #if NETFRAMEWORK
                 Calculator3dExporter.Save(_calculation, @"mycalc.3dcx");
                 Calculator3dExporter.Load(@"mycalc.3dcx", out Calculation3d calculation);

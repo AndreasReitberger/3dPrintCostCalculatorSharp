@@ -119,8 +119,8 @@ namespace AndreasReitberger.Print3d.SQLite
                                         if (materialPrintObject != null)
                                         {
                                             double refreshedMaterial = (powderInBuildArea -
-                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.kg))) * refreshRatio.Value / 100f;
-                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.kg));
+                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogramm))) * refreshRatio.Value / 100f;
+                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogramm));
                                         }
                                         else
                                             refreshed = 0;

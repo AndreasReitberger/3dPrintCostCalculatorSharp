@@ -406,7 +406,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     calculations[i].Materials.FirstOrDefault(item => item.Id == calculations[i].Material?.Id) ??
                     calculations[i].Materials.FirstOrDefault();
 
-                calculations[i]?.Calculate();
+                calculations[i]?.CalculateCosts();
             }
             return calculations;
         }

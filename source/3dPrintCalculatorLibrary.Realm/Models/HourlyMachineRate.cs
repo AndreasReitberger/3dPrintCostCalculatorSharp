@@ -1,33 +1,27 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate, ICloneable
+    public partial class HourlyMachineRate : RealmObject, IHourlyMachineRate, ICloneable
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid printerId;
+        public Guid PrinterId { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string name = string.Empty;
+        public bool PerYear { get; set; } = true;
 
-        [ObservableProperty]
-        bool perYear = true;
+        public double MachineHours { get; set; } = 0;
 
-        [ObservableProperty]
-        double machineHours = 0;
+        public double ReplacementCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double replacementCosts = 0;
-
-        [ObservableProperty]
-        int usefulLifeYears = 4;
+        public int UsefulLifeYears { get; set; } = 4;
 
         [JsonIgnore]
         public double CalcDepreciation
@@ -41,8 +35,7 @@ namespace AndreasReitberger.Print3d.Realm
             }
         }
 
-        [ObservableProperty]
-        double interestRate = 3;
+        public double InterestRate { get; set; } = 3;
 
         [JsonIgnore]
         public double CalcInterest
@@ -58,29 +51,21 @@ namespace AndreasReitberger.Print3d.Realm
             }
         }
 
-        [ObservableProperty]
-        double maintenanceCosts = 0;
+        public double MaintenanceCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double locationCosts = 0;
+        public double LocationCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double energyCosts = 0;
+        public double EnergyCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double additionalCosts = 0;
+        public double AdditionalCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double maintenanceCostsVariable = 0;
+        public double MaintenanceCostsVariable { get; set; } = 0;
 
-        [ObservableProperty]
-        double energyCostsVariable = 0;
+        public double EnergyCostsVariable { get; set; } = 0;
 
-        [ObservableProperty]
-        double additionalCostsVariable = 0;
+        public double AdditionalCostsVariable { get; set; } = 0;
 
-        [ObservableProperty]
-        double fixMachineHourRate = -1;
+        public double FixMachineHourRate { get; set; } = -1;
 
         [JsonIgnore]
         public double CalcMachineHourRate => GetMachineHourRate();

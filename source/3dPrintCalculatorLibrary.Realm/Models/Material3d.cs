@@ -1,15 +1,13 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.MaterialAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
+using Realms;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Material3d : ObservableObject, IMaterial3d, ICloneable
+    public partial class Material3d : RealmObject, IMaterial3d, ICloneable
     {
         #region Clone
         public object Clone()
@@ -19,83 +17,75 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        public string SKU { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string sKU = string.Empty;
+        public Unit Unit
+        {
+            get => (Unit)UnitId;
+            set { UnitId = (int)value; }    
+        }
+        public int UnitId { get; set; } = (int)Unit.Kilogramm;
+        public double PackageSize { get; set; } = 1;
 
-        [ObservableProperty]
-        public Unit unit = Unit.Kilogramm;
+        public double Density { get; set; } = 1;
 
-        [ObservableProperty]
-        public double packageSize = 1;
+        public double FactorLToKg { get; set; } = 1;
 
-        [ObservableProperty]
-        public double density = 1;
+        public Material3dFamily MaterialFamily
+        {
+            get => (Material3dFamily)MaterialFamilyId;
+            set { MaterialFamilyId = (int)value; }
+        }
+        public int MaterialFamilyId { get; set; } = (int)Material3dFamily.Filament;
 
-        [ObservableProperty]
-        public double factorLToKg = 1;
+        public Guid MaterialTypeId { get; set; }
 
-        [ObservableProperty]
-        public List<Material3dAttribute> attributes = new();
+        public Material3dType TypeOfMaterial { get; set; }
 
-        [ObservableProperty]
-        public List<Material3dProcedureAttribute> procedureAttributes = new();
+        public Guid ManufacturerId { get; set; }
 
-        [ObservableProperty]
-        public List<Material3dColor> colors = new();
+        public Manufacturer Manufacturer { get; set; }
 
-        [ObservableProperty]
-        public Material3dFamily materialFamily = Material3dFamily.Filament;
+        public double UnitPrice { get; set; } = 0;
 
-        [ObservableProperty]
-        public Guid materialTypeId;
+        public double Tax { get; set; } = 0;
 
-        [ObservableProperty]
-        public Material3dType typeOfMaterial;
+        public bool PriceIncludesTax { get; set; } = true;
 
-        [ObservableProperty]
-        public Guid manufacturerId;
+        public string Uri { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public Manufacturer manufacturer;
+        public string ColorCode { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public double unitPrice;
+        public string Note { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public double tax = 0;
+        public string SafetyDatasheet { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public bool priceIncludesTax = true;
+        public string TechnicalDatasheet { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string uri = string.Empty;
+        public Unit SpoolWeightUnit
+        {
+            get => (Unit)SpoolWeightUnitId;
+            set { SpoolWeightUnitId = (int)value; }
+        }
+        public int SpoolWeightUnitId { get; set; } = (int)Unit.Gramm;
 
-        [ObservableProperty]
-        public string colorCode = string.Empty;
+        public double SpoolWeight { get; set; } = 200;
+        #endregion
 
-        [ObservableProperty]
-        public string note = string.Empty;
+        #region Collections
 
-        [ObservableProperty]
-        public string safetyDatasheet = string.Empty;
+        public IList<Material3dAttribute> Attributes { get; }
 
-        [ObservableProperty]
-        public string technicalDatasheet = string.Empty;
+        public IList<Material3dProcedureAttribute> ProcedureAttributes { get; }
 
-        [ObservableProperty]
-        public Unit spoolWeightUnit = Unit.Gramm;
-
-        [ObservableProperty]
-        public double spoolWeight = 200;
+        public IList<Material3dColor> Colors { get; }
         #endregion
 
         #region Constructor

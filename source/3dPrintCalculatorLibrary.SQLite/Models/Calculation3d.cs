@@ -46,9 +46,9 @@ namespace AndreasReitberger.Print3d.SQLite
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
         {
-            if (!RealculationRequired)
+            if (!RecalculationRequired)
             {
-                RealculationRequired = true;
+                RecalculationRequired = true;
                 IsCalculated = false;
                 OnPrinterChangedEvent(new()
                 {
@@ -65,9 +65,9 @@ namespace AndreasReitberger.Print3d.SQLite
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
         {
-            if (!RealculationRequired)
+            if (!RecalculationRequired)
             {
-                RealculationRequired = true;
+                RecalculationRequired = true;
                 IsCalculated = false;
                 OnMaterialChangedEvent(new()
                 {
@@ -90,8 +90,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: Ignore, JsonIgnore, XmlIgnore]
-        bool realculationRequired = false;
-        partial void OnRealculationRequiredChanged(bool value)
+        bool recalculationRequired = false;
+        partial void OnRecalculationRequiredChanged(bool value)
         {
             if (value)
             {
@@ -829,7 +829,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
             TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
-            RealculationRequired = false;
+            RecalculationRequired = false;
         }
         #endregion
 

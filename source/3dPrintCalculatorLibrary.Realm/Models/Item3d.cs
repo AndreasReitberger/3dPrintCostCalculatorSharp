@@ -1,6 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
@@ -8,7 +8,7 @@ namespace AndreasReitberger.Print3d.Realm
     /// <summary>
     /// This is an additional item which can be defined and used for calculations.
     /// </summary>
-    public partial class Item3d : ObservableObject, ICloneable, IItem3d
+    public partial class Item3d : RealmObject, ICloneable, IItem3d
     {
         #region Clone
         public object Clone()
@@ -18,39 +18,30 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string sKU = string.Empty;
+        public string SKU { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public double packageSize = 1;
+        public double PackageSize { get; set; } = 1;
 
-        [ObservableProperty]
-        public double packagePrice;
+        public double PackagePrice { get; set; }
 
-        [ObservableProperty]
-        public double tax = 0;
+        public double Tax { get; set; } = 0;
 
-        [ObservableProperty]
-        public bool priceIncludesTax = true;
+        public bool PriceIncludesTax { get; set; } = true;
 
-        [ObservableProperty]
-        public string uri = string.Empty;
+        public string Uri { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string note = string.Empty;
+        public string Note { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string safetyDatasheet = string.Empty;
+        public string SafetyDatasheet { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string technicalDatasheet = string.Empty;
+        public string TechnicalDatasheet { get; set; } = string.Empty;
 
+        [Ignored]
         public double PricePerPiece => PackagePrice / PackageSize;
         #endregion
 

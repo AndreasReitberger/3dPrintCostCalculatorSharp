@@ -16,11 +16,11 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         string name = string.Empty;
@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        public Guid categoryId;
+        Guid categoryId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(CategoryId))]
@@ -63,7 +63,7 @@ namespace AndreasReitberger.Print3d.SQLite
         double totalCosts = 0;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
         #endregion
 
         #region Constructors

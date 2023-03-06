@@ -487,7 +487,7 @@ namespace AndreasReitberger.Print3d.Realm
 
             TotalCosts = GetTotalCosts(CalculationAttributeType.All);
             IsCalculated = true;
-            RealculationRequired = false;
+            RecalculationRequired = false;
         }
 
         public async Task CalculateCostsAsync()

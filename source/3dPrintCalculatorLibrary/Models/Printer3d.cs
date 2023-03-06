@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Xml.Serialization;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
@@ -15,19 +14,19 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string model = string.Empty;
+        string model = string.Empty;
 
         [ObservableProperty]
         Printer3dType type = Printer3dType.FDM;
 
         [ObservableProperty]
-        public Guid manufacturerId;
+        Guid manufacturerId;
 
         [ObservableProperty]
         Manufacturer manufacturer;
@@ -66,7 +65,7 @@ namespace AndreasReitberger.Print3d.Models
         bool useFixedMachineHourRating = false;
 
         [ObservableProperty]
-        public Guid hourlyMachineRateId;
+        Guid hourlyMachineRateId;
 
         [ObservableProperty]
         HourlyMachineRate hourlyMachineRate;
@@ -76,7 +75,7 @@ namespace AndreasReitberger.Print3d.Models
 
 
         [ObservableProperty]
-        public Guid slicerConfigId;
+        Guid slicerConfigId;
 
         [ObservableProperty]
         Printer3dSlicerConfig slicerConfig = new();
@@ -85,7 +84,7 @@ namespace AndreasReitberger.Print3d.Models
         byte[] image = Array.Empty<byte>();
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [JsonIgnore]
         public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer.Name}, {Model}" : Model;

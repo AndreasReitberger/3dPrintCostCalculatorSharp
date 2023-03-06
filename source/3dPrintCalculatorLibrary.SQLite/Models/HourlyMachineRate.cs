@@ -1,9 +1,7 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -13,10 +11,10 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid printerId;
+        Guid printerId;
 
         [ObservableProperty]
         string name = string.Empty;

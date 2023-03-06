@@ -19,37 +19,37 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string sKU = string.Empty;
+        string sKU = string.Empty;
 
         [ObservableProperty]
-        public double packageSize = 1;
+        double packageSize = 1;
 
         [ObservableProperty]
-        public double packagePrice;
+        double packagePrice;
 
         [ObservableProperty]
-        public double tax = 0;
+        double tax = 0;
 
         [ObservableProperty]
-        public bool priceIncludesTax = true;
+        bool priceIncludesTax = true;
 
         [ObservableProperty]
-        public string uri = string.Empty;
+        string uri = string.Empty;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [ObservableProperty]
-        public string safetyDatasheet = string.Empty;
+        string safetyDatasheet = string.Empty;
 
         [ObservableProperty]
-        public string technicalDatasheet = string.Empty;
+        string technicalDatasheet = string.Empty;
 
         public double PricePerPiece => PackagePrice / PackageSize;
         #endregion

@@ -1,54 +1,40 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.FileAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class File3d : ObservableObject, IFile3d
+    public partial class File3d : RealmObject, IFile3d
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string name = string.Empty;
+        [Ignored]
+        public object File { get; set; }
 
-        [ObservableProperty]
-        [property: JsonIgnore]
-        object file;
+        public string FileName { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string fileName = string.Empty;
+        public string FilePath { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string filePath = string.Empty;
+        public double Volume { get; set; } = 0;
 
-        [ObservableProperty]
-        double volume = 0;
+        public Guid ModelWeightId { get; set; }
 
-        [ObservableProperty]
-        public Guid modelWeightId;
+        public ModelWeight Weight { get; set; } = new(-1, Enums.Unit.Gramm);
 
-        [ObservableProperty]
-        ModelWeight weight = new(-1, Enums.Unit.Gramm);
+        public double PrintTime { get; set; } = 0;
 
-        [ObservableProperty]
-        double printTime = 0;
+        public int Quantity { get; set; } = 1;
 
-        [ObservableProperty]
-        int quantity = 1;
+        public bool MultiplyPrintTimeWithQuantity { get; set; } = true;
 
-        [ObservableProperty]
-        bool multiplyPrintTimeWithQuantity = true;
-
-        [ObservableProperty]
-        double printTimeQuantityFactor = 1;
+        public double PrintTimeQuantityFactor { get; set; } = 1;
 
         #endregion
 

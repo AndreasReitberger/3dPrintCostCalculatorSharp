@@ -21,7 +21,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public Guid CustomerId { get; set; }
         //ICustomer3d Customer { get; set; }
         bool IsCalculated { get; }
-        bool RealculationRequired { get; }
+        bool RecalculationRequired { get; }
         int Quantity { get; set; }
         double PowerLevel { get; set; }
         double FailRate { get; set; }

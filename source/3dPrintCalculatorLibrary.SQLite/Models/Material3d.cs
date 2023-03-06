@@ -22,89 +22,89 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string sKU = string.Empty;
+        string sKU = string.Empty;
 
         [ObservableProperty]
-        public Unit unit = Unit.kg;
+        Unit unit = Unit.Kilogramm;
 
         [ObservableProperty]
-        public double packageSize = 1;
+        double packageSize = 1;
 
         [ObservableProperty]
-        public double density = 1;
+        double density = 1;
 
         [ObservableProperty]
-        public double factorLToKg = 1;
-
-        [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dAttribute> attributes = new();
+        double factorLToKg = 1;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dProcedureAttribute> procedureAttributes = new();
+        List<Material3dAttribute> attributes = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Material3dColor> colors = new();
+        List<Material3dProcedureAttribute> procedureAttributes = new();
 
         [ObservableProperty]
-        public Material3dFamily materialFamily = Material3dFamily.Filament;
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Material3dColor> colors = new();
+
+        [ObservableProperty]
+        Material3dFamily materialFamily = Material3dFamily.Filament;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
-        public Guid materialTypeId;
+        Guid materialTypeId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(MaterialTypeId))]
-        public Material3dType typeOfMaterial;
+        Material3dType typeOfMaterial;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
-        public Guid manufacturerId;
+        Guid manufacturerId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ManufacturerId))]
-        public Manufacturer manufacturer;
+        Manufacturer manufacturer;
 
         [ObservableProperty]
-        public double unitPrice;
+        double unitPrice;
 
         [ObservableProperty]
-        public double tax = 0;
+        double tax = 0;
 
         [ObservableProperty]
-        public bool priceIncludesTax = true;
+        bool priceIncludesTax = true;
 
         [ObservableProperty]
-        public string uri = string.Empty;
+        string uri = string.Empty;
         [ObservableProperty]
-        public string colorCode = string.Empty;
+        string colorCode = string.Empty;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
 
         [ObservableProperty]
-        public string safetyDatasheet = string.Empty;
+        string safetyDatasheet = string.Empty;
 
         [ObservableProperty]
-        public string technicalDatasheet = string.Empty;
+        string technicalDatasheet = string.Empty;
 
         [ObservableProperty]
-        public Unit spoolWeightUnit = Unit.g;
+        Unit spoolWeightUnit = Unit.Gramm;
 
         [ObservableProperty]
-        public double spoolWeight = 200;
+        double spoolWeight = 200;
         #endregion
 
         #region Constructor

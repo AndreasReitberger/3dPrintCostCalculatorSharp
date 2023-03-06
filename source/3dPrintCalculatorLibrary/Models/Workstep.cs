@@ -10,10 +10,10 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         string name = string.Empty;
@@ -33,7 +33,7 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        public Guid categoryId;
+        Guid categoryId;
 
         [ObservableProperty]
         WorkstepCategory category;
@@ -55,7 +55,7 @@ namespace AndreasReitberger.Print3d.Models
         double totalCosts = 0;
 
         [ObservableProperty]
-        public string note = string.Empty;
+        string note = string.Empty;
         #endregion
 
         #region Constructors

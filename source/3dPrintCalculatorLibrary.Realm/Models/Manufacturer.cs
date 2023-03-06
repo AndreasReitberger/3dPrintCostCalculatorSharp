@@ -1,10 +1,10 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Manufacturer : ObservableObject, ICloneable, IManufacturer
+    public partial class Manufacturer : RealmObject, ICloneable, IManufacturer
     {
         #region Clone
         public object Clone()
@@ -14,29 +14,22 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties 
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid supplierId;
+        public Guid SupplierId { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        public string DebitorNumber { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string debitorNumber = string.Empty;
+        public bool IsActive { get; set; } = true;
 
-        [ObservableProperty]
-        public bool isActive = true;
+        public string Website { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string website = string.Empty;
+        public string Note { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string note = string.Empty;
-
-        [ObservableProperty]
-        public string countryCode = string.Empty;
+        public string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

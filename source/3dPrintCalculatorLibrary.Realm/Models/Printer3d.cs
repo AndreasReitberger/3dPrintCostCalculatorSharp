@@ -1,97 +1,83 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.PrinterAdditions;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Xml.Serialization;
-using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Printer3d : ObservableObject, IPrinter3d, ICloneable
+    public partial class Printer3d : RealmObject, IPrinter3d, ICloneable
     {
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
+        [Required]
+        public string Model { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string model = string.Empty;
+        public Printer3dType Type
+        {
+            get => (Printer3dType)TypeId;
+            set { TypeId = (int)value; }
+        }
+        public int TypeId { get; set; } = (int)Printer3dType.FDM;
 
-        [ObservableProperty]
-        Printer3dType type = Printer3dType.FDM;
+        public Guid ManufacturerId { get; set; }
 
-        [ObservableProperty]
-        public Guid manufacturerId;
+        public Manufacturer Manufacturer { get; set; }
 
-        [ObservableProperty]
-        Manufacturer manufacturer;
+        public double Price { get; set; } = 0;
 
-        [ObservableProperty]
-        double price = 0;
+        public double Tax { get; set; } = 0;
 
-        [ObservableProperty]
-        double tax = 0;
+        public bool PriceIncludesTax { get; set; } = true;
 
-        [ObservableProperty]
-        bool priceIncludesTax = true;
+        public string Uri { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string uri = string.Empty;
+        public Material3dFamily MaterialType
+        {
+            get => (Material3dFamily)MaterialTypeId;
+            set { MaterialTypeId  = (int)value; }
+        }
+        public int MaterialTypeId { get; set; } = (int)Material3dFamily.Filament;
 
-        [ObservableProperty]
-        Material3dFamily materialType = Material3dFamily.Filament;
+        public double PowerConsumption { get; set; } = 0;
 
-        [ObservableProperty]
-        List<Printer3dAttribute> attributes = new();
+        public double Width { get; set; } = 1;
 
-        [ObservableProperty]
-        double powerConsumption = 0;
+        public double Depth { get; set; } = 1;
 
-        [ObservableProperty]
-        double width = 1;
+        public double Height { get; set; } = 1;
 
-        [ObservableProperty]
-        double depth = 1;
+        public Guid HourlyMachineRateId { get; set; }
 
-        [ObservableProperty]
-        double height = 1;
+        public HourlyMachineRate HourlyMachineRate { get; set; }
 
-        [ObservableProperty, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
-        bool useFixedMachineHourRating = false;
+        public Guid SlicerConfigId { get; set; }
 
-        [ObservableProperty]
-        public Guid hourlyMachineRateId;
+        public Printer3dSlicerConfig SlicerConfig { get; set; } = new();
 
-        [ObservableProperty]
-        HourlyMachineRate hourlyMachineRate;
+        public byte[] Image { get; set; } = Array.Empty<byte>();
 
-        [ObservableProperty]
-        ObservableCollection<Maintenance3d> maintenances = new();
-
-
-        [ObservableProperty]
-        public Guid slicerConfigId;
-
-        [ObservableProperty]
-        Printer3dSlicerConfig slicerConfig = new();
-
-        [ObservableProperty]
-        byte[] image = Array.Empty<byte>();
-
-        [ObservableProperty]
-        public string note = string.Empty;
+        public string Note { get; set; } = string.Empty;
 
         [JsonIgnore]
         public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer.Name}, {Model}" : Model;
 
         [JsonIgnore]
         public double Volume => CalculateVolume();
+        #endregion
+
+        #region Collections
+        public IList<Printer3dAttribute> Attributes { get; }
+
+        public IList<Maintenance3d> Maintenances { get; }
         #endregion
 
         #region Constructor

@@ -23,52 +23,52 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3dProfile))]
-        public Guid calculationProfileId;
+        Guid calculationProfileId;
 
         [ObservableProperty]
-        public string customerId = string.Empty;
+        string customerId = string.Empty;
 
         [ObservableProperty]
-        public bool isCompany = false;
+        bool isCompany = false;
 
         [ObservableProperty]
-        public string salutation = string.Empty;
+        string salutation = string.Empty;
 
         [ObservableProperty]
-        public string name = string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
-        public string lastName = string.Empty;
+        string lastName = string.Empty;
 
         [ObservableProperty]
-        public string vAT = string.Empty;
+        string vAT = string.Empty;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
-        public Guid contactPersonId;
+        Guid contactPersonId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ContactPersonId))]
-        public ContactPerson contactPerson;
+        ContactPerson contactPerson;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Address> addresses = new();
+        List<Address> addresses = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Email> emailAddresses = new();
+        List<Email> emailAddresses = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<PhoneNumber> phoneNumbers = new();
+        List<PhoneNumber> phoneNumbers = new();
 
         [ObservableProperty]
-        public string handler = string.Empty;
+        string handler = string.Empty;
 
         [JsonIgnore]
         public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);

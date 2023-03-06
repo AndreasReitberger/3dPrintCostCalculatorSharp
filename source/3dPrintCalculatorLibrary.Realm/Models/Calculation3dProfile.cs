@@ -1,61 +1,51 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+﻿using AndreasReitberger.Print3d.Interfaces;
+using Realms;
 using System;
 using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Calculation3dProfile : ObservableObject, ICalculation3dProfile
+    public partial class Calculation3dProfile : RealmObject, ICalculation3dProfile
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
-
-        [ObservableProperty]
-        string name = string.Empty;
+        [PrimaryKey]
+        public Guid Id { get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
         #region Linked Customer
-        [ObservableProperty]
-        public List<Customer3d> customers = new();
+
+        public IList<Customer3d> Customers { get; }
         #endregion
 
         #region Presets
 
         #region Rates
 
-        [ObservableProperty]
-        double failRate = 0;
+        public double FailRate { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyTaxRate = false;
+        public bool ApplyTaxRate { get; set; } = false;
 
-        [ObservableProperty]
-        double taxRate = 0;
+        public double TaxRate { get; set; } = 0;
 
-        [ObservableProperty]
-        double marginRate = 0;
+        public double MarginRate { get; set; } = 0;
 
         #endregion
 
         #region Handling
 
-        [ObservableProperty]
-        double handlingsFee = 0;
+        public double HandlingsFee { get; set; } = 0;
 
         #endregion
 
         #region Energy
 
-        [ObservableProperty]
-        bool applyEnergyCost = false;
 
-        [ObservableProperty]
-        int powerLevel = 0;
+        public bool ApplyEnergyCost { get; set; } = false;
 
-        [ObservableProperty]
-        double energyCostsPerkWh = 0;
+        public int PowerLevel { get; set; } = 0;
+
+        public double EnergyCostsPerkWh { get; set; } = 0;
 
         #endregion
 
@@ -63,99 +53,70 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Filament
 
-        [ObservableProperty]
-        bool applyNozzleWearCosts = false;
+        public bool ApplyNozzleWearCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double nozzleReplacementCosts = 0;
+        public double NozzleReplacementCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double nozzleWearFactorPerPrintJob = 0;
+        public double NozzleWearFactorPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        double nozzleWearCostsPerPrintJob = 0;
+        public double NozzleWearCostsPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyPrintSheetWearCosts = false;
+        public bool ApplyPrintSheetWearCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double printSheetReplacementCosts = 0;
+        public double PrintSheetReplacementCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        double printSheetWearFactorPerPrintJob = 0;
+        public double PrintSheetWearFactorPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        double printSheetWearCostsPerPrintJob = 0;
+        public double PrintSheetWearCostsPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyMultiMaterialCosts = false;
+        public bool ApplyMultiMaterialCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double multiMaterialChangeCosts = 0;
+        public double MultiMaterialChangeCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        bool multiMaterialAllSelectetMaterialsAreUsed = false;
+        public bool MultiMaterialAllSelectetMaterialsAreUsed { get; set; } = false;
 
-        [ObservableProperty]
-        double multiMaterialChangesPerPrint = 0;
+        public double MultiMaterialChangesPerPrint { get; set; } = 0;
 
         #endregion
 
         #region Resin
 
-        [ObservableProperty]
-        bool applyResinGlovesCosts = false;
+        public bool ApplyResinGlovesCosts { get; set; } = false;
 
-        [ObservableProperty]
-        int glovesPerPrintJob = 0;
+        public int GlovesPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        int glovesInPackage = 0;
+        public int GlovesInPackage { get; set; } = 0;
 
-        [ObservableProperty]
-        double glovesPackagePrice = 0;
+        public double GlovesPackagePrice { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyResinFilterCosts = false;
+        public bool ApplyResinFilterCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double filtersPerPrintJob = 0;
+        public double FiltersPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        int filtersInPackage = 0;
+        public int FiltersInPackage { get; set; } = 0;
 
-        [ObservableProperty]
-        double filtersPackagePrice = 0;
+        public double FiltersPackagePrice { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyResinWashingCosts = false;
+        public bool ApplyResinWashingCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double isopropanolContainerContent = 0;
+        public double IsopropanolContainerContent { get; set; } = 0;
 
-        [ObservableProperty]
-        double isopropanolContainerPrice = 0;
+        public double IsopropanolContainerPrice { get; set; } = 0;
 
-        [ObservableProperty]
-        double isopropanolPerPrintJob = 0;
+        public double IsopropanolPerPrintJob { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyResinCuringCosts = false;
+        public bool ApplyResinCuringCosts { get; set; } = false;
 
-        [ObservableProperty]
-        double curingCostsPerHour = 0;
+        public double CuringCostsPerHour { get; set; } = 0;
 
-        [ObservableProperty]
-        double curingDurationInMintues = 0;
+        public double CuringDurationInMintues { get; set; } = 0;
         #endregion
 
         #region Powder
 
-        [ObservableProperty]
-        bool applySLSRefreshing = false;
+        public bool ApplySLSRefreshing { get; set; } = false;
 
-        [ObservableProperty]
-        double powderInBuildArea = 0;
+        public double PowderInBuildArea { get; set; } = 0;
 
         #endregion
 

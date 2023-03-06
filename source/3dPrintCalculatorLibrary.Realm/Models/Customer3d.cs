@@ -1,14 +1,13 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.CustomerAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Customer3d : ObservableObject, ICloneable, ICustomer3d
+    public partial class Customer3d : RealmObject, ICloneable, ICustomer3d
     {
         #region Clone
         public object Clone()
@@ -18,48 +17,28 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationProfileId;
+        public Guid CalculationProfileId { get; set; }
 
-        [ObservableProperty]
-        public string customerId = string.Empty;
+        public string CustomerId { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public bool isCompany = false;
+        public bool IsCompany { get; set; } = false;
 
-        [ObservableProperty]
-        public string salutation = string.Empty;
+        public string Salutation { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string name = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string lastName = string.Empty;
+        public string LastName { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string vAT = string.Empty;
+        public string VAT { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        public Guid contactPersonId;
+        public Guid ContactPersonId { get; set; }
 
-        [ObservableProperty]
-        public ContactPerson contactPerson;
+        public ContactPerson ContactPerson { get; set; }
 
-        [ObservableProperty]
-        public List<Address> addresses = new();
-
-        [ObservableProperty]
-        public List<Email> emailAddresses = new();
-
-        [ObservableProperty]
-        public List<PhoneNumber> phoneNumbers = new();
-
-        [ObservableProperty]
-        public string handler = string.Empty;
+        public string Handler { get; set; } = string.Empty;
 
         [JsonIgnore]
         public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
@@ -67,6 +46,15 @@ namespace AndreasReitberger.Print3d.Realm
         [JsonIgnore]
         public string MainAddress => GetAddress(0);
 
+        #endregion
+
+        #region Collections
+
+        public IList<Address> Addresses { get; }
+
+        public IList<Email> EmailAddresses { get; }
+
+        public IList<PhoneNumber> PhoneNumbers { get; }
         #endregion
 
         #region Constructor

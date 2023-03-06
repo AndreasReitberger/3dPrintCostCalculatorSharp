@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
@@ -9,7 +10,7 @@ namespace AndreasReitberger.Print3d.Realm
     /// This is an additional item usage which can be added to the calculation job. 
     /// For instance, if you need to add screws or other material to the calculation.
     /// </summary>
-    public partial class Item3dUsage : ObservableObject, ICloneable, IItem3dUsage
+    public partial class Item3dUsage : RealmObject, ICloneable, IItem3dUsage
     {
         #region Clone
         public object Clone()
@@ -19,34 +20,36 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId { get; set; }
 
-        [ObservableProperty]
-        public Guid itemId;
+        public Guid ItemId { get; set; }
 
-        [ObservableProperty]
-        public Item3d item;
+        public Item3d Item { get; set; }
 
-        [ObservableProperty]
-        public double quantity;
+        public double Quantity { get; set; }
 
-        [ObservableProperty]
-        public Guid? fileId;
+        public Guid? FileId { get; set; }
 
-        [ObservableProperty]
-        public File3d file;
-        partial void OnFileChanged(File3d value)
+        File3d file { get; set; }
+        public File3d File
+        {
+            get => file;
+            set
+            {
+                file = value;
+                OnFileChanged(value);
+            }
+        }
+        void OnFileChanged(File3d value)
         {
             FileId = value?.Id ?? Guid.Empty;
             LinkedToFile = value is not null;
         }
 
-        [ObservableProperty]
-        public bool linkedToFile = false;
+        public bool LinkedToFile { get; set; } = false;
 
         #endregion
 

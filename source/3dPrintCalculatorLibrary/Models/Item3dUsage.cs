@@ -20,25 +20,25 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
-        public Guid itemId;
+        Guid itemId;
 
         [ObservableProperty]
-        public Item3d item;
+        Item3d item;
 
         [ObservableProperty]
-        public double quantity;
+        double quantity;
 
         [ObservableProperty]
-        public Guid? fileId;
+        Guid? fileId;
 
         [ObservableProperty]
-        public File3d file;
+        File3d file;
         partial void OnFileChanged(File3d value)
         {
             FileId = value?.Id ?? Guid.Empty;
@@ -46,7 +46,7 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        public bool linkedToFile = false;
+        bool linkedToFile = false;
 
         #endregion
 

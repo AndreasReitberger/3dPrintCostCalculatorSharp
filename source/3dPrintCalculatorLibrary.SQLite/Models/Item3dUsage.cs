@@ -22,27 +22,27 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
-        public Guid calculationId;
+        Guid calculationId;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Item3d))]
-        public Guid itemId;
+        Guid itemId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ItemId))]
-        public Item3d item;
+        Item3d item;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(File3d))]
-        public Guid? fileId;
+        Guid? fileId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId))]
-        public File3d file;
+        File3d file;
         partial void OnFileChanged(File3d value)
         {
             FileId = value?.Id ?? Guid.Empty;
@@ -50,10 +50,10 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        public double quantity;
+        double quantity;
 
         [ObservableProperty]
-        public bool linkedToFile = false;
+        bool linkedToFile = false;
 
         #endregion
 

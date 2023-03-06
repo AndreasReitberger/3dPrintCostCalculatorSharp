@@ -2,39 +2,42 @@
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Slicer3d : ObservableObject, ISlicer3d
+    public partial class Slicer3d : RealmObject, ISlicer3d
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Slicer slicerName = Slicer.Unkown;
+        public Slicer SlicerName
+        {
+            get => (Slicer)SlicerNameId;
+            set { SlicerNameId = (int)value; }
+        }
+        public int SlicerNameId { get; set; } = (int)Slicer.Unkown;
 
-        [ObservableProperty]
-        public SlicerExecutionType executionType = SlicerExecutionType.GUI;
+        public SlicerExecutionType ExecutionType
+        {
+            get => (SlicerExecutionType)ExecutionTypeId;
+            set { ExecutionTypeId = (int)value; }
+        }
+        public int ExecutionTypeId { get; set; } = (int)SlicerExecutionType.GUI;
 
-        [ObservableProperty]
-        public string installationPath;
+        public string InstallationPath { get; set; }
 
-        [ObservableProperty]
-        public string downloadUri;
+        public string DownloadUri { get; set; }
 
-        [ObservableProperty]
-        public string author;
+        public string Author { get; set; }
 
-        [ObservableProperty]
-        public string repoUri;
+        public string RepoUri { get; set; }
 
-        [ObservableProperty]
-        public Version version;
+        public Version Version { get; set; }
 
-        [ObservableProperty]
-        public Version latestVersion;
+        public Version LatestVersion { get; set; }
         #endregion
 
         #region Constructor 

@@ -2,60 +2,87 @@
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Realms;
 using System;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Workstep : ObservableObject, IWorkstep, ICloneable
+    public partial class Workstep : RealmObject, IWorkstep, ICloneable
     {
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id{ get; set; }
 
-        [ObservableProperty]
-        public Guid calculationId;
+        public Guid CalculationId{ get; set; }
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string name = string.Empty;
-
-        [ObservableProperty]
-        double price = 0;
-        partial void OnPriceChanged(double value)
+        double price { get; set; } = 0;
+        public double Price
+        {
+            get => price;
+            set
+            {
+                price = value;
+                OnPriceChanged(value);
+            }
+        }
+        void OnPriceChanged(double value)
         {
             TotalCosts = CalcualteTotalCosts();
         }
 
-        [ObservableProperty]
-        int quantity = 1;
-        partial void OnQuantityChanged(int value)
+        int quantity { get; set; } = 1;
+        public int Quantity
+        {
+            get => quantity;
+            set
+            {
+                quantity = value;
+                OnQuantityChanged(value);
+            }
+        }
+        void OnQuantityChanged(int value)
         {
             TotalCosts = CalcualteTotalCosts();
         }
 
-        [ObservableProperty]
-        public Guid categoryId;
+        public Guid CategoryId { get; set; }
 
-        [ObservableProperty]
-        WorkstepCategory category;
+        public WorkstepCategory Category { get; set; }
 
-        [ObservableProperty]
-        CalculationType calculationType;
+        public int CalculationTypeId { get;set; }
+        public CalculationType CalculationType
+        {
+            get => (CalculationType)CalculationTypeId;
+            set { CalculationTypeId = (int)value; }
+        }
 
-        [ObservableProperty]
-        double duration = 0;
-        partial void OnDurationChanged(double value)
+        double duration { get; set; } = 0;
+        public double Duration
+        {
+            get => duration;
+            set
+            {
+                duration = value;
+                OnDurationChanged(value);
+            }
+        }
+        void OnDurationChanged(double value)
         {
             TotalCosts = CalcualteTotalCosts();
         }
 
-        [ObservableProperty]
-        WorkstepType type;
+        public int TypeId { get; set; }
+        public WorkstepType Type
+        {
+            get => (WorkstepType)TypeId;
+            set { TypeId = (int)value; }
+        }
 
-        [ObservableProperty]
-        double totalCosts = 0;
+        public double TotalCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        public string note = string.Empty;
+        public string Note { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

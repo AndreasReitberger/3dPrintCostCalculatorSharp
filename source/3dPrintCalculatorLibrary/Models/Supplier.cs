@@ -16,22 +16,26 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        public Guid id;
+        Guid id;
 
         [ObservableProperty]
-        public string name;
+        string name;
 
         [ObservableProperty]
-        public string debitorNumber;
+        string debitorNumber;
 
         [ObservableProperty]
-        public bool isActive;
+        bool isActive;
 
         [ObservableProperty]
-        public string website;
+        string website;
+
+        #endregion
+
+        #region Collections
 
         [ObservableProperty]
-        public List<Manufacturer> manufacturers = new();
+        List<Manufacturer> manufacturers = new();
         #endregion
 
         #region Constructor

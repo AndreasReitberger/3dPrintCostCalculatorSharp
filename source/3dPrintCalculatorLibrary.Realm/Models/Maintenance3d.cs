@@ -1,14 +1,13 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.MaintenanceAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
+using Realms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public partial class Maintenance3d : ObservableObject, ICloneable, IMaintenance3d
+    public partial class Maintenance3d : RealmObject, ICloneable, IMaintenance3d
     {
         #region Clone
         public object Clone()
@@ -18,31 +17,27 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Properties
-        [ObservableProperty]
-        public Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
-        [ObservableProperty]
-        public Guid printerId;
+        public Guid PrinterId { get; set; }
 
-        [ObservableProperty]
-        public string description = string.Empty;
+        public string Description { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public string category = string.Empty;
+        public string Category { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        public DateTimeOffset date;
+        public DateTimeOffset Date { get; set; }
 
-        [ObservableProperty]
-        public double duration;
+        public double Duration { get; set; }
 
-        [ObservableProperty]
-        public double additionalCosts;
+        public double AdditionalCosts { get; set; }
 
-        [ObservableProperty]
-        public List<Sparepart> spareparts = new();
-
+        [Ignored]
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
+        #endregion
+
+        #region Collections
+        public IList<Sparepart> Spareparts { get; }
         #endregion
 
         #region Constructor

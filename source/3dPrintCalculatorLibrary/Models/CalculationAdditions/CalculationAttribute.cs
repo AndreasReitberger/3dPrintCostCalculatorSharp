@@ -32,6 +32,9 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         CalculationAttributeType type;
 
         [ObservableProperty]
+        CalculationAttributeItem item = CalculationAttributeItem.Default;
+
+        [ObservableProperty]
         double value;
 
         [ObservableProperty]

@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.SQLite.FileAdditions
         }
 
         [ObservableProperty]
-        Unit unit = Unit.Gramm;
+        Unit unit = Unit.Gram;
         partial void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;

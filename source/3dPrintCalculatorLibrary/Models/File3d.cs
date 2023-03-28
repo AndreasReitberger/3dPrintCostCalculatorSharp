@@ -36,7 +36,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid modelWeightId;
 
         [ObservableProperty]
-        ModelWeight weight = new(-1, Enums.Unit.Gramm);
+        ModelWeight weight = new(-1, Enums.Unit.Gram);
 
         [ObservableProperty]
         double printTime = 0;

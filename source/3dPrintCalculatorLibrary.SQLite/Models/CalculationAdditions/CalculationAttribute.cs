@@ -37,6 +37,9 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         CalculationAttributeType type;
 
         [ObservableProperty]
+        CalculationAttributeItem item = CalculationAttributeItem.Default;
+
+        [ObservableProperty]
         double value;
 
         [ObservableProperty]

@@ -4,8 +4,8 @@ namespace AndreasReitberger.Print3d.Enums
 {
     public enum Unit
     {
-        Gramm,
-        Kilogramm,
+        Gram,
+        Kilogram,
         MetricTons,
         Mililiters,
         Liters,

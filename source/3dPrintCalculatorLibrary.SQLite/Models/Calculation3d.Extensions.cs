@@ -25,6 +25,8 @@ namespace AndreasReitberger.Print3d.SQLite
                 {
                     Attribute = file.FileName,
                     Value = printTime,
+                    Type = CalculationAttributeType.Machine,
+                    Item = CalculationAttributeItem.Default,
                     FileId = file.Id,
                     FileName = file.FileName,
                 });
@@ -48,6 +50,8 @@ namespace AndreasReitberger.Print3d.SQLite
                     PrintTimes?.Add(new CalculationAttribute()
                     {
                         Attribute = $"{file.FileName}_FailRate",
+                        Type = CalculationAttributeType.Machine,
+                        Item = CalculationAttributeItem.FailRate,
                         Value = printTime * FailRate / 100,
                         FileId = file.Id,
                         FileName = file.FileName,
@@ -79,6 +83,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         Attribute = Material.Name,
                         Value = _material,
                         Type = CalculationAttributeType.Material,
+                        Item = CalculationAttributeItem.Default,
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -89,6 +94,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             Attribute = $"{Material.Name}_FailRate",
                             Value = _material * FailRate / 100,
                             Type = CalculationAttributeType.Material,
+                            Item = CalculationAttributeItem.FailRate,
                             FileId = file.Id,
                             FileName = file.FileName,
                         });
@@ -119,8 +125,8 @@ namespace AndreasReitberger.Print3d.SQLite
                                         if (materialPrintObject != null)
                                         {
                                             double refreshedMaterial = (powderInBuildArea -
-                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogramm))) * refreshRatio.Value / 100f;
-                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogramm));
+                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
+                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
                                         }
                                         else
                                             refreshed = 0;
@@ -139,8 +145,9 @@ namespace AndreasReitberger.Print3d.SQLite
                             OverallMaterialCosts.Add(new CalculationAttribute()
                             {
                                 LinkedId = material.Id,
-                                Attribute = material.Name,
+                                Attribute = materialUsage.Attribute,
                                 Type = CalculationAttributeType.Material,
+                                Item = materialUsage.Item,
                                 Value = totalCosts,
                                 FileId = materialUsage.FileId,
                                 FileName = materialUsage.FileName,
@@ -156,6 +163,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 LinkedId = material.Id,
                                 Attribute = $"{material.Name} (Refreshed)",
                                 Type = CalculationAttributeType.Material,
+                                Item = CalculationAttributeItem.PowderRefresh,
                                 Value = refreshCosts,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -185,6 +193,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Machine,
+                                        Item = pt.Item,
                                         Value = machineHourRate,
                                         FileId = pt.FileId,
                                         FileName = pt.FileName,
@@ -203,6 +212,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Energy,
+                                        Item = pt.Item,
                                         Value = totalEnergyCost,
                                         FileId = pt.FileId,
                                         FileName = pt.FileName,

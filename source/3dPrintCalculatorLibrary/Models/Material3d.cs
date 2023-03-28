@@ -30,7 +30,7 @@ namespace AndreasReitberger.Print3d.Models
         string sKU = string.Empty;
 
         [ObservableProperty]
-        Unit unit = Unit.Kilogramm;
+        Unit unit = Unit.Kilogram;
 
         [ObservableProperty]
         double packageSize = 1;
@@ -90,7 +90,7 @@ namespace AndreasReitberger.Print3d.Models
         string technicalDatasheet = string.Empty;
 
         [ObservableProperty]
-        Unit spoolWeightUnit = Unit.Gramm;
+        Unit spoolWeightUnit = Unit.Gram;
 
         [ObservableProperty]
         double spoolWeight = 200;

@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.SQLite
         string sKU = string.Empty;
 
         [ObservableProperty]
-        Unit unit = Unit.Kilogramm;
+        Unit unit = Unit.Kilogram;
 
         [ObservableProperty]
         double packageSize = 1;
@@ -101,7 +101,7 @@ namespace AndreasReitberger.Print3d.SQLite
         string technicalDatasheet = string.Empty;
 
         [ObservableProperty]
-        Unit spoolWeightUnit = Unit.Gramm;
+        Unit spoolWeightUnit = Unit.Gram;
 
         [ObservableProperty]
         double spoolWeight = 200;

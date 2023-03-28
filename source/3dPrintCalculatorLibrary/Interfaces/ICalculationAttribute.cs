@@ -13,6 +13,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public Guid LinkedId { get; set; }
         public string Attribute { get; set; }
         public CalculationAttributeType Type { get; set; }
+        public CalculationAttributeItem Item { get; set; }
         public double Value { get; set; }
         public bool IsPercentageValue { get; set; }
         public bool SkipForCalculation { get; set; }

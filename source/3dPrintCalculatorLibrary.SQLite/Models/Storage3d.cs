@@ -34,7 +34,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Methods
 
-        public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogramm)
+        public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogram)
         {
             Storage3dItem item = new() { Material = material };
             if (amount != 0) UpdateStockAmount(item, amount, unit);
@@ -140,7 +140,7 @@ namespace AndreasReitberger.Print3d.SQLite
             else return null;
         }
 
-        public bool UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogramm)
+        public bool UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogram)
         {
             if (amount > 0)
             {

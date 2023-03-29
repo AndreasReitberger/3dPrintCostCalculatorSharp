@@ -2,6 +2,7 @@
 using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using SQLiteNetExtensionsAsync.Extensions;
@@ -191,7 +192,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Printers
         public async Task<List<Printer3d>> GetPrintersWithChildrenAsync()
         {
-            Printers = await DatabaseAsync?
+            Printers = await DatabaseAsync
                 .GetAllWithChildrenAsync<Printer3d>(recursive: true)
                 ;
             return Printers;
@@ -199,7 +200,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<Printer3d> GetPrinterWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Printer3d>(id, recursive: true)
                 ;
         }
@@ -207,21 +208,25 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetPrintersWithChildrenAsync(List<Printer3d> printers, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(printers);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(printers);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(printers);
+                await DatabaseAsync.InsertAllWithChildrenAsync(printers);
         }
 
         public async Task SetPrinterWithChildrenAsync(Printer3d printer)
         {
-            await DatabaseAsync?
+            if (printer?.SlicerConfig != null)
+            {
+                await SetSlicerConfigWithChildrenAsync(printer.SlicerConfig).ConfigureAwait(false);
+            }
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(printer, recursive: true)
                 ;
         }
 
         public async Task<int> DeletePrinterAsync(Printer3d printer)
         {
-            return await DatabaseAsync?.DeleteAsync<Printer3d>(printer?.Id);
+            return await DatabaseAsync.DeleteAsync<Printer3d>(printer?.Id);
         }
 
         #endregion
@@ -861,6 +866,42 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task<int> DeleteStorageAsync(Storage3d storage)
         {
             return await DatabaseAsync.DeleteAsync<Storage3d>(storage?.Id);
+        }
+
+        #endregion
+
+        #region SlicerConfigs
+
+        public async Task<List<Printer3dSlicerConfig>> GetSlicerConfigWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Printer3dSlicerConfig>(recursive: true)
+                ;
+        }
+
+        public async Task<Printer3dSlicerConfig> GetSlicerConfigWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Printer3dSlicerConfig>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetSlicerConfigWithChildrenAsync(Printer3dSlicerConfig config)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(config, recursive: true);
+        }
+
+        public async Task SetSlicerConfigsWithChildrenAsync(List<Printer3dSlicerConfig> configs, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(configs);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(configs);
+        }
+
+        public async Task<int> DeleteSlicerConfigAsync(Printer3dSlicerConfig configs)
+        {
+            return await DatabaseAsync.DeleteAsync<Printer3dSlicerConfig>(configs?.Id);
         }
 
         #endregion

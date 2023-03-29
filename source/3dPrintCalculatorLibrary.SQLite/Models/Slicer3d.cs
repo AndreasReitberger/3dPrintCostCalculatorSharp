@@ -36,6 +36,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         Version latestVersion;
+
+        public string DisplayName => $"{SlicerName} ({ExecutionType})";
         #endregion
 
         #region Constructor 

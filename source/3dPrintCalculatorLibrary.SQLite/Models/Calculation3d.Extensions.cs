@@ -510,14 +510,15 @@ namespace AndreasReitberger.Print3d.SQLite
                         Costs :
                         Costs
                             .Where(cost => cost.Type == calculationAttributeType))
-                        .Select(value => Convert.ToDouble(value.Value))
+                            .Select(value => Convert.ToDouble(value.Value))
                     : (calculationAttributeType == CalculationAttributeType.All ?
                         Costs
                             .Where(cost => cost.FileId == fileId) :
                         Costs
                             .Where(cost => cost.Type == calculationAttributeType && cost.FileId == fileId))
-                        .Select(value => Convert.ToDouble(value.Value));
+                            .Select(value => Convert.ToDouble(value.Value));
 
+                /*
                 IEnumerable<double> costsMachine = fileId == Guid.Empty
                    ? OverallPrinterCosts
                        .Where(cost =>
@@ -530,6 +531,75 @@ namespace AndreasReitberger.Print3d.SQLite
                             cost.LinkedId == Printer.Id) && cost.FileId == fileId)
                        .Select(value => Convert.ToDouble(value.Value))
                     ;
+                */
+                IEnumerable<double> costsMachine = fileId == Guid.Empty
+                    // If file id is empty
+                    // If all types are requested
+                    ? (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallPrinterCosts
+                            .Where(cost =>
+                                cost.Attribute == Printer.Name ||
+                                cost.LinkedId == Printer.Id)
+                        :
+                    // If a specific type is requested
+                        OverallPrinterCosts
+                            .Where(cost =>
+                                cost.Type == calculationAttributeType &&
+                                (cost.Attribute == Printer.Name ||
+                                cost.LinkedId == Printer.Id)))
+                            .Select(value => Convert.ToDouble(value.Value))
+                    // If file id is not empty
+                    // If all types are requested
+                    : (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallPrinterCosts
+                            .Where(cost =>
+                            cost.FileId == fileId &&
+                            (cost.Attribute == Printer.Name ||
+                            cost.LinkedId == Printer.Id))
+
+                        // If a specific type is requested
+                        :
+                        OverallPrinterCosts
+                            .Where(cost =>
+                            cost.Type == calculationAttributeType && cost.FileId == fileId &&
+                            (cost.Attribute == Printer.Name || cost.LinkedId == Printer.Id)
+                            ))
+                    .Select(value => Convert.ToDouble(value.Value));
+
+                IEnumerable<double> costsMaterial = fileId == Guid.Empty
+                   // If file id is empty
+                   // If all types are requested
+                   ? (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallMaterialCosts
+                            .Where(cost =>
+                                cost.Attribute == Material.Name ||
+                                (CombineMaterialCosts || (cost.LinkedId == Material.Id)))
+                        :
+                        // If a specific type is requested
+                        OverallMaterialCosts
+                            .Where(cost =>
+                                cost.Type == calculationAttributeType && (
+                                cost.Attribute == Material.Name ||
+                                (CombineMaterialCosts || (cost.LinkedId == Material.Id)))))
+                            .Select(value => Convert.ToDouble(value.Value))
+                    // If file id is not empty
+                    // If all types are requested
+                    : (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallMaterialCosts
+                            .Where(cost =>
+                            cost.FileId == fileId &&
+                            (cost.Attribute == Material.Name ||
+                            (CombineMaterialCosts || (cost.LinkedId == Material.Id))))
+
+                        // If a specific type is requested
+                        :
+                        OverallMaterialCosts
+                            .Where(cost =>
+                            cost.Type == calculationAttributeType && cost.FileId == fileId &&
+                            (cost.Attribute == Material.Name ||
+                            (CombineMaterialCosts || (cost.LinkedId == Material.Id)))))
+                    .Select(value => Convert.ToDouble(value.Value));
+                /*
                 IEnumerable<double> costsMaterial = fileId == Guid.Empty
                     ? OverallMaterialCosts
                         .Where(cost =>
@@ -541,10 +611,16 @@ namespace AndreasReitberger.Print3d.SQLite
                             (cost.Attribute == Material.Name ||
                             (CombineMaterialCosts || (cost.LinkedId == Material.Id))) && cost.FileId == fileId)
                         .Select(value => Convert.ToDouble(value.Value));
+                */
 
                 double total = 0;
                 foreach (var cost in costs)
                     total += cost;
+                foreach (var cost in costsMachine)
+                    total += cost;
+                foreach (var cost in costsMaterial)
+                    total += cost;
+                /*
                 if (calculationAttributeType == CalculationAttributeType.Machine || calculationAttributeType == CalculationAttributeType.All)
                 {
                     foreach (var cost in costsMachine)
@@ -555,6 +631,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     foreach (var cost in costsMaterial)
                         total += cost;
                 }
+                */
                 return total;
             }
             catch (Exception)

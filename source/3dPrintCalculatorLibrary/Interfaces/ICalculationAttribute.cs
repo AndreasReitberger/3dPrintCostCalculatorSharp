@@ -16,7 +16,9 @@ namespace AndreasReitberger.Print3d.Interfaces
         public CalculationAttributeItem Item { get; set; }
         public double Value { get; set; }
         public bool IsPercentageValue { get; set; }
+        public bool ApplyPerFile { get; set; }
         public bool SkipForCalculation { get; set; }
+        public bool SkipForMargin { get; set; }
         #endregion
     }
 }

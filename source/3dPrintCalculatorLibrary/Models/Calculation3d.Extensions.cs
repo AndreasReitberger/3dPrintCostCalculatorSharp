@@ -22,6 +22,9 @@ namespace AndreasReitberger.Print3d.Models
             CombineMaterialCosts = false;
 
             int quantity = Files.Select(file => file.Quantity).ToList().Sum();
+            // Add the handling fee based on the file quantity
+            CalculationAttribute? HandlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
+            CalculationAttribute? Margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
@@ -35,9 +38,7 @@ namespace AndreasReitberger.Print3d.Models
                     FileName = file.FileName,
                 });
 
-                // Add the handling fee based on the file quantity
-                CalculationAttribute HandlingsFee = Rates.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
-                if (HandlingsFee != null && HandlingsFee.Value > 0)
+                if (HandlingsFee != null && HandlingsFee.Value > 0 && HandlingsFee.ApplyPerFile)
                 {
                     Costs?.Add(new CalculationAttribute()
                     {
@@ -54,9 +55,9 @@ namespace AndreasReitberger.Print3d.Models
                     PrintTimes?.Add(new CalculationAttribute()
                     {
                         Attribute = $"{file.FileName}_FailRate",
-                        Value = printTime * FailRate / 100,
                         Type = CalculationAttributeType.Machine,
                         Item = CalculationAttributeItem.FailRate,
+                        Value = printTime * FailRate / 100,
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -87,7 +88,7 @@ namespace AndreasReitberger.Print3d.Models
                         Attribute = Material.Name,
                         Value = _material,
                         Type = CalculationAttributeType.Material,
-                        Item = CalculationAttributeItem.FailRate,
+                        Item = CalculationAttributeItem.Default,
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -149,7 +150,7 @@ namespace AndreasReitberger.Print3d.Models
                             OverallMaterialCosts.Add(new CalculationAttribute()
                             {
                                 LinkedId = material.Id,
-                                Attribute = material.Name,
+                                Attribute = materialUsage.Attribute,
                                 Type = CalculationAttributeType.Material,
                                 Item = materialUsage.Item,
                                 Value = totalCosts,
@@ -318,7 +319,6 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 //Margin
-                CalculationAttribute Margin = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
                 if (Margin != null && !Margin.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
@@ -343,6 +343,14 @@ namespace AndreasReitberger.Print3d.Models
                             costsSoFar -= excludedCosts;
                         }
                     }
+
+                    // Get all items where margin calculation is disabled.
+                    List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin).ToList();
+                    skipMarginCalculation.ForEach((item) =>
+                    {
+                        costsSoFar -= item.Value;
+                    });
+
                     double margin = costsSoFar * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
                     if (margin > 0)
                     {
@@ -388,7 +396,7 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 //Tax
-                CalculationAttribute Tax = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
+                CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
                 if (Tax != null && !Tax.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
@@ -402,6 +410,34 @@ namespace AndreasReitberger.Print3d.Models
                             Value = tax,
                             FileId = file.Id,
                             FileName = file.FileName,
+                        });
+                    }
+                }
+            }
+
+            // If the handling fee is not set per file, add it once afterwards
+            if (HandlingsFee != null && HandlingsFee.Value > 0 && !HandlingsFee.ApplyPerFile)
+            {
+                Costs?.Add(new CalculationAttribute()
+                {
+                    Attribute = "HandlingFee",
+                    Type = CalculationAttributeType.FixCost,
+                    Value = HandlingsFee.Value,
+                    FileId = Guid.Empty,
+                    FileName = string.Empty,
+                });
+                if (HandlingsFee?.SkipForMargin == false)
+                {
+                    double margin = HandlingsFee.Value * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (margin > 0)
+                    {
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            Attribute = "Margin",
+                            Type = CalculationAttributeType.Margin,
+                            Value = margin,
+                            FileId = Guid.Empty,
+                            FileName = string.Empty,
                         });
                     }
                 }
@@ -473,7 +509,7 @@ namespace AndreasReitberger.Print3d.Models
             if (ApplyProcedureSpecificAdditions)
             {
                 List<CalculationProcedureAttribute> multiMaterialAttributes = ProcedureAttributes
-                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)?.ToList();
+                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation).ToList();
                 for (int i = 0; i < multiMaterialAttributes?.Count; i++)
                 {
                     CalculationProcedureAttribute attribute = multiMaterialAttributes[i];

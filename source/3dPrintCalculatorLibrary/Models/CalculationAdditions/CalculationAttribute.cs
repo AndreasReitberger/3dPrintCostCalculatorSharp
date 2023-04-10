@@ -41,7 +41,13 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         bool isPercentageValue = false;
 
         [ObservableProperty]
+        bool applyPerFile = false;
+
+        [ObservableProperty]
         bool skipForCalculation = false;
+
+        [ObservableProperty]
+        bool skipForMargin = false;
         #endregion
 
         #region Constructor

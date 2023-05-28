@@ -14,6 +14,9 @@ namespace AndreasReitberger.Print3d.SQLite.PrinterAdditions
         Guid id;
 
         [ObservableProperty]
+        string printerName = string.Empty;
+
+        [ObservableProperty]
         double aMax_xy = 1000;
 
         [ObservableProperty]

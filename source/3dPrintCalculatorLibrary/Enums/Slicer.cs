@@ -16,5 +16,8 @@
         Voxelizer2,
         CraftWare,
         Luban,
+        IdeaMaker,
+        OrcaSlicer,
+        BambuStudio,
     }
 }

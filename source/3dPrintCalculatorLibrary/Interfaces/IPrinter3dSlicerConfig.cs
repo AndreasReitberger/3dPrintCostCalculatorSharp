@@ -6,6 +6,7 @@ namespace AndreasReitberger.Print3d.Interfaces
     {
         #region Properties
         public Guid Id { get; set; }
+        public string PrinterName { get; set; }
         public double AMax_xy { get; set; }
         public double AMax_z { get; set; }
         public double AMax_e { get; set; }

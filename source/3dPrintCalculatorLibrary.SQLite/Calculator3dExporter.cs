@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
-#if NETFRAMEWORK || NET7_0_OR_GREATER 
+#if NETFRAMEWORK || NET6_0_OR_GREATER 
     //#if net472
     public static class Calculator3dExporter
     {

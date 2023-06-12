@@ -101,6 +101,16 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
+        List<File3d> files = new();
+        partial void OnFilesChanged(List<File3d> value)
+        {
+            OnFilesChangedEvent(new FilesChangedDatabaseEventArgs()
+            {
+                Files = value,
+            });
+        }
+
+        [ObservableProperty]
         List<Workstep> worksteps = new();
         partial void OnWorkstepsChanged(List<Workstep> value)
         {

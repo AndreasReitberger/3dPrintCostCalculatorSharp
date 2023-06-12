@@ -328,6 +328,56 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region Files
+        public async Task<List<File3d>> GetFilesWithChildrenAsync()
+        {
+            Files = await DatabaseAsync
+                .GetAllWithChildrenAsync<File3d>(recursive: true)
+                ;
+            return Files;
+        }
+
+        public async Task<File3d> GetFileWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<File3d>(id, recursive: true)
+                ;
+        }
+
+        // https://stackoverflow.com/questions/35975235/one-to-many-relationship-in-sqlite-xamarin
+        public async Task SetFileWithChildrenAsync(File3d file)
+        {
+            await DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(file, recursive: true)
+                ;
+        }
+
+        public async Task SetFilesWithChildrenAsync(List<File3d> files, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(files);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(files);
+        }
+
+        public async Task<int> DeleteFileAsync(File3d file)
+        {
+            return await DatabaseAsync
+                .DeleteAsync<Customer3d>(file.Id);
+        }
+
+        public async Task<int[]> DeleteFilesAsync(List<File3d> files)
+        {
+            Stack<int> results = new();
+            for (int i = 0; i < files?.Count; i++)
+            {
+                results.Push(await DatabaseAsync.DeleteAsync<File3d>(files[i]?.Id));
+            }
+            return results.ToArray();
+        }
+
+        #endregion
+
         #region Addresses
         public async Task<List<Address>> GetAddressesWithChildrenAsync()
         {

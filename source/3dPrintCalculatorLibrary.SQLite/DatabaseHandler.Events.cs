@@ -53,6 +53,12 @@ namespace AndreasReitberger.Print3d.SQLite
             WorkstepsChanged?.Invoke(this, e);
         }
 
+        public event EventHandler<FilesChangedDatabaseEventArgs> FilesChanged;
+        protected virtual void OnFilesChangedEvent(FilesChangedDatabaseEventArgs e)
+        {
+            FilesChanged?.Invoke(this, e);
+        }
+
         public event EventHandler<HourlyMachineRatesChangedDatabaseEventArgs> HourlyMachineRatesChanged;
         protected virtual void OnHourlyMachineRatesChangedEvent(HourlyMachineRatesChangedDatabaseEventArgs e)
         {

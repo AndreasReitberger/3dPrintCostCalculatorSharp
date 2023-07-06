@@ -29,6 +29,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public string TechnicalDatasheet { get; set; }
         public Unit SpoolWeightUnit { get; set; }
         public double SpoolWeight { get; set; }
+        public byte[] Image { get; set; }
         #endregion
 
         #region Lists

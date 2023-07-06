@@ -105,6 +105,9 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         double spoolWeight = 200;
+
+        [ObservableProperty]
+        byte[] image = Array.Empty<byte>();
         #endregion
 
         #region Constructor

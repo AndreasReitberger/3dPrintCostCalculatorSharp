@@ -54,6 +54,9 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         double printTimeQuantityFactor = 1;
 
+        [ObservableProperty]
+        byte[] image = Array.Empty<byte>();
+
         #endregion
 
         #region Constructor

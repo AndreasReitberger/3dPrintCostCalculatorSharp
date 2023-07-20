@@ -19,6 +19,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public int Quantity { get; set; }
         public bool MultiplyPrintTimeWithQuantity { get; set; }
         public double PrintTimeQuantityFactor { get; set; }
+        public byte[] Image { get; set; }
         #endregion
 
     }

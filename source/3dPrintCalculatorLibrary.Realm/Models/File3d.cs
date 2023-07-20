@@ -26,7 +26,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid ModelWeightId { get; set; }
 
-        public ModelWeight Weight { get; set; } = new(-1, Enums.Unit.Gramm);
+        public ModelWeight Weight { get; set; } = new(-1, Enums.Unit.Gram);
 
         public double PrintTime { get; set; } = 0;
 
@@ -35,6 +35,8 @@ namespace AndreasReitberger.Print3d.Realm
         public bool MultiplyPrintTimeWithQuantity { get; set; } = true;
 
         public double PrintTimeQuantityFactor { get; set; } = 1;
+
+        public byte[] Image { get; set; } = Array.Empty<byte>();
 
         #endregion
 

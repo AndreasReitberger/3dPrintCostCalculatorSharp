@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.Realm
         #region Clone
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
         #endregion
 
@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.Realm
             get => (Unit)UnitId;
             set { UnitId = (int)value; }
         }
-        public int UnitId { get; set; } = (int)Unit.Kilogramm;
+        public int UnitId { get; set; } = (int)Unit.Kilogram;
         public double PackageSize { get; set; } = 1;
 
         public double Density { get; set; } = 1;
@@ -74,9 +74,11 @@ namespace AndreasReitberger.Print3d.Realm
             get => (Unit)SpoolWeightUnitId;
             set { SpoolWeightUnitId = (int)value; }
         }
-        public int SpoolWeightUnitId { get; set; } = (int)Unit.Gramm;
+        public int SpoolWeightUnitId { get; set; } = (int)Unit.Gram;
 
         public double SpoolWeight { get; set; } = 200;
+
+        public byte[] Image { get; set; } = Array.Empty<byte>();
         #endregion
 
         #region Collections

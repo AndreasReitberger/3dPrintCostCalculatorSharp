@@ -41,7 +41,7 @@ namespace AndreasReitberger.Print3d.Realm.FileAdditions
                 OnUnitChanged(value);
             }
         }
-        int UnitId { get; set; } = (int)Unit.Gramm;
+        int UnitId { get; set; } = (int)Unit.Gram;
         void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;

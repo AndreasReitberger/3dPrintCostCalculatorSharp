@@ -123,8 +123,8 @@ namespace AndreasReitberger.Print3d.Realm
                                         if (materialPrintObject != null)
                                         {
                                             double refreshedMaterial = (powderInBuildArea -
-                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogramm))) * refreshRatio.Value / 100f;
-                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogramm));
+                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
+                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
                                         }
                                         else
                                             refreshed = 0;

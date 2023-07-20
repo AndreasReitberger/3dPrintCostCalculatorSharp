@@ -1,6 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Realms;
 using System;
 
@@ -34,6 +33,14 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
         public bool IsPercentageValue { get; set; } = false;
 
         public bool SkipForCalculation { get; set; } = false;
+        public CalculationAttributeItem Item
+        {
+            get => (CalculationAttributeItem)ItemId;
+            set { ItemId = (int)value; }
+        }
+        public int ItemId { get; set; }
+        public bool ApplyPerFile { get; set; }
+        public bool SkipForMargin { get; set; }
         #endregion
 
         #region Constructor

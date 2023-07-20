@@ -47,7 +47,6 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         bool linkedToFile = false;
-
         #endregion
 
         #region Constructor

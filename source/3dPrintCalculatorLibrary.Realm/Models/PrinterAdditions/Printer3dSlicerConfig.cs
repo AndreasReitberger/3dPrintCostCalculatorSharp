@@ -21,6 +21,7 @@ namespace AndreasReitberger.Print3d.Realm.PrinterAdditions
         public double AMax_eRetract { get; set; } = 1250;
 
         public double PrintDurationCorrection { get; set; } = 1;
+        public string PrinterName { get; set; }
 
         #endregion
 

@@ -3,12 +3,18 @@ using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
     public partial class File3d : ObservableObject, IFile3d
     {
+        #region Clone
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+        #endregion
+
         #region Properties
         [ObservableProperty]
         Guid id;

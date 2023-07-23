@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.Print3d.Interfaces
 {
-    public interface IFile3d
+    public interface IFile3d : ICloneable
     {
 
         #region Properties

@@ -10,6 +10,13 @@ namespace AndreasReitberger.Print3d.SQLite
     [Table("Files")]
     public partial class File3d : ObservableObject, IFile3d
     {
+        #region Clone
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+        #endregion
+
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]

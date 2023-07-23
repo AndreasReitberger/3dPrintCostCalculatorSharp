@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Clone
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
         #endregion
 

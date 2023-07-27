@@ -363,7 +363,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task<int> DeleteFileAsync(File3d file)
         {
             return await DatabaseAsync
-                .DeleteAsync<Customer3d>(file.Id);
+                .DeleteAsync<File3d>(file.Id);
         }
 
         public async Task<int[]> DeleteFilesAsync(List<File3d> files)

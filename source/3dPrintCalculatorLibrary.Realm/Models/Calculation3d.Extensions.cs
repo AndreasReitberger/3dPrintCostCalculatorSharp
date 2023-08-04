@@ -557,10 +557,7 @@ namespace AndreasReitberger.Print3d.Realm
             }
         }
 
-        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
-        {
-            return GetTotalCosts(Guid.Empty, calculationAttributeType);
-        }
+        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All) => GetTotalCosts(Guid.Empty, calculationAttributeType);
 
         public int GetTotalQuantity()
         {

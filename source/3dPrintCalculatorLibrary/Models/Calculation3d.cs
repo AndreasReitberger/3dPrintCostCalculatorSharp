@@ -227,7 +227,7 @@ namespace AndreasReitberger.Print3d.Models
             get
             {
                 if (IsCalculated)
-                    return GetTotalCosts(CalculationAttributeType.Machine);
+                    return GetTotalCosts(CalculationAttributeType.Machine) + GetTotalCosts(CalculationAttributeType.Energy);
                 else
                     return 0;
             }

@@ -25,7 +25,7 @@ namespace AndreasReitberger.NUnitTest
                     Id = Guid.NewGuid(),
                     Density = 1.24,
                     Name = "Test Material",
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     PackageSize = 1,
                     UnitPrice = 30,
                     TypeOfMaterial = new Material3dType()
@@ -143,7 +143,7 @@ namespace AndreasReitberger.NUnitTest
                     Id = Guid.NewGuid(),
                     Density = 1.24,
                     Name = "Test Material",
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     PackageSize = 1,
                     UnitPrice = 30,
                     TypeOfMaterial = new Material3dType()
@@ -225,7 +225,7 @@ namespace AndreasReitberger.NUnitTest
                     Id = Guid.NewGuid(),
                     Density = 1.24,
                     Name = "Test Material",
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     PackageSize = 1,
                     UnitPrice = 30,
                     TypeOfMaterial = new Material3dType()
@@ -360,7 +360,7 @@ namespace AndreasReitberger.NUnitTest
                 Id = Guid.NewGuid(),
                 Density = 1.24,
                 Name = "Test Material",
-                Unit = Unit.Kilogramm,
+                Unit = Unit.Kilogram,
                 PackageSize = 1,
                 UnitPrice = 30,
                 TypeOfMaterial = new Material3dType()
@@ -429,7 +429,7 @@ namespace AndreasReitberger.NUnitTest
                     Id = Guid.NewGuid(),
                     Density = 1.24,
                     Name = "Test Material",
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     PackageSize = 1,
                     UnitPrice = 30,
                     TypeOfMaterial = new Material3dType()
@@ -445,7 +445,7 @@ namespace AndreasReitberger.NUnitTest
                     Id = Guid.NewGuid(),
                     Density = 1.14,
                     Name = "Test Material #2",
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     PackageSize = 1,
                     UnitPrice = 25,
                     TypeOfMaterial = new Material3dType()
@@ -546,7 +546,7 @@ namespace AndreasReitberger.NUnitTest
                     Name = "Test",
                     SKU = "Some material number",
                     PackageSize = 1,
-                    Unit = Unit.Kilogramm,
+                    Unit = Unit.Kilogram,
                     UnitPrice = 29.99,
                     PriceIncludesTax = true,
                 };
@@ -562,7 +562,7 @@ namespace AndreasReitberger.NUnitTest
                     Items = new() { item },
                 };
 
-                storage.AddToStock(material, 750, Unit.Gramm);
+                storage.AddToStock(material, 750, Unit.Gram);
                 var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
                 Assert.IsTrue(newItem?.Amount == startAmount + 0.75);

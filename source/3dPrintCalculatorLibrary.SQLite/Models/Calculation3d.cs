@@ -254,7 +254,7 @@ namespace AndreasReitberger.Print3d.SQLite
             get
             {
                 if (IsCalculated)
-                    return GetTotalCosts(CalculationAttributeType.Machine);
+                    return GetTotalCosts(CalculationAttributeType.Machine) + GetTotalCosts(CalculationAttributeType.Energy);
                 else
                     return 0;
             }

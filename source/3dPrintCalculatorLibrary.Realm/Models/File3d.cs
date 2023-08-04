@@ -7,6 +7,13 @@ namespace AndreasReitberger.Print3d.Realm
 {
     public partial class File3d : RealmObject, IFile3d
     {
+        #region Clone
+        public object Clone()
+        {
+            return MemberwiseClone();
+        }
+        #endregion
+
         #region Properties
         [PrimaryKey]
         public Guid Id { get; set; }

@@ -18,36 +18,37 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Manufacturers
         public async Task<List<Manufacturer>> GetManufacturersWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<Manufacturer>(recursive: true)
                 ;
         }
 
         public async Task<Manufacturer> GetManufacturerWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Manufacturer>(id, recursive: true)
                 ;
         }
 
         public async Task SetManufacturerWithChildrenAsync(Manufacturer manufacturer)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(manufacturer, recursive: true)
                 ;
+            //OnDatabaseOpertions?.Invoke(typeof(Manufacturer));
         }
 
         public async Task SetManufacturersWithChildrenAsync(List<Manufacturer> manufacturers, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(manufacturers);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(manufacturers);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(manufacturers);
+                await DatabaseAsync.InsertAllWithChildrenAsync(manufacturers);
         }
 
         public async Task<int> DeleteManufacturerAsync(Manufacturer manufacturer)
         {
-            return await DatabaseAsync?.DeleteAsync<Manufacturer>(manufacturer?.Id);
+            return await DatabaseAsync.DeleteAsync<Manufacturer>(manufacturer?.Id);
         }
 
         #endregion
@@ -154,7 +155,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task<List<Material3d>> GetMaterialsWithChildrenAsync()
         {
             // To trigger event
-            Materials = await DatabaseAsync?
+            Materials = await DatabaseAsync
                 .GetAllWithChildrenAsync<Material3d>(recursive: true)
                 ;
             return Materials;
@@ -162,14 +163,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<Material3d> GetMaterialWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Material3d>(id, recursive: true)
                 ;
         }
 
         public async Task SetMaterialWithChildrenAsync(Material3d material)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(material, recursive: true)
                 ;
         }
@@ -177,14 +178,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetMaterialsWithChildrenAsync(List<Material3d> materials, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(materials);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(materials);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(materials);
+                await DatabaseAsync.InsertAllWithChildrenAsync(materials);
         }
 
         public async Task<int> DeleteMaterialAsync(Material3d material)
         {
-            return await DatabaseAsync?.DeleteAsync<Material3d>(material?.Id);
+            return await DatabaseAsync.DeleteAsync<Material3d>(material?.Id);
         }
 
         #endregion

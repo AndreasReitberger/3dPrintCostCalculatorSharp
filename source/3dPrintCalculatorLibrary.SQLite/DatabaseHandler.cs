@@ -26,10 +26,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 lock (Lock)
                 {
-                    if (_instance == null)
-                    {
-                        _instance = new DatabaseHandler();
-                    }
+                    _instance ??= new DatabaseHandler();
                 }
                 return _instance;
             }
@@ -64,6 +61,9 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         List<Type> tables = new();
+
+        [ObservableProperty]
+        Func<Type, Task> onDatabaseOpertions;
         #endregion
 
         #region Collections

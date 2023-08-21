@@ -44,6 +44,17 @@ namespace AndreasReitberger.Print3d.SQLite
                 _databaseHandler.Tables?.AddRange(tables);
                 return this;
             }
+            /// <summary>
+            /// Performs the provided task, whenever a Database opertion (Delete, Update, Add) was performed.
+            /// This can be used to sync data with Firebase, for instance.
+            /// </summary>
+            /// <param name="task"></param>
+            /// <returns></returns>
+            public DatabaseHandlerBuilder WithDatabaseOperationTask(Func<Type, Task> task)
+            {
+                _databaseHandler.OnDatabaseOpertions = task;
+                return this;
+            }
 
             #endregion
         }

@@ -71,7 +71,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     if (file.Volume > 0)
                     {
                         double _volume = file.Volume;
-                        _weight = _volume * Convert.ToDouble(Material.Density);
+                        _weight = _volume * Convert.ToDouble(Material?.Density ?? 1);
                     }
                     else if (file.Weight != null)
                     {
@@ -146,7 +146,8 @@ namespace AndreasReitberger.Print3d.SQLite
                             OverallMaterialCosts.Add(new CalculationAttribute()
                             {
                                 LinkedId = material.Id,
-                                Attribute = materialUsage.Attribute,
+                                // Keep the linking to the currently used material
+                                Attribute = materialUsage.Item == CalculationAttributeItem.FailRate ? $"{material.Name}_FailRate" : material.Name,
                                 Type = CalculationAttributeType.Material,
                                 Item = materialUsage.Item,
                                 Value = totalCosts,
@@ -235,7 +236,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = parameter.Type.ToString(),
                                         Type = CalculationAttributeType.ProcedureSpecificAddition,
-                                        Value = parameter.Value,
+                                        Value = parameter.Value * file.Quantity,
                                         FileId = file.Id,
                                         FileName = file.FileName,
                                     });

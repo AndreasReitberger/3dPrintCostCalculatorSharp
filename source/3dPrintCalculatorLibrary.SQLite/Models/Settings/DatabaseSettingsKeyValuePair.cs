@@ -18,6 +18,15 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
 
         [ObservableProperty]
         string valueType;
+        partial void OnValueTypeChanged(string value)
+        {
+            if (!string.IsNullOrEmpty(value))
+                Type = Type.GetType(value, throwOnError: false);
+        }
+
+        [ObservableProperty]
+        [property: Ignore]
+        Type type;
         #endregion
 
         #region Constructor

@@ -28,6 +28,12 @@ namespace AndreasReitberger.Print3d.Models
         string sKU = string.Empty;
 
         [ObservableProperty]
+        Guid manufacturerId;
+
+        [ObservableProperty]
+        Manufacturer manufacturer;
+
+        [ObservableProperty]
         double packageSize = 1;
 
         [ObservableProperty]

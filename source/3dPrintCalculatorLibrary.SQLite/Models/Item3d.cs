@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
+using SQLiteNetExtensions.Attributes;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -28,6 +30,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         string sKU = string.Empty;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        Guid manufacturerId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ManufacturerId))]
+        Manufacturer manufacturer;
 
         [ObservableProperty]
         double packageSize = 1;

@@ -14,6 +14,7 @@
         WashingCosts,
         CuringCosts,
         FilterCosts,
+        ResinTankWear,
 
         // Powder
         MaterialRefreshingRatio,

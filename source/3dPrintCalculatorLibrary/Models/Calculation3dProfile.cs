@@ -147,6 +147,18 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         double curingDurationInMintues = 0;
+
+        [ObservableProperty]
+        bool applyResinTankWearCosts = false;
+
+        [ObservableProperty]
+        double resinTankReplacementCosts = 0;
+
+        [ObservableProperty]
+        double resinTankWearFactorPerPrintJob = 0;
+
+        [ObservableProperty]
+        double resinTankWearCostsPerPrintJob = 0;
         #endregion
 
         #region Powder

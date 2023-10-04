@@ -11,6 +11,7 @@
         PrintSheetWearCosts,
         MultiMaterialChangeCosts,
         MultiMaterialCalculation,
+        ResinTankWearCosts,
 
         PlainCosts = 999,
     }

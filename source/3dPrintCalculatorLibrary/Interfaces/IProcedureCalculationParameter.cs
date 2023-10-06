@@ -10,6 +10,8 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public ProcedureCalculationType Type { get; set; }
 
         public double Price { get; set; }

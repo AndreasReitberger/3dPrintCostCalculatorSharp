@@ -15,6 +15,8 @@ namespace AndreasReitberger.Print3d.Realm.ProcedureAdditions
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public ProcedureCalculationType Type
         {
             get => (ProcedureCalculationType)TypeId;

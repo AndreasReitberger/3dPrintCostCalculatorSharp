@@ -16,6 +16,9 @@ namespace AndreasReitberger.Print3d.ProcedureAdditions
         string name;
 
         [ObservableProperty]
+        string description;
+
+        [ObservableProperty]
         ProcedureCalculationType type;
 
         [ObservableProperty]

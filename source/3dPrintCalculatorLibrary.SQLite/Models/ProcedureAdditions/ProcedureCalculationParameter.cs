@@ -18,6 +18,9 @@ namespace AndreasReitberger.Print3d.SQLite.ProcedureAdditions
         string name;
 
         [ObservableProperty]
+        string description;
+
+        [ObservableProperty]
         ProcedureCalculationType type;
 
         [ObservableProperty]

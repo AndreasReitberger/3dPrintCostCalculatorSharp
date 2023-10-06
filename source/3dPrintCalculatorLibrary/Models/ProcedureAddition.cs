@@ -35,6 +35,9 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         Material3dFamily targetFamily;
 
+        [ObservableProperty]
+        ProcedureAdditionTarget target = ProcedureAdditionTarget.General;
+
         #endregion
 
         #region Collections

@@ -3,6 +3,7 @@ using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
+using SQLiteNetExtensions.Attributes;
 
 namespace AndreasReitberger.Print3d.SQLite.ProcedureAdditions
 {
@@ -13,6 +14,10 @@ namespace AndreasReitberger.Print3d.SQLite.ProcedureAdditions
         [ObservableProperty]
         [property: PrimaryKey]
         Guid id;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(ProcedureAddition))]
+        Guid procedureAdditionId;
 
         [ObservableProperty]
         string name;

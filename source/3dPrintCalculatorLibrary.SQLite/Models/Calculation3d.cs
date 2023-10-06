@@ -209,6 +209,11 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<ProcedureAddition> procedureAdditions = new();
+
         #endregion
 
         #region Calculated

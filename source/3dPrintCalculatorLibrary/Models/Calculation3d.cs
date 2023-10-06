@@ -178,10 +178,13 @@ namespace AndreasReitberger.Print3d.Models
         bool applyProcedureSpecificAdditions = false;
 
         [ObservableProperty]
-        Material3dFamily _procedure = Material3dFamily.Misc;
+        Material3dFamily procedure = Material3dFamily.Misc;
 
         [ObservableProperty]
         ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
+
+        [ObservableProperty]
+        ObservableCollection<IProcedureAddition> procedureAdditions = new();
         #endregion
 
         #region Calculated

@@ -1,5 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Realm.Interfaces;
 using AndreasReitberger.Print3d.Realm.CalculationAdditions;
 using AndreasReitberger.Print3d.Realm.Events;
 using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
@@ -174,6 +174,8 @@ namespace AndreasReitberger.Print3d.Realm
         public int ProcedureId { get; set; } = (int)Material3dFamily.Misc;
 
         public IList<CalculationProcedureAttribute> ProcedureAttributes { get; }
+
+        public IList<ProcedureAddition> ProcedureAdditions { get; }
         #endregion
 
         #region Calculated

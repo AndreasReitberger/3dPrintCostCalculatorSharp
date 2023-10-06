@@ -18,6 +18,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public bool Enabled { get; set; }
 
         public Material3dFamily TargetFamily { get; set; }
+        public ProcedureAdditionTarget Target { get; set; }
         #endregion
 
         #region Collections

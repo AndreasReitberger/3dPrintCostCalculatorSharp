@@ -36,6 +36,13 @@ namespace AndreasReitberger.Print3d.Realm
         }
         public int TargetFamilyId { get; set; } = (int)Material3dFamily.Filament;
 
+        public ProcedureAdditionTarget Target
+        {
+            get => (ProcedureAdditionTarget)TargetId;
+            set { TargetId = (int)value; }
+        }
+        public int TargetId { get; set; } = (int)ProcedureAdditionTarget.General;
+
         #endregion
 
         #region Collections

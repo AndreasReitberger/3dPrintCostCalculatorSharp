@@ -3,6 +3,7 @@ using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Models;
 using AndreasReitberger.Print3d.Models.CalculationAdditions;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.ProcedureAdditions;
 using NUnit.Framework;
 
 namespace AndreasReitberger.NUnitTest
@@ -598,6 +599,60 @@ namespace AndreasReitberger.NUnitTest
             catch (Exception exc)
             {
                 Assert.Fail(exc.Message, exc);
+            }
+        }
+
+        [Test]
+        public void ProcedureSpecificAdditionsTest()
+        {
+            try
+            {
+                // Hardware replacement costs
+                ProcedureAddition resinTank = new()
+                {
+                    Name = "Resin Tank Replacement",
+                    Description = "Take the costs for the resin tank replacement into account?",
+                    Enabled = true,
+                    TargetFamily = Material3dFamily.Resin,
+                    Parameters = new()
+                    {
+                        new ProcedureCalculationParameter()
+                        {
+                            Name = "Tank replacement costs",
+                            Type = ProcedureCalculationType.ReplacementCosts,
+                            Price = 50,
+                            WearFactor = 1000,
+                            QuantityInPackage = 1,
+                        }
+                    }
+                };
+                double resinWearCosts = resinTank.CalculateCosts();
+                Assert.IsTrue(resinWearCosts == 0.05d);
+                // Consumable goods (like filters and gloves)
+                ProcedureAddition gloves = new()
+                {
+                    Name = "Gloves",
+                    Description = "Take the costs for the gloves?",
+                    Enabled = true,
+                    TargetFamily = Material3dFamily.Resin,
+                    Parameters = new()
+                    {
+                        new ProcedureCalculationParameter()
+                        {
+                            Name = "Gloves costs",
+                            Type = ProcedureCalculationType.ConsumableGoods,
+                            Price = 50,
+                            AmountTakenForCalculation = 2,
+                            QuantityInPackage = 100,
+                        }
+                    }
+                };
+                double glovesCosts = gloves.CalculateCosts();
+                Assert.IsTrue(glovesCosts == 1d);
+            }
+            catch(Exception exc)
+            {
+                Assert.Fail(exc.Message);
             }
         }
     }

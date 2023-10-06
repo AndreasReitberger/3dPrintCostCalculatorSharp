@@ -3,9 +3,9 @@ using AndreasReitberger.Print3d.Realm;
 using AndreasReitberger.Print3d.Realm.CalculationAdditions;
 using AndreasReitberger.Print3d.Realm.MaterialAdditions;
 using AndreasReitberger.Print3d.Realm.StorageAdditions;
+using AndreasReitberger.Print3d.Realm.ProcedureAdditions;
 using NUnit.Framework;
 using Realms;
-using SQLite;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -765,6 +765,57 @@ namespace AndreasReitberger.NUnitTest
                         Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
                     });
                 }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+
+        [Test]
+        public void ProcedureSpecificAdditionsTest()
+        {
+            try
+            {
+                // Hardware replacement costs
+                ProcedureAddition resinTank = new()
+                {
+                    Name = "Resin Tank Replacement",
+                    Description = "Take the costs for the resin tank replacement into account?",
+                    Enabled = true,
+                    TargetFamily = Material3dFamily.Resin,
+                };
+                resinTank.Parameters.Add(                  
+                    new ProcedureCalculationParameter()
+                    {
+                        Name = "Tank replacement costs",
+                        Type = ProcedureCalculationType.ReplacementCosts,
+                        Price = 50,
+                        WearFactor = 1000,
+                        QuantityInPackage = 1,
+                    });
+                double resinWearCosts = resinTank.CalculateCosts();
+                Assert.IsTrue(resinWearCosts == 0.05d);
+                // Consumable goods (like filters and gloves)
+                ProcedureAddition gloves = new()
+                {
+                    Name = "Gloves",
+                    Description = "Take the costs for the gloves?",
+                    Enabled = true,
+                    TargetFamily = Material3dFamily.Resin,
+                };
+                gloves.Parameters.Add(
+                    new ProcedureCalculationParameter()
+                    {
+                        Name = "Gloves costs",
+                        Type = ProcedureCalculationType.ConsumableGoods,
+                        Price = 50,
+                        AmountTakenForCalculation = 2,
+                        QuantityInPackage = 100,
+                    });
+                double glovesCosts = gloves.CalculateCosts();
+                Assert.IsTrue(glovesCosts == 1d);
             }
             catch (Exception exc)
             {

@@ -140,7 +140,10 @@ namespace AndreasReitberger.Print3d.Realm
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == material.MaterialFamily && addition.Target == ProcedureAdditionTarget.Material);
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily 
+                                    && addition.Target == ProcedureAdditionTarget.Material
+                                    && addition.Enabled
+                                    );
                                 foreach (ProcedureAddition add in procedureAdditions)
                                 {
                                     double costs = add.CalculateCosts();
@@ -263,7 +266,10 @@ namespace AndreasReitberger.Print3d.Realm
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == printer.MaterialType && addition.Target == ProcedureAdditionTarget.Machine);
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType
+                                    && addition.Target == ProcedureAdditionTarget.Machine
+                                    && addition.Enabled
+                                    );
                                 foreach (ProcedureAddition add in procedureAdditions)
                                 {
                                     double costs = add.CalculateCosts();
@@ -532,7 +538,10 @@ namespace AndreasReitberger.Print3d.Realm
                 if (ProcedureAdditions?.Count > 0)
                 {
                     IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                        .Where(addition => addition.TargetFamily == Procedure && addition.Target == ProcedureAdditionTarget.General);
+                        .Where(addition => addition.TargetFamily == Procedure
+                            && addition.Target == ProcedureAdditionTarget.General
+                            && addition.Enabled
+                            );
                     foreach (ProcedureAddition add in procedureAdditions)
                     {
                         double costs = add.CalculateCosts();

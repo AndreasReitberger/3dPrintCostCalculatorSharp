@@ -1,6 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Interfaces
 {
@@ -23,7 +23,7 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Collections
 
-        public List<IProcedureCalculationParameter> Parameters { get; set; }
+        //public ObservableCollection<IProcedureCalculationParameter> Parameters { get; set; }
 
         #endregion
 

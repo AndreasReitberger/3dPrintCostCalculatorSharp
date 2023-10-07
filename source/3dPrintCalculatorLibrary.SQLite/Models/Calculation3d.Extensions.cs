@@ -112,7 +112,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         {
                             if (material.MaterialFamily == Material3dFamily.Powder)
                             {
-                                CalculationProcedureAttribute attribute = ProcedureAttributes.FirstOrDefault(
+                                CalculationProcedureAttribute? attribute = ProcedureAttributes.FirstOrDefault(
                                     attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
                                 if (attribute != null)
                                 {
@@ -142,8 +142,11 @@ namespace AndreasReitberger.Print3d.SQLite
                             // Custom procedure additions
                             if (ProcedureAdditions?.Count > 0)
                             {
-                                IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == material.MaterialFamily && addition.Target == ProcedureAdditionTarget.Material);
+                                IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily 
+                                        && addition.Target == ProcedureAdditionTarget.Material
+                                        && addition.Enabled
+                                        );
                                 foreach (ProcedureAddition add in procedureAdditions)
                                 {
                                     double costs = add.CalculateCosts();
@@ -270,8 +273,11 @@ namespace AndreasReitberger.Print3d.SQLite
                             // Custom procedure additions
                             if (ProcedureAdditions?.Count > 0)
                             {
-                                IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == printer.MaterialType && addition.Target == ProcedureAdditionTarget.Machine);
+                                IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType 
+                                        && addition.Target == ProcedureAdditionTarget.Machine
+                                        && addition.Enabled
+                                        );
                                 foreach (ProcedureAddition add in procedureAdditions)
                                 {
                                     double costs = add.CalculateCosts();
@@ -574,8 +580,11 @@ namespace AndreasReitberger.Print3d.SQLite
                 // Custom additions
                 if (ProcedureAdditions?.Count > 0)
                 {
-                    IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                        .Where(addition => addition.TargetFamily == Procedure && addition.Target == ProcedureAdditionTarget.General);
+                    IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                        .Where(addition => addition.TargetFamily == Procedure 
+                            && addition.Target == ProcedureAdditionTarget.General
+                            && addition.Enabled
+                            );
                     foreach (ProcedureAddition add in procedureAdditions)
                     {
                         double costs = add.CalculateCosts();

@@ -377,11 +377,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            //return string.Format("{0} - {1:C2}", Name, TotalCosts);
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object obj)
         {
             if (obj is not Calculation3d item)

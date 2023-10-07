@@ -5,11 +5,12 @@ using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(ProcedureAddition)}s")]
-    public partial class ProcedureAddition : ObservableObject, ICloneable//, IProcedureAddition
+    public partial class ProcedureAddition : ObservableObject, ICloneable, IProcedureAddition
     {
         #region Clone
         public object Clone()
@@ -26,6 +27,10 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
 
         [ObservableProperty]
         string name;
@@ -51,7 +56,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<ProcedureCalculationParameter> parameters = new();
+        ObservableCollection<ProcedureCalculationParameter> parameters = new();
         #endregion
 
         #region Constructor
@@ -65,7 +70,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public double CalculateCosts()
         {
             double costs = 0;
-            Parameters?.ForEach(para =>
+            foreach (IProcedureCalculationParameter para in Parameters)
             {
                 switch (para.Type)
                 {
@@ -78,7 +83,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     default:
                         break;
                 }
-            });
+            };
             return costs;
         }
 

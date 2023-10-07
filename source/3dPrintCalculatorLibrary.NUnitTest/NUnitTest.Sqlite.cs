@@ -601,11 +601,30 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
-        public void DatabaseSaveAndLoadTest()
+        public async Task DatabaseSaveAndLoadTest()
         {
             try
             {
-                var calc = GetTestCalculation();
+                string databasePath = "testdatabase.db";
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTable(typeof(Manufacturer))
+                    .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
+                    .Build();
+
+                Calculation3d calc = GetTestCalculation();
+                await calc.CalculateCostsAsync();
+
+                await handler.SetMaterialsWithChildrenAsync(calc.Materials);
+                await handler.SetPrintersWithChildrenAsync(calc.Printers);
+                await handler.SetCalculationWithChildrenAsync(calc);
+                Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
+                await Task.Delay(150);
+                Assert.IsNotNull(calc2);
+
+                await calc2.CalculateCostsAsync();
+                await Task.Delay(150);
+                Assert.True(calc?.TotalCosts == calc2?.TotalCosts);
             }
             catch (Exception exc)
             {
@@ -693,7 +712,10 @@ namespace AndreasReitberger.NUnitTest
                 MultiplyPrintTimeWithQuantity = false
             };
 
-            _calculation = new Calculation3d();
+            _calculation = new Calculation3d()
+            {
+                Name = "My awesome calculation"
+            };
             // Add data
             _calculation.Files.Add(file);
             _calculation.Files.Add(file2);

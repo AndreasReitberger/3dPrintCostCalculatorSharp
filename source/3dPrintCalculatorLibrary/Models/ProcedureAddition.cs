@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -43,7 +44,7 @@ namespace AndreasReitberger.Print3d.Models
         #region Collections
 
         [ObservableProperty]
-        List<IProcedureCalculationParameter> parameters = new();
+        ObservableCollection<IProcedureCalculationParameter> parameters = new();
         #endregion
 
         #region Constructor
@@ -57,7 +58,7 @@ namespace AndreasReitberger.Print3d.Models
         public double CalculateCosts()
         {
             double costs = 0;
-            Parameters?.ForEach(para =>
+            foreach(IProcedureCalculationParameter para in Parameters) 
             {
                 switch (para.Type)
                 {
@@ -70,7 +71,7 @@ namespace AndreasReitberger.Print3d.Models
                     default:
                         break;
                 }
-            });
+            };
             return costs;
         }
 

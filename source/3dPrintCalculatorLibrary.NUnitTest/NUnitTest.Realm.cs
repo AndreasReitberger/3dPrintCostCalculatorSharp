@@ -782,6 +782,7 @@ namespace AndreasReitberger.NUnitTest
                 Unit = Unit.Kilogram,
                 PackageSize = 1,
                 UnitPrice = 30,
+                MaterialFamily = Material3dFamily.Filament,
                 TypeOfMaterial = new Material3dType()
                 {
                     Id = Guid.NewGuid(),
@@ -798,6 +799,7 @@ namespace AndreasReitberger.NUnitTest
                 Unit = Unit.Liters,
                 PackageSize = 1,
                 UnitPrice = 59,
+                MaterialFamily = Material3dFamily.Resin,
                 TypeOfMaterial = new Material3dType()
                 {
                     Id = Guid.NewGuid(),
@@ -867,6 +869,7 @@ namespace AndreasReitberger.NUnitTest
                 Description = "Take the costs for the resin tank replacement into account?",
                 Enabled = true,
                 TargetFamily = Material3dFamily.Resin,
+                Target = ProcedureAdditionTarget.Machine,
             };
             resinTank.Parameters.Add(
                 new ProcedureCalculationParameter()
@@ -886,6 +889,7 @@ namespace AndreasReitberger.NUnitTest
                 Description = "Take the costs for the gloves?",
                 Enabled = true,
                 TargetFamily = Material3dFamily.Resin,
+                Target = ProcedureAdditionTarget.General,
             };
             gloves.Parameters.Add(
                 new ProcedureCalculationParameter()

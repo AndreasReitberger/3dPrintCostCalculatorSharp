@@ -1,8 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
-namespace AndreasReitberger.Print3d.Interfaces
+namespace AndreasReitberger.Print3d.Realm.Interfaces
 {
     public interface ICalculation3d
     {
@@ -66,7 +66,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         #endregion
 
         #region Lists
-        //public ObservableCollection<IProcedureAddition> ProcedureAdditions { get; set; }
+        public IList<ProcedureAddition> ProcedureAdditions { get; }
         /*
         public List<IPrinter3d> Printers { get; set; }
         public List<IMaterial3d> Materials { get; set; }

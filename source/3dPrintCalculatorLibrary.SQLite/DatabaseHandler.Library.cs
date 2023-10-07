@@ -957,6 +957,42 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region ProcedureAdditions
+
+        public async Task<List<ProcedureAddition>> GetProcedureAdditionsWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<ProcedureAddition>(recursive: true)
+                ;
+        }
+
+        public async Task<ProcedureAddition> GetProcedureAdditionWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<ProcedureAddition>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetProcedureAdditionWithChildrenAsync(ProcedureAddition addition)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(addition, recursive: true);
+        }
+
+        public async Task SetProcedureAdditionsWithChildrenAsync(List<ProcedureAddition> additions, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(additions);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(additions);
+        }
+
+        public async Task<int> DeleteProcedureAdditionAsync(ProcedureAddition addition)
+        {
+            return await DatabaseAsync.DeleteAsync<ProcedureAddition>(addition?.Id);
+        }
+
+        #endregion
+
         #endregion
 
         #endregion

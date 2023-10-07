@@ -178,10 +178,13 @@ namespace AndreasReitberger.Print3d.Models
         bool applyProcedureSpecificAdditions = false;
 
         [ObservableProperty]
-        Material3dFamily _procedure = Material3dFamily.Misc;
+        Material3dFamily procedure = Material3dFamily.Misc;
 
         [ObservableProperty]
         ObservableCollection<CalculationProcedureAttribute> procedureAttributes = new();
+
+        [ObservableProperty]
+        ObservableCollection<IProcedureAddition> procedureAdditions = new();
         #endregion
 
         #region Calculated
@@ -374,11 +377,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            //return string.Format("{0} - {1:C2}", Name, TotalCosts);
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object obj)
         {
             if (obj is not Calculation3d item)

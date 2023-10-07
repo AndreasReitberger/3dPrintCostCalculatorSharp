@@ -1,12 +1,10 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.PrinterAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Realms;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Realm
 {

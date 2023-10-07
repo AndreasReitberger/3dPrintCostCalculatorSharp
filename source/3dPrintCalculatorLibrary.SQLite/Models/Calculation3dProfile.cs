@@ -6,6 +6,7 @@ using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -174,6 +175,13 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         double powderInBuildArea = 0;
 
+        #endregion
+
+        #region Custom
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<ProcedureAddition> procedureAdditions = new();
         #endregion
 
         #endregion

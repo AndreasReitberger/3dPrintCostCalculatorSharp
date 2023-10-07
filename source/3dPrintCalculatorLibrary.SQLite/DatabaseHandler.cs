@@ -6,6 +6,7 @@ using AndreasReitberger.Print3d.SQLite.Interfaces;
 using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
+using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
@@ -193,6 +194,8 @@ namespace AndreasReitberger.Print3d.SQLite
             Database?.CreateTable<Storage3dItem>();
             Database?.CreateTable<Storage3dTransaction>();
             Database?.CreateTable<Storage3d>();
+            Database?.CreateTable<ProcedureAddition>();
+            Database?.CreateTable<ProcedureCalculationParameter>();
 
             Database?.CreateTable<DatabaseSettingsKeyValuePair>();
         }
@@ -238,6 +241,8 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CreateTableAsync<Storage3dItem>();
             await DatabaseAsync.CreateTableAsync<Storage3dTransaction>();
             await DatabaseAsync.CreateTableAsync<Storage3d>();
+            await DatabaseAsync.CreateTableAsync<ProcedureAddition>();
+            await DatabaseAsync.CreateTableAsync<ProcedureCalculationParameter>();
 
             await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
         }

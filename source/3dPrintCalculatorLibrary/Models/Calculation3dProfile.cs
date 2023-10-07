@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -169,6 +170,12 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         double powderInBuildArea = 0;
 
+        #endregion
+
+        #region Custom
+
+        [ObservableProperty]
+        ObservableCollection<IProcedureAddition> procedureAdditions = new();
         #endregion
 
         #endregion

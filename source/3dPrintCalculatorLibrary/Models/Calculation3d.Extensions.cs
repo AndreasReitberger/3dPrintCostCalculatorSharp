@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.CalculationAdditions;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using AndreasReitberger.Print3d.Utilities;
@@ -111,31 +112,57 @@ namespace AndreasReitberger.Print3d.Models
                         Material ??= material;
 
                         double refreshed = 0;
-                        if (ApplyProcedureSpecificAdditions && material.MaterialFamily == Material3dFamily.Powder)
+                        if (ApplyProcedureSpecificAdditions)
                         {
-                            CalculationProcedureAttribute attribute = ProcedureAttributes.FirstOrDefault(
-                                attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
-                            if (attribute != null)
+                            if (material.MaterialFamily == Material3dFamily.Powder)
                             {
-                                CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
-                                if (minPowderNeeded != null)
+                                CalculationProcedureAttribute attribute = ProcedureAttributes.FirstOrDefault(
+                                    attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
+                                if (attribute != null)
                                 {
-                                    double powderInBuildArea = minPowderNeeded.Value;
-                                    MaterialAdditions.Material3dProcedureAttribute refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
-                                    if (refreshRatio != null)
+                                    CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
+                                    if (minPowderNeeded != null)
                                     {
-                                        // this value is in liter
-                                        CalculationAttribute materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
-                                            usage.Attribute == material.Name);
-                                        if (materialPrintObject != null)
+                                        double powderInBuildArea = minPowderNeeded.Value;
+                                        MaterialAdditions.Material3dProcedureAttribute refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
+                                        if (refreshRatio != null)
                                         {
-                                            double refreshedMaterial = (powderInBuildArea -
-                                                (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
-                                            refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
+                                            // this value is in liter
+                                            CalculationAttribute materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
+                                                usage.Attribute == material.Name);
+                                            if (materialPrintObject != null)
+                                            {
+                                                double refreshedMaterial = (powderInBuildArea -
+                                                    (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
+                                                refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
+                                            }
+                                            else
+                                                refreshed = 0;
                                         }
-                                        else
-                                            refreshed = 0;
                                     }
+                                }
+                            }
+
+                            // Custom procedure additions
+                            if (ProcedureAdditions?.Count > 0)
+                            {
+                                IEnumerable<IProcedureAddition> procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily
+                                        && addition.Target == ProcedureAdditionTarget.Material
+                                        && addition.Enabled
+                                        );
+                                foreach (IProcedureAddition add in procedureAdditions)
+                                {
+                                    double costs = add.CalculateCosts();
+                                    OverallMaterialCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = material.Id,
+                                        Attribute = add.Name,
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = costs,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
                                 }
                             }
                         }
@@ -240,6 +267,29 @@ namespace AndreasReitberger.Print3d.Models
                                         Attribute = parameter.Type.ToString(),
                                         Type = CalculationAttributeType.ProcedureSpecificAddition,
                                         Value = parameter.Value,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
+                                }
+                            }
+
+                            // Custom procedure additions
+                            if (ProcedureAdditions?.Count > 0)
+                            {
+                                IEnumerable<IProcedureAddition> procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType 
+                                    && addition.Target == ProcedureAdditionTarget.Machine
+                                    && addition.Enabled
+                                    );
+                                foreach (IProcedureAddition add in procedureAdditions)
+                                {
+                                    double costs = add.CalculateCosts();
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = add.Name,
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = costs,
                                         FileId = file.Id,
                                         FileName = file.FileName,
                                     });
@@ -527,6 +577,27 @@ namespace AndreasReitberger.Print3d.Models
                             default:
                                 break;
                         }
+                    }
+                }
+
+                // Custom additions
+                if (ProcedureAdditions?.Count > 0)
+                {
+                    IEnumerable<IProcedureAddition> procedureAdditions = ProcedureAdditions?
+                        .Where(addition => addition.TargetFamily == Procedure 
+                            && addition.Target == ProcedureAdditionTarget.General
+                            && addition.Enabled
+                            );
+                    foreach (IProcedureAddition add in procedureAdditions)
+                    {
+                        double costs = add.CalculateCosts();
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = Guid.Empty,
+                            Attribute = add.Name,
+                            Type = CalculationAttributeType.ProcedureSpecificAddition,
+                            Value = costs,
+                        });
                     }
                 }
             }

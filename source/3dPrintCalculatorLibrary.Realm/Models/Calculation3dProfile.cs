@@ -120,6 +120,10 @@ namespace AndreasReitberger.Print3d.Realm
 
         #endregion
 
+        #region Custom
+        public IList<ProcedureAddition> ProcedureAdditions { get; }
+        #endregion
+
         #endregion
 
         #endregion

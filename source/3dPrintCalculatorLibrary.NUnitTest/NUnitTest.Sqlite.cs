@@ -2,6 +2,7 @@ using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.SQLite;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using NUnit.Framework;
 using SQLite;
@@ -600,11 +601,30 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
-        public void DatabaseSaveAndLoadTest()
+        public async Task DatabaseSaveAndLoadTest()
         {
             try
             {
-                var calc = GetTestCalculation();
+                string databasePath = "testdatabase.db";
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTable(typeof(Manufacturer))
+                    .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
+                    .Build();
+
+                Calculation3d calc = GetTestCalculation();
+                await calc.CalculateCostsAsync();
+
+                await handler.SetMaterialsWithChildrenAsync(calc.Materials);
+                await handler.SetPrintersWithChildrenAsync(calc.Printers);
+                await handler.SetCalculationWithChildrenAsync(calc);
+                Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
+                await Task.Delay(150);
+                Assert.IsNotNull(calc2);
+
+                await calc2.CalculateCostsAsync();
+                await Task.Delay(150);
+                Assert.True(calc?.TotalCosts == calc2?.TotalCosts);
             }
             catch (Exception exc)
             {
@@ -630,6 +650,22 @@ namespace AndreasReitberger.NUnitTest
                     Family = Material3dFamily.Filament,
                 }
             };
+            Material3d material2 = new()
+            {
+                Id = Guid.NewGuid(),
+                Density = 1.24,
+                Name = "Test Material",
+                Unit = Unit.Liters,
+                PackageSize = 1,
+                UnitPrice = 59,
+                TypeOfMaterial = new Material3dType()
+                {
+                    Id = Guid.NewGuid(),
+                    Material = "Tough",
+                    Polymer = "",
+                    Family = Material3dFamily.Resin,
+                }
+            };
             Printer3d printer = new()
             {
                 Id = Guid.NewGuid(),
@@ -644,6 +680,21 @@ namespace AndreasReitberger.NUnitTest
                 MaterialType = Material3dFamily.Filament,
                 Type = Printer3dType.FDM,
                 PowerConsumption = 210,
+            };
+            Printer3d printer2 = new()
+            {
+                Id = Guid.NewGuid(),
+                Manufacturer = new Manufacturer()
+                {
+                    Id = Guid.NewGuid(),
+                    IsActive = true,
+                    Name = "Prusa"
+                },
+                Model = "SL1",
+                Price = 1299,
+                MaterialType = Material3dFamily.Resin,
+                Type = Printer3dType.SLA,
+                PowerConsumption = 164,
             };
             File3d file = new()
             {
@@ -661,12 +712,55 @@ namespace AndreasReitberger.NUnitTest
                 MultiplyPrintTimeWithQuantity = false
             };
 
-            _calculation = new Calculation3d();
+            _calculation = new Calculation3d()
+            {
+                Name = "My awesome calculation"
+            };
             // Add data
             _calculation.Files.Add(file);
             _calculation.Files.Add(file2);
             _calculation.Printers.Add(printer);
+            _calculation.Printers.Add(printer2);
             _calculation.Materials.Add(material);
+            _calculation.Materials.Add(material2);
+            _calculation.ProcedureAdditions.Add(new ProcedureAddition()
+            {
+                Name = "Resin Tank Replacement",
+                Description = "Take the costs for the resin tank replacement into account?",
+                Enabled = true,
+                Target = ProcedureAdditionTarget.Machine,
+                TargetFamily = Material3dFamily.Resin,
+                Parameters = new()
+                {
+                    new ProcedureCalculationParameter()
+                    {
+                        Name = "Tank replacement costs",
+                        Type = ProcedureCalculationType.ReplacementCosts,
+                        Price = 50,
+                        WearFactor = 1000,
+                        QuantityInPackage = 1,
+                    }
+                }
+            });
+            _calculation.ProcedureAdditions.Add(new ProcedureAddition()
+            {
+                Name = "Gloves",
+                Description = "Take the costs for the gloves?",
+                Enabled = true,
+                Target = ProcedureAdditionTarget.General,
+                TargetFamily = Material3dFamily.Resin,
+                Parameters = new()
+                {
+                    new ProcedureCalculationParameter()
+                    {
+                        Name = "Gloves costs",
+                        Type = ProcedureCalculationType.ConsumableGoods,
+                        Price = 50,
+                        AmountTakenForCalculation = 2,
+                        QuantityInPackage = 100,
+                    }
+                }
+            });
 
             // Add information
             _calculation.FailRate = 25;
@@ -872,6 +966,71 @@ namespace AndreasReitberger.NUnitTest
             catch (Exception exc)
             {
                 Assert.Fail(exc.Message, exc);
+            }
+        }
+
+
+        [Test]
+        public void ProcedureSpecificAdditionsTest()
+        {
+            try
+            {
+                // Hardware replacement costs
+                ProcedureAddition resinTank = new()
+                {
+                    Name = "Resin Tank Replacement",
+                    Description = "Take the costs for the resin tank replacement into account?",
+                    Enabled = true,
+                    Target = ProcedureAdditionTarget.Machine,
+                    TargetFamily = Material3dFamily.Resin,
+                    Parameters = new()
+                    {
+                        new ProcedureCalculationParameter()
+                        {
+                            Name = "Tank replacement costs",
+                            Type = ProcedureCalculationType.ReplacementCosts,
+                            Price = 50,
+                            WearFactor = 1000,
+                            QuantityInPackage = 1,
+                        }
+                    }
+                };
+                double resinWearCosts = resinTank.CalculateCosts();
+                Assert.IsTrue(resinWearCosts == 0.05d);
+                // Consumable goods (like filters and gloves)
+                ProcedureAddition gloves = new()
+                {
+                    Name = "Gloves",
+                    Description = "Take the costs for the gloves?",
+                    Enabled = true,
+                    Target = ProcedureAdditionTarget.General,
+                    TargetFamily = Material3dFamily.Resin,
+                    Parameters = new()
+                    {
+                        new ProcedureCalculationParameter()
+                        {
+                            Name = "Gloves costs",
+                            Type = ProcedureCalculationType.ConsumableGoods,
+                            Price = 50,
+                            AmountTakenForCalculation = 2,
+                            QuantityInPackage = 100,
+                        }
+                    }
+                };
+                double glovesCosts = gloves.CalculateCosts();
+                Assert.IsTrue(glovesCosts == 1d);
+
+                var calculation = GetTestCalculation();
+                calculation.Procedure = Material3dFamily.Resin;
+                calculation.ApplyProcedureSpecificAdditions = true;
+                calculation.CalculateCosts();
+
+                Assert.NotNull(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement"));
+                Assert.NotNull(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves"));
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
             }
         }
     }

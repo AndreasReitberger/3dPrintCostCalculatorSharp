@@ -56,21 +56,21 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Suppliers
         public async Task<List<Supplier>> GetSuppliersWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<Supplier>(recursive: true)
                 ;
         }
 
         public async Task<Supplier> GetSupplierWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Supplier>(id, recursive: true)
                 ;
         }
 
         public async Task SetSupplierWithChildrenAsync(Supplier supplier)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(supplier, recursive: true)
                 ;
         }
@@ -78,14 +78,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetSuppliersWithChildrenAsync(List<Supplier> suppliers, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(suppliers);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(suppliers);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(suppliers);
+                await DatabaseAsync.InsertAllWithChildrenAsync(suppliers);
         }
 
         public async Task<int> DeleteSupplierAsync(Supplier supplier)
         {
-            return await DatabaseAsync?.DeleteAsync<Supplier>(supplier?.Id);
+            return await DatabaseAsync.DeleteAsync<Supplier>(supplier?.Id);
         }
 
         #endregion
@@ -93,32 +93,32 @@ namespace AndreasReitberger.Print3d.SQLite
         #region MaterialTypes
         public async Task<List<Material3dType>> GetMaterialTypesWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<Material3dType>(recursive: true);
         }
 
         public List<Material3dType> GetMaterialTypes()
         {
-            return Database?.Table<Material3dType>().ToList();
+            return Database.Table<Material3dType>().ToList();
         }
 
         public async Task<Material3dType> GetMaterialTypeWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Material3dType>(id, recursive: true)
                 ;
         }
 
         public Material3dType GetMaterialType(Guid id)
         {
-            return Database?.Table<Material3dType>()
+            return Database.Table<Material3dType>()
                             .Where(i => i.Id == id)
                             .FirstOrDefault();
         }
 
         public async Task SetMaterialTypeWithChildrenAsync(Material3dType materialType)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(materialType, recursive: true)
                 ;
         }
@@ -134,14 +134,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetMaterialTypesWithChildrenAsync(List<Material3dType> materialTypes, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(materialTypes);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(materialTypes);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(materialTypes);
+                await DatabaseAsync.InsertAllWithChildrenAsync(materialTypes);
         }
 
         public async Task<int> DeleteMaterialTypeAsync(Material3dType materialType)
         {
-            return await DatabaseAsync?.DeleteAsync<Material3dType>(materialType?.Id);
+            return await DatabaseAsync.DeleteAsync<Material3dType>(materialType?.Id);
         }
 
         public int? DeleteMaterialType(Material3dType materialType)
@@ -411,7 +411,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteAddressAsync(Address address)
         {
-            return await DatabaseAsync?.DeleteAsync<Address>(address?.Id);
+            return await DatabaseAsync.DeleteAsync<Address>(address?.Id);
         }
 
         public async Task<int[]> DeleteAddressesAsync(List<Address> addresses)
@@ -419,7 +419,7 @@ namespace AndreasReitberger.Print3d.SQLite
             Stack<int> results = new();
             for (int i = 0; i < addresses?.Count; i++)
             {
-                int rowId = await DatabaseAsync?.DeleteAsync<Address>(addresses[i]?.Id);
+                int rowId = await DatabaseAsync.DeleteAsync<Address>(addresses[i]?.Id);
                 results.Push(rowId);
             }
             return results.ToArray();
@@ -427,7 +427,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteAllAddressesAsync()
         {
-            return await DatabaseAsync?.DeleteAllAsync<Address>(); ;
+            return await DatabaseAsync.DeleteAllAsync<Address>(); ;
         }
 
         #endregion
@@ -435,7 +435,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Calculations
         public async Task<List<Calculation3d>> GetCalculationsWithChildrenAsync()
         {
-            List<Calculation3d> calculations = await DatabaseAsync?
+            List<Calculation3d> calculations = await DatabaseAsync
                 .GetAllWithChildrenAsync<Calculation3d>(recursive: true)
                 ;
             // Workaround, because the foreign keys from the printer / materials are not loaded somehow...
@@ -469,7 +469,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<Calculation3d> GetCalculationWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Calculation3d>(id, recursive: true)
                 ;
         }
@@ -485,7 +485,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetCalculationWithChildrenAsync(Calculation3d calculation, bool updateList = true)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(calculation, recursive: true)
                 ;
             if (updateList)
@@ -497,9 +497,9 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetCalculationsWithChildrenAsync(List<Calculation3d> calculations, bool replaceExisting = true, bool updateList = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(calculations);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(calculations);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(calculations);
+                await DatabaseAsync.InsertAllWithChildrenAsync(calculations);
             if (updateList)
             {
                 await RerfreshCalculationsAsync();
@@ -508,7 +508,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteCalculationAsync(Calculation3d calculation, bool updateList = true)
         {
-            return await DatabaseAsync?.DeleteAsync<Calculation3d>(calculation?.Id);
+            return await DatabaseAsync.DeleteAsync<Calculation3d>(calculation?.Id);
             if (updateList)
             {
                 await RerfreshCalculationsAsync();
@@ -520,7 +520,7 @@ namespace AndreasReitberger.Print3d.SQLite
             Stack<int> results = new();
             for (int i = 0; i < calculations?.Count; i++)
             {
-                int rowId = await DatabaseAsync?.DeleteAsync<Calculation3d>(calculations[i]?.Id);
+                int rowId = await DatabaseAsync.DeleteAsync<Calculation3d>(calculations[i]?.Id);
                 results.Push(rowId);
             }
             if (updateList)
@@ -532,7 +532,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteAllCalculationsAsync(bool updateList = true)
         {
-            return await DatabaseAsync?.DeleteAllAsync<Calculation3d>();
+            return await DatabaseAsync.DeleteAllAsync<Calculation3d>();
             if (updateList)
             {
                 await RerfreshCalculationsAsync();
@@ -544,21 +544,21 @@ namespace AndreasReitberger.Print3d.SQLite
         #region CalculationProfiles
         public async Task<List<Calculation3dProfile>> GetCalculationProfilesWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<Calculation3dProfile>(recursive: true)
                 ;
         }
 
         public async Task<Calculation3dProfile> GetCalculationProfileWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Calculation3dProfile>(id, recursive: true)
                 ;
         }
 
         public async Task SetCalculationProfileWithChildrenAsync(Calculation3dProfile profile)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(profile, recursive: true)
                 ;
         }
@@ -566,14 +566,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetCalculationProfilesWithChildrenAsync(List<Calculation3dProfile> profiles, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(profiles);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(profiles);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(profiles);
+                await DatabaseAsync.InsertAllWithChildrenAsync(profiles);
         }
 
         public async Task<int> DeleteCalculationProfileAsync(Calculation3dProfile profile)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .DeleteAsync<Calculation3dProfile>(profile?.Id)
                 ;
         }
@@ -583,7 +583,7 @@ namespace AndreasReitberger.Print3d.SQLite
             Stack<int> results = new();
             for (int i = 0; i < profiles?.Count; i++)
             {
-                int rowId = await DatabaseAsync?.DeleteAsync<Calculation3dProfile>(profiles[i]?.Id);
+                int rowId = await DatabaseAsync.DeleteAsync<Calculation3dProfile>(profiles[i]?.Id);
                 results.Push(rowId);
             }
             return results.ToArray();
@@ -591,7 +591,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<int> DeleteAllCalculationProfilesAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .DeleteAllAsync<Calculation3dProfile>()
                 ;
         }

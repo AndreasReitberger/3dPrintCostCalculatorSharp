@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
@@ -989,6 +990,42 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task<int> DeleteProcedureAdditionAsync(ProcedureAddition addition)
         {
             return await DatabaseAsync.DeleteAsync<ProcedureAddition>(addition?.Id);
+        }
+
+        #endregion
+
+        #region ProcedureAdditions
+
+        public async Task<List<ProcedureCalculationParameter>> GetCalculationProcedureParametersWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<ProcedureCalculationParameter>(recursive: true)
+                ;
+        }
+
+        public async Task<ProcedureCalculationParameter> GetCalculationProcedureParameterWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<ProcedureCalculationParameter>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetCalculationProcedureParameterWithChildrenAsync(ProcedureCalculationParameter parameter)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(parameter, recursive: true);
+        }
+
+        public async Task SetCalculationProcedureParametersWithChildrenAsync(List<ProcedureCalculationParameter> parameters, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(parameters);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(parameters);
+        }
+
+        public async Task<int> DeleteCalculationProcedureParameterAsync(ProcedureCalculationParameter parameter)
+        {
+            return await DatabaseAsync.DeleteAsync<ProcedureCalculationParameter>(parameter?.Id);
         }
 
         #endregion

@@ -26,5 +26,6 @@
 
         // Misc
         MeltingPoint,
+        Custom,
     }
 }

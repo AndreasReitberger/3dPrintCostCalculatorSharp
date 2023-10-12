@@ -13,6 +13,7 @@
         MultiMaterialCalculation,
         ResinTankWearCosts,
 
+        Custom = 998,
         PlainCosts = 999,
     }
 }

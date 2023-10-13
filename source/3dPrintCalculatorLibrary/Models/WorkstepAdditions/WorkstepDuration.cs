@@ -11,10 +11,7 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
         Guid id;
 
         [ObservableProperty]
-        Guid calculationId;
-
-        [ObservableProperty]
-        Calculation3d calculation;
+        Workstep workstep;
 
         [ObservableProperty]
         Guid workstepId;

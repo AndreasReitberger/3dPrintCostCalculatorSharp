@@ -238,6 +238,17 @@ namespace AndreasReitberger.Print3d.Realm
             }
         }
         [JsonIgnore, Ignored]
+        public double ItemsCosts
+        {
+            get
+            {
+                if (IsCalculated)
+                    return GetTotalCosts(CalculationAttributeType.AdditionalItem);
+                else
+                    return 0;
+            }
+        }
+        [JsonIgnore, Ignored]
         public double EnergyCosts
         {
             get

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
 
 namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
 {
@@ -15,15 +14,21 @@ namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
         Guid id;
 
         [ObservableProperty]
+        Guid workstepId;
+
+        [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
 
+        /*
         [ObservableProperty]
         [property: ManyToOne]
         Calculation3d calculation;
+        */
 
         [ObservableProperty]
-        Guid workstepId;
+        [property: ManyToOne(nameof(WorkstepId))]
+        Workstep workstep;
 
         [ObservableProperty]
         double duration = 0;

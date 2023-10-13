@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -29,7 +30,12 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid calculationId;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Item3d))]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+
+        [ObservableProperty]
+        //[property: ForeignKey(typeof(Item3d))]
+        [property: JsonIgnore, XmlIgnore]
         Guid itemId;
 
         [ObservableProperty]
@@ -37,7 +43,8 @@ namespace AndreasReitberger.Print3d.SQLite
         Item3d item;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(File3d))]
+        //[property: ForeignKey(typeof(File3d))]
+        [property: JsonIgnore, XmlIgnore]
         Guid? fileId;
 
         [ObservableProperty]

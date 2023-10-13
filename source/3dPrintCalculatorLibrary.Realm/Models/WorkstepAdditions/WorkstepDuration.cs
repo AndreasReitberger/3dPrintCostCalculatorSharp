@@ -10,9 +10,7 @@ namespace AndreasReitberger.Print3d.Realm.WorkstepAdditions
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public Guid CalculationId { get; set; }
-
-        public Calculation3d Calculation { get; set; }
+        public Workstep Workstep { get; set; }
 
         public Guid WorkstepId { get; set; }
 

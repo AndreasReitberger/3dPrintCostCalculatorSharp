@@ -64,6 +64,55 @@ namespace AndreasReitberger.Print3d.SQLite
         List<Type> tables = new();
 
         [ObservableProperty]
+        List<Type> defaultTables = new()
+        {
+            typeof(Manufacturer),
+            typeof(Supplier),
+            typeof(Printer3d),
+            typeof(Printer3dAttribute),
+            typeof(Printer3dSlicerConfig),
+            typeof(Maintenance3d),
+            typeof(Sparepart),
+            typeof(Material3dColor),
+            typeof(Material3dType),
+            typeof(Material3dAttribute),
+            typeof(Material3dProcedureAttribute),
+            typeof(Material3d),
+            typeof(WorkstepCategory),
+            typeof(Workstep),
+            typeof(HourlyMachineRate),
+            typeof(Customer3d),
+            typeof(CustomAddition),
+            typeof(CalculationAttribute),
+            typeof(CalculationProcedureAttribute),
+            typeof(CalculationProcedureParameter),
+            typeof(CalculationProcedureParameterAddition),
+            typeof(Calculation3d),
+            typeof(File3d),
+            typeof(ModelWeight),
+            typeof(Address),
+            typeof(Email),
+            typeof(PhoneNumber),
+            typeof(ContactPerson),
+            typeof(Calculation3dProfile),
+            typeof(Printer3dCalculation),
+            typeof(Material3dCalculation),
+            typeof(WorkstepCalculation),
+            typeof(CustomAdditionCalculation),
+            typeof(WorkstepDuration),
+            typeof(Item3d),
+            typeof(Item3dCalculation),
+            typeof(Item3dUsage),
+            typeof(Storage3dItem),
+            typeof(Storage3dTransaction),
+            typeof(Storage3d),
+            typeof(ProcedureAddition),
+            typeof(ProcedureCalculationParameter),
+
+            typeof(DatabaseSettingsKeyValuePair),
+        };
+
+        [ObservableProperty]
         Func<Type, Task> onDatabaseOpertions;
         #endregion
 
@@ -155,6 +204,8 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Init
         public void InitTables()
         {
+            DefaultTables?.ForEach(type => Database?.CreateTable(type));
+            /*
             Database?.CreateTable<Manufacturer>();
             Database?.CreateTable<Supplier>();
             Database?.CreateTable<Printer3d>();
@@ -190,6 +241,7 @@ namespace AndreasReitberger.Print3d.SQLite
             Database?.CreateTable<CustomAdditionCalculation>();
             Database?.CreateTable<WorkstepDuration>();
             Database?.CreateTable<Item3d>();
+            Database?.CreateTable<Item3dCalculation>();
             Database?.CreateTable<Item3dUsage>();
             Database?.CreateTable<Storage3dItem>();
             Database?.CreateTable<Storage3dTransaction>();
@@ -198,10 +250,13 @@ namespace AndreasReitberger.Print3d.SQLite
             Database?.CreateTable<ProcedureCalculationParameter>();
 
             Database?.CreateTable<DatabaseSettingsKeyValuePair>();
+            */
         }
 
         public async Task InitTablesAsync()
         {
+            DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
+            /*
             await DatabaseAsync.CreateTableAsync<Manufacturer>();
             await DatabaseAsync.CreateTableAsync<Supplier>();
             await DatabaseAsync.CreateTableAsync<Printer3d>();
@@ -237,6 +292,7 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CreateTableAsync<CustomAdditionCalculation>();
             await DatabaseAsync.CreateTableAsync<WorkstepDuration>();
             await DatabaseAsync.CreateTableAsync<Item3d>();
+            await DatabaseAsync.CreateTableAsync<Item3dCalculation>();
             await DatabaseAsync.CreateTableAsync<Item3dUsage>();
             await DatabaseAsync.CreateTableAsync<Storage3dItem>();
             await DatabaseAsync.CreateTableAsync<Storage3dTransaction>();
@@ -245,6 +301,7 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CreateTableAsync<ProcedureCalculationParameter>();
 
             await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
+            */
         }
 
         public void CreateTable(Type table)

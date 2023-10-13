@@ -180,6 +180,21 @@ namespace AndreasReitberger.Print3d.Models
 
         #endregion
 
+        #region Presets
+
+        [ObservableProperty]
+        ObservableCollection<IPrinter3d> printers = new();
+
+        [ObservableProperty]
+        ObservableCollection<IMaterial3d> materials = new();
+
+        [ObservableProperty]
+        ObservableCollection<IItem3dUsage> items = new();
+
+        [ObservableProperty]
+        ObservableCollection<IWorkstep> worksteps = new();
+        #endregion
+
         #endregion
 
         #endregion

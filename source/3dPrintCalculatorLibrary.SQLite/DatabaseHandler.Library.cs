@@ -7,6 +7,7 @@ using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using SQLiteNetExtensionsAsync.Extensions;
+using AndreasReitberger.Print3d.Interfaces;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -769,6 +770,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetItemsWithChildrenAsync(List<Item3d> items, bool replaceExisting = true)
         {
+            List<Manufacturer> itemCollection = items.Select(i => i.Manufacturer).ToList();
+            await SetManufacturersWithChildrenAsync(itemCollection, replaceExisting);
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
             else
@@ -804,6 +807,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetItemUsagesWithChildrenAsync(List<Item3dUsage> items, bool replaceExisting = true)
         {
+            List<Item3d> itemCollection = items.Select(i => i.Item).ToList();
+            await SetItemsWithChildrenAsync(itemCollection, replaceExisting);
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
             else

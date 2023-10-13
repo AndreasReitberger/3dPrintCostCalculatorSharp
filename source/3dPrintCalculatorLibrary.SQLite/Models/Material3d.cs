@@ -29,6 +29,10 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid calculationId;
 
         [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+
+        [ObservableProperty]
         string name = string.Empty;
 
         [ObservableProperty]

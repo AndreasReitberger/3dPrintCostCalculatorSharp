@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Guid? calculationId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(CalculationId))]
+        [property: ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
         Calculation3d? calculation;
 
         [ObservableProperty]
@@ -28,7 +28,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Guid storageItemId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(StorageItemId))]
+        [property: ManyToOne(nameof(StorageItemId), CascadeOperations = CascadeOperation.All)]
         Storage3dItem item;
 
         [ObservableProperty]

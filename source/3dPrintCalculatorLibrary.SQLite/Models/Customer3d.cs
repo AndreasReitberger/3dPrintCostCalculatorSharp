@@ -52,7 +52,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid contactPersonId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ContactPersonId))]
+        [property: ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
         ContactPerson contactPerson;
 
         [ObservableProperty]

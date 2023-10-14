@@ -917,11 +917,11 @@ namespace AndreasReitberger.NUnitTest
                     Name = "Tank replacement costs",
                     Type = ProcedureCalculationType.ReplacementCosts,
                     Price = 50,
-                    WearFactor = 1000,
+                    WearFactor = 1,
                     QuantityInPackage = 1,
                 });
             double resinWearCosts = resinTank.CalculateCosts();
-            Assert.IsTrue(resinWearCosts == 0.05d);
+            Assert.IsTrue(resinWearCosts == 0.5d);
             // Consumable goods (like filters and gloves)
             ProcedureAddition gloves = new()
             {

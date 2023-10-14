@@ -39,7 +39,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid itemId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ItemId))]
+        [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
         Item3d item;
 
         [ObservableProperty]
@@ -48,7 +48,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid? fileId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(FileId))]
+        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
         File3d file;
         partial void OnFileChanged(File3d value)
         {

@@ -300,12 +300,32 @@ namespace AndreasReitberger.Print3d.Models
                 }
 
                 // Worksteps
+                // Delete once migrated to `WorkstepUsage` instead
                 if (WorkSteps?.Count > 0)
                 {
                     // Only take the worksteps, which are set as `PerPiece` here
                     foreach (Workstep ws in WorkSteps.Where(ws => ws.CalculationType == CalculationType.PerPiece))
                     {
                         double totalPerPiece = ws.TotalCosts * file.Quantity;
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = ws.Id,
+                            Attribute = ws.Name,
+                            Type = CalculationAttributeType.Workstep,
+                            Value = totalPerPiece,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+                if (WorkstepUsages?.Count > 0)
+                {
+                    // Only take the worksteps, which are set as `PerPiece` here
+                    foreach (WorkstepUsage wsu in WorkstepUsages.Where(wsu => wsu?.Workstep?.CalculationType == CalculationType.PerPiece))
+                    {
+                        Workstep ws = wsu.Workstep;
+                        if (ws is null) continue;
+                        double totalPerPiece = wsu.TotalCosts * file.Quantity;
                         Costs?.Add(new CalculationAttribute()
                         {
                             LinkedId = ws.Id,
@@ -494,6 +514,7 @@ namespace AndreasReitberger.Print3d.Models
             }
 
             // Worksteps
+            // Delete once migrated to `WorkstepUsage` instead
             if (WorkSteps?.Count > 0)
             {
                 foreach (Workstep ws in WorkSteps.Where(ws => ws.CalculationType != CalculationType.PerPiece))
@@ -534,6 +555,22 @@ namespace AndreasReitberger.Print3d.Models
                             // Nothing to do here
                             break;
                     }
+                }
+            }
+            if (WorkstepUsages?.Count > 0)
+            {
+                foreach (WorkstepUsage wsu in WorkstepUsages.Where(wsu => wsu?.Workstep?.CalculationType != CalculationType.PerPiece))
+                {
+                    Workstep ws = wsu.Workstep;
+                    if (ws is null) continue;
+                    double totalPerJob = wsu.TotalCosts;
+                    Costs?.Add(new CalculationAttribute()
+                    {
+                        LinkedId = ws.Id,
+                        Attribute = ws.Name,
+                        Type = CalculationAttributeType.Workstep,
+                        Value = totalPerJob,
+                    });
                 }
             }
 

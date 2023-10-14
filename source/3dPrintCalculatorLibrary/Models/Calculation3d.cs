@@ -3,14 +3,12 @@ using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.CalculationAdditions;
 using AndreasReitberger.Print3d.Models.Events;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
-using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
@@ -128,9 +126,14 @@ namespace AndreasReitberger.Print3d.Models
         List<CustomAddition> customAdditions = new();
 
         [ObservableProperty]
+        List<WorkstepUsage> workstepUsages = new();
+
+        [ObservableProperty]
+        [Obsolete("Use the WorkstepUsages class instead")]
         List<Workstep> workSteps = new();
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsages class instead")]
         List<WorkstepDuration> workStepDurations = new();
 
         [ObservableProperty]

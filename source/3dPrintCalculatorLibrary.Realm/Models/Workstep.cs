@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Realms;
 using System;
 
@@ -33,6 +32,8 @@ namespace AndreasReitberger.Print3d.Realm
         }
 
         int quantity { get; set; } = 1;
+
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         public int Quantity
         {
             get => quantity;
@@ -59,6 +60,8 @@ namespace AndreasReitberger.Print3d.Realm
         }
 
         double duration { get; set; } = 0;
+
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         public double Duration
         {
             get => duration;
@@ -80,16 +83,23 @@ namespace AndreasReitberger.Print3d.Realm
             set { TypeId = (int)value; }
         }
 
+
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         public double TotalCosts { get; set; } = 0;
 
         public string Note { get; set; } = string.Empty;
         #endregion
 
         #region Constructors
-        public Workstep() { }
+        public Workstep()
+        {
+            Id = Guid.NewGuid();
+        }
         #endregion
 
         #region Private
+
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double CalcualteTotalCosts()
         {
             try

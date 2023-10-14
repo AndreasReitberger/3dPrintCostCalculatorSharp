@@ -192,7 +192,7 @@ namespace AndreasReitberger.Print3d.Models
         ObservableCollection<IItem3dUsage> items = new();
 
         [ObservableProperty]
-        ObservableCollection<IWorkstep> worksteps = new();
+        ObservableCollection<IWorkstepUsage> worksteps = new();
         #endregion
 
         #endregion

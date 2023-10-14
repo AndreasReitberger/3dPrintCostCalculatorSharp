@@ -144,12 +144,18 @@ namespace AndreasReitberger.Print3d.SQLite
         List<CustomAddition> customAdditions = new();
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsages class instead")]
         [property: ManyToMany(typeof(WorkstepCalculation))]
         List<Workstep> workSteps = new();
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsages class instead")]
         [property: OneToMany]
         List<WorkstepDuration> workStepDurations = new();
+
+        [ObservableProperty]
+        [property: ManyToMany(typeof(WorkstepUsageCalculation))]
+        List<WorkstepUsage> workstepUsages = new();
 
         [ObservableProperty]
         [property: OneToMany]

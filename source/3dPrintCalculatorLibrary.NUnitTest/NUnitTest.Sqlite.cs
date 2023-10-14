@@ -624,11 +624,97 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
+        public async Task Item3dTests()
+        {
+            try
+            {
+                string databasePath = "testdatabase_items.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTables(new List<Type> {
+                        typeof(Manufacturer),
+                        typeof(Item3d),
+                        typeof(Item3dUsage),
+                    })
+                    .Build();
+
+                Manufacturer wuerth = new()
+                {
+                    Name = "Würth",
+                    DebitorNumber = "DE26265126",
+                    Website = "https://www.wuerth.de/",
+                };
+                await handler.SetManufacturerWithChildrenAsync(wuerth);
+
+                Item3d item1 = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-1223"
+                };
+                Item3d item2 = new()
+                {
+                    Name = "Screws M3 20mm",
+                    PackageSize = 50,
+                    PackagePrice = 14.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-6413"
+                };
+                await handler.SetItemsWithChildrenAsync(new() { item1, item2 });
+
+                var loadedItem1 = await handler.GetItemWithChildrenAsync(item1.Id);
+                Assert.IsNotNull(loadedItem1);
+                Assert.IsNotNull(loadedItem1?.Manufacturer);
+                
+                var loadedItems = await handler.GetItemsWithChildrenAsync();
+                Assert.IsTrue(loadedItems?.Count == 2);
+
+
+                Item3dUsage usage = new()
+                {
+                    Item = item1,
+                    Quantity = 30,
+                    LinkedToFile = false,
+                };
+                await handler.SetItemUsageWithChildrenAsync(usage);
+
+                Item3dUsage loadedUsage = await handler.GetItemUsageWithChildrenAsync(usage.Id);
+                Assert.IsNotNull(loadedUsage);
+                Assert.IsNotNull(loadedUsage.Item);
+
+                var manufacturerLoaded = loadedUsage?.Item?.Manufacturer;
+                Assert.IsNotNull(manufacturerLoaded);
+
+                var usages = await handler.GetItemUsagesWithChildrenAsync();
+                Assert.IsTrue(usages?.Count == 1);
+
+                await handler.DeleteItemUsageAsync(loadedUsage); 
+                
+                usages = await handler.GetItemUsagesWithChildrenAsync();
+                Assert.IsTrue(usages?.Count == 0);
+            }
+            catch(Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
         public async Task DatabaseSaveAndLoadTest()
         {
             try
             {
                 string databasePath = "testdatabase.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
                 using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
                     .WithDatabasePath(databasePath)
                     .WithDefaultTables()

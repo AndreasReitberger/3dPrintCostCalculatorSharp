@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
         */
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(WorkstepId))]
+        [property: ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
         Workstep workstep;
 
         [ObservableProperty]

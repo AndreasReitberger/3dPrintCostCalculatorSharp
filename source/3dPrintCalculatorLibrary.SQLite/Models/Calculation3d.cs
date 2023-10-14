@@ -83,7 +83,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid customerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(CustomerId))]
+        [property: ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
         Customer3d customer;
 
         [ObservableProperty]

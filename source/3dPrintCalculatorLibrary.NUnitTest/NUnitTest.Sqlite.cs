@@ -24,6 +24,10 @@ namespace AndreasReitberger.NUnitTest
             try
             {
                 string databasePath = "testdatabase.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
                 DatabaseHandler.Instance = new DatabaseHandler(databasePath);
                 if (DatabaseHandler.Instance.IsInitialized)
                 {
@@ -718,36 +722,14 @@ namespace AndreasReitberger.NUnitTest
                 using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
                     .WithDatabasePath(databasePath)
                     .WithDefaultTables()
-                    /*
-                    .WithTable(typeof(Manufacturer))
-                    .WithTables(new List<Type> { 
-                        typeof(Material3dType), 
-                        typeof(Material3d), 
-                        typeof(Material3dAttribute), 
-                        typeof(Material3dProcedureAttribute), 
-                        typeof(Material3dColor), 
-                        typeof(Printer3d),
-                        typeof(Printer3dAttribute),
-                        typeof(Maintenance3d),
-                        typeof(Item3d), 
-                        typeof(Item3dUsage), 
-                        typeof(Workstep), 
-                        typeof(WorkstepCategory), 
-                        typeof(ProcedureAddition), 
-                        typeof(ProcedureCalculationParameter), 
-                        typeof(Calculation3d), 
-                        typeof(Calculation3dProfile), 
-                        typeof(File3d), 
-                        typeof(Printer3dCalculation), 
-                        typeof(Material3dCalculation), 
-                        typeof(CustomAdditionCalculation), 
-                        typeof(WorkstepCalculation), 
-                        typeof(WorkstepDuration), 
-                    })
-                    */
                     .Build();
 
-                Calculation3d calc = GetTestCalculation();
+                await Task.Delay(250);
+
+                Calculation3d calc = GetTestCalculation(); 
+                calc.Material = calc.Materials.First();
+                calc.Printer = calc.Printers.First();
+
                 await calc.CalculateCostsAsync();
 
                 await handler.SetItemUsagesWithChildrenAsync(calc.AdditionalItems);
@@ -756,24 +738,27 @@ namespace AndreasReitberger.NUnitTest
                 await handler.SetPrintersWithChildrenAsync(calc.Printers);
                 await handler.SetCalculationWithChildrenAsync(calc);
                 Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
-                await Task.Delay(150);
+                
+                await Task.Delay(250);
                 Assert.IsNotNull(calc2);
 
                 var item = await handler.GetItemWithChildrenAsync(calc.AdditionalItems.FirstOrDefault().ItemId);
+                calc2.Material = calc.Materials.First();
+                calc2.Printer = calc.Printers.First();
 
                 await calc2.CalculateCostsAsync();
-                await Task.Delay(150);
+                await Task.Delay(250);
                 if(calc2 is not null)
                 {
-                    Assert.IsTrue(calc.MachineCosts == calc2.MachineCosts);
-                    Assert.IsTrue(calc.MaterialCosts == calc2.MaterialCosts);
-                    Assert.IsTrue(calc.CalculatedMargin == calc2.CalculatedMargin);
-                    Assert.IsTrue(calc.CalculatedTax == calc2.CalculatedTax);
-                    Assert.IsTrue(calc.EnergyCosts == calc2.EnergyCosts);
-                    Assert.IsTrue(calc.CustomAdditionCosts == calc2.CustomAdditionCosts);
-                    Assert.IsTrue(calc.ItemsCost == calc2.ItemsCost);
+                    Assert.IsTrue(calc.MachineCosts == calc2.MachineCosts, "Machine costs differ");
+                    Assert.IsTrue(calc.MaterialCosts == calc2.MaterialCosts, "Material costs differ");
+                    Assert.IsTrue(calc.CalculatedMargin == calc2.CalculatedMargin, "Margin differs");
+                    Assert.IsTrue(calc.CalculatedTax == calc2.CalculatedTax, "Tax differs");
+                    Assert.IsTrue(calc.EnergyCosts == calc2.EnergyCosts, "Energy costs differ");
+                    Assert.IsTrue(calc.CustomAdditionCosts == calc2.CustomAdditionCosts, "Custom addition costs differ");
+                    Assert.IsTrue(calc.ItemsCost == calc2.ItemsCost, "Item costs differ");
                 }
-                Assert.True(calc?.TotalCosts == calc2?.TotalCosts);
+                Assert.True(calc?.TotalCosts == calc2?.TotalCosts, "Total costs differ");
             }
             catch (Exception exc)
             {
@@ -1083,7 +1068,11 @@ namespace AndreasReitberger.NUnitTest
         {
             try
             {
-                string databasePath = "testdatabase.db";
+                string databasePath = "testdatabase_storage.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
                 DatabaseHandler.Instance = new DatabaseHandler(databasePath);
                 if (DatabaseHandler.Instance.IsInitialized)
                 {
@@ -1093,6 +1082,7 @@ namespace AndreasReitberger.NUnitTest
 
                     // Recreate tables
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
+                    await Task.Delay(250);
 
                     double startAmount = 2.68;
                     Material3d material = new()

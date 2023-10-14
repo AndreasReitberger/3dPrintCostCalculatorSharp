@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid categoryId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(CategoryId))]
+        [property: ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
         WorkstepCategory category;
 
         [ObservableProperty]

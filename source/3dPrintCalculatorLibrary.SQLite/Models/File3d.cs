@@ -46,7 +46,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid modelWeightId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ModelWeightId))]
+        [property: ManyToOne(nameof(ModelWeightId), CascadeOperations = CascadeOperation.All)]
         ModelWeight weight = new(-1, Enums.Unit.Gram);
 
         [ObservableProperty]

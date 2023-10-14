@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.SQLite.SlicerAdditions
         Guid slicerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(SlicerId))]
+        [property: ManyToOne(nameof(SlicerId), CascadeOperations = CascadeOperation.All)]
         Slicer3d slicer;
 
         [ObservableProperty]

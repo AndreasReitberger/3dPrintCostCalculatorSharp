@@ -70,7 +70,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid materialTypeId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialTypeId))]
+        [property: ManyToOne(nameof(MaterialTypeId), CascadeOperations = CascadeOperation.All)]
         Material3dType typeOfMaterial;
 
         [ObservableProperty]
@@ -78,7 +78,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid manufacturerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId))]
+        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
         Manufacturer manufacturer;
 
         [ObservableProperty]

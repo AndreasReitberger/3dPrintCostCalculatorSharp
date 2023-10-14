@@ -24,7 +24,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Guid materialId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialId))]
+        [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
         Material3d material;
 
         [ObservableProperty]

@@ -36,7 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid manufacturerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId))]
+        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
         Manufacturer manufacturer;
 
         [ObservableProperty]
@@ -77,7 +77,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid hourlyMachineRateId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(HourlyMachineRateId))]
+        [property: ManyToOne(nameof(HourlyMachineRateId), CascadeOperations = CascadeOperation.All)]
         HourlyMachineRate hourlyMachineRate;
 
         [ObservableProperty]
@@ -88,7 +88,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid slicerConfigId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(SlicerConfigId))]
+        [property: ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
         Printer3dSlicerConfig slicerConfig = new();
 
         [ObservableProperty]

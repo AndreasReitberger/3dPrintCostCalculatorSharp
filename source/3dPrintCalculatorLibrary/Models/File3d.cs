@@ -3,6 +3,7 @@ using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -34,6 +35,14 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         string filePath = string.Empty;
+        partial void OnFilePathChanged(string value)
+        {
+            if (value is not null)
+            {
+                FileName = new FileInfo(value)?.Name ?? string.Empty;
+                if (string.IsNullOrEmpty(Name)) Name = FileName;
+            }
+        }
 
         [ObservableProperty]
         double volume = 0;

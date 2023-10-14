@@ -1,14 +1,12 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
+using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using SQLiteNetExtensionsAsync.Extensions;
-using AndreasReitberger.Print3d.Interfaces;
-using System.Diagnostics.CodeAnalysis;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -488,6 +486,12 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetCalculationWithChildrenAsync(Calculation3d calculation, bool updateList = true)
         {
+            List<WorkstepUsage> itemCollection = calculation.WorkstepUsages
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (itemCollection?.Count > 0)
+                await SetWorkstepUsagesWithChildrenAsync(itemCollection, replaceExisting: true);
             await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(calculation, recursive: true)
                 ;
@@ -499,6 +503,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetCalculationsWithChildrenAsync(List<Calculation3d> calculations, bool replaceExisting = true, bool updateList = true)
         {
+            List<WorkstepUsage> itemCollection = calculations
+                .SelectMany(i => i.WorkstepUsages)
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (itemCollection?.Count > 0)
+                await SetWorkstepUsagesWithChildrenAsync(itemCollection, replaceExisting);
+
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(calculations);
             else

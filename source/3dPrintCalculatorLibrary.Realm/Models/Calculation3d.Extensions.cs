@@ -23,6 +23,10 @@ namespace AndreasReitberger.Print3d.Realm
             CombineMaterialCosts = false;
 
             int quantity = Files.Select(file => file.Quantity).ToList().Sum();
+            // Add the handling fee based on the file quantity
+            CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
+            CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
+            CalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
@@ -30,19 +34,19 @@ namespace AndreasReitberger.Print3d.Realm
                 {
                     Attribute = file.FileName,
                     Value = printTime,
+                    Type = CalculationAttributeType.Machine,
+                    Item = CalculationAttributeItem.Default,
                     FileId = file.Id,
                     FileName = file.FileName,
                 });
 
-                // Add the handling fee based on the file quantity
-                CalculationAttribute HandlingsFee = Rates.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
-                if (HandlingsFee != null && HandlingsFee.Value > 0)
+                if (handlingsFee != null && handlingsFee.Value > 0 && handlingsFee.ApplyPerFile)
                 {
                     Costs?.Add(new CalculationAttribute()
                     {
                         Attribute = "HandlingFee",
                         Type = CalculationAttributeType.FixCost,
-                        Value = Convert.ToDouble(HandlingsFee?.Value * file.Quantity),
+                        Value = Convert.ToDouble(handlingsFee?.Value * file.Quantity),
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -53,6 +57,8 @@ namespace AndreasReitberger.Print3d.Realm
                     PrintTimes?.Add(new CalculationAttribute()
                     {
                         Attribute = $"{file.FileName}_FailRate",
+                        Type = CalculationAttributeType.Machine,
+                        Item = CalculationAttributeItem.FailRate,
                         Value = printTime * FailRate / 100,
                         FileId = file.Id,
                         FileName = file.FileName,
@@ -84,6 +90,7 @@ namespace AndreasReitberger.Print3d.Realm
                         Attribute = Material.Name,
                         Value = _material,
                         Type = CalculationAttributeType.Material,
+                        Item = CalculationAttributeItem.Default,
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -94,6 +101,7 @@ namespace AndreasReitberger.Print3d.Realm
                             Attribute = $"{Material.Name}_FailRate",
                             Value = _material * FailRate / 100,
                             Type = CalculationAttributeType.Material,
+                            Item = CalculationAttributeItem.FailRate,
                             FileId = file.Id,
                             FileName = file.FileName,
                         });
@@ -110,7 +118,7 @@ namespace AndreasReitberger.Print3d.Realm
                             if (material.MaterialFamily == Material3dFamily.Powder)
                             {
                                 CalculationProcedureAttribute attribute = ProcedureAttributes.FirstOrDefault(
-                                attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
+                                    attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
                                 if (attribute != null)
                                 {
                                     CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
@@ -170,8 +178,9 @@ namespace AndreasReitberger.Print3d.Realm
                             OverallMaterialCosts.Add(new CalculationAttribute()
                             {
                                 LinkedId = material.Id,
-                                Attribute = material.Name,
+                                Attribute = materialUsage.Attribute,
                                 Type = CalculationAttributeType.Material,
+                                Item = materialUsage.Item,
                                 Value = totalCosts,
                                 FileId = materialUsage.FileId,
                                 FileName = materialUsage.FileName,
@@ -187,6 +196,7 @@ namespace AndreasReitberger.Print3d.Realm
                                 LinkedId = material.Id,
                                 Attribute = $"{material.Name} (Refreshed)",
                                 Type = CalculationAttributeType.Material,
+                                Item = CalculationAttributeItem.PowderRefresh,
                                 Value = refreshCosts,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -216,6 +226,7 @@ namespace AndreasReitberger.Print3d.Realm
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Machine,
+                                        Item = pt.Item,
                                         Value = machineHourRate,
                                         FileId = pt.FileId,
                                         FileName = pt.FileName,
@@ -234,6 +245,7 @@ namespace AndreasReitberger.Print3d.Realm
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Energy,
+                                        Item = pt.Item,
                                         Value = totalEnergyCost,
                                         FileId = pt.FileId,
                                         FileName = pt.FileName,
@@ -378,8 +390,7 @@ namespace AndreasReitberger.Print3d.Realm
                 }
 
                 //Margin
-                CalculationAttribute Margin = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
-                if (Margin != null && !Margin.SkipForCalculation)
+                if (margin != null && !margin.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
                     if (ApplyEnhancedMarginSettings)
@@ -403,16 +414,24 @@ namespace AndreasReitberger.Print3d.Realm
                             costsSoFar -= excludedCosts;
                         }
                     }
-                    double margin = costsSoFar * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
-                    if (margin > 0)
+
+                    // Get all items where margin calculation is disabled.
+                    List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin).ToList();
+                    skipMarginCalculation.ForEach((item) =>
+                    {
+                        costsSoFar -= item.Value;
+                    });
+
+                    double marginValue = costsSoFar * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (marginValue > 0)
                     {
                         Costs.Add(new CalculationAttribute()
                         {
                             Attribute = "Margin",
                             Type = CalculationAttributeType.Margin,
-                            Value = margin,
+                            Value = marginValue,
                             FileId = file.Id,
-                            FileName = file.Name,
+                            FileName = file.FileName,
                         });
                     }
                 }
@@ -448,20 +467,48 @@ namespace AndreasReitberger.Print3d.Realm
                 }
 
                 //Tax
-                CalculationAttribute Tax = Rates.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
-                if (Tax != null && !Tax.SkipForCalculation)
+                //CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
+                if (tax != null && !tax.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
-                    double tax = costsSoFar * Tax.Value / (Tax.IsPercentageValue ? 100.0 : 1.0);
-                    if (tax > 0)
+                    double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
+                    if (taxValue > 0)
                     {
                         Costs.Add(new CalculationAttribute()
                         {
                             Attribute = "Tax",
                             Type = CalculationAttributeType.Tax,
-                            Value = tax,
+                            Value = taxValue,
                             FileId = file.Id,
                             FileName = file.FileName,
+                        });
+                    }
+                }
+            }
+
+            // If the handling fee is not set per file, add it once afterwards
+            if (handlingsFee != null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
+            {
+                Costs?.Add(new CalculationAttribute()
+                {
+                    Attribute = "HandlingFee",
+                    Type = CalculationAttributeType.FixCost,
+                    Value = handlingsFee.Value,
+                    FileId = Guid.Empty,
+                    FileName = string.Empty,
+                });
+                if (handlingsFee?.SkipForMargin == false)
+                {
+                    double marginValue = handlingsFee.Value * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (marginValue > 0)
+                    {
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            Attribute = "Margin",
+                            Type = CalculationAttributeType.Margin,
+                            Value = marginValue,
+                            FileId = Guid.Empty,
+                            FileName = string.Empty,
                         });
                     }
                 }
@@ -550,7 +597,7 @@ namespace AndreasReitberger.Print3d.Realm
             if (ApplyProcedureSpecificAdditions)
             {
                 List<CalculationProcedureAttribute> multiMaterialAttributes = ProcedureAttributes
-                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)?.ToList();
+                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation).ToList();
                 for (int i = 0; i < multiMaterialAttributes?.Count; i++)
                 {
                     CalculationProcedureAttribute attribute = multiMaterialAttributes[i];
@@ -590,6 +637,26 @@ namespace AndreasReitberger.Print3d.Realm
                             Value = costs,
                         });
                     }
+                }
+            }
+
+            // Add the tax for the unlinked file costs
+            if (tax != null && !tax.SkipForCalculation)
+            {
+                IEnumerable<CalculationAttribute> unlinkedCosts = Costs.Where(c => c.FileId == Guid.Empty);
+                double costsSoFar = unlinkedCosts?.Sum(cost => cost.Value) ?? 0;
+
+                double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
+                if (taxValue > 0)
+                {
+                    Costs.Add(new CalculationAttribute()
+                    {
+                        Attribute = "Tax",
+                        Type = CalculationAttributeType.Tax,
+                        Value = taxValue,
+                        FileId = Guid.Empty,
+                        FileName = string.Empty,
+                    });
                 }
             }
 

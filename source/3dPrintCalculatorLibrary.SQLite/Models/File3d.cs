@@ -38,6 +38,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         string filePath = string.Empty;
+        partial void OnFilePathChanged(string value)
+        {
+            if(value is not null)
+            {
+                FileName = new FileInfo(value)?.Name ?? string.Empty;
+                if (string.IsNullOrEmpty(Name)) Name = FileName;
+            }
+        }
 
         [ObservableProperty]
         double volume = 0;

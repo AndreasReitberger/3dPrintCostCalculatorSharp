@@ -2,6 +2,8 @@
 using AndreasReitberger.Print3d.Realm.FileAdditions;
 using Realms;
 using System;
+using System.Diagnostics;
+using System.IO;
 
 namespace AndreasReitberger.Print3d.Realm
 {
@@ -27,7 +29,24 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string FileName { get; set; } = string.Empty;
 
-        public string FilePath { get; set; } = string.Empty;
+        string filePath = string.Empty;
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+                OnFilePathChanged(value);
+            }
+        }
+        void OnFilePathChanged(string value)
+        {
+            if (value is not null)
+            {
+                FileName = new FileInfo(value)?.Name ?? string.Empty;
+                if (string.IsNullOrEmpty(Name)) Name = FileName;
+            }
+        }
 
         public double Volume { get; set; } = 0;
 

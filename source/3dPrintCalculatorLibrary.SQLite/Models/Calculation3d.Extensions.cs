@@ -20,8 +20,9 @@ namespace AndreasReitberger.Print3d.SQLite
 
             int quantity = Files.Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity
-            CalculationAttribute? HandlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
-            CalculationAttribute? Margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
+            CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
+            CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
+            CalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
@@ -35,13 +36,13 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileName = file.FileName,
                 });
 
-                if (HandlingsFee != null && HandlingsFee.Value > 0 && HandlingsFee.ApplyPerFile)
+                if (handlingsFee != null && handlingsFee.Value > 0 && handlingsFee.ApplyPerFile)
                 {
                     Costs?.Add(new CalculationAttribute()
                     {
                         Attribute = "HandlingFee",
                         Type = CalculationAttributeType.FixCost,
-                        Value = Convert.ToDouble(HandlingsFee?.Value * file.Quantity),
+                        Value = Convert.ToDouble(handlingsFee?.Value * file.Quantity),
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -386,7 +387,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 }
 
                 //Margin
-                if (Margin != null && !Margin.SkipForCalculation)
+                if (margin != null && !margin.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
                     if (ApplyEnhancedMarginSettings)
@@ -418,16 +419,16 @@ namespace AndreasReitberger.Print3d.SQLite
                         costsSoFar -= item.Value;
                     });
 
-                    double margin = costsSoFar * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
-                    if (margin > 0)
+                    double marginValue = costsSoFar * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (marginValue > 0)
                     {
                         Costs.Add(new CalculationAttribute()
                         {
                             Attribute = "Margin",
                             Type = CalculationAttributeType.Margin,
-                            Value = margin,
+                            Value = marginValue,
                             FileId = file.Id,
-                            FileName = file.Name,
+                            FileName = file.FileName,
                         });
                     }
                 }
@@ -463,50 +464,50 @@ namespace AndreasReitberger.Print3d.SQLite
                 }
 
                 //Tax
-                CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
-                if (Tax != null && !Tax.SkipForCalculation)
+                //CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
+                if (tax != null && !tax.SkipForCalculation)
                 {
                     double costsSoFar = GetTotalCosts(file.Id);
-                    double tax = costsSoFar * Tax.Value / (Tax.IsPercentageValue ? 100.0 : 1.0);
-                    if (tax > 0)
+                    double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
+                    if (taxValue > 0)
                     {
                         Costs.Add(new CalculationAttribute()
                         {
                             Attribute = "Tax",
                             Type = CalculationAttributeType.Tax,
-                            Value = tax,
+                            Value = taxValue,
                             FileId = file.Id,
                             FileName = file.FileName,
                         });
                     }
                 }
             }
-
+          
             // If the handling fee is not set per file, add it once afterwards
-            if (HandlingsFee != null && HandlingsFee.Value > 0 && !HandlingsFee.ApplyPerFile)
+            if (handlingsFee != null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
             {
                 Costs?.Add(new CalculationAttribute()
                 {
                     Attribute = "HandlingFee",
                     Type = CalculationAttributeType.FixCost,
-                    Value = HandlingsFee.Value,
+                    Value = handlingsFee.Value,
                     FileId = Guid.Empty,
                     FileName = string.Empty,
                 });
-                if (HandlingsFee?.SkipForMargin == false)
+                if(handlingsFee?.SkipForMargin == false)
                 {
-                    double margin = HandlingsFee.Value * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
-                    if (margin > 0)
+                    double marginValue = handlingsFee.Value * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (marginValue > 0)
                     {
                         Costs?.Add(new CalculationAttribute()
                         {
                             Attribute = "Margin",
                             Type = CalculationAttributeType.Margin,
-                            Value = margin,
+                            Value = marginValue,
                             FileId = Guid.Empty,
                             FileName = string.Empty,
                         });
-                    }
+                    }                  
                 }
             }
 
@@ -633,6 +634,26 @@ namespace AndreasReitberger.Print3d.SQLite
                             Value = costs,
                         });
                     }
+                }
+            }
+
+            // Add the tax for the unlinked file costs
+            if (tax != null && !tax.SkipForCalculation)
+            {
+                IEnumerable<CalculationAttribute> unlinkedCosts = Costs.Where(c => c.FileId == Guid.Empty);
+                double costsSoFar = unlinkedCosts?.Sum(cost => cost.Value) ?? 0;
+
+                double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
+                if (taxValue > 0)
+                {
+                    Costs.Add(new CalculationAttribute()
+                    {
+                        Attribute = "Tax",
+                        Type = CalculationAttributeType.Tax,
+                        Value = taxValue,
+                        FileId = Guid.Empty,
+                        FileName = string.Empty,
+                    });
                 }
             }
 

@@ -34,7 +34,7 @@ namespace AndreasReitberger.Print3d.SQLite
         [property: ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
         WorkstepUsageParameter usageParameter;
         partial void OnUsageParameterChanged(WorkstepUsageParameter value) => TotalCosts = GetTotalCosts();
-        
+
         [ObservableProperty]
         double totalCosts = 0;
         #endregion

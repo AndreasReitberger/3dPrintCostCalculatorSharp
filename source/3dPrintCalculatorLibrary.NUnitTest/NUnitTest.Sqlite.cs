@@ -675,7 +675,7 @@ namespace AndreasReitberger.NUnitTest
                 var loadedItem1 = await handler.GetItemWithChildrenAsync(item1.Id);
                 Assert.IsNotNull(loadedItem1);
                 Assert.IsNotNull(loadedItem1?.Manufacturer);
-                
+
                 var loadedItems = await handler.GetItemsWithChildrenAsync();
                 Assert.IsTrue(loadedItems?.Count == 2);
 
@@ -698,12 +698,12 @@ namespace AndreasReitberger.NUnitTest
                 var usages = await handler.GetItemUsagesWithChildrenAsync();
                 Assert.IsTrue(usages?.Count == 1);
 
-                await handler.DeleteItemUsageAsync(loadedUsage); 
-                
+                await handler.DeleteItemUsageAsync(loadedUsage);
+
                 usages = await handler.GetItemUsagesWithChildrenAsync();
                 Assert.IsTrue(usages?.Count == 0);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Assert.Fail(exc.Message);
             }
@@ -762,7 +762,7 @@ namespace AndreasReitberger.NUnitTest
                 var usages = await handler.GetWorkstepUsagesWithChildrenAsync();
                 Assert.IsTrue(usages?.Count == 1);
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Assert.Fail(exc.Message);
             }
@@ -785,7 +785,7 @@ namespace AndreasReitberger.NUnitTest
 
                 await Task.Delay(250);
 
-                Calculation3d calc = GetTestCalculation(); 
+                Calculation3d calc = GetTestCalculation();
                 calc.Material = calc.Materials.First();
                 calc.Printer = calc.Printers.First();
 
@@ -797,7 +797,7 @@ namespace AndreasReitberger.NUnitTest
                 await handler.SetPrintersWithChildrenAsync(calc.Printers);
                 await handler.SetCalculationWithChildrenAsync(calc);
                 Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
-                
+
                 await Task.Delay(250);
                 Assert.IsNotNull(calc2);
 
@@ -807,7 +807,7 @@ namespace AndreasReitberger.NUnitTest
 
                 await calc2.CalculateCostsAsync();
                 await Task.Delay(250);
-                if(calc2 is not null)
+                if (calc2 is not null)
                 {
                     Assert.IsTrue(calc.MachineCosts == calc2.MachineCosts, "Machine costs differ");
                     Assert.IsTrue(calc.MaterialCosts == calc2.MaterialCosts, "Material costs differ");
@@ -1021,7 +1021,7 @@ namespace AndreasReitberger.NUnitTest
                         Family = Material3dFamily.Filament,
                     }
                 };
-                
+
                 Printer3d printer = new()
                 {
                     Id = Guid.NewGuid(),
@@ -1037,7 +1037,7 @@ namespace AndreasReitberger.NUnitTest
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
                 };
-                
+
                 File3d file = new()
                 {
                     Id = Guid.NewGuid(),

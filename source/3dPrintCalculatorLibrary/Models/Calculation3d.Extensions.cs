@@ -277,7 +277,7 @@ namespace AndreasReitberger.Print3d.Models
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<IProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == printer.MaterialType 
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType
                                     && addition.Target == ProcedureAdditionTarget.Machine
                                     && addition.Enabled
                                     );
@@ -621,7 +621,7 @@ namespace AndreasReitberger.Print3d.Models
                 if (ProcedureAdditions?.Count > 0)
                 {
                     IEnumerable<IProcedureAddition> procedureAdditions = ProcedureAdditions?
-                        .Where(addition => addition.TargetFamily == Procedure 
+                        .Where(addition => addition.TargetFamily == Procedure
                             && addition.Target == ProcedureAdditionTarget.General
                             && addition.Enabled
                             );

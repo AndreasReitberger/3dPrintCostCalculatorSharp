@@ -1059,7 +1059,7 @@ namespace AndreasReitberger.NUnitTest
                     TargetFamily = Material3dFamily.Resin,
                     Target = ProcedureAdditionTarget.Machine,
                 };
-                resinTank.Parameters.Add(                  
+                resinTank.Parameters.Add(
                     new ProcedureCalculationParameter()
                     {
                         Name = "Tank replacement costs",

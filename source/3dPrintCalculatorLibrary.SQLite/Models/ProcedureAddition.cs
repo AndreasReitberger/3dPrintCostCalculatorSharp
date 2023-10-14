@@ -60,7 +60,8 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor
-        public ProcedureAddition() {
+        public ProcedureAddition()
+        {
             Id = Guid.NewGuid();
         }
         #endregion

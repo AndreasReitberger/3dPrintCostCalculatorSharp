@@ -143,7 +143,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == material.MaterialFamily 
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily
                                         && addition.Target == ProcedureAdditionTarget.Material
                                         && addition.Enabled
                                         );
@@ -274,7 +274,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == printer.MaterialType 
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType
                                         && addition.Target == ProcedureAdditionTarget.Machine
                                         && addition.Enabled
                                         );
@@ -410,7 +410,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             costsSoFar -= excludedCosts;
                         }
                     }
-                    
+
                     // Get all items where margin calculation is disabled.
                     List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin).ToList();
                     skipMarginCalculation.ForEach((item) =>
@@ -493,7 +493,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = Guid.Empty,
                     FileName = string.Empty,
                 });
-                if(HandlingsFee?.SkipForMargin == false)
+                if (HandlingsFee?.SkipForMargin == false)
                 {
                     double margin = HandlingsFee.Value * Margin.Value / (Margin.IsPercentageValue ? 100.0 : 1.0);
                     if (margin > 0)
@@ -560,7 +560,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 {
                     Workstep ws = wsu.Workstep;
                     if (ws is null) continue;
-                    double totalPerJob = wsu.TotalCosts; 
+                    double totalPerJob = wsu.TotalCosts;
                     Costs?.Add(new CalculationAttribute()
                     {
                         LinkedId = ws.Id,
@@ -618,7 +618,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 if (ProcedureAdditions?.Count > 0)
                 {
                     IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
-                        .Where(addition => addition.TargetFamily == Procedure 
+                        .Where(addition => addition.TargetFamily == Procedure
                             && addition.Target == ProcedureAdditionTarget.General
                             && addition.Enabled
                             );
@@ -672,7 +672,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 cost.Attribute == Printer.Name ||
                                 cost.LinkedId == Printer.Id)
                         :
-                    // If a specific type is requested
+                        // If a specific type is requested
                         OverallPrinterCosts
                             .Where(cost =>
                                 cost.Type == calculationAttributeType &&
@@ -749,7 +749,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All) => GetTotalCosts(Guid.Empty, calculationAttributeType);
-        
+
         public int GetTotalQuantity()
         {
             try

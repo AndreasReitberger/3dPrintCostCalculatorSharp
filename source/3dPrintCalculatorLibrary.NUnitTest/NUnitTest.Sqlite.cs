@@ -1,4 +1,5 @@
 using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using AndreasReitberger.Print3d.SQLite;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
@@ -6,6 +7,7 @@ using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using NUnit.Framework;
 using SQLite;
+using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -317,8 +319,27 @@ namespace AndreasReitberger.NUnitTest
                     MultiplyPrintTimeWithQuantity = false
                 };
 
+                Item3d item = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = new()
+                    {
+                        Name = "Würth"
+                    },
+                    SKU = "2302423-1223"
+                };
+                Item3dUsage usage = new()
+                {
+                    Item = item,
+                    Quantity = 30,
+                    LinkedToFile = false,
+                };
+
                 _calculation = new();
                 // Add data
+                _calculation.AdditionalItems.Add(usage);
                 _calculation.Files.Add(file);
                 _calculation.Files.Add(file2);
                 _calculation.Printers.Add(printer);
@@ -353,6 +374,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation.MaterialCosts,
                     _calculation.CalculatedMargin,
                     _calculation.CalculatedTax,
+                    _calculation.ItemsCost,
                 };
                 double summedCalc = costsCalc.Sum();
                 Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
@@ -369,6 +391,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation2.MaterialCosts,
                     _calculation2.CalculatedMargin,
                     _calculation2.CalculatedTax,
+                    _calculation2.ItemsCost,
                 };
                 summedCalc = costsCalc.Sum();
                 Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
@@ -601,20 +624,134 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
+        public async Task Item3dTests()
+        {
+            try
+            {
+                string databasePath = "testdatabase_items.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTables(new List<Type> {
+                        typeof(Manufacturer),
+                        typeof(Item3d),
+                        typeof(Item3dUsage),
+                    })
+                    .Build();
+
+                Manufacturer wuerth = new()
+                {
+                    Name = "Würth",
+                    DebitorNumber = "DE26265126",
+                    Website = "https://www.wuerth.de/",
+                };
+                await handler.SetManufacturerWithChildrenAsync(wuerth);
+
+                Item3d item1 = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-1223"
+                };
+                Item3d item2 = new()
+                {
+                    Name = "Screws M3 20mm",
+                    PackageSize = 50,
+                    PackagePrice = 14.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-6413"
+                };
+                await handler.SetItemsWithChildrenAsync(new() { item1, item2 });
+
+                var loadedItem1 = await handler.GetItemWithChildrenAsync(item1.Id);
+                Assert.IsNotNull(loadedItem1);
+                Assert.IsNotNull(loadedItem1?.Manufacturer);
+                
+                var loadedItems = await handler.GetItemsWithChildrenAsync();
+                Assert.IsTrue(loadedItems?.Count == 2);
+
+
+                Item3dUsage usage = new()
+                {
+                    Item = item1,
+                    Quantity = 30,
+                    LinkedToFile = false,
+                };
+                await handler.SetItemUsageWithChildrenAsync(usage);
+
+                Item3dUsage loadedUsage = await handler.GetItemUsageWithChildrenAsync(usage.Id);
+                Assert.IsNotNull(loadedUsage);
+                Assert.IsNotNull(loadedUsage.Item);
+
+                var manufacturerLoaded = loadedUsage?.Item?.Manufacturer;
+                Assert.IsNotNull(manufacturerLoaded);
+
+                var usages = await handler.GetItemUsagesWithChildrenAsync();
+                Assert.IsTrue(usages?.Count == 1);
+
+                await handler.DeleteItemUsageAsync(loadedUsage); 
+                
+                usages = await handler.GetItemUsagesWithChildrenAsync();
+                Assert.IsTrue(usages?.Count == 0);
+            }
+            catch(Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
         public async Task DatabaseSaveAndLoadTest()
         {
             try
             {
                 string databasePath = "testdatabase.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
                 using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
                     .WithDatabasePath(databasePath)
+                    .WithDefaultTables()
+                    /*
                     .WithTable(typeof(Manufacturer))
-                    .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
+                    .WithTables(new List<Type> { 
+                        typeof(Material3dType), 
+                        typeof(Material3d), 
+                        typeof(Material3dAttribute), 
+                        typeof(Material3dProcedureAttribute), 
+                        typeof(Material3dColor), 
+                        typeof(Printer3d),
+                        typeof(Printer3dAttribute),
+                        typeof(Maintenance3d),
+                        typeof(Item3d), 
+                        typeof(Item3dUsage), 
+                        typeof(Workstep), 
+                        typeof(WorkstepCategory), 
+                        typeof(ProcedureAddition), 
+                        typeof(ProcedureCalculationParameter), 
+                        typeof(Calculation3d), 
+                        typeof(Calculation3dProfile), 
+                        typeof(File3d), 
+                        typeof(Printer3dCalculation), 
+                        typeof(Material3dCalculation), 
+                        typeof(CustomAdditionCalculation), 
+                        typeof(WorkstepCalculation), 
+                        typeof(WorkstepDuration), 
+                    })
+                    */
                     .Build();
 
                 Calculation3d calc = GetTestCalculation();
                 await calc.CalculateCostsAsync();
 
+                await handler.SetItemUsagesWithChildrenAsync(calc.AdditionalItems);
+                await handler.SetProcedureAdditionsWithChildrenAsync(calc.ProcedureAdditions.ToList());
                 await handler.SetMaterialsWithChildrenAsync(calc.Materials);
                 await handler.SetPrintersWithChildrenAsync(calc.Printers);
                 await handler.SetCalculationWithChildrenAsync(calc);
@@ -622,8 +759,20 @@ namespace AndreasReitberger.NUnitTest
                 await Task.Delay(150);
                 Assert.IsNotNull(calc2);
 
+                var item = await handler.GetItemWithChildrenAsync(calc.AdditionalItems.FirstOrDefault().ItemId);
+
                 await calc2.CalculateCostsAsync();
                 await Task.Delay(150);
+                if(calc2 is not null)
+                {
+                    Assert.IsTrue(calc.MachineCosts == calc2.MachineCosts);
+                    Assert.IsTrue(calc.MaterialCosts == calc2.MaterialCosts);
+                    Assert.IsTrue(calc.CalculatedMargin == calc2.CalculatedMargin);
+                    Assert.IsTrue(calc.CalculatedTax == calc2.CalculatedTax);
+                    Assert.IsTrue(calc.EnergyCosts == calc2.EnergyCosts);
+                    Assert.IsTrue(calc.CustomAdditionCosts == calc2.CustomAdditionCosts);
+                    Assert.IsTrue(calc.ItemsCost == calc2.ItemsCost);
+                }
                 Assert.True(calc?.TotalCosts == calc2?.TotalCosts);
             }
             catch (Exception exc)
@@ -712,11 +861,30 @@ namespace AndreasReitberger.NUnitTest
                 MultiplyPrintTimeWithQuantity = false
             };
 
+            Item3d item = new()
+            {
+                Name = "Nuts M3",
+                PackageSize = 100,
+                PackagePrice = 9.99d,
+                Manufacturer = new()
+                {
+                    Name = "Würth"
+                },
+                SKU = "2302423-1223"
+            };
+            Item3dUsage usage = new()
+            {
+                Item = item,
+                Quantity = 30,
+                LinkedToFile = false,
+            };
+
             _calculation = new Calculation3d()
             {
                 Name = "My awesome calculation"
             };
             // Add data
+            _calculation.AdditionalItems.Add(usage);
             _calculation.Files.Add(file);
             _calculation.Files.Add(file2);
             _calculation.Printers.Add(printer);
@@ -777,7 +945,7 @@ namespace AndreasReitberger.NUnitTest
         {
             try
             {
-                Material3d material = new Material3d()
+                Material3d material = new()
                 {
                     Id = Guid.NewGuid(),
                     Density = 1.24,
@@ -793,7 +961,7 @@ namespace AndreasReitberger.NUnitTest
                         Family = Material3dFamily.Filament,
                     }
                 };
-                Material3d material2 = new Material3d()
+                Material3d material2 = new()
                 {
                     Id = Guid.NewGuid(),
                     Density = 1.14,
@@ -809,7 +977,8 @@ namespace AndreasReitberger.NUnitTest
                         Family = Material3dFamily.Filament,
                     }
                 };
-                Printer3d printer = new Printer3d()
+                
+                Printer3d printer = new()
                 {
                     Id = Guid.NewGuid(),
                     Manufacturer = new Manufacturer()
@@ -824,7 +993,8 @@ namespace AndreasReitberger.NUnitTest
                     Type = Printer3dType.FDM,
                     PowerConsumption = 210,
                 };
-                File3d file = new File3d()
+                
+                File3d file = new()
                 {
                     Id = Guid.NewGuid(),
                     FileName = "MyFirst.gcode",
@@ -832,7 +1002,7 @@ namespace AndreasReitberger.NUnitTest
                     Volume = 12.36,
                     Quantity = 3,
                 };
-                File3d file2 = new File3d()
+                File3d file2 = new()
                 {
                     Id = Guid.NewGuid(),
                     FileName = "MySecond.gcode",
@@ -841,7 +1011,7 @@ namespace AndreasReitberger.NUnitTest
                     Quantity = 3,
                     MultiplyPrintTimeWithQuantity = false
                 };
-                File3d file3 = new File3d()
+                File3d file3 = new()
                 {
                     Id = Guid.NewGuid(),
                     FileName = "MyThird.gcode",
@@ -849,6 +1019,24 @@ namespace AndreasReitberger.NUnitTest
                     Volume = 3.36,
                     Quantity = 25,
                     MultiplyPrintTimeWithQuantity = true
+                };
+
+                Item3d item = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = new()
+                    {
+                        Name = "Würth"
+                    },
+                    SKU = "2302423-1223"
+                };
+                Item3dUsage usage = new()
+                {
+                    Item = item,
+                    Quantity = 30,
+                    LinkedToFile = false,
                 };
 
                 _calculation = new Calculation3d();
@@ -859,6 +1047,8 @@ namespace AndreasReitberger.NUnitTest
                 _calculation.Printers.Add(printer);
                 _calculation.Materials.Add(material);
                 _calculation.Materials.Add(material2);
+
+                _calculation.AdditionalItems.Add(usage);
 
                 // Add information
                 _calculation.FailRate = 25;
@@ -990,13 +1180,13 @@ namespace AndreasReitberger.NUnitTest
                             Name = "Tank replacement costs",
                             Type = ProcedureCalculationType.ReplacementCosts,
                             Price = 50,
-                            WearFactor = 1000,
+                            WearFactor = 1,
                             QuantityInPackage = 1,
                         }
                     }
                 };
                 double resinWearCosts = resinTank.CalculateCosts();
-                Assert.IsTrue(resinWearCosts == 0.05d);
+                Assert.IsTrue(resinWearCosts == 0.5d);
                 // Consumable goods (like filters and gloves)
                 ProcedureAddition gloves = new()
                 {

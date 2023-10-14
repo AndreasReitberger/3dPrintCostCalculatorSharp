@@ -276,6 +276,17 @@ namespace AndreasReitberger.Print3d.SQLite
             }
         }
         [Ignore, JsonIgnore]
+        public double ItemsCost
+        {
+            get
+            {
+                if (IsCalculated)
+                    return GetTotalCosts(CalculationAttributeType.AdditionalItem);
+                else
+                    return 0;
+            }
+        }
+        [Ignore, JsonIgnore]
         public double EnergyCosts
         {
             get

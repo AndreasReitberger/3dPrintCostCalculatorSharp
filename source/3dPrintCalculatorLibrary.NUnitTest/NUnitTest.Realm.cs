@@ -313,8 +313,27 @@ namespace AndreasReitberger.NUnitTest
                     MultiplyPrintTimeWithQuantity = false
                 };
 
+                Item3d item = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = new()
+                    {
+                        Name = "Würth"
+                    },
+                    SKU = "2302423-1223"
+                };
+                Item3dUsage usage = new()
+                {
+                    Item = item,
+                    Quantity = 30,
+                    LinkedToFile = false,
+                };
+
                 _calculation = new();
                 // Add data
+                _calculation.AdditionalItems.Add(usage);
                 _calculation.Files.Add(file);
                 _calculation.Files.Add(file2);
                 _calculation.Printers.Add(printer);
@@ -349,6 +368,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation.MaterialCosts,
                     _calculation.CalculatedMargin,
                     _calculation.CalculatedTax,
+                    _calculation.ItemsCosts,
                 };
                 double summedCalc = costsCalc.Sum();
                 Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
@@ -365,6 +385,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation2.MaterialCosts,
                     _calculation2.CalculatedMargin,
                     _calculation2.CalculatedTax,
+                    _calculation2.ItemsCosts,
                 };
                 summedCalc = costsCalc.Sum();
                 Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
@@ -854,8 +875,27 @@ namespace AndreasReitberger.NUnitTest
                 MultiplyPrintTimeWithQuantity = false
             };
 
+            Item3d item = new()
+            {
+                Name = "Nuts M3",
+                PackageSize = 100,
+                PackagePrice = 9.99d,
+                Manufacturer = new()
+                {
+                    Name = "Würth"
+                },
+                SKU = "2302423-1223"
+            };
+            Item3dUsage usage = new()
+            {
+                Item = item,
+                Quantity = 30,
+                LinkedToFile = false,
+            };
+
             _calculation = new Calculation3d();
             // Add data
+            _calculation.AdditionalItems.Add(usage);
             _calculation.Files.Add(file);
             _calculation.Files.Add(file2);
             _calculation.Printers.Add(printer);
@@ -927,6 +967,7 @@ namespace AndreasReitberger.NUnitTest
                     Description = "Take the costs for the resin tank replacement into account?",
                     Enabled = true,
                     TargetFamily = Material3dFamily.Resin,
+                    Target = ProcedureAdditionTarget.Machine,
                 };
                 resinTank.Parameters.Add(                  
                     new ProcedureCalculationParameter()
@@ -934,11 +975,11 @@ namespace AndreasReitberger.NUnitTest
                         Name = "Tank replacement costs",
                         Type = ProcedureCalculationType.ReplacementCosts,
                         Price = 50,
-                        WearFactor = 1000,
+                        WearFactor = 1,
                         QuantityInPackage = 1,
                     });
                 double resinWearCosts = resinTank.CalculateCosts();
-                Assert.IsTrue(resinWearCosts == 0.05d);
+                Assert.IsTrue(resinWearCosts == 0.5d);
                 // Consumable goods (like filters and gloves)
                 ProcedureAddition gloves = new()
                 {
@@ -960,6 +1001,8 @@ namespace AndreasReitberger.NUnitTest
                 Assert.IsTrue(glovesCosts == 1d);
 
                 var calculation = GetTestCalculation();
+                calculation.ProcedureAdditions.Add(resinTank);
+                calculation.ProcedureAdditions.Add(gloves);
                 calculation.Procedure = Material3dFamily.Resin;
                 calculation.ApplyProcedureSpecificAdditions = true;
                 calculation.CalculateCosts();

@@ -23,6 +23,8 @@ namespace AndreasReitberger.Print3d.SQLite
                     {
                         _databaseHandler.CreateTables(_databaseHandler.Tables);
                     }
+                    else 
+                        _databaseHandler.InitTables();
                 }
                 return _databaseHandler;
             }
@@ -30,6 +32,12 @@ namespace AndreasReitberger.Print3d.SQLite
             public DatabaseHandlerBuilder WithDatabasePath(string databasePath)
             {
                 _databaseHandler.DatabasePath = databasePath;
+                return this;
+            }
+
+            public DatabaseHandlerBuilder WithDefaultTables()
+            {
+                _databaseHandler.Tables?.AddRange(_databaseHandler.DefaultTables);
                 return this;
             }
 

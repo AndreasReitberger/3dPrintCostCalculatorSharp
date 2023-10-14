@@ -247,6 +247,17 @@ namespace AndreasReitberger.Print3d.Models
             }
         }
         [JsonIgnore]
+        public double ItemsCosts
+        {
+            get
+            {
+                if (IsCalculated)
+                    return GetTotalCosts(CalculationAttributeType.AdditionalItem);
+                else
+                    return 0;
+            }
+        }
+        [JsonIgnore]
         public double EnergyCosts
         {
             get

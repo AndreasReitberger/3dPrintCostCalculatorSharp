@@ -1,7 +1,9 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Realms;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Realm
 {
@@ -124,6 +126,17 @@ namespace AndreasReitberger.Print3d.Realm
         public IList<ProcedureAddition> ProcedureAdditions { get; }
         #endregion
 
+        #endregion
+
+        #region Presets
+
+        public IList<Printer3d> Printers { get; }
+
+        public IList<Material3d> Materials { get; }
+
+        public IList<Item3dUsage> Items { get; }
+
+        public IList<Workstep> Worksteps { get; }
         #endregion
 
         #endregion

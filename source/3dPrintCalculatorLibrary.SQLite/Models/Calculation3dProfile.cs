@@ -188,6 +188,25 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region Presets
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Printer3d> printers = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Material3d> materials = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Item3dUsage> items = new();
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Workstep> worksteps = new();
+        #endregion
+
         #endregion
 
         #region Constructor

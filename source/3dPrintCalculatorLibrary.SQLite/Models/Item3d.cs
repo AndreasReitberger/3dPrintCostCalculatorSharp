@@ -36,7 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid manufacturerId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId))]
+        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
         Manufacturer manufacturer;
 
         [ObservableProperty]

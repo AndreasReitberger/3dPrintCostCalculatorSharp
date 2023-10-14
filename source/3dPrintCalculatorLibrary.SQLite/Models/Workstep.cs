@@ -10,7 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
-    [Table("Worksteps")]
+    [Table($"{nameof(Workstep)}s")]
     public partial class Workstep : ObservableObject, IWorkstep, ICloneable
     {
         #region Properties
@@ -37,6 +37,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         int quantity = 1;
         partial void OnQuantityChanged(int value)
         {
@@ -54,6 +55,7 @@ namespace AndreasReitberger.Print3d.SQLite
         CalculationType calculationType;
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double duration = 0;
         partial void OnDurationChanged(double value)
         {
@@ -64,6 +66,7 @@ namespace AndreasReitberger.Print3d.SQLite
         WorkstepType type;
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double totalCosts = 0;
 
         [ObservableProperty]
@@ -75,6 +78,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Private
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double CalcualteTotalCosts()
         {
             try

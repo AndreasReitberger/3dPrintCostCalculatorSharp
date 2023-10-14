@@ -6,6 +6,7 @@ using SQLiteNetExtensions.Attributes;
 namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
 {
     [Table("WorkstepDurations")]
+    [Obsolete("Use the WorkstepUsage class instead")]
     public partial class WorkstepDuration : ObservableObject, IWorkstepDuration
     {
         #region Properties

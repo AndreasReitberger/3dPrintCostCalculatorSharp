@@ -4,6 +4,7 @@ using System;
 
 namespace AndreasReitberger.Print3d.Realm.WorkstepAdditions
 {
+    [Obsolete("Use the WorkstepUsage class instead")]
     public partial class WorkstepDuration : RealmObject, IWorkstepDuration
     {
         #region Properties

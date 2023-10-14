@@ -100,6 +100,9 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepCalculation),
             typeof(CustomAdditionCalculation),
             typeof(WorkstepDuration),
+            typeof(WorkstepUsage),
+            typeof(WorkstepUsageParameter),
+            typeof(WorkstepUsageCalculation),
             typeof(Item3d),
             typeof(Item3dCalculation),
             typeof(Item3dUsage),
@@ -168,6 +171,30 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 Worksteps = value,
             });
+        }
+
+        [ObservableProperty]
+        List<WorkstepUsage> workstepUsages = new();
+        partial void OnWorkstepUsagesChanged(List<WorkstepUsage> value)
+        {
+            /*
+            OnWorkstepsChangedEvent(new WorkstepsChangedDatabaseEventArgs()
+            {
+                Worksteps = value,
+            });
+            */
+        }
+
+        [ObservableProperty]
+        List<WorkstepUsageParameter> workstepUsageParameters = new();
+        partial void OnWorkstepUsageParametersChanged(List<WorkstepUsageParameter> value)
+        {
+            /*
+            OnWorkstepsChangedEvent(new WorkstepsChangedDatabaseEventArgs()
+            {
+                Worksteps = value,
+            });
+            */
         }
 
         [ObservableProperty]

@@ -604,7 +604,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Worksteps
         public async Task<List<Workstep>> GetWorkstepsWithChildrenAsync()
         {
-            Worksteps = await DatabaseAsync?
+            Worksteps = await DatabaseAsync
                 .GetAllWithChildrenAsync<Workstep>(recursive: true)
                 ;
             return Worksteps;
@@ -612,29 +612,105 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<Workstep> GetWorkstepWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<Workstep>(id, recursive: true)
                 ;
         }
 
         public async Task SetWorkstepWithChildrenAsync(Workstep workstep)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(workstep, recursive: true)
                 ;
         }
 
-        public async Task SetMWorkstepsWithChildrenAsync(List<Workstep> worksteps, bool replaceExisting = true)
+        public async Task SetWorkstepsWithChildrenAsync(List<Workstep> worksteps, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(worksteps);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(worksteps);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(worksteps);
+                await DatabaseAsync.InsertAllWithChildrenAsync(worksteps);
         }
 
         public async Task<int> DeleteWorkstepAsync(Workstep workstep)
         {
-            return await DatabaseAsync?.DeleteAsync<Workstep>(workstep?.Id);
+            return await DatabaseAsync.DeleteAsync<Workstep>(workstep?.Id);
+        }
+
+        #endregion
+
+        #region WorkstepsUsages
+        public async Task<List<WorkstepUsage>> GetWorkstepUsagesWithChildrenAsync()
+        {
+            WorkstepUsages = await DatabaseAsync
+                .GetAllWithChildrenAsync<WorkstepUsage>(recursive: true)
+                ;
+            return WorkstepUsages;
+        }
+
+        public async Task<WorkstepUsage> GetWorkstepUsageWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<WorkstepUsage>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetWorkstepUsageWithChildrenAsync(WorkstepUsage workstepUsage)
+        {
+            await DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(workstepUsage, recursive: true)
+                ;
+        }
+
+        public async Task SetWorkstepUsagesWithChildrenAsync(List<WorkstepUsage> workstepUsages, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(workstepUsages);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(workstepUsages);
+        }
+
+        public async Task<int> DeleteWorkstepUsageAsync(WorkstepUsage workstepUsage)
+        {
+            return await DatabaseAsync.DeleteAsync<WorkstepUsage>(workstepUsage?.Id);
+        }
+
+        #endregion
+
+        #region WorkstepsUsageParameters
+        public async Task<List<WorkstepUsageParameter>> GetWorkstepUsageParametersWithChildrenAsync()
+        {
+            WorkstepUsageParameters = await DatabaseAsync
+                .GetAllWithChildrenAsync<WorkstepUsageParameter>(recursive: true)
+                ;
+            return WorkstepUsageParameters;
+        }
+
+        public async Task<WorkstepUsageParameter> GetWorkstepUsageParameterWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<WorkstepUsageParameter>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetWorkstepUsageParametersWithChildrenAsync(WorkstepUsageParameter workstepUsageParameter)
+        {
+            await DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(workstepUsageParameter, recursive: true)
+                ;
+        }
+
+        public async Task SeWorkstepUsageParametersWithChildrenAsync(List<WorkstepUsageParameter> workstepUsageParameters, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(workstepUsageParameters);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(workstepUsageParameters);
+        }
+
+        public async Task<int> DeleteWorkstepUsageParameterAsync(WorkstepUsageParameter workstepUsageParameter)
+        {
+            return await DatabaseAsync.DeleteAsync<WorkstepUsageParameter>(workstepUsageParameter?.Id);
         }
 
         #endregion
@@ -642,19 +718,19 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Workstep Categories
         public async Task<List<WorkstepCategory>> GetWorkstepCategoriesWithChildrenAsync()
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetAllWithChildrenAsync<WorkstepCategory>(recursive: true);
         }
 
         public async Task<WorkstepCategory> GetWorkstepCategoryWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<WorkstepCategory>(id, recursive: true)
                 ;
         }
         public async Task SetWorkstepCategoryWithChildrenAsync(WorkstepCategory workstepCategory)
         {
-            await DatabaseAsync?
+            await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(workstepCategory, recursive: true)
                 ;
         }
@@ -662,14 +738,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task SetWorkstepCategoriesWithChildrenAsync(List<WorkstepCategory> categories, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(categories);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(categories);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(categories);
+                await DatabaseAsync.InsertAllWithChildrenAsync(categories);
         }
 
         public async Task<int> DeleteWorkstepCategoryAsync(WorkstepCategory workstepCategory)
         {
-            return await DatabaseAsync?.DeleteAsync<WorkstepCategory>(workstepCategory?.Id);
+            return await DatabaseAsync.DeleteAsync<WorkstepCategory>(workstepCategory?.Id);
         }
 
         #endregion
@@ -678,36 +754,36 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task<List<HourlyMachineRate>> GetHourlyMachineRatesWithChildrenAsync()
         {
-            HourlyMachineRates = await DatabaseAsync?
+            HourlyMachineRates = await DatabaseAsync
                 .GetAllWithChildrenAsync<HourlyMachineRate>(recursive: true);
             return HourlyMachineRates;
         }
 
         public async Task<HourlyMachineRate> GetHourlyMachineRateWithChildrenAsync(Guid id)
         {
-            return await DatabaseAsync?
+            return await DatabaseAsync
                 .GetWithChildrenAsync<HourlyMachineRate>(id, recursive: true);
         }
 
         public async Task SetHourlyMachineRateWithChildrenAsync(HourlyMachineRate hourlyMachineRate, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceWithChildrenAsync(hourlyMachineRate, recursive: true);
+                await DatabaseAsync.InsertOrReplaceWithChildrenAsync(hourlyMachineRate, recursive: true);
             else
-                await DatabaseAsync?.InsertWithChildrenAsync(hourlyMachineRate);
+                await DatabaseAsync.InsertWithChildrenAsync(hourlyMachineRate);
         }
 
         public async Task SetHourlyMachineRatesWithChildrenAsync(List<HourlyMachineRate> hourlyMachineRates, bool replaceExisting = true)
         {
             if (replaceExisting)
-                await DatabaseAsync?.InsertOrReplaceAllWithChildrenAsync(hourlyMachineRates);
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(hourlyMachineRates);
             else
-                await DatabaseAsync?.InsertAllWithChildrenAsync(hourlyMachineRates);
+                await DatabaseAsync.InsertAllWithChildrenAsync(hourlyMachineRates);
         }
 
         public async Task<int> DeleteHourlyMachineRateAsync(HourlyMachineRate hourlyMachineRate)
         {
-            return await DatabaseAsync?.DeleteAsync<HourlyMachineRate>(hourlyMachineRate?.Id);
+            return await DatabaseAsync.DeleteAsync<HourlyMachineRate>(hourlyMachineRate?.Id);
         }
 
         #endregion

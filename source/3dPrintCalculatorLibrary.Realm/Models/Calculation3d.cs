@@ -129,8 +129,12 @@ namespace AndreasReitberger.Print3d.Realm
 
         public IList<CustomAddition> CustomAdditions { get; }
 
+        public IList<WorkstepUsage> WorkstepUsages { get; }
+
+        [Obsolete("Use the WorkstepUsages class instead")]
         public IList<Workstep> WorkSteps { get; }
 
+        [Obsolete("Use the WorkstepUsages class instead")]
         public IList<WorkstepDuration> WorkStepDurations { get; }
 
         public IList<Item3dUsage> AdditionalItems { get; }

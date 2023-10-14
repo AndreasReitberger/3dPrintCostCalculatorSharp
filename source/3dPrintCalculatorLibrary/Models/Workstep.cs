@@ -26,6 +26,7 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         int quantity = 1;
         partial void OnQuantityChanged(int value)
         {
@@ -42,6 +43,7 @@ namespace AndreasReitberger.Print3d.Models
         CalculationType calculationType;
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double duration = 0;
         partial void OnDurationChanged(double value)
         {
@@ -52,6 +54,7 @@ namespace AndreasReitberger.Print3d.Models
         WorkstepType type;
 
         [ObservableProperty]
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double totalCosts = 0;
 
         [ObservableProperty]
@@ -63,6 +66,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Private
+        [Obsolete("Use the WorkstepUsageParameter instead")]
         double CalcualteTotalCosts()
         {
             try

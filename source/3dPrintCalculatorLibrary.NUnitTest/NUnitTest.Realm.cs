@@ -3,6 +3,7 @@ using AndreasReitberger.Print3d.Realm;
 using AndreasReitberger.Print3d.Realm.CalculationAdditions;
 using AndreasReitberger.Print3d.Realm.MaterialAdditions;
 using AndreasReitberger.Print3d.Realm.StorageAdditions;
+using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
 using AndreasReitberger.Print3d.Realm.ProcedureAdditions;
 using NUnit.Framework;
 using Realms;
@@ -616,6 +617,7 @@ namespace AndreasReitberger.NUnitTest
             }
         }
 
+        [Test]
         public void MultiFileDifferTest()
         {
             try
@@ -724,6 +726,94 @@ namespace AndreasReitberger.NUnitTest
 
                 Assert.IsTrue(_calculation.IsCalculated);
                 Assert.IsTrue(total == totalDiffer);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+
+        [Test]
+        public void Item3dTests()
+        {
+            try
+            {
+                Manufacturer wuerth = new()
+                {
+                    Name = "Würth",
+                    DebitorNumber = "DE26265126",
+                    Website = "https://www.wuerth.de/",
+                };
+
+                Item3d item1 = new()
+                {
+                    Name = "Nuts M3",
+                    PackageSize = 100,
+                    PackagePrice = 9.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-1223"
+                };
+                Item3d item2 = new()
+                {
+                    Name = "Screws M3 20mm",
+                    PackageSize = 50,
+                    PackagePrice = 14.99d,
+                    Manufacturer = wuerth,
+                    SKU = "2302423-6413"
+                };
+
+                Assert.IsNotNull(item1);
+                Assert.IsNotNull(item2);
+                Assert.IsNotNull(item1?.Manufacturer);
+                Assert.IsNotNull(item2?.Manufacturer);
+
+                Item3dUsage usage = new()
+                {
+                    Item = item1,
+                    Quantity = 30,
+                    LinkedToFile = false,
+                };
+                Assert.IsNotNull(usage);
+                Assert.IsNotNull(usage.Item);
+
+                var manufacturerLoaded = usage?.Item?.Manufacturer;
+                Assert.IsNotNull(manufacturerLoaded);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public void WorkstepTests()
+        {
+            try
+            {
+                WorkstepCategory category = new()
+                {
+                    Name = "Construction"
+                };
+                Workstep ws = new()
+                {
+                    Name = "3D CAD",
+                    Category = category,
+                    Price = 30,
+                };
+                WorkstepUsage usage = new()
+                {
+                    Workstep = ws,
+                    UsageParameter = new()
+                    {
+                        ParameterType = WorkstepUsageParameterType.Duration,
+                        Value = 1.5d
+                    }
+                };
+
+                Assert.IsNotNull(usage);
+                Assert.IsNotNull(usage?.UsageParameter);
+                Assert.IsNotNull(usage?.Workstep);
             }
             catch (Exception exc)
             {

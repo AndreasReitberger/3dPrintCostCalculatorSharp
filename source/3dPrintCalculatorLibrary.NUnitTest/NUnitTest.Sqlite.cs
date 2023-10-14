@@ -710,6 +710,65 @@ namespace AndreasReitberger.NUnitTest
         }
 
         [Test]
+        public async Task WorkstepTests()
+        {
+            try
+            {
+                string databasePath = "testdatabase_worksteps.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTables(new List<Type> {
+                        typeof(Workstep),
+                        typeof(WorkstepCategory),
+                        typeof(WorkstepUsage),
+                        typeof(WorkstepUsageParameter),
+                    })
+                    .Build();
+                WorkstepCategory category = new()
+                {
+                    Name = "Construction"
+                };
+                await handler.SetWorkstepCategoryWithChildrenAsync(category);
+
+                Workstep ws = new()
+                {
+                    Name = "3D CAD",
+                    Category = category,
+                    Price = 30,
+                };
+                await handler.SetWorkstepWithChildrenAsync(ws);
+
+                WorkstepUsage usage = new()
+                {
+                    Workstep = ws,
+                    UsageParameter = new()
+                    {
+                        ParameterType = WorkstepUsageParameterType.Duration,
+                        Value = 1.5d
+                    }
+                };
+                await handler.SetWorkstepUsageWithChildrenAsync(usage);
+
+
+                WorkstepUsage loadedUsage = await handler.GetWorkstepUsageWithChildrenAsync(usage.Id);
+                Assert.IsNotNull(loadedUsage);
+                Assert.IsNotNull(loadedUsage?.UsageParameter);
+                Assert.IsNotNull(loadedUsage?.Workstep);
+
+                var usages = await handler.GetWorkstepUsagesWithChildrenAsync();
+                Assert.IsTrue(usages?.Count == 1);
+            }
+            catch(Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
         public async Task DatabaseSaveAndLoadTest()
         {
             try

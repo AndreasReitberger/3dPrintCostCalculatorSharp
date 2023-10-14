@@ -486,12 +486,19 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task SetCalculationWithChildrenAsync(Calculation3d calculation, bool updateList = true)
         {
-            List<WorkstepUsage> itemCollection = calculation.WorkstepUsages
+            List<WorkstepUsage> workstepCollection = calculation.WorkstepUsages
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (workstepCollection?.Count > 0)
+                await SetWorkstepUsagesWithChildrenAsync(workstepCollection, replaceExisting: true);
+            List<Item3dUsage> itemCollection = calculation.AdditionalItems
                 .Where(i => i is not null)
                 .ToList()
                 ;
             if (itemCollection?.Count > 0)
-                await SetWorkstepUsagesWithChildrenAsync(itemCollection, replaceExisting: true);
+                await SetItemUsagesWithChildrenAsync(itemCollection, replaceExisting: true);
+            
             await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(calculation, recursive: true)
                 ;

@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public static ObservableCollection<Calculation3dChartItem> GetCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var Costs = new ObservableCollection<Calculation3dChartItem>(
+            var costs = new ObservableCollection<Calculation3dChartItem>(
                 calculation.Costs.Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,
@@ -22,12 +22,12 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return Costs;
+            return costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMaterialUsage(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MaterialUsage = new ObservableCollection<Calculation3dChartItem>(
+            var usage = new ObservableCollection<Calculation3dChartItem>(
                 calculation.MaterialUsage.Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,
@@ -37,12 +37,12 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return MaterialUsage;
+            return usage;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMachineCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MachineCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallPrinterCosts
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.OverallPrinterCosts
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Machine ||
                     cost.Type == CalculationAttributeType.Energy ||
@@ -58,12 +58,12 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return MachineCosts;
+            return costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetMaterialCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MaterialCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallMaterialCosts
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.OverallMaterialCosts
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Material ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
@@ -77,12 +77,29 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return MaterialCosts;
+            return costs;
+        }
+        public static ObservableCollection<Calculation3dChartItem> GetItemCosts(Calculation3d calculation)
+        {
+            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+                .Where(cost => (
+                    cost.Type == CalculationAttributeType.AdditionalItem ))
+                .Select(cost => new Calculation3dChartItem()
+                {
+                    Name = cost.Attribute,
+                    Value = cost.Value,
+                    AttributeType = cost.Type,
+                    AttributeItem = cost.Item,
+                    FileId = cost.FileId,
+                    FileName = cost.FileName,
+                }));
+            return costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetWorkstepCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost =>
                     cost.Type == CalculationAttributeType.Workstep ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition)
@@ -95,12 +112,12 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return WorkstepCosts;
+            return costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetCustomAdditionsCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.CustomAddition)
                 .Select(cost => new Calculation3dChartItem()
                 {
@@ -111,12 +128,12 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return WorkstepCosts;
+            return costs;
         }
         public static ObservableCollection<Calculation3dChartItem> GetRatesCosts(Calculation3d calculation)
         {
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var RatesCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            var costs = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.Margin || cost.Type == CalculationAttributeType.Tax || cost.Type == CalculationAttributeType.CustomAddition)
                 .Select(cost => new Calculation3dChartItem()
                 {
@@ -127,7 +144,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
-            return RatesCosts;
+            return costs;
         }
         #endregion
     }

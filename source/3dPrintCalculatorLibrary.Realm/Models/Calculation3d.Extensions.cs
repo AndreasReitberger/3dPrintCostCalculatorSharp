@@ -108,7 +108,7 @@ namespace AndreasReitberger.Print3d.Realm
                         if (ApplyProcedureSpecificAdditions)
                         {
                             if (material.MaterialFamily == Material3dFamily.Powder)
-                            { 
+                            {
                                 CalculationProcedureAttribute attribute = ProcedureAttributes.FirstOrDefault(
                                 attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
                                 if (attribute != null)
@@ -140,7 +140,7 @@ namespace AndreasReitberger.Print3d.Realm
                             if (ProcedureAdditions?.Count > 0)
                             {
                                 IEnumerable<ProcedureAddition> procedureAdditions = ProcedureAdditions?
-                                    .Where(addition => addition.TargetFamily == material.MaterialFamily 
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily
                                     && addition.Target == ProcedureAdditionTarget.Material
                                     && addition.Enabled
                                     );

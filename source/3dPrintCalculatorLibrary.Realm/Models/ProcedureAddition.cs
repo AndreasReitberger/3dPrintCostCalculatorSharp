@@ -51,7 +51,8 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Constructor
-        public ProcedureAddition() {
+        public ProcedureAddition()
+        {
             Id = Guid.NewGuid();
         }
         #endregion
@@ -59,24 +60,24 @@ namespace AndreasReitberger.Print3d.Realm
         #region Methods
 
         public double CalculateCosts()
-		{
-			double costs = 0;
-			foreach (IProcedureCalculationParameter para in Parameters)
-			{
-				switch (para.Type)
-				{
-					case ProcedureCalculationType.ReplacementCosts:
-						costs = ((para.Price / para.QuantityInPackage) / 100) * para.WearFactor;
-						break;
-					case ProcedureCalculationType.ConsumableGoods:
-						costs = (para.Price / para.QuantityInPackage) * para.AmountTakenForCalculation;
-						break;
-					default:
-						break;
-				}
-			};
-			return costs;
-		}
+        {
+            double costs = 0;
+            foreach (IProcedureCalculationParameter para in Parameters)
+            {
+                switch (para.Type)
+                {
+                    case ProcedureCalculationType.ReplacementCosts:
+                        costs = ((para.Price / para.QuantityInPackage) / 100) * para.WearFactor;
+                        break;
+                    case ProcedureCalculationType.ConsumableGoods:
+                        costs = (para.Price / para.QuantityInPackage) * para.AmountTakenForCalculation;
+                        break;
+                    default:
+                        break;
+                }
+            };
+            return costs;
+        }
 
         #endregion
 

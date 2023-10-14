@@ -48,7 +48,8 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor
-        public ProcedureAddition() {
+        public ProcedureAddition()
+        {
             Id = Guid.NewGuid();
         }
         #endregion

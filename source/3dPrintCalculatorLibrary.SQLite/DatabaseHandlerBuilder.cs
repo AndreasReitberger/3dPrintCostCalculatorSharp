@@ -23,7 +23,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     {
                         _databaseHandler.CreateTables(_databaseHandler.Tables);
                     }
-                    else 
+                    else
                         _databaseHandler.InitTables();
                 }
                 return _databaseHandler;

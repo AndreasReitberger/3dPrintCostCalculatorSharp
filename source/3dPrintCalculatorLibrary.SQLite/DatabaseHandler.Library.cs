@@ -852,7 +852,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 .Where(i => i is not null)
                 .ToList()
                 ;
-            if(itemCollection?.Count > 0)
+            if (itemCollection?.Count > 0)
                 await SetManufacturersWithChildrenAsync(itemCollection, replaceExisting);
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);
@@ -894,7 +894,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 .Where(i => i is not null)
                 .ToList()
                 ;
-            if(itemCollection?.Count > 0)
+            if (itemCollection?.Count > 0)
                 await SetItemsWithChildrenAsync(itemCollection, replaceExisting);
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(items);

@@ -39,7 +39,8 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor
-        public Supplier() {
+        public Supplier()
+        {
             Id = Guid.NewGuid();
         }
         #endregion

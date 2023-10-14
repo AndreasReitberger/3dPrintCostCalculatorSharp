@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         Version latestVersion;
-        
+
         public string DisplayName => $"{SlicerName} ({ExecutionType})";
         #endregion
 

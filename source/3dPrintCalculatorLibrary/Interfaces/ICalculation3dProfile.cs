@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace AndreasReitberger.Print3d.Interfaces
 {
@@ -29,7 +30,7 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Energy
         public bool ApplyEnergyCost { get; set; }
-        public int PowerLevel { get; set; }
+        public double PowerLevel { get; set; }
         public double EnergyCostsPerkWh { get; set; }
 
         #endregion
@@ -53,12 +54,12 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Resin
         public bool ApplyResinGlovesCosts { get; set; }
-        public int GlovesPerPrintJob { get; set; }
-        public int GlovesInPackage { get; set; }
+        public double GlovesPerPrintJob { get; set; }
+        public double GlovesInPackage { get; set; }
         public double GlovesPackagePrice { get; set; }
         public bool ApplyResinFilterCosts { get; set; }
         public double FiltersPerPrintJob { get; set; }
-        public int FiltersInPackage { get; set; }
+        public double FiltersInPackage { get; set; }
         public double FiltersPackagePrice { get; set; }
         public bool ApplyResinWashingCosts { get; set; }
         public double IsopropanolContainerContent { get; set; }
@@ -67,6 +68,10 @@ namespace AndreasReitberger.Print3d.Interfaces
         public bool ApplyResinCuringCosts { get; set; }
         public double CuringCostsPerHour { get; set; }
         public double CuringDurationInMintues { get; set; }
+        public bool ApplyResinTankWearCosts { get; set; }
+        public double ResinTankReplacementCosts { get; set; }
+        public double ResinTankWearFactorPerPrintJob { get; set; }
+        public double ResinTankWearCostsPerPrintJob { get; set; }
         #endregion
 
         #region Powder

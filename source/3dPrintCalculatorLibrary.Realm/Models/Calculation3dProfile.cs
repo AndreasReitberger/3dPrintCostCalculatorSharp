@@ -1,9 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Realms;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Realm
 {
@@ -45,7 +43,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public bool ApplyEnergyCost { get; set; } = false;
 
-        public int PowerLevel { get; set; } = 0;
+        public double PowerLevel { get; set; } = 0;
 
         public double EnergyCostsPerkWh { get; set; } = 0;
 
@@ -56,27 +54,18 @@ namespace AndreasReitberger.Print3d.Realm
         #region Filament
 
         public bool ApplyNozzleWearCosts { get; set; } = false;
-
         public double NozzleReplacementCosts { get; set; } = 0;
-
         public double NozzleWearFactorPerPrintJob { get; set; } = 0;
-
         public double NozzleWearCostsPerPrintJob { get; set; } = 0;
 
         public bool ApplyPrintSheetWearCosts { get; set; } = false;
-
         public double PrintSheetReplacementCosts { get; set; } = 0;
-
         public double PrintSheetWearFactorPerPrintJob { get; set; } = 0;
-
         public double PrintSheetWearCostsPerPrintJob { get; set; } = 0;
 
         public bool ApplyMultiMaterialCosts { get; set; } = false;
-
         public double MultiMaterialChangeCosts { get; set; } = 0;
-
         public bool MultiMaterialAllSelectetMaterialsAreUsed { get; set; } = false;
-
         public double MultiMaterialChangesPerPrint { get; set; } = 0;
 
         #endregion
@@ -84,34 +73,28 @@ namespace AndreasReitberger.Print3d.Realm
         #region Resin
 
         public bool ApplyResinGlovesCosts { get; set; } = false;
-
-        public int GlovesPerPrintJob { get; set; } = 0;
-
-        public int GlovesInPackage { get; set; } = 0;
-
+        public double GlovesPerPrintJob { get; set; } = 0;
+        public double GlovesInPackage { get; set; } = 0;
         public double GlovesPackagePrice { get; set; } = 0;
-
         public bool ApplyResinFilterCosts { get; set; } = false;
 
         public double FiltersPerPrintJob { get; set; } = 0;
-
-        public int FiltersInPackage { get; set; } = 0;
-
+        public double FiltersInPackage { get; set; } = 0;
         public double FiltersPackagePrice { get; set; } = 0;
-
         public bool ApplyResinWashingCosts { get; set; } = false;
 
         public double IsopropanolContainerContent { get; set; } = 0;
-
         public double IsopropanolContainerPrice { get; set; } = 0;
-
         public double IsopropanolPerPrintJob { get; set; } = 0;
 
         public bool ApplyResinCuringCosts { get; set; } = false;
-
         public double CuringCostsPerHour { get; set; } = 0;
-
         public double CuringDurationInMintues { get; set; } = 0;
+
+        public bool ApplyResinTankWearCosts { get; set; } = false;
+        public double ResinTankReplacementCosts { get; set; } = 0;
+        public double ResinTankWearFactorPerPrintJob { get; set; } = 0;
+        public double ResinTankWearCostsPerPrintJob { get; set; } = 0;
         #endregion
 
         #region Powder
@@ -136,7 +119,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public IList<Item3dUsage> Items { get; }
 
-        public IList<Workstep> Worksteps { get; }
+        public IList<WorkstepUsage> Worksteps { get; }
         #endregion
 
         #endregion

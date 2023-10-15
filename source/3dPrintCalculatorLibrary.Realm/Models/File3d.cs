@@ -2,7 +2,6 @@
 using AndreasReitberger.Print3d.Realm.FileAdditions;
 using Realms;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace AndreasReitberger.Print3d.Realm

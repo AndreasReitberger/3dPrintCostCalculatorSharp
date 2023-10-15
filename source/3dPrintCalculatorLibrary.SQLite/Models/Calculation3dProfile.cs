@@ -58,7 +58,7 @@ namespace AndreasReitberger.Print3d.SQLite
         bool applyEnergyCost = false;
 
         [ObservableProperty]
-        int powerLevel = 0;
+        double powerLevel = 0;
 
         [ObservableProperty]
         double energyCostsPerkWh = 0;
@@ -113,10 +113,10 @@ namespace AndreasReitberger.Print3d.SQLite
         bool applyResinGlovesCosts = false;
 
         [ObservableProperty]
-        int glovesPerPrintJob = 0;
+        double glovesPerPrintJob = 0;
 
         [ObservableProperty]
-        int glovesInPackage = 0;
+        double glovesInPackage = 0;
 
         [ObservableProperty]
         double glovesPackagePrice = 0;
@@ -128,7 +128,7 @@ namespace AndreasReitberger.Print3d.SQLite
         double filtersPerPrintJob = 0;
 
         [ObservableProperty]
-        int filtersInPackage = 0;
+        double filtersInPackage = 0;
 
         [ObservableProperty]
         double filtersPackagePrice = 0;
@@ -204,7 +204,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Workstep> worksteps = new();
+        ObservableCollection<WorkstepUsage> worksteps = new();
         #endregion
 
         #endregion
@@ -222,10 +222,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

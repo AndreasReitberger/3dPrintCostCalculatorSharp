@@ -498,7 +498,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 ;
             if (itemCollection?.Count > 0)
                 await SetItemUsagesWithChildrenAsync(itemCollection, replaceExisting: true);
-            
+
             await DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(calculation, recursive: true)
                 ;

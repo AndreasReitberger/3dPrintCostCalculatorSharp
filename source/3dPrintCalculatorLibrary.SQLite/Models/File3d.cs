@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.SQLite
         string filePath = string.Empty;
         partial void OnFilePathChanged(string value)
         {
-            if(value is not null)
+            if (value is not null)
             {
                 FileName = new FileInfo(value)?.Name ?? string.Empty;
                 if (string.IsNullOrEmpty(Name)) Name = FileName;

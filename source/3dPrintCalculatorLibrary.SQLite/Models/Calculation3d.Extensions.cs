@@ -482,7 +482,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     }
                 }
             }
-          
+
             // If the handling fee is not set per file, add it once afterwards
             if (handlingsFee != null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
             {
@@ -494,7 +494,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     FileId = Guid.Empty,
                     FileName = string.Empty,
                 });
-                if(handlingsFee?.SkipForMargin == false)
+                if (handlingsFee?.SkipForMargin == false)
                 {
                     double marginValue = handlingsFee.Value * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
                     if (marginValue > 0)
@@ -507,7 +507,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             FileId = Guid.Empty,
                             FileName = string.Empty,
                         });
-                    }                  
+                    }
                 }
             }
 

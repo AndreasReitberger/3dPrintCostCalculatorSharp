@@ -84,7 +84,7 @@ namespace AndreasReitberger.Print3d.SQLite
             if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
             var costs = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => (
-                    cost.Type == CalculationAttributeType.AdditionalItem ))
+                    cost.Type == CalculationAttributeType.AdditionalItem))
                 .Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,

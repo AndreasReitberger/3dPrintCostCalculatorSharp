@@ -119,7 +119,7 @@ namespace AndreasReitberger.NUnitTest
 
                 _calculation.CalculateCosts();
                 double totalCosts = _calculation.TotalCosts;
-                Assert.IsTrue(_calculation.IsCalculated);
+                Assert.That(_calculation.IsCalculated);
 
                 List<double> costsCalc = new()
                 {
@@ -130,13 +130,13 @@ namespace AndreasReitberger.NUnitTest
                     _calculation.ItemsCosts,
                 };
                 double summedCalc = costsCalc.Sum();
-                Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
+                Assert.That(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
 
 
                 Calculation3d _calculation2 = _calculation?.Clone() as Calculation3d;
                 _calculation2.CalculateCosts();
-                Assert.IsTrue(_calculation2.IsCalculated);
-                Assert.IsTrue(totalCosts == _calculation2.TotalCosts);
+                Assert.That(_calculation2.IsCalculated);
+                Assert.That(totalCosts == _calculation2.TotalCosts);
 
                 costsCalc = new()
                 {
@@ -147,7 +147,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation2.ItemsCosts,
                 };
                 summedCalc = costsCalc.Sum();
-                Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
+                Assert.That(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
 
             }
             catch (Exception exc)
@@ -229,7 +229,7 @@ namespace AndreasReitberger.NUnitTest
 #if NETFRAMEWORK
                 Calculator3dExporter.Save(_calculation, @"mycalc.3dcx");
                 Calculator3dExporter.Load(@"mycalc.3dcx", out Calculation3d calculation);
-                Assert.IsTrue(calculation != null);
+                Assert.That(calculation != null);
 #endif
             }
             catch (Exception exc)
@@ -354,7 +354,7 @@ namespace AndreasReitberger.NUnitTest
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
-                Assert.IsNotNull(wearCostAttribute);
+                Assert.That(wearCostAttribute is not null);
 
                 // Updat calculation
                 _calculation.Printer = null;
@@ -368,7 +368,7 @@ namespace AndreasReitberger.NUnitTest
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
-                Assert.IsNull(wearCostAttribute);
+                Assert.That(wearCostAttribute is null);
             }
             catch (Exception exc)
             {
@@ -640,8 +640,8 @@ namespace AndreasReitberger.NUnitTest
 
                 double totalDiffer = _calculation.GetTotalCosts();
 
-                Assert.IsTrue(_calculation.IsCalculated);
-                Assert.IsTrue(total == totalDiffer);
+                Assert.That(_calculation.IsCalculated);
+                Assert.That(total == totalDiffer);
             }
             catch (Exception exc)
             {
@@ -678,10 +678,10 @@ namespace AndreasReitberger.NUnitTest
                     SKU = "2302423-6413"
                 };
 
-                Assert.IsNotNull(item1);
-                Assert.IsNotNull(item2);
-                Assert.IsNotNull(item1?.Manufacturer);
-                Assert.IsNotNull(item2?.Manufacturer);
+                Assert.That(item1 is not null);
+                Assert.That(item2 is not null);
+                Assert.That(item1?.Manufacturer is not null);
+                Assert.That(item2?.Manufacturer is not null);
 
                 Item3dUsage usage = new()
                 {
@@ -689,11 +689,11 @@ namespace AndreasReitberger.NUnitTest
                     Quantity = 30,
                     LinkedToFile = false,
                 };
-                Assert.IsNotNull(usage);
-                Assert.IsNotNull(usage.Item);
+                Assert.That(usage is not null);
+                Assert.That(usage.Item is not null);
 
                 var manufacturerLoaded = usage?.Item?.Manufacturer;
-                Assert.IsNotNull(manufacturerLoaded);
+                Assert.That(manufacturerLoaded is not null);
             }
             catch (Exception exc)
             {
@@ -726,9 +726,9 @@ namespace AndreasReitberger.NUnitTest
                     }
                 };
 
-                Assert.IsNotNull(usage);
-                Assert.IsNotNull(usage?.UsageParameter);
-                Assert.IsNotNull(usage?.Workstep);
+                Assert.That(usage is not null);
+                Assert.That(usage?.UsageParameter is not null);
+                Assert.That(usage?.Workstep is not null);
             }
             catch (Exception exc)
             {
@@ -766,13 +766,13 @@ namespace AndreasReitberger.NUnitTest
                 storage.AddToStock(material, 750, Unit.Gram);
                 var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
-                Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
+                Assert.That(newItem?.Amount == startAmount + 0.75);
 
                 // Just to check if the unit conversion is working
                 storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
                 newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
-                Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
             }
             catch (Exception exc)
             {
@@ -786,7 +786,7 @@ namespace AndreasReitberger.NUnitTest
             try
             {
                 Calculation3d calculation = GetTestCalculation();
-                Assert.IsNotNull(calculation);
+                Assert.That(calculation is not null);
 
                 foreach (var material in calculation.Materials)
                 {
@@ -798,7 +798,7 @@ namespace AndreasReitberger.NUnitTest
             }
             catch (Exception exc)
             {
-                Assert.Fail(exc.Message, exc);
+                Assert.Fail(exc.Message);
             }
         }
 
@@ -828,7 +828,7 @@ namespace AndreasReitberger.NUnitTest
                     }
                 };
                 double resinWearCosts = resinTank.CalculateCosts();
-                Assert.IsTrue(resinWearCosts == 0.5d);
+                Assert.That(resinWearCosts == 0.5d);
                 // Consumable goods (like filters and gloves)
                 ProcedureAddition gloves = new()
                 {
@@ -850,15 +850,15 @@ namespace AndreasReitberger.NUnitTest
                     }
                 };
                 double glovesCosts = gloves.CalculateCosts();
-                Assert.IsTrue(glovesCosts == 1d);
+                Assert.That(glovesCosts == 1d);
 
                 var calculation = GetTestCalculation();
                 calculation.Procedure = Material3dFamily.Resin;
                 calculation.ApplyProcedureSpecificAdditions = true;
                 calculation.CalculateCosts();
 
-                Assert.NotNull(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement"));
-                Assert.NotNull(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves"));
+                Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
+                Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
             }
             catch (Exception exc)
             {

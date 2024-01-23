@@ -132,12 +132,18 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Details
         [ObservableProperty]
+        [Obsolete("Use the PrintInfos instead. The material and printer is now linked to the file")]
         [property: ManyToMany(typeof(Printer3dCalculation))]
         List<Printer3d> printers = new();
 
+        public List<Printer3d>? AvailablePrinters => PrintInfos?.Select(pi => pi?.Printer)?.Distinct()?.ToList();
+
         [ObservableProperty]
+        [Obsolete("Use the PrintInfos instead. The material and printer is now linked to the file")]
         [property: ManyToMany(typeof(Material3dCalculation))]
         List<Material3d> materials = new();
+
+        public List<Material3d>? AvailableMaterials => PrintInfos?.Select(pi => pi?.Material)?.Distinct()?.ToList();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(CustomAdditionCalculation))]
@@ -185,9 +191,19 @@ namespace AndreasReitberger.Print3d.SQLite
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<CalculationAttribute> rates = new();
 
-        [ObservableProperty]
+        [ObservableProperty, Obsolete("Will be replaced with `PrintInfos`")]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<File3d> files = new();
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
+        [NotifyPropertyChangedFor(nameof(AvailableMaterials))]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Print3dInfo> printInfos = new();
+        partial void OnPrintInfosChanged(List<Print3dInfo> value)
+        {
+
+        }
         #endregion
 
         #region AdditionalSettings

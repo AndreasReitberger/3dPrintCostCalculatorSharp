@@ -7,6 +7,8 @@ namespace AndreasReitberger.Print3d.Interfaces
         #region Properties
         public Guid Id { get; set; }
         public Guid CalculationId { get; set; }
+        public Guid CalculationProfileId { get; set; }
+        public Guid PrintInfoId { get; set; }
         public Guid? FileId { get; set; }
         public Guid ItemId { get; set; }
         public double Quantity { get; set; }

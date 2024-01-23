@@ -380,6 +380,41 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region PrintInfos
+        public Task<List<Print3dInfo>> GetPrintInfosWithChildrenAsync() => DatabaseAsync
+                .GetAllWithChildrenAsync<Print3dInfo>(recursive: true)
+                ;
+       
+        public Task<Print3dInfo> GetPrintInfoWithChildrenAsync(Guid id) => DatabaseAsync
+                .GetWithChildrenAsync<Print3dInfo>(id, recursive: true);     
+
+        // https://stackoverflow.com/questions/35975235/one-to-many-relationship-in-sqlite-xamarin
+        public Task SetPrintInfoWithChildrenAsync(Print3dInfo file) => DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(file, recursive: true);
+        
+        public async Task SetPrintInfosWithChildrenAsync(List<Print3dInfo> files, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(files);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(files);
+        }
+
+        public Task<int> DeletePrintInfoAsync(Print3dInfo file) => DatabaseAsync
+                .DeleteAsync<File3d>(file.Id);      
+
+        public async Task<int[]> DeletePrintInfosAsync(List<Print3dInfo> files)
+        {
+            Stack<int> results = new();
+            for (int i = 0; i < files?.Count; i++)
+            {
+                results.Push(await DatabaseAsync.DeleteAsync<Print3dInfo>(files[i]?.Id));
+            }
+            return results.ToArray();
+        }
+
+        #endregion
+
         #region Addresses
         public async Task<List<Address>> GetAddressesWithChildrenAsync()
         {

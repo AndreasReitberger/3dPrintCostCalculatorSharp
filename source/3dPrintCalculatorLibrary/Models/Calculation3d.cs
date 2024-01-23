@@ -159,6 +159,9 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         List<File3d> files = new();
+
+        [ObservableProperty]
+        List<Print3dInfo> printInfos = new();
         #endregion
 
         #region AdditionalSettings

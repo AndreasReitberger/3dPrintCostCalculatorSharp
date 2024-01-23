@@ -923,6 +923,11 @@ namespace AndreasReitberger.NUnitTest
                 LinkedToFile = false,
             };
 
+            Print3dInfo info = new()
+            {
+
+            };
+
             _calculation = new Calculation3d()
             {
                 Name = "My awesome calculation"
@@ -1266,6 +1271,66 @@ namespace AndreasReitberger.NUnitTest
 
                 Assert.NotNull(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement"));
                 Assert.NotNull(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves"));
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public async Task PrintInfoCalculationTestAsync()
+        {
+            try
+            {
+                string databasePath = "testdatabase_info.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
+                if (DatabaseHandler.Instance.IsInitialized)
+                {
+                    // Clear all tables
+                    await DatabaseHandler.Instance.TryClearAllTableAsync();
+                    await DatabaseHandler.Instance.TryDropAllTableAsync();
+
+                    // Recreate tables
+                    await DatabaseHandler.Instance.RebuildAllTableAsync();
+                    await Task.Delay(250);
+
+                    Material3d material = new()
+                    {
+                        Name = "Test",
+                        SKU = "Some material number",
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 29.99,
+                        PriceIncludesTax = true,
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+
+                    File3d file = new()
+                    {
+                        Name = "My cool file",
+                        Volume = 251.54,
+                        PrintTime = 2.34,
+                        Quantity = 1,
+                    };
+                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file);
+
+                    Print3dInfo info = new()
+                    {
+                        File = file,
+                        Material = material,
+                    };
+                    await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info);
+
+                    Calculation3d calc = new()
+                    {
+
+                    };
+                }
             }
             catch (Exception exc)
             {

@@ -25,6 +25,9 @@ namespace AndreasReitberger.Print3d.Models
         string name = string.Empty;
 
         [ObservableProperty]
+        CalculationState state = CalculationState.Draft;
+
+        [ObservableProperty]
         DateTimeOffset created = DateTime.Now;
 
         [ObservableProperty]

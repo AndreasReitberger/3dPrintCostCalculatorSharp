@@ -998,6 +998,41 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region Storage Locations
+        public async Task<List<Storage3dLocation>> GetStorageLocationsWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<Storage3dLocation>(recursive: true)
+                ;
+        }
+
+        public async Task<Storage3dLocation> GetStorageLocationWithChildrenAsync(Guid id)
+        {
+            return await DatabaseAsync
+                .GetWithChildrenAsync<Storage3dLocation>(id, recursive: true)
+                ;
+        }
+
+        public async Task SetStorageLocationWithChildrenAsync(Storage3dLocation location)
+        {
+            await DatabaseAsync.InsertOrReplaceWithChildrenAsync(location, recursive: true);
+        }
+
+        public async Task SetStorageLocationsWithChildrenAsync(List<Storage3dLocation> locations, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(locations);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(locations);
+        }
+
+        public async Task<int> DeleteStorageLocationAsync(Storage3dLocation location)
+        {
+            return await DatabaseAsync.DeleteAsync<Storage3dLocation>(location?.Id);
+        }
+
+        #endregion
+
         #region Storage
         public async Task<List<Storage3d>> GetStoragesWithChildrenAsync()
         {
@@ -1018,7 +1053,7 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.InsertOrReplaceWithChildrenAsync(storage, recursive: true);
         }
 
-        public async Task SetStorageWithChildrenAsync(List<Storage3d> storages, bool replaceExisting = true)
+        public async Task SetStoragesWithChildrenAsync(List<Storage3d> storages, bool replaceExisting = true)
         {
             if (replaceExisting)
                 await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(storages);

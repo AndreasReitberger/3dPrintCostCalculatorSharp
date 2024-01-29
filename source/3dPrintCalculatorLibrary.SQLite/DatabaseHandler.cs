@@ -108,6 +108,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Item3dUsage),
             typeof(Storage3dItem),
             typeof(Storage3dTransaction),
+            typeof(Storage3dLocation),
             typeof(Storage3d),
             typeof(ProcedureAddition),
             typeof(ProcedureCalculationParameter),

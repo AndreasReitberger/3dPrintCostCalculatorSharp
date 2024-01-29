@@ -1,16 +1,15 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System.Collections.ObjectModel;
 
-namespace AndreasReitberger.Print3d.SQLite
+namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
-    [Table("Storages")]
-    public partial class Storage3d : ObservableObject, IStorage3d
+    [Table("StorageLocations")]
+    public partial class Storage3dLocation : ObservableObject, IStorage3dLocation
     {
         #region Properties
         [ObservableProperty]
@@ -18,19 +17,22 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        string name = string.Empty;
+        [property: ForeignKey(typeof(Storage3d))]
+        Guid storageId;
+
+        [ObservableProperty]
+        string location = string.Empty;
 
         [ObservableProperty]
         int capacity = 32;
 
         [ObservableProperty]
-        //[property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        [property: ManyToMany(typeof(Storage3dLocationStorage3d))]
-        ObservableCollection<Storage3dLocation> locations = new();
+        [property: ManyToMany(typeof(Storage3dItemStorage3dLocation))]   
+        ObservableCollection<Storage3dItem> items = new();
         #endregion
 
         #region Ctor
-        public Storage3d()
+        public Storage3dLocation()
         {
             Id = Guid.NewGuid();
         }
@@ -38,7 +40,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Methods
 
-        /*
         public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogram)
         {
             Storage3dItem item = new() { Material = material };
@@ -158,7 +159,6 @@ namespace AndreasReitberger.Print3d.SQLite
             }
             return false;
         }
-        */
         #endregion
     }
 }

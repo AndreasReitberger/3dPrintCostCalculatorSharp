@@ -1,40 +1,38 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Models.StorageAdditions;
+﻿using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
-namespace AndreasReitberger.Print3d.Models
+namespace AndreasReitberger.Print3d.Models.StorageAdditions
 {
-    public partial class Storage3d : ObservableObject, IStorage3d
+    public partial class Storage3dLocation : ObservableObject, IStorage3dLocation
     {
         #region Properties
         [ObservableProperty]
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string location;
 
         [ObservableProperty]
         int capacity = 32;
 
         [ObservableProperty]
-        ObservableCollection<Storage3dLocation> locations = new();
-        /*
-        [ObservableProperty]
         ObservableCollection<Storage3dItem> items = new();
-        */
         #endregion
 
         #region Ctor
-        public Storage3d()
+        public Storage3dLocation()
         {
             Id = Guid.NewGuid();
         }
         #endregion
 
         #region Methods
-        /*
+
         public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogram)
         {
             Storage3dItem item = new() { Material = material };
@@ -154,7 +152,6 @@ namespace AndreasReitberger.Print3d.Models
             }
             return false;
         }
-        */
         #endregion
     }
 }

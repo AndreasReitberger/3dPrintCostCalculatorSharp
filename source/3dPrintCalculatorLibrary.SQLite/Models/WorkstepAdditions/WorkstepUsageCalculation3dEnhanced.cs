@@ -3,13 +3,12 @@ using System;
 
 namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
 {
-    [Obsolete("Use WorkstepUsageCalculation3dEnhanced instead")]
-    public class WorkstepUsageCalculation
+    public class WorkstepUsageCalculation3dEnhanced
     {
         [ForeignKey(typeof(WorkstepUsage))]
         public Guid WorkstepUsageId { get; set; }
 
-        [ForeignKey(typeof(Calculation3d))]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
         public Guid CalculationId { get; set; }
     }
 }

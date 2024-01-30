@@ -1,8 +1,10 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models
 {
@@ -17,25 +19,31 @@ namespace AndreasReitberger.Print3d.Models
         string? name;
 
         [ObservableProperty]
+        [property: Obsolete("Use Calculation3dEnhanced instead")]
+        Guid calculationId;
+
+        [ObservableProperty]
+        Guid calculationEnhancedId;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
         Guid fileId;
 
         [ObservableProperty]
         File3d file;
 
         [ObservableProperty]
-        Guid materialId;
-
-        [ObservableProperty]
-        Material3d material;
-
-        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
         Guid printerId;
 
         [ObservableProperty]
         Printer3d printer;
 
         [ObservableProperty]
-        List<Item3dUsage> items = new();
+        List<Item3dUsage> items = [];
+
+        [ObservableProperty]
+        List<Material3dUsage> materialUsages = [];
         #endregion
 
         #region Constructor

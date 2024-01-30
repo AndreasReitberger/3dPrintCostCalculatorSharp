@@ -29,6 +29,12 @@ namespace AndreasReitberger.Print3d.SQLite
             CalculationsChanged?.Invoke(this, e);
         }
 
+        public event EventHandler<Calculation3dEnhancedChangedDatabaseEventArgs> EnhancedCalculationsChanged;
+        protected virtual void OnCalculationsChangedEvent(Calculation3dEnhancedChangedDatabaseEventArgs e)
+        {
+            EnhancedCalculationsChanged?.Invoke(this, e);
+        }
+
         public event EventHandler<PrintersChangedDatabaseEventArgs> PrintersChanged;
         protected virtual void OnPrintersChangedEvent(PrintersChangedDatabaseEventArgs e)
         {

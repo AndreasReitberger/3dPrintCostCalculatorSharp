@@ -865,5 +865,141 @@ namespace AndreasReitberger.NUnitTest
                 Assert.Fail(exc.Message);
             }
         }
+
+        [Test]
+        public void PrintInfoCalculationTest()
+        {
+            try
+            {
+                if (true)
+                {
+                    Manufacturer manufacturer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Name = "Prusa"
+                    };
+
+                    Material3d material = new()
+                    {
+                        Name = "Test",
+                        SKU = "Some material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 29.99,
+                        PriceIncludesTax = true,
+                    };
+
+                    Material3d material2 = new()
+                    {
+                        Name = "Test 2",
+                        SKU = "Some other material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 59.99,
+                        PriceIncludesTax = true,
+                    };
+
+                    HourlyMachineRate hmr = new()
+                    {
+                        ReplacementCosts = 799,
+                        MachineHours = 160,
+                        PerYear = false,
+                        EnergyCosts = 20,
+                    };
+
+                    Printer3d printer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL MK1",
+                        Price = 799,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 210,
+                        HourlyMachineRate = hmr,
+                    };
+
+                    Printer3d printer2 = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL - Dual Head",
+                        Price = 2499,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 400,
+                        HourlyMachineRate = hmr,
+                    };
+
+                    File3d file = new()
+                    {
+                        Name = "My cool file",
+                        Volume = 251.54,
+                        PrintTime = 2.34,
+                        Quantity = 1,
+                    };
+                    File3d file2 = new()
+                    {
+                        Name = "Another cool file",
+                        Volume = 23.64,
+                        PrintTime = 0.55,
+                        Quantity = 5,
+                    };
+
+                    Manufacturer wuerth = new()
+                    {
+                        Name = "Würth",
+                        DebitorNumber = "DE26265126",
+                        Website = "https://www.wuerth.de/",
+                    };
+
+                    Item3d item = new()
+                    {
+                        Name = "Nuts M3",
+                        PackageSize = 100,
+                        PackagePrice = 9.99d,
+                        Manufacturer = wuerth,
+                        SKU = "2302423-1223"
+                    };
+                    Item3dUsage usage = new()
+                    {
+                        Item = item,
+                        Quantity = 5,
+                    };
+
+                    Print3dInfo info = new()
+                    {
+                        File = file,
+                        MaterialUsages = [new() { Material = material, Percentage = 1 }],
+                        Printer = printer,
+                        Items = [usage],
+                    };
+                    Print3dInfo info2 = new()
+                    {
+                        File = file2,
+                        // Multi-Material for one file
+                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
+                        Printer = printer2,
+                    };
+
+                    Calculation3dEnhanced calc = new()
+                    {
+                        Name = "Test Calculation",
+                        PrintInfos = [info, info2],
+                    };
+
+                    calc.CalculateCosts();
+                    double total = calc.GetTotalCosts();
+                    Assert.That(total > 0);
+                }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
     }
 }

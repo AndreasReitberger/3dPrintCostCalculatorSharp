@@ -1,85 +1,46 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Models.CalculationAdditions;
-using AndreasReitberger.Print3d.Models.Events;
-using AndreasReitberger.Print3d.Models.WorkstepAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
+using AndreasReitberger.Print3d.Realm.Interfaces;
+using AndreasReitberger.Print3d.Realm.CalculationAdditions;
+using AndreasReitberger.Print3d.Realm.Events;
+using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
 using Newtonsoft.Json;
+using Realms;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Xml.Serialization;
+using ErrorEventArgs = System.IO.ErrorEventArgs;
 
-namespace AndreasReitberger.Print3d.Models
+namespace AndreasReitberger.Print3d.Realm
 {
-    [Obsolete("Use Calculation3dEnhanced instead")]
-    public partial class Calculation3d : ObservableObject, ICalculation3d, ICloneable
+    public partial class Calculation3dEnhanced : RealmObject, ICalculation3dEnhanced, ICloneable
     {
 
         #region Properties
-        [ObservableProperty]
-        Guid id;
+        [PrimaryKey]
+        public Guid Id { get; set; }
 
         #region Basics
-        [ObservableProperty]
-        string name = string.Empty;
+        [Required]
+        public string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        DateTimeOffset created = DateTime.Now;
+        public DateTimeOffset Created { get; set; } = DateTime.Now;
 
-        [ObservableProperty]
-        Guid printerId;
+        public Guid CustomerId { get; set; }
 
-        [ObservableProperty]
-        Printer3d printer;
-        partial void OnPrinterChanged(Printer3d value)
+        public Customer3d Customer { get; set; }
+
+        public bool IsCalculated { get; private set; } = false;
+
+        bool recalculationRequired { get; set; } = false;
+        public bool RecalculationRequired
         {
-            if (!RecalculationRequired)
+            get => recalculationRequired;
+            set
             {
-                RecalculationRequired = true;
-                IsCalculated = false;
-                OnPrinterChangedEvent(new()
-                {
-                    CalculationId = Id,
-                    Printer = value,
-                });
+                recalculationRequired = value;
+                OnRecalculationRequiredChanged(value);
             }
         }
-
-        [ObservableProperty]
-        Guid materialId;
-
-        [ObservableProperty]
-        Material3d material;
-        partial void OnMaterialChanged(Material3d value)
-        {
-            if (!RecalculationRequired)
-            {
-                RecalculationRequired = true;
-                IsCalculated = false;
-                OnMaterialChangedEvent(new()
-                {
-                    CalculationId = Id,
-                    Material = value,
-                });
-            }
-        }
-
-        [ObservableProperty]
-        Guid customerId;
-
-        [ObservableProperty]
-        Customer3d customer;
-
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        bool isCalculated = false;
-
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        bool recalculationRequired = false;
-        partial void OnRecalculationRequiredChanged(bool value)
+        void OnRecalculationRequiredChanged(bool value)
         {
             if (value)
             {
@@ -90,112 +51,90 @@ namespace AndreasReitberger.Print3d.Models
             }
         }
 
-        [ObservableProperty]
-        int quantity = 1;
+        public int Quantity { get; set; } = 1;
 
-        [ObservableProperty]
-        double powerLevel = 0;
+        public double PowerLevel { get; set; } = 0;
 
-        [ObservableProperty]
-        double failRate = 0;
+        public double FailRate { get; set; } = 0;
 
-        [ObservableProperty]
-        double energyCostsPerkWh = 0;
+        public double EnergyCostsPerkWh { get; set; } = 0;
 
-        [ObservableProperty]
-        bool applyEnergyCost = false;
+        public bool ApplyEnergyCost { get; set; } = false;
 
-        [ObservableProperty]
-        double totalCosts = 0;
+        public double TotalCosts { get; set; } = 0;
 
-        [ObservableProperty]
-        bool combineMaterialCosts = false;
+        public bool CombineMaterialCosts { get; set; } = false;
 
-        [ObservableProperty]
-        bool differFileCosts = true;
+        public bool DifferFileCosts { get; set; } = true;
 
         #endregion
 
         #region Details
-        [ObservableProperty]
-        List<Printer3d> printers = [];
 
-        [ObservableProperty]
-        List<Material3d> materials = [];
+        public IList<Printer3d> Printers { get; }
 
-        [ObservableProperty]
-        List<CustomAddition> customAdditions = [];
+        public IList<Material3d> Materials { get; }
 
-        [ObservableProperty]
-        List<WorkstepUsage> workstepUsages = [];
+        public IList<CustomAddition> CustomAdditions { get; }
 
-        [ObservableProperty]
+        public IList<WorkstepUsage> WorkstepUsages { get; }
+
         [Obsolete("Use the WorkstepUsages class instead")]
-        List<Workstep> workSteps = [];
+        public IList<Workstep> WorkSteps { get; }
 
-        [ObservableProperty]
         [Obsolete("Use the WorkstepUsages class instead")]
-        List<WorkstepDuration> workStepDurations = [];
+        public IList<WorkstepDuration> WorkStepDurations { get; }
 
-        [ObservableProperty]
-        List<Item3dUsage> additionalItems = [];
+        public IList<Item3dUsage> AdditionalItems { get; }
 
-        [ObservableProperty]
-        ObservableCollection<CalculationAttribute> printTimes = [];
+        public IList<CalculationAttribute> PrintTimes { get; }
 
-        [ObservableProperty]
-        ObservableCollection<CalculationAttribute> materialUsage = [];
+        public IList<CalculationAttribute> MaterialUsage { get; }
 
-        [ObservableProperty]
-        ObservableCollection<CalculationAttribute> overallMaterialCosts = [];
+        public IList<CalculationAttribute> OverallMaterialCosts { get; }
 
-        [ObservableProperty]
-        ObservableCollection<CalculationAttribute> overallPrinterCosts = [];
+        public IList<CalculationAttribute> OverallPrinterCosts { get; }
 
-        [ObservableProperty]
-        ObservableCollection<CalculationAttribute> costs = [];
+        public IList<CalculationAttribute> Costs { get; }
 
-        [ObservableProperty]
-        List<CalculationAttribute> rates = [];
+        public IList<CalculationAttribute> Rates { get; }
 
-        [ObservableProperty]
-        List<File3d> files = [];
+        public IList<Print3dInfo> PrintInfos { get; }
         #endregion
 
         #region AdditionalSettings
-        [ObservableProperty]
-        bool applyEnhancedMarginSettings = false;
 
-        [ObservableProperty]
-        bool excludePrinterCostsFromMarginCalculation = false;
+        public bool ApplyEnhancedMarginSettings { get; set; } = false;
 
-        [ObservableProperty]
-        bool excludeMaterialCostsFromMarginCalculation = false;
+        public bool ExcludePrinterCostsFromMarginCalculation { get; set; } = false;
 
-        [ObservableProperty]
-        bool excludeWorkstepsFromMarginCalculation = false;
+        public bool ExcludeMaterialCostsFromMarginCalculation { get; set; } = false;
+
+        public bool ExcludeWorkstepsFromMarginCalculation { get; set; } = false;
 
         #endregion
 
         #region ProcedureSpecific
-        [ObservableProperty]
-        bool applyProcedureSpecificAdditions = false;
 
-        [ObservableProperty]
-        Material3dFamily procedure = Material3dFamily.Misc;
+        public bool ApplyProcedureSpecificAdditions { get; set; } = false;
 
-        [ObservableProperty]
-        ObservableCollection<CalculationProcedureAttribute> procedureAttributes = [];
+        public Material3dFamily Procedure
+        {
+            get => (Material3dFamily)ProcedureId;
+            set { ProcedureId = (int)value; }
+        }
+        public int ProcedureId { get; set; } = (int)Material3dFamily.Misc;
 
-        [ObservableProperty]
-        ObservableCollection<IProcedureAddition> procedureAdditions = [];
+        public IList<CalculationProcedureAttribute> ProcedureAttributes { get; }
+
+        public IList<ProcedureAddition> ProcedureAdditions { get; }
         #endregion
 
         #region Calculated
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public int TotalQuantity => GetTotalQuantity();
 
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double TotalPrintTime
         {
             get
@@ -206,7 +145,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double TotalVolume
         {
             get
@@ -217,7 +156,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double TotalMaterialUsed
         {
             get
@@ -228,7 +167,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double MachineCosts
         {
             get
@@ -239,7 +178,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double MaterialCosts
         {
             get
@@ -250,7 +189,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double ItemsCosts
         {
             get
@@ -261,7 +200,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double EnergyCosts
         {
             get
@@ -272,7 +211,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double HandlingCosts
         {
             get
@@ -283,7 +222,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double CustomAdditionCosts
         {
             get
@@ -294,7 +233,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double WorkstepCosts
         {
             get
@@ -305,7 +244,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double CalculatedMargin
         {
             get
@@ -316,7 +255,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double CalculatedTax
         {
             get
@@ -327,7 +266,7 @@ namespace AndreasReitberger.Print3d.Models
                     return 0;
             }
         }
-        [JsonIgnore]
+        [JsonIgnore, Ignored]
         public double CostsPerPiece
         {
             get
@@ -378,7 +317,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Constructor
-        public Calculation3d()
+        public Calculation3dEnhanced()
         {
             Id = Guid.NewGuid();
         }
@@ -393,6 +332,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         public override bool Equals(object obj)
         {
             if (obj is not Calculation3d item)

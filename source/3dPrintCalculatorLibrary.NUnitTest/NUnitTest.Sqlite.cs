@@ -1331,6 +1331,15 @@ namespace AndreasReitberger.NUnitTest
                     };
                     await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material2);
 
+                    HourlyMachineRate hmr = new()
+                    {
+                        ReplacementCosts = 799,
+                        MachineHours = 160,
+                        PerYear = false,
+                        EnergyCosts = 20,
+                    };
+                    await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(hmr);
+
                     Printer3d printer = new()
                     {
                         Id = Guid.NewGuid(),
@@ -1340,6 +1349,7 @@ namespace AndreasReitberger.NUnitTest
                         MaterialType = Material3dFamily.Filament,
                         Type = Printer3dType.FDM,
                         PowerConsumption = 210,
+                        HourlyMachineRate = hmr,
                     };
                     await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer);
                     Printer3d printer2 = new()
@@ -1351,6 +1361,7 @@ namespace AndreasReitberger.NUnitTest
                         MaterialType = Material3dFamily.Filament,
                         Type = Printer3dType.FDM,
                         PowerConsumption = 400,
+                        HourlyMachineRate = hmr,
                     };
                     await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer2);
 
@@ -1398,7 +1409,7 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         File = file,
-                        Material = material,
+                        MaterialUsages = [ new() { Material = material, Percentage = 1 }],
                         Printer = printer,  
                         Items = [usage],
                     };
@@ -1406,12 +1417,13 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info2 = new()
                     {
                         File = file2,
-                        Material = material2,
+                        // Multi-Material for one file
+                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
                         Printer = printer2,
                     };
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info2);
 
-                    Calculation3d calc = new()
+                    Calculation3dEnhanced calc = new()
                     {
                         Name = "Test Calculation",
                         PrintInfos = [ info, info2 ],
@@ -1420,8 +1432,11 @@ namespace AndreasReitberger.NUnitTest
                     calc.CalculateCosts();
                     double total = calc.GetTotalCosts();
 
-                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calc);
-                    Calculation3d loadedCalc = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calc.Id);
+                    await DatabaseHandler.Instance.SetEnhancedCalculationWithChildrenAsync(calc);
+                    Calculation3dEnhanced loadedCalc = await DatabaseHandler.Instance.GetEnhancedCalculationWithChildrenAsync(calc.Id);
+                    loadedCalc.CalculateCosts();
+                    double totalLoaded = loadedCalc.GetTotalCosts();
+                    Assert.That(total == totalLoaded);
                 }
             }
             catch (Exception exc)

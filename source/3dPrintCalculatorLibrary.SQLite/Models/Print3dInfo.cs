@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
@@ -21,8 +22,13 @@ namespace AndreasReitberger.Print3d.SQLite
         string? name;
 
         [ObservableProperty]
+        [property: Obsolete("Use Calculation3dEnhanced instead")]
         [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationEnhancedId;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -34,14 +40,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
-        Guid materialId;
-
-        [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
-        Material3d material;
-
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
         Guid printerId;
 
         [ObservableProperty]
@@ -50,7 +48,11 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Item3dUsage> items = new();
+        List<Item3dUsage> items = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Material3dUsage> materialUsages = [];
         #endregion
 
         #region Constructor

@@ -58,14 +58,13 @@ namespace AndreasReitberger.Print3d.SQLite
         SQLiteAsyncConnection databaseAsync;
 
         [ObservableProperty]
-        List<Action> delegates = new();
+        List<Action> delegates = [];
 
         [ObservableProperty]
-        List<Type> tables = new();
+        List<Type> tables = [];
 
         [ObservableProperty]
-        List<Type> defaultTables = new()
-        {
+        List<Type> defaultTables = [
             typeof(Manufacturer),
             typeof(Supplier),
             typeof(Printer3d),
@@ -77,6 +76,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Material3dType),
             typeof(Material3dAttribute),
             typeof(Material3dProcedureAttribute),
+            typeof(Material3dUsage),
             typeof(Material3d),
             typeof(WorkstepCategory),
             typeof(Workstep),
@@ -88,6 +88,9 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(CalculationProcedureParameter),
             typeof(CalculationProcedureParameterAddition),
             typeof(Calculation3d),
+            typeof(Calculation3dEnhanced),
+            typeof(CustomAdditionCalculation3dEnhanced),
+            typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(ModelWeight),
             typeof(Address),
@@ -113,8 +116,8 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(ProcedureCalculationParameter),
             typeof(Print3dInfo),
 
-            typeof(DatabaseSettingsKeyValuePair),
-        };
+            typeof(DatabaseSettingsKeyValuePair)
+        ];
 
         [ObservableProperty]
         Func<Type, Task> onDatabaseOpertions;
@@ -123,6 +126,9 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Collections
         [ObservableProperty]
         List<Calculation3d> calculations = new();
+
+        [ObservableProperty]
+        List<Calculation3dEnhanced> enhancedCalculations = new();
 
         [ObservableProperty]
         List<Printer3d> printers = new();
@@ -230,118 +236,14 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Public
 
         #region Init
-        public void InitTables()
-        {
-            DefaultTables?.ForEach(type => Database?.CreateTable(type));
-            /*
-            Database?.CreateTable<Manufacturer>();
-            Database?.CreateTable<Supplier>();
-            Database?.CreateTable<Printer3d>();
-            Database?.CreateTable<Printer3dAttribute>();
-            Database?.CreateTable<Printer3dSlicerConfig>();
-            Database?.CreateTable<Maintenance3d>();
-            Database?.CreateTable<Sparepart>();
-            Database?.CreateTable<Material3dColor>();
-            Database?.CreateTable<Material3dType>();
-            Database?.CreateTable<Material3dAttribute>();
-            Database?.CreateTable<Material3dProcedureAttribute>();
-            Database?.CreateTable<Material3d>();
-            Database?.CreateTable<WorkstepCategory>();
-            Database?.CreateTable<Workstep>();
-            Database?.CreateTable<HourlyMachineRate>();
-            Database?.CreateTable<Customer3d>();
-            Database?.CreateTable<CustomAddition>();
-            Database?.CreateTable<CalculationAttribute>();
-            Database?.CreateTable<CalculationProcedureAttribute>();
-            Database?.CreateTable<CalculationProcedureParameter>();
-            Database?.CreateTable<CalculationProcedureParameterAddition>();
-            Database?.CreateTable<Calculation3d>();
-            Database?.CreateTable<File3d>();
-            Database?.CreateTable<ModelWeight>();
-            Database?.CreateTable<Address>();
-            Database?.CreateTable<Email>();
-            Database?.CreateTable<PhoneNumber>();
-            Database?.CreateTable<ContactPerson>();
-            Database?.CreateTable<Calculation3dProfile>();
-            Database?.CreateTable<Printer3dCalculation>();
-            Database?.CreateTable<Material3dCalculation>();
-            Database?.CreateTable<WorkstepCalculation>();
-            Database?.CreateTable<CustomAdditionCalculation>();
-            Database?.CreateTable<WorkstepDuration>();
-            Database?.CreateTable<Item3d>();
-            Database?.CreateTable<Item3dCalculation>();
-            Database?.CreateTable<Item3dUsage>();
-            Database?.CreateTable<Storage3dItem>();
-            Database?.CreateTable<Storage3dTransaction>();
-            Database?.CreateTable<Storage3d>();
-            Database?.CreateTable<ProcedureAddition>();
-            Database?.CreateTable<ProcedureCalculationParameter>();
-
-            Database?.CreateTable<DatabaseSettingsKeyValuePair>();
-            */
-        }
-
-        public async Task InitTablesAsync()
-        {
-            DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
-            /*
-            await DatabaseAsync.CreateTableAsync<Manufacturer>();
-            await DatabaseAsync.CreateTableAsync<Supplier>();
-            await DatabaseAsync.CreateTableAsync<Printer3d>();
-            await DatabaseAsync.CreateTableAsync<Printer3dAttribute>();
-            await DatabaseAsync.CreateTableAsync<Printer3dSlicerConfig>();
-            await DatabaseAsync.CreateTableAsync<Maintenance3d>();
-            await DatabaseAsync.CreateTableAsync<Sparepart>();
-            await DatabaseAsync.CreateTableAsync<Material3dColor>();
-            await DatabaseAsync.CreateTableAsync<Material3dType>();
-            await DatabaseAsync.CreateTableAsync<Material3dAttribute>();
-            await DatabaseAsync.CreateTableAsync<Material3dProcedureAttribute>();
-            await DatabaseAsync.CreateTableAsync<Material3d>();
-            await DatabaseAsync.CreateTableAsync<WorkstepCategory>();
-            await DatabaseAsync.CreateTableAsync<Workstep>();
-            await DatabaseAsync.CreateTableAsync<HourlyMachineRate>();
-            await DatabaseAsync.CreateTableAsync<Customer3d>();
-            await DatabaseAsync.CreateTableAsync<CustomAddition>();
-            await DatabaseAsync.CreateTableAsync<CalculationAttribute>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureAttribute>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameter>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameterAddition>();
-            await DatabaseAsync.CreateTableAsync<Calculation3d>();
-            await DatabaseAsync.CreateTableAsync<File3d>();
-            await DatabaseAsync.CreateTableAsync<ModelWeight>();
-            await DatabaseAsync.CreateTableAsync<Address>();
-            await DatabaseAsync.CreateTableAsync<Email>();
-            await DatabaseAsync.CreateTableAsync<PhoneNumber>();
-            await DatabaseAsync.CreateTableAsync<ContactPerson>();
-            await DatabaseAsync.CreateTableAsync<Calculation3dProfile>();
-            await DatabaseAsync.CreateTableAsync<Printer3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<Material3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<WorkstepCalculation>();
-            await DatabaseAsync.CreateTableAsync<CustomAdditionCalculation>();
-            await DatabaseAsync.CreateTableAsync<WorkstepDuration>();
-            await DatabaseAsync.CreateTableAsync<Item3d>();
-            await DatabaseAsync.CreateTableAsync<Item3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<Item3dUsage>();
-            await DatabaseAsync.CreateTableAsync<Storage3dItem>();
-            await DatabaseAsync.CreateTableAsync<Storage3dTransaction>();
-            await DatabaseAsync.CreateTableAsync<Storage3d>();
-            await DatabaseAsync.CreateTableAsync<ProcedureAddition>();
-            await DatabaseAsync.CreateTableAsync<ProcedureCalculationParameter>();
-
-            await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
-            */
-        }
-
-        public void CreateTable(Type table)
-        {
-            Database?.CreateTable(table);
-        }
-
-        public void CreateTables(List<Type> tables)
-        {
-            Database?.CreateTables(CreateFlags.None, tables?.ToArray());
-        }
-
+        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));          
+        
+        public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
+        
+        public void CreateTable(Type table) => Database?.CreateTable(table);
+        
+        public void CreateTables(List<Type> tables) => Database?.CreateTables(CreateFlags.None, tables?.ToArray());
+        
         #endregion
 
         #region Delegates

@@ -9,7 +9,7 @@ namespace AndreasReitberger.Print3d.Interfaces
         public string Name { get; set; }
         public Guid FileId { get; set; }
         //public IFile3d File { get; set; }
-        public Guid MaterialId { get; set; }
+        //public Guid MaterialId { get; set; }
         //public IMaterial3d Material { get; set; }
         public Guid PrinterId { get; set; }
         //public IPrinter3d Printer { get; set; }

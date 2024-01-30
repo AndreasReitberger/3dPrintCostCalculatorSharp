@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using AndreasReitberger.Print3d.Utilities;
@@ -9,6 +8,7 @@ namespace AndreasReitberger.Print3d.SQLite
     public partial class Calculation3d
     {
         #region Methods
+        /*
         public void CalculateCosts()
         {
             PrintTimes?.Clear();
@@ -661,8 +661,8 @@ namespace AndreasReitberger.Print3d.SQLite
             IsCalculated = true;
             RecalculationRequired = false;
         }
-
-        public void CalculateCosts2()
+        */
+        public void CalculateCosts()
         {
             PrintTimes?.Clear();
             MaterialUsage?.Clear();
@@ -677,6 +677,7 @@ namespace AndreasReitberger.Print3d.SQLite
             CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             CalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
             
+            // New approach
             foreach (Print3dInfo info in PrintInfos)
             {
                 File3d file = info.File;
@@ -724,7 +725,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         if (file.Volume > 0)
                         {
                             double _volume = file.Volume;
-                            _weight = _volume * Convert.ToDouble(Material?.Density ?? 1);
+                            _weight = _volume * Convert.ToDouble(material?.Density ?? 1);
                         }
                         else if (file.Weight != null)
                         {
@@ -884,7 +885,26 @@ namespace AndreasReitberger.Print3d.SQLite
                             });
                         }
                     }
+                    // If items are set to a file
+                    if (info.Items?.Count > 0)
+                    {
+                        foreach (Item3dUsage item in info.Items)
+                        {
+                            // If the item is not for the current file, continue
+                            if (item?.Item == null) continue;
 
+                            double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                            Costs?.Add(new CalculationAttribute()
+                            {
+                                LinkedId = item.Id,
+                                Attribute = item.Item.Name,
+                                Type = CalculationAttributeType.AdditionalItem,
+                                Value = totalPerPiece,
+                                FileId = file.Id,
+                                FileName = file.FileName,
+                            });
+                        }
+                    }
                     // Custom additions before adding the margin
                     List<CustomAddition> customAdditionsBeforeMargin = CustomAdditions
                         .Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)
@@ -1011,7 +1031,467 @@ namespace AndreasReitberger.Print3d.SQLite
                     }
                 }
             }
-            
+            // Old approach (legacy, will be removed
+            foreach (File3d file in Files)
+            {
+                double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
+                PrintTimes?.Add(new CalculationAttribute()
+                {
+                    Attribute = file.FileName,
+                    Value = printTime,
+                    Type = CalculationAttributeType.Machine,
+                    Item = CalculationAttributeItem.Default,
+                    FileId = file.Id,
+                    FileName = file.FileName,
+                });
+
+                if (handlingsFee != null && handlingsFee.Value > 0 && handlingsFee.ApplyPerFile)
+                {
+                    Costs?.Add(new CalculationAttribute()
+                    {
+                        Attribute = "HandlingFee",
+                        Type = CalculationAttributeType.FixCost,
+                        Value = Convert.ToDouble(handlingsFee?.Value * file.Quantity),
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
+                }
+
+                if (FailRate > 0)
+                {
+                    PrintTimes?.Add(new CalculationAttribute()
+                    {
+                        Attribute = $"{file.FileName}_FailRate",
+                        Type = CalculationAttributeType.Machine,
+                        Item = CalculationAttributeItem.FailRate,
+                        Value = printTime * FailRate / 100,
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
+                }
+
+                // Calculate all material costs
+                if (Materials?.Count > 0)
+                {
+                    //Material ??= Materials[0];
+                    Material = Materials.FirstOrDefault(material => material.Id == Material?.Id) ?? Materials.FirstOrDefault();
+                    //((CONSUMED_MATERIAL[g] x PRICE[$/kg]) / 1000) x QUANTITY x (FAILRATE / 100)
+
+                    // Calculate the total weight for the current file
+                    double _weight = 0;
+                    if (file.Volume > 0)
+                    {
+                        double _volume = file.Volume;
+                        _weight = _volume * Convert.ToDouble(Material?.Density ?? 1);
+                    }
+                    else if (file.Weight != null)
+                    {
+                        _weight = file.Weight.Weight * Convert.ToDouble(UnitFactor.GetUnitFactor(file.Weight.Unit));
+                    }
+                    // Needed material in g
+                    double _material = _weight * file.Quantity;
+                    MaterialUsage?.Add(new CalculationAttribute()
+                    {
+                        Attribute = Material.Name,
+                        Value = _material,
+                        Type = CalculationAttributeType.Material,
+                        Item = CalculationAttributeItem.Default,
+                        FileId = file.Id,
+                        FileName = file.FileName,
+                    });
+                    if (FailRate > 0)
+                    {
+                        MaterialUsage?.Add(new CalculationAttribute()
+                        {
+                            Attribute = $"{Material.Name}_FailRate",
+                            Value = _material * FailRate / 100,
+                            Type = CalculationAttributeType.Material,
+                            Item = CalculationAttributeItem.FailRate,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+
+                    foreach (Material3d material in Materials)
+                    {
+                        // Set first materials as default
+                        Material ??= material;
+
+                        double refreshed = 0;
+                        if (ApplyProcedureSpecificAdditions)
+                        {
+                            if (material.MaterialFamily == Material3dFamily.Powder)
+                            {
+                                CalculationProcedureAttribute? attribute = ProcedureAttributes.FirstOrDefault(
+                                    attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
+                                if (attribute != null)
+                                {
+                                    CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
+                                    if (minPowderNeeded != null)
+                                    {
+                                        double powderInBuildArea = minPowderNeeded.Value;
+                                        MaterialAdditions.Material3dProcedureAttribute refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
+                                        if (refreshRatio != null)
+                                        {
+                                            // this value is in liter
+                                            CalculationAttribute materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
+                                                usage.Attribute == material.Name);
+                                            if (materialPrintObject != null)
+                                            {
+                                                double refreshedMaterial = (powderInBuildArea -
+                                                    (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
+                                                refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
+                                            }
+                                            else
+                                                refreshed = 0;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Custom procedure additions
+                            if (ProcedureAdditions?.Count > 0)
+                            {
+                                IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily
+                                        && addition.Target == ProcedureAdditionTarget.Material
+                                        && addition.Enabled
+                                        );
+                                foreach (ProcedureAddition add in procedureAdditions)
+                                {
+                                    double costs = add.CalculateCosts();
+                                    OverallMaterialCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = material.Id,
+                                        Attribute = add.Name,
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = costs,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
+                                }
+                            }
+                        }
+
+                        double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
+                            Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
+
+                        // Calculate the cost for each material usage of the current file
+                        foreach (CalculationAttribute materialUsage in MaterialUsage?.Where(mu => mu.FileId == file.Id))
+                        {
+                            double totalCosts = Convert.ToDouble(materialUsage?.Value * pricePerGramm);
+                            OverallMaterialCosts.Add(new CalculationAttribute()
+                            {
+                                LinkedId = material.Id,
+                                // Keep the linking to the currently used material
+                                Attribute = materialUsage.Item == CalculationAttributeItem.FailRate ? $"{material.Name}_FailRate" : material.Name,
+                                Type = CalculationAttributeType.Material,
+                                Item = materialUsage.Item,
+                                Value = totalCosts,
+                                FileId = materialUsage.FileId,
+                                FileName = materialUsage.FileName,
+                            });
+                        }
+                        // If the material is refreshed, add this to the material costs as well
+                        if (refreshed > 0)
+                        {
+                            double refreshCosts = Convert.ToDouble(
+                            refreshed * pricePerGramm);
+                            OverallMaterialCosts.Add(new CalculationAttribute()
+                            {
+                                LinkedId = material.Id,
+                                Attribute = $"{material.Name} (Refreshed)",
+                                Type = CalculationAttributeType.Material,
+                                Item = CalculationAttributeItem.PowderRefresh,
+                                Value = refreshCosts,
+                                FileId = file.Id,
+                                FileName = file.FileName,
+                            });
+                        }
+                    }
+                }
+
+                // Calculate all machine costs (print time and energy costs)
+                if (Printers?.Count > 0)
+                {
+                    // Check if selected material is still in the collection
+                    Printer = Printers.FirstOrDefault(printer => printer.Id == Printer?.Id) ?? Printers.FirstOrDefault();
+                    foreach (Printer3d printer in Printers)
+                    {
+                        Printer ??= printer;
+                        foreach (CalculationAttribute pt in PrintTimes?.Where(pt => pt.FileId == file.Id))
+                        {
+                            // Calculate the machine costs based on the hourly machine rate
+                            if (printer?.HourlyMachineRate != null)
+                            {
+                                double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * pt.Value;
+                                if (machineHourRate > 0)
+                                {
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = printer.Name,
+                                        Type = CalculationAttributeType.Machine,
+                                        Item = pt.Item,
+                                        Value = machineHourRate,
+                                        FileId = pt.FileId,
+                                        FileName = pt.FileName,
+                                    });
+                                }
+                            }
+                            // Add energy costs if applied
+                            if (ApplyEnergyCost)
+                            {
+                                double consumption = Convert.ToDouble(((pt?.Value * Convert.ToDouble(printer.PowerConsumption)) / 1000.0)) / 100.0 * Convert.ToDouble(PowerLevel);
+                                double totalEnergyCost = consumption * EnergyCostsPerkWh;
+                                if (totalEnergyCost > 0)
+                                {
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = printer.Name,
+                                        Type = CalculationAttributeType.Energy,
+                                        Item = pt.Item,
+                                        Value = totalEnergyCost,
+                                        FileId = pt.FileId,
+                                        FileName = pt.FileName,
+                                    });
+                                }
+                            }
+                        }
+                        if (ApplyProcedureSpecificAdditions)
+                        {
+                            // Filter for the current printer procedure
+                            List<CalculationProcedureAttribute> attributes = ProcedureAttributes.Where(
+                                attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer).ToList();
+                            foreach (CalculationProcedureAttribute attribute in attributes)
+                            {
+                                foreach (CalculationProcedureParameter parameter in attribute.Parameters)
+                                {
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = parameter.Type.ToString(),
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = parameter.Value * file.Quantity,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
+                                }
+                            }
+
+                            // Custom procedure additions
+                            if (ProcedureAdditions?.Count > 0)
+                            {
+                                IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == printer.MaterialType
+                                        && addition.Target == ProcedureAdditionTarget.Machine
+                                        && addition.Enabled
+                                        );
+                                foreach (ProcedureAddition add in procedureAdditions)
+                                {
+                                    double costs = add.CalculateCosts();
+                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = printer.Id,
+                                        Attribute = add.Name,
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = costs,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Worksteps
+                // Delete once migrated to `WorkstepUsage` instead
+                if (WorkSteps?.Count > 0)
+                {
+                    // Only take the worksteps, which are set as `PerPiece` here
+                    foreach (Workstep ws in WorkSteps.Where(ws => ws.CalculationType == CalculationType.PerPiece))
+                    {
+                        double totalPerPiece = ws.TotalCosts * file.Quantity;
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = ws.Id,
+                            Attribute = ws.Name,
+                            Type = CalculationAttributeType.Workstep,
+                            Value = totalPerPiece,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+                if (WorkstepUsages?.Count > 0)
+                {
+                    // Only take the worksteps, which are set as `PerPiece` here
+                    foreach (WorkstepUsage wsu in WorkstepUsages.Where(wsu => wsu?.Workstep?.CalculationType == CalculationType.PerPiece))
+                    {
+                        Workstep ws = wsu.Workstep;
+                        if (ws is null) continue;
+                        double totalPerPiece = wsu.TotalCosts * file.Quantity;
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = ws.Id,
+                            Attribute = ws.Name,
+                            Type = CalculationAttributeType.Workstep,
+                            Value = totalPerPiece,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+
+                // Additional items
+                if (AdditionalItems?.Count > 0)
+                {
+                    foreach (Item3dUsage item in AdditionalItems.Where(usage => usage.LinkedToFile))
+                    {
+                        // If the item is not for the current file, continue
+                        if (item?.Item == null || file.Id != item.File.Id) continue;
+
+                        double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                        Costs?.Add(new CalculationAttribute()
+                        {
+                            LinkedId = item.Id,
+                            Attribute = item.Item.Name,
+                            Type = CalculationAttributeType.AdditionalItem,
+                            Value = totalPerPiece,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+
+                // Custom additions before adding the margin
+                List<CustomAddition> customAdditionsBeforeMargin = CustomAdditions
+                    .Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)
+                    .ToList();
+
+                if (customAdditionsBeforeMargin?.Count > 0)
+                {
+                    SortedDictionary<int, double> additions = new();
+                    foreach (CustomAddition ca in customAdditionsBeforeMargin)
+                    {
+                        if (additions.ContainsKey(ca.Order))
+                            additions[ca.Order] += ca.Percentage;
+                        else
+                            additions.Add(ca.Order, ca.Percentage);
+                    }
+                    foreach (KeyValuePair<int, double> pairs in additions)
+                    {
+                        double costsSoFar = GetTotalCosts(file.Id);
+                        Costs.Add(new CalculationAttribute()
+                        {
+                            Attribute = string.Format("CustomAdditionPreMargin_Order{0}", pairs.Key),
+                            Type = CalculationAttributeType.CustomAddition,
+                            Value = pairs.Value * costsSoFar / 100.0,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+
+                //Margin
+                if (margin != null && !margin.SkipForCalculation)
+                {
+                    double costsSoFar = GetTotalCosts(file.Id);
+                    if (ApplyEnhancedMarginSettings)
+                    {
+                        double excludedCosts = 0;
+                        if (ExcludePrinterCostsFromMarginCalculation)
+                        {
+                            excludedCosts += GetTotalCosts(file.Id, CalculationAttributeType.Machine);
+                        }
+                        if (ExcludeMaterialCostsFromMarginCalculation)
+                        {
+                            excludedCosts += GetTotalCosts(file.Id, CalculationAttributeType.Material);
+                        }
+                        if (ExcludeWorkstepsFromMarginCalculation)
+                        {
+                            excludedCosts += GetTotalCosts(file.Id, CalculationAttributeType.Workstep);
+                        }
+                        // Subtract costs 
+                        if (excludedCosts > 0)
+                        {
+                            costsSoFar -= excludedCosts;
+                        }
+                    }
+
+                    // Get all items where margin calculation is disabled.
+                    List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin).ToList();
+                    skipMarginCalculation.ForEach((item) =>
+                    {
+                        costsSoFar -= item.Value;
+                    });
+
+                    double marginValue = costsSoFar * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
+                    if (marginValue > 0)
+                    {
+                        Costs.Add(new CalculationAttribute()
+                        {
+                            Attribute = "Margin",
+                            Type = CalculationAttributeType.Margin,
+                            Value = marginValue,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+
+                // Custom additions before margin
+                List<CustomAddition> customAdditionsAfterMargin =
+                    CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
+                if (customAdditionsAfterMargin.Count > 0)
+                {
+                    SortedDictionary<int, double> additions = new();
+                    foreach (CustomAddition ca in customAdditionsAfterMargin)
+                    {
+                        if (additions.ContainsKey(ca.Order))
+                            additions[ca.Order] += ca.Percentage;
+                        else
+                            additions.Add(ca.Order, ca.Percentage);
+                    }
+                    foreach (KeyValuePair<int, double> pairs in additions)
+                    {
+                        double costsSoFar = GetTotalCosts(file.Id);
+                        if (costsSoFar > 0)
+                        {
+                            Costs.Add(new CalculationAttribute()
+                            {
+                                Attribute = $"CustomAdditionPostMargin_Order{pairs.Key}",
+                                Type = CalculationAttributeType.CustomAddition,
+                                Value = pairs.Value * costsSoFar / 100.0,
+                                FileId = file.Id,
+                                FileName = file.FileName,
+                            });
+                        }
+                    }
+                }
+
+                //Tax
+                //CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
+                if (tax != null && !tax.SkipForCalculation)
+                {
+                    double costsSoFar = GetTotalCosts(file.Id);
+                    double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
+                    if (taxValue > 0)
+                    {
+                        Costs.Add(new CalculationAttribute()
+                        {
+                            Attribute = "Tax",
+                            Type = CalculationAttributeType.Tax,
+                            Value = taxValue,
+                            FileId = file.Id,
+                            FileName = file.FileName,
+                        });
+                    }
+                }
+            }
+
             // If the handling fee is not set per file, add it once afterwards
             if (handlingsFee != null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
             {

@@ -1299,16 +1299,60 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
                     await Task.Delay(250);
 
+                    Manufacturer manufacturer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Name = "Prusa"
+                    };
+                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(manufacturer);
+
                     Material3d material = new()
                     {
                         Name = "Test",
                         SKU = "Some material number",
+                        Manufacturer = manufacturer,
                         PackageSize = 1,
                         Unit = Unit.Kilogram,
                         UnitPrice = 29.99,
                         PriceIncludesTax = true,
                     };
                     await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+
+                    Material3d material2 = new()
+                    {
+                        Name = "Test 2",
+                        SKU = "Some other material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 59.99,
+                        PriceIncludesTax = true,
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material2);
+
+                    Printer3d printer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL MK1",
+                        Price = 799,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 210,
+                    };
+                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer);
+                    Printer3d printer2 = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL - Dual Head",
+                        Price = 2499,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 400,
+                    };
+                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer2);
 
                     File3d file = new()
                     {
@@ -1318,18 +1362,64 @@ namespace AndreasReitberger.NUnitTest
                         Quantity = 1,
                     };
                     await DatabaseHandler.Instance.SetFileWithChildrenAsync(file);
+                    File3d file2 = new()
+                    {
+                        Name = "Another cool file",
+                        Volume = 23.64,
+                        PrintTime = 0.55,
+                        Quantity = 5,
+                    };
+                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file2);
+
+                    Manufacturer wuerth = new()
+                    {
+                        Name = "Würth",
+                        DebitorNumber = "DE26265126",
+                        Website = "https://www.wuerth.de/",
+                    };
+                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(wuerth);
+
+                    Item3d item = new()
+                    {
+                        Name = "Nuts M3",
+                        PackageSize = 100,
+                        PackagePrice = 9.99d,
+                        Manufacturer = wuerth,
+                        SKU = "2302423-1223"
+                    };
+                    await DatabaseHandler.Instance.SetItemWithChildrenAsync(item);
+                    Item3dUsage usage = new()
+                    {
+                        Item = item,
+                        Quantity = 5,
+                    };
+                    await DatabaseHandler.Instance.SetItemUsageWithChildrenAsync(usage);
 
                     Print3dInfo info = new()
                     {
                         File = file,
                         Material = material,
+                        Printer = printer,  
+                        Items = [usage],
                     };
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info);
+                    Print3dInfo info2 = new()
+                    {
+                        File = file2,
+                        Material = material2,
+                        Printer = printer2,
+                    };
+                    await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info2);
 
                     Calculation3d calc = new()
                     {
-
+                        Name = "Test Calculation",
+                        PrintInfos = [ info, info2 ],
                     };
+
+                    calc.CalculateCosts();
+
+                    await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calc);
                 }
             }
             catch (Exception exc)

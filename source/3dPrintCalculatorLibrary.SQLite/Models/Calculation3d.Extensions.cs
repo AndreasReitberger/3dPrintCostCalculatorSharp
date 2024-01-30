@@ -754,6 +754,98 @@ namespace AndreasReitberger.Print3d.SQLite
                                 FileName = file.FileName,
                             });
                         }
+
+                        double refreshed = 0;
+                        if (ApplyProcedureSpecificAdditions)
+                        {
+                            if (material.MaterialFamily == Material3dFamily.Powder)
+                            {
+                                CalculationProcedureAttribute? attribute = ProcedureAttributes.FirstOrDefault(
+                                    attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
+                                if (attribute != null)
+                                {
+                                    CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
+                                    if (minPowderNeeded != null)
+                                    {
+                                        double powderInBuildArea = minPowderNeeded.Value;
+                                        MaterialAdditions.Material3dProcedureAttribute refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
+                                        if (refreshRatio != null)
+                                        {
+                                            // this value is in liter
+                                            CalculationAttribute materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
+                                                usage.Attribute == material.Name);
+                                            if (materialPrintObject != null)
+                                            {
+                                                double refreshedMaterial = (powderInBuildArea -
+                                                    (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
+                                                refreshed = (refreshedMaterial / material.FactorLToKg * UnitFactor.GetUnitFactor(Unit.Kilogram));
+                                            }
+                                            else
+                                                refreshed = 0;
+                                        }
+                                    }
+                                }
+                            }
+
+                            // Custom procedure additions
+                            if (ProcedureAdditions?.Count > 0)
+                            {
+                                IEnumerable<ProcedureAddition>? procedureAdditions = ProcedureAdditions?
+                                    .Where(addition => addition.TargetFamily == material.MaterialFamily
+                                        && addition.Target == ProcedureAdditionTarget.Material
+                                        && addition.Enabled
+                                        );
+                                foreach (ProcedureAddition add in procedureAdditions)
+                                {
+                                    double costs = add.CalculateCosts();
+                                    OverallMaterialCosts?.Add(new CalculationAttribute()
+                                    {
+                                        LinkedId = material.Id,
+                                        Attribute = add.Name,
+                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Value = costs,
+                                        FileId = file.Id,
+                                        FileName = file.FileName,
+                                    });
+                                }
+                            }
+                        }
+
+                        double pricePerGramm = Convert.ToDouble(material.UnitPrice) /
+                            Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
+
+                        // Calculate the cost for each material usage of the current file
+                        foreach (CalculationAttribute materialUsage in MaterialUsage?.Where(mu => mu.FileId == file.Id))
+                        {
+                            double totalCosts = Convert.ToDouble(materialUsage?.Value * pricePerGramm);
+                            OverallMaterialCosts.Add(new CalculationAttribute()
+                            {
+                                LinkedId = material.Id,
+                                // Keep the linking to the currently used material
+                                Attribute = materialUsage.Item == CalculationAttributeItem.FailRate ? $"{material.Name}_FailRate" : material.Name,
+                                Type = CalculationAttributeType.Material,
+                                Item = materialUsage.Item,
+                                Value = totalCosts,
+                                FileId = materialUsage.FileId,
+                                FileName = materialUsage.FileName,
+                            });
+                        }
+                        // If the material is refreshed, add this to the material costs as well
+                        if (refreshed > 0)
+                        {
+                            double refreshCosts = Convert.ToDouble(
+                            refreshed * pricePerGramm);
+                            OverallMaterialCosts.Add(new CalculationAttribute()
+                            {
+                                LinkedId = material.Id,
+                                Attribute = $"{material.Name} (Refreshed)",
+                                Type = CalculationAttributeType.Material,
+                                Item = CalculationAttributeItem.PowderRefresh,
+                                Value = refreshCosts,
+                                FileId = file.Id,
+                                FileName = file.FileName,
+                            });
+                        }
                     }
 
                     Printer3d printer = info.Printer;
@@ -1031,7 +1123,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     }
                 }
             }
-            // Old approach (legacy, will be removed
+            // Old approach (legacy, will be removed later)
             foreach (File3d file in Files)
             {
                 double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
@@ -1673,6 +1765,46 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
         
+        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
+        {
+            try
+            {
+                IEnumerable<double> costs = (calculationAttributeType == CalculationAttributeType.All ?
+                        Costs :
+                        Costs
+                            .Where(cost => cost.Type == calculationAttributeType))
+                            .Select(value => Convert.ToDouble(value.Value));
+
+                IEnumerable<double> costsMachine = (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallPrinterCosts :
+                        OverallPrinterCosts
+                            .Where(cost => cost.Type == calculationAttributeType))
+                            .Select(value => Convert.ToDouble(value.Value));
+
+                IEnumerable<double> costsMaterial = (calculationAttributeType == CalculationAttributeType.All ?
+                        OverallMaterialCosts :
+                        // If a specific type is requested
+                        OverallMaterialCosts
+                            .Where(cost => cost.Type == calculationAttributeType))
+                            .Select(value => Convert.ToDouble(value.Value));                 
+
+                double total = 0;
+                foreach (var cost in costs)
+                    total += cost;
+                foreach (var cost in costsMachine)
+                    total += cost;
+                foreach (var cost in costsMaterial)
+                    total += cost;
+
+                return total;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
+        [Obsolete("Use `GetTotalCosts()` instead")]
         public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
@@ -1775,13 +1907,18 @@ namespace AndreasReitberger.Print3d.SQLite
             }
         }
 
-        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All) => GetTotalCosts(Guid.Empty, calculationAttributeType);
+        //public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All) => GetTotalCosts(Guid.Empty, calculationAttributeType);
 
         public int GetTotalQuantity()
         {
             try
             {
-                int quantity = Files.Select(file => file.Quantity).ToList().Sum();
+                //int quantity = Files.Select(file => file.Quantity).ToList().Sum();
+                int quantity = PrintInfos
+                    .Select(pi => pi.File)
+                    .Select(file => file.Quantity)
+                    .ToList()
+                    .Sum();
                 return quantity;
             }
             catch (Exception)

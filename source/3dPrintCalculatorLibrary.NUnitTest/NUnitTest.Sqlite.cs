@@ -1418,8 +1418,10 @@ namespace AndreasReitberger.NUnitTest
                     };
 
                     calc.CalculateCosts();
+                    double total = calc.GetTotalCosts();
 
                     await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calc);
+                    Calculation3d loadedCalc = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calc.Id);
                 }
             }
             catch (Exception exc)

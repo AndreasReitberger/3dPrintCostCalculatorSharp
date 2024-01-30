@@ -43,7 +43,9 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid printerId;
 
         [ObservableProperty]
+        [Obsolete("Printer is now linked to a specific file and not to a calculation. Property will be removed")]
         [property: Ignore]
+        [property: Obsolete("Printer is now linked to a specific file and not to a calculation. Property will be removed")]
         Printer3d printer;
         partial void OnPrinterChanged(Printer3d value)
         {
@@ -63,7 +65,9 @@ namespace AndreasReitberger.Print3d.SQLite
         public Guid materialId;
 
         [ObservableProperty]
+        [Obsolete("Material is now linked to a specific file and not to a calculation. Property will be removed")]
         [property: Ignore]
+        [property: Obsolete("Material is now linked to a specific file and not to a calculation. Property will be removed")]
         Material3d material;
         partial void OnMaterialChanged(Material3d value)
         {

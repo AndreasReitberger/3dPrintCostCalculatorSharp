@@ -1,7 +1,5 @@
-﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
-using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -25,7 +23,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         //[property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        [property: ManyToMany(typeof(Storage3dLocationStorage3d))]
+        [property: ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
         ObservableCollection<Storage3dLocation> locations = new();
         #endregion
 

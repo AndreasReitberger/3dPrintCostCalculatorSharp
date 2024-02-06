@@ -16,9 +16,9 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         [property: PrimaryKey]
         Guid id;
 
-        [ObservableProperty]
-        [property: ForeignKey(typeof(Storage3d))]
-        Guid storageId;
+        //[ObservableProperty]
+        //[property: ForeignKey(typeof(Storage3d))]
+        //Guid storageId;
 
         [ObservableProperty]
         string location = string.Empty;

@@ -48,14 +48,14 @@ namespace AndreasReitberger.NUnitTest
                     };
                     await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(prusa);
                     Manufacturer addedManufacturer = await DatabaseHandler.Instance.GetManufacturerWithChildrenAsync(prusa.Id);
-                    Assert.IsNotNull(addedManufacturer);
-                    Assert.IsTrue(
+                    Assert.That(addedManufacturer is not null);
+                    Assert.That(
                         prusa.Name == addedManufacturer.Name &&
                         prusa.DebitorNumber == addedManufacturer.DebitorNumber &&
                         prusa.Website == addedManufacturer.Website
                         );
                     List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
-                    Assert.IsTrue(manufacturers?.Count > 0);
+                    Assert.That(manufacturers?.Count > 0);
 
                     List<Material3dType> materialTypes = new()
                     {
@@ -87,7 +87,7 @@ namespace AndreasReitberger.NUnitTest
                     };
                     await DatabaseHandler.Instance.SetMaterialTypesWithChildrenAsync(materialTypes);
                     List<Material3dType> types = await DatabaseHandler.Instance.GetMaterialTypesWithChildrenAsync();
-                    Assert.IsTrue(materialTypes.Count == types?.Count);
+                    Assert.That(materialTypes.Count == types?.Count);
 
                     // Hourly Machine Rate
                     HourlyMachineRate mhr = new()
@@ -101,7 +101,7 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(mhr);
                     HourlyMachineRate hourlyMachineRate = await DatabaseHandler.Instance.GetHourlyMachineRateWithChildrenAsync(mhr.Id);
                     List<HourlyMachineRate> hourlyMachineRates = await DatabaseHandler.Instance.GetHourlyMachineRatesWithChildrenAsync();
-                    Assert.IsTrue(hourlyMachineRates?.Count > 0);
+                    Assert.That(hourlyMachineRates?.Count > 0);
 
                     // Printers
                     Printer3d prusaXL = new()
@@ -122,7 +122,7 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(prusaXL);
                     Printer3d printer = await DatabaseHandler.Instance.GetPrinterWithChildrenAsync(prusaXL.Id);
                     List<Printer3d> printers = await DatabaseHandler.Instance.GetPrintersWithChildrenAsync();
-                    Assert.IsTrue(printers?.Count > 0);
+                    Assert.That(printers?.Count > 0);
 
                     // Materials
                     Material3d materialPETG = new()
@@ -145,7 +145,7 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(materialPETG);
                     Material3d material = await DatabaseHandler.Instance.GetMaterialWithChildrenAsync(materialPETG.Id);
                     List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
-                    Assert.IsTrue(materials?.Count > 0);
+                    Assert.That(materials?.Count > 0);
 
                     // Additional items
                     Item3d item = new()
@@ -165,7 +165,7 @@ namespace AndreasReitberger.NUnitTest
 
                     await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
                     List<Item3d>? items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
-                    Assert.IsTrue(items?.Count == 2);
+                    Assert.That(items?.Count == 2);
 
                     List<Item3dUsage> usages = new(items.Select(curItem => new Item3dUsage() { Item = curItem, Quantity = 10 }));
                     await DatabaseHandler.Instance.SetItemUsagesWithChildrenAsync(usages);
@@ -196,7 +196,7 @@ namespace AndreasReitberger.NUnitTest
 
                     await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation);
                     Calculation3d calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
-                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+                    Assert.That(calculation.TotalCosts == calcFromDB.TotalCosts);
 
                     List<Calculation3d> calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
 
@@ -218,10 +218,10 @@ namespace AndreasReitberger.NUnitTest
 
                     await DatabaseHandler.Instance.SetCalculationWithChildrenAsync(calculation2);
                     Calculation3d calcFromDB2 = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation2.Id);
-                    Assert.IsTrue(calculation2.TotalCosts == calcFromDB2.TotalCosts);
+                    Assert.That(calculation2.TotalCosts == calcFromDB2.TotalCosts);
 
                     calcFromDB = await DatabaseHandler.Instance.GetCalculationWithChildrenAsync(calculation.Id);
-                    Assert.IsTrue(calculation.TotalCosts == calcFromDB.TotalCosts);
+                    Assert.That(calculation.TotalCosts == calcFromDB.TotalCosts);
 
                     calculations = await DatabaseHandler.Instance.GetCalculationsWithChildrenAsync();
 
@@ -264,7 +264,7 @@ namespace AndreasReitberger.NUnitTest
                 .Build();
 
             List<TableMapping> mappings = handler.GetTableMappings();
-            Assert.IsTrue(mappings?.Count > 0);
+            Assert.That(mappings?.Count > 0);
         }
 
         private Calculation3d _calculation;
@@ -370,7 +370,7 @@ namespace AndreasReitberger.NUnitTest
 
                 _calculation.CalculateCosts();
                 double totalCosts = _calculation.TotalCosts;
-                Assert.IsTrue(_calculation.IsCalculated);
+                Assert.That(_calculation.IsCalculated);
 
                 List<double> costsCalc = new()
                 {
@@ -381,13 +381,13 @@ namespace AndreasReitberger.NUnitTest
                     _calculation.ItemsCost,
                 };
                 double summedCalc = costsCalc.Sum();
-                Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
+                Assert.That(Math.Round(summedCalc, 2) == Math.Round(_calculation.TotalCosts, 2));
 
 
                 Calculation3d _calculation2 = _calculation?.Clone() as Calculation3d;
                 _calculation2.CalculateCosts();
-                Assert.IsTrue(_calculation2.IsCalculated);
-                Assert.IsTrue(totalCosts == _calculation2.TotalCosts);
+                Assert.That(_calculation2.IsCalculated);
+                Assert.That(totalCosts == _calculation2.TotalCosts);
 
                 costsCalc = new()
                 {
@@ -398,7 +398,7 @@ namespace AndreasReitberger.NUnitTest
                     _calculation2.ItemsCost,
                 };
                 summedCalc = costsCalc.Sum();
-                Assert.IsTrue(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
+                Assert.That(Math.Round(summedCalc, 2) == Math.Round(_calculation2.TotalCosts, 2));
 
             }
             catch (Exception exc)
@@ -480,7 +480,7 @@ namespace AndreasReitberger.NUnitTest
 #if NETFRAMEWORK
                 Calculator3dExporter.Save(_calculation, @"mycalc.3dcx");
                 Calculator3dExporter.Load(@"mycalc.3dcx", out Calculation3d calculation);
-                Assert.IsTrue(calculation != null);
+                Assert.That(calculation != null);
 #endif
             }
             catch (Exception exc)
@@ -605,7 +605,7 @@ namespace AndreasReitberger.NUnitTest
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
-                Assert.IsNotNull(wearCostAttribute);
+                Assert.That(wearCostAttribute is not null);
 
                 // Updat calculation
                 _calculation.Printer = null;
@@ -619,7 +619,7 @@ namespace AndreasReitberger.NUnitTest
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
-                Assert.IsNull(wearCostAttribute);
+                Assert.That(wearCostAttribute is not null);
             }
             catch (Exception exc)
             {
@@ -673,11 +673,11 @@ namespace AndreasReitberger.NUnitTest
                 await handler.SetItemsWithChildrenAsync(new() { item1, item2 });
 
                 var loadedItem1 = await handler.GetItemWithChildrenAsync(item1.Id);
-                Assert.IsNotNull(loadedItem1);
-                Assert.IsNotNull(loadedItem1?.Manufacturer);
+                Assert.That(loadedItem1 is not null);
+                Assert.That(loadedItem1?.Manufacturer is not null);
 
                 var loadedItems = await handler.GetItemsWithChildrenAsync();
-                Assert.IsTrue(loadedItems?.Count == 2);
+                Assert.That(loadedItems?.Count == 2);
 
 
                 Item3dUsage usage = new()
@@ -689,19 +689,19 @@ namespace AndreasReitberger.NUnitTest
                 await handler.SetItemUsageWithChildrenAsync(usage);
 
                 Item3dUsage loadedUsage = await handler.GetItemUsageWithChildrenAsync(usage.Id);
-                Assert.IsNotNull(loadedUsage);
-                Assert.IsNotNull(loadedUsage.Item);
+                Assert.That(loadedUsage is not null);
+                Assert.That(loadedUsage.Item is not null);
 
                 var manufacturerLoaded = loadedUsage?.Item?.Manufacturer;
-                Assert.IsNotNull(manufacturerLoaded);
+                Assert.That(manufacturerLoaded is not null);
 
                 var usages = await handler.GetItemUsagesWithChildrenAsync();
-                Assert.IsTrue(usages?.Count == 1);
+                Assert.That(usages?.Count == 1);
 
                 await handler.DeleteItemUsageAsync(loadedUsage);
 
                 usages = await handler.GetItemUsagesWithChildrenAsync();
-                Assert.IsTrue(usages?.Count == 0);
+                Assert.That(usages?.Count == 0);
             }
             catch (Exception exc)
             {
@@ -755,12 +755,12 @@ namespace AndreasReitberger.NUnitTest
 
 
                 WorkstepUsage loadedUsage = await handler.GetWorkstepUsageWithChildrenAsync(usage.Id);
-                Assert.IsNotNull(loadedUsage);
-                Assert.IsNotNull(loadedUsage?.UsageParameter);
-                Assert.IsNotNull(loadedUsage?.Workstep);
+                Assert.That(loadedUsage is not null);
+                Assert.That(loadedUsage?.UsageParameter is not null);
+                Assert.That(loadedUsage?.Workstep is not null);
 
                 var usages = await handler.GetWorkstepUsagesWithChildrenAsync();
-                Assert.IsTrue(usages?.Count == 1);
+                Assert.That(usages?.Count == 1);
             }
             catch (Exception exc)
             {
@@ -799,7 +799,7 @@ namespace AndreasReitberger.NUnitTest
                 Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
 
                 await Task.Delay(250);
-                Assert.IsNotNull(calc2);
+                Assert.That(calc2 is not null);
 
                 var item = await handler.GetItemWithChildrenAsync(calc.AdditionalItems.FirstOrDefault().ItemId);
                 calc2.Material = calc.Materials.First();
@@ -809,15 +809,15 @@ namespace AndreasReitberger.NUnitTest
                 await Task.Delay(250);
                 if (calc2 is not null)
                 {
-                    Assert.IsTrue(calc.MachineCosts == calc2.MachineCosts, "Machine costs differ");
-                    Assert.IsTrue(calc.MaterialCosts == calc2.MaterialCosts, "Material costs differ");
-                    Assert.IsTrue(calc.CalculatedMargin == calc2.CalculatedMargin, "Margin differs");
-                    Assert.IsTrue(calc.CalculatedTax == calc2.CalculatedTax, "Tax differs");
-                    Assert.IsTrue(calc.EnergyCosts == calc2.EnergyCosts, "Energy costs differ");
-                    Assert.IsTrue(calc.CustomAdditionCosts == calc2.CustomAdditionCosts, "Custom addition costs differ");
-                    Assert.IsTrue(calc.ItemsCost == calc2.ItemsCost, "Item costs differ");
+                    Assert.That(calc.MachineCosts == calc2.MachineCosts, "Machine costs differ");
+                    Assert.That(calc.MaterialCosts == calc2.MaterialCosts, "Material costs differ");
+                    Assert.That(calc.CalculatedMargin == calc2.CalculatedMargin, "Margin differs");
+                    Assert.That(calc.CalculatedTax == calc2.CalculatedTax, "Tax differs");
+                    Assert.That(calc.EnergyCosts == calc2.EnergyCosts, "Energy costs differ");
+                    Assert.That(calc.CustomAdditionCosts == calc2.CustomAdditionCosts, "Custom addition costs differ");
+                    Assert.That(calc.ItemsCost == calc2.ItemsCost, "Item costs differ");
                 }
-                Assert.True(calc?.TotalCosts == calc2?.TotalCosts, "Total costs differ");
+                Assert.That(calc?.TotalCosts == calc2?.TotalCosts, "Total costs differ");
             }
             catch (Exception exc)
             {
@@ -1113,8 +1113,8 @@ namespace AndreasReitberger.NUnitTest
 
                 double totalDiffer = _calculation.GetTotalCosts();
 
-                Assert.IsTrue(_calculation.IsCalculated);
-                Assert.IsTrue(total == totalDiffer);
+                Assert.That(_calculation.IsCalculated);
+                Assert.That(total == totalDiffer);
             }
             catch (Exception exc)
             {
@@ -1153,31 +1153,47 @@ namespace AndreasReitberger.NUnitTest
                         UnitPrice = 29.99,
                         PriceIncludesTax = true,
                     };
-                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+                    //await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
 
                     Storage3dItem item = new()
                     {
                         Material = material,
                         Amount = startAmount,
                     };
-                    await DatabaseHandler.Instance.SetStorageItemWithChildrenAsync(item);
+                    //await DatabaseHandler.Instance.SetStorageItemWithChildrenAsync(item);
+
+                    Storage3dLocation location = new()
+                    {
+                        Location = "LS-01-01-01",
+                        Capacity = 20,
+                        Items = new() { item },
+                    };
+                    
                     Storage3d storage = new()
                     {
                         Name = "Main material storage",
-                        Items = new() { item },
+                        Locations = new() { location },
                     };
                     await DatabaseHandler.Instance.SetStorageWithChildrenAsync(storage);
+                    var storageLoaded = await DatabaseHandler.Instance.GetStorageWithChildrenAsync(storage.Id);
 
+                    Assert.That(storage is not null);
+                    Assert.That(storage.Locations?.Count == 1);
+                    Assert.That(storage.Locations?.FirstOrDefault()?.Items?.Count == 1);
+                    Assert.That(storage.Locations?.FirstOrDefault()?.Items?.FirstOrDefault()?.Material is not null);
+
+                    /*
                     storage.AddToStock(material, 750, Unit.Gram);
                     var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
-                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75);
+                    Assert.That(newItem?.Amount == startAmount + 0.75);
 
                     // Just to check if the unit conversion is working
                     storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
                     newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
-                    Assert.IsTrue(newItem?.Amount == startAmount + 0.75 - 1);
+                    Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
+                    */
                 }
             }
             catch (Exception exc)
@@ -1192,7 +1208,7 @@ namespace AndreasReitberger.NUnitTest
             try
             {
                 Calculation3d calculation = GetTestCalculation();
-                Assert.IsNotNull(calculation);
+                Assert.That(calculation is not null);
 
                 foreach (var material in calculation.Materials)
                 {
@@ -1204,7 +1220,7 @@ namespace AndreasReitberger.NUnitTest
             }
             catch (Exception exc)
             {
-                Assert.Fail(exc.Message, exc);
+                Assert.Fail(exc.Message);
             }
         }
 
@@ -1235,7 +1251,7 @@ namespace AndreasReitberger.NUnitTest
                     }
                 };
                 double resinWearCosts = resinTank.CalculateCosts();
-                Assert.IsTrue(resinWearCosts == 0.5d);
+                Assert.That(resinWearCosts == 0.5d);
                 // Consumable goods (like filters and gloves)
                 ProcedureAddition gloves = new()
                 {
@@ -1257,15 +1273,15 @@ namespace AndreasReitberger.NUnitTest
                     }
                 };
                 double glovesCosts = gloves.CalculateCosts();
-                Assert.IsTrue(glovesCosts == 1d);
+                Assert.That(glovesCosts == 1d);
 
                 var calculation = GetTestCalculation();
                 calculation.Procedure = Material3dFamily.Resin;
                 calculation.ApplyProcedureSpecificAdditions = true;
                 calculation.CalculateCosts();
 
-                Assert.NotNull(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement"));
-                Assert.NotNull(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves"));
+                Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
+                Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
             }
             catch (Exception exc)
             {

@@ -330,7 +330,7 @@ namespace AndreasReitberger.NUnitTest
                     PackagePrice = 9.99d,
                     Manufacturer = new()
                     {
-                        Name = "Würth"
+                        Name = "WÃ¼rth"
                     },
                     SKU = "2302423-1223"
                 };
@@ -648,7 +648,7 @@ namespace AndreasReitberger.NUnitTest
 
                 Manufacturer wuerth = new()
                 {
-                    Name = "Würth",
+                    Name = "WÃ¼rth",
                     DebitorNumber = "DE26265126",
                     Website = "https://www.wuerth.de/",
                 };
@@ -912,7 +912,7 @@ namespace AndreasReitberger.NUnitTest
                 PackagePrice = 9.99d,
                 Manufacturer = new()
                 {
-                    Name = "Würth"
+                    Name = "WÃ¼rth"
                 },
                 SKU = "2302423-1223"
             };
@@ -1072,7 +1072,7 @@ namespace AndreasReitberger.NUnitTest
                     PackagePrice = 9.99d,
                     Manufacturer = new()
                     {
-                        Name = "Würth"
+                        Name = "WÃ¼rth"
                     },
                     SKU = "2302423-1223"
                 };

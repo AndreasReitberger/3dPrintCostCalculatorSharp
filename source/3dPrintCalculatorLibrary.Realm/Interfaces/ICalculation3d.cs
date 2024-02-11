@@ -12,6 +12,7 @@ namespace AndreasReitberger.Print3d.Realm.Interfaces
 
         #region Basics
         string Name { get; set; }
+        CalculationState State { get; set; }
         DateTimeOffset Created { get; set; }
         public Guid PrinterId { get; set; }
         //IPrinter3d Printer { get; set; }

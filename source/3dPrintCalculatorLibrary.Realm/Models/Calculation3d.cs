@@ -22,6 +22,13 @@ namespace AndreasReitberger.Print3d.Realm
         [Required]
         public string Name { get; set; } = string.Empty;
 
+        public CalculationState State
+        {
+            get => (CalculationState)StateId;
+            set { StateId = (int)value; }
+        }
+        public int StateId { get; set; } = (int)CalculationState.Draft;
+
         public DateTimeOffset Created { get; set; } = DateTime.Now;
 
         public Guid PrinterId { get; set; }

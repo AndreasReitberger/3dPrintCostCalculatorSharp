@@ -29,6 +29,9 @@ namespace AndreasReitberger.Print3d.SQLite
         string name = string.Empty;
 
         [ObservableProperty]
+        CalculationState state = CalculationState.Draft;
+
+        [ObservableProperty]
         DateTimeOffset created = DateTime.Now;
 
         [ObservableProperty]
@@ -124,29 +127,28 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Details
         [ObservableProperty]
-        [property: ManyToMany(typeof(Printer3dCalculation))]
+        [property: ManyToMany(typeof(Printer3dCalculation), CascadeOperations = CascadeOperation.All)]
         List<Printer3d> printers = [];
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(Material3dCalculation))]
+        [property: ManyToMany(typeof(Material3dCalculation), CascadeOperations = CascadeOperation.All)]
         List<Material3d> materials = [];
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(CustomAdditionCalculation))]
+        [property: ManyToMany(typeof(CustomAdditionCalculation), CascadeOperations = CascadeOperation.All)]
         List<CustomAddition> customAdditions = [];
 
         [ObservableProperty]
         [Obsolete("Use the WorkstepUsages class instead")]
-        [property: ManyToMany(typeof(WorkstepCalculation))]
+        [property: ManyToMany(typeof(WorkstepCalculation), CascadeOperations = CascadeOperation.All)]
         List<Workstep> workSteps = [];
-
         [ObservableProperty]
         [Obsolete("Use the WorkstepUsages class instead")]
         [property: OneToMany]
         List<WorkstepDuration> workStepDurations = [];
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(WorkstepUsageCalculation))]
+        [property: ManyToMany(typeof(WorkstepUsageCalculation), CascadeOperations = CascadeOperation.All)]
         List<WorkstepUsage> workstepUsages = [];
 
         [ObservableProperty]

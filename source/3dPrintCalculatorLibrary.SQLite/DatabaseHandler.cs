@@ -109,9 +109,12 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Item3d),
             typeof(Item3dCalculation),
             typeof(Item3dUsage),
-            typeof(Storage3dItem),
+            typeof(Storage3dLocation),
             typeof(Storage3dTransaction),
+            typeof(Storage3dItem),
             typeof(Storage3d),
+            typeof(Storage3dLocationStorage3d),
+            typeof(Storage3dItemStorage3dLocation),
             typeof(ProcedureAddition),
             typeof(ProcedureCalculationParameter),
             typeof(Print3dInfo),
@@ -229,14 +232,11 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Methods
 
-        #region Private
-
-        #endregion
-
         #region Public
 
         #region Init
-        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));          
+        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));           
+
         
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
         
@@ -280,29 +280,23 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CloseAsync();
         }
 
-        public List<TableMapping> GetTableMappings(string databasePath = "")
+        public List<TableMapping>? GetTableMappings(string databasePath = "")
         {
             if (DatabaseAsync == null && !string.IsNullOrWhiteSpace(databasePath))
             {
                 InitDatabase(databasePath);
             }
-            return DatabaseAsync.TableMappings.ToList();
+            return DatabaseAsync?.TableMappings.ToList();
         }
 
-        public async Task RebuildAllTableAsync()
-        {
-            await InitTablesAsync();
-        }
-
+        public Task RebuildAllTableAsync() => InitTablesAsync();
+        
         public async Task DropAllTableAsync()
         {
-            //List<Task> tasks = new();
             foreach (TableMapping mapping in DatabaseAsync.TableMappings)
             {
                 await DatabaseAsync.DropTableAsync(mapping);
-                //tasks.Add(Database?.DeleteAllAsync(mapping));
             }
-            //await Task.WhenAll(tasks);
         }
 
         public async Task TryDropAllTableAsync()
@@ -331,7 +325,6 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 return false;
             }
-
         }
 
         public async Task ClearAllTableAsync()
@@ -362,26 +355,18 @@ namespace AndreasReitberger.Print3d.SQLite
             }
         }
 
-        public async Task BackupDatabaseAsync(string targetFolder, string databaseName)
-        {
-            await DatabaseAsync.BackupAsync(targetFolder, databaseName);
-        }
-
-        public void BackupDatabase(string targetFolder, string databaseName)
-        {
-            Database?.Backup(targetFolder, databaseName);
-        }
-
+        public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
+        
+        public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
+        
         public void Close()
         {
             Database?.Close();
             DatabaseAsync?.CloseAsync();
         }
 
-        public void Dispose()
-        {
-            Close();
-        }
+        public void Dispose() =>  Close();
+        
         #endregion
 
         #region Static
@@ -403,7 +388,6 @@ namespace AndreasReitberger.Print3d.SQLite
                 result = action();
             }
             timer.Stop();
-            //var t = new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
             return new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
         }
 
@@ -422,10 +406,8 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Clone
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public object Clone() => MemberwiseClone();
+        
         #endregion
 
         #endregion

@@ -1,7 +1,5 @@
-﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
-using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
@@ -18,11 +16,15 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Storage3dItem> items = new();
+        int capacity = 32;
+
+        [ObservableProperty]
+        //[property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        [property: ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Storage3dLocation> locations = new();
         #endregion
 
         #region Ctor
@@ -34,6 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Methods
 
+        /*
         public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogram)
         {
             Storage3dItem item = new() { Material = material };
@@ -153,6 +156,7 @@ namespace AndreasReitberger.Print3d.SQLite
             }
             return false;
         }
+        */
         #endregion
     }
 }

@@ -30,11 +30,12 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         #region Basics
-        /*
-         * Otherwise cannot be deserialized with JsonConverter
-         */
+
         [ObservableProperty]
         string name = string.Empty;
+
+        [ObservableProperty]
+        CalculationState state = CalculationState.Draft;
 
         [ObservableProperty]
         DateTimeOffset created = DateTime.Now;

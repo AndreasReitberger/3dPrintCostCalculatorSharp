@@ -106,9 +106,12 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Item3d),
             typeof(Item3dCalculation),
             typeof(Item3dUsage),
-            typeof(Storage3dItem),
+            typeof(Storage3dLocation),
             typeof(Storage3dTransaction),
+            typeof(Storage3dItem),
             typeof(Storage3d),
+            typeof(Storage3dLocationStorage3d),
+            typeof(Storage3dItemStorage3dLocation),
             typeof(ProcedureAddition),
             typeof(ProcedureCalculationParameter),
 
@@ -222,125 +225,17 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Methods
 
-        #region Private
-
-        #endregion
-
         #region Public
 
         #region Init
-        public void InitTables()
-        {
-            DefaultTables?.ForEach(type => Database?.CreateTable(type));
-            /*
-            Database?.CreateTable<Manufacturer>();
-            Database?.CreateTable<Supplier>();
-            Database?.CreateTable<Printer3d>();
-            Database?.CreateTable<Printer3dAttribute>();
-            Database?.CreateTable<Printer3dSlicerConfig>();
-            Database?.CreateTable<Maintenance3d>();
-            Database?.CreateTable<Sparepart>();
-            Database?.CreateTable<Material3dColor>();
-            Database?.CreateTable<Material3dType>();
-            Database?.CreateTable<Material3dAttribute>();
-            Database?.CreateTable<Material3dProcedureAttribute>();
-            Database?.CreateTable<Material3d>();
-            Database?.CreateTable<WorkstepCategory>();
-            Database?.CreateTable<Workstep>();
-            Database?.CreateTable<HourlyMachineRate>();
-            Database?.CreateTable<Customer3d>();
-            Database?.CreateTable<CustomAddition>();
-            Database?.CreateTable<CalculationAttribute>();
-            Database?.CreateTable<CalculationProcedureAttribute>();
-            Database?.CreateTable<CalculationProcedureParameter>();
-            Database?.CreateTable<CalculationProcedureParameterAddition>();
-            Database?.CreateTable<Calculation3d>();
-            Database?.CreateTable<File3d>();
-            Database?.CreateTable<ModelWeight>();
-            Database?.CreateTable<Address>();
-            Database?.CreateTable<Email>();
-            Database?.CreateTable<PhoneNumber>();
-            Database?.CreateTable<ContactPerson>();
-            Database?.CreateTable<Calculation3dProfile>();
-            Database?.CreateTable<Printer3dCalculation>();
-            Database?.CreateTable<Material3dCalculation>();
-            Database?.CreateTable<WorkstepCalculation>();
-            Database?.CreateTable<CustomAdditionCalculation>();
-            Database?.CreateTable<WorkstepDuration>();
-            Database?.CreateTable<Item3d>();
-            Database?.CreateTable<Item3dCalculation>();
-            Database?.CreateTable<Item3dUsage>();
-            Database?.CreateTable<Storage3dItem>();
-            Database?.CreateTable<Storage3dTransaction>();
-            Database?.CreateTable<Storage3d>();
-            Database?.CreateTable<ProcedureAddition>();
-            Database?.CreateTable<ProcedureCalculationParameter>();
-
-            Database?.CreateTable<DatabaseSettingsKeyValuePair>();
-            */
-        }
-
-        public async Task InitTablesAsync()
-        {
-            DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
-            /*
-            await DatabaseAsync.CreateTableAsync<Manufacturer>();
-            await DatabaseAsync.CreateTableAsync<Supplier>();
-            await DatabaseAsync.CreateTableAsync<Printer3d>();
-            await DatabaseAsync.CreateTableAsync<Printer3dAttribute>();
-            await DatabaseAsync.CreateTableAsync<Printer3dSlicerConfig>();
-            await DatabaseAsync.CreateTableAsync<Maintenance3d>();
-            await DatabaseAsync.CreateTableAsync<Sparepart>();
-            await DatabaseAsync.CreateTableAsync<Material3dColor>();
-            await DatabaseAsync.CreateTableAsync<Material3dType>();
-            await DatabaseAsync.CreateTableAsync<Material3dAttribute>();
-            await DatabaseAsync.CreateTableAsync<Material3dProcedureAttribute>();
-            await DatabaseAsync.CreateTableAsync<Material3d>();
-            await DatabaseAsync.CreateTableAsync<WorkstepCategory>();
-            await DatabaseAsync.CreateTableAsync<Workstep>();
-            await DatabaseAsync.CreateTableAsync<HourlyMachineRate>();
-            await DatabaseAsync.CreateTableAsync<Customer3d>();
-            await DatabaseAsync.CreateTableAsync<CustomAddition>();
-            await DatabaseAsync.CreateTableAsync<CalculationAttribute>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureAttribute>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameter>();
-            await DatabaseAsync.CreateTableAsync<CalculationProcedureParameterAddition>();
-            await DatabaseAsync.CreateTableAsync<Calculation3d>();
-            await DatabaseAsync.CreateTableAsync<File3d>();
-            await DatabaseAsync.CreateTableAsync<ModelWeight>();
-            await DatabaseAsync.CreateTableAsync<Address>();
-            await DatabaseAsync.CreateTableAsync<Email>();
-            await DatabaseAsync.CreateTableAsync<PhoneNumber>();
-            await DatabaseAsync.CreateTableAsync<ContactPerson>();
-            await DatabaseAsync.CreateTableAsync<Calculation3dProfile>();
-            await DatabaseAsync.CreateTableAsync<Printer3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<Material3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<WorkstepCalculation>();
-            await DatabaseAsync.CreateTableAsync<CustomAdditionCalculation>();
-            await DatabaseAsync.CreateTableAsync<WorkstepDuration>();
-            await DatabaseAsync.CreateTableAsync<Item3d>();
-            await DatabaseAsync.CreateTableAsync<Item3dCalculation>();
-            await DatabaseAsync.CreateTableAsync<Item3dUsage>();
-            await DatabaseAsync.CreateTableAsync<Storage3dItem>();
-            await DatabaseAsync.CreateTableAsync<Storage3dTransaction>();
-            await DatabaseAsync.CreateTableAsync<Storage3d>();
-            await DatabaseAsync.CreateTableAsync<ProcedureAddition>();
-            await DatabaseAsync.CreateTableAsync<ProcedureCalculationParameter>();
-
-            await DatabaseAsync.CreateTableAsync<DatabaseSettingsKeyValuePair>();
-            */
-        }
-
-        public void CreateTable(Type table)
-        {
-            Database?.CreateTable(table);
-        }
-
-        public void CreateTables(List<Type> tables)
-        {
-            Database?.CreateTables(CreateFlags.None, tables?.ToArray());
-        }
-
+        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));           
+        
+        public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
+        
+        public void CreateTable(Type table) => Database?.CreateTable(table);
+        
+        public void CreateTables(List<Type> tables) => Database?.CreateTables(CreateFlags.None, tables?.ToArray());
+        
         #endregion
 
         #region Delegates
@@ -377,29 +272,23 @@ namespace AndreasReitberger.Print3d.SQLite
             await DatabaseAsync.CloseAsync();
         }
 
-        public List<TableMapping> GetTableMappings(string databasePath = "")
+        public List<TableMapping>? GetTableMappings(string databasePath = "")
         {
             if (DatabaseAsync == null && !string.IsNullOrWhiteSpace(databasePath))
             {
                 InitDatabase(databasePath);
             }
-            return DatabaseAsync.TableMappings.ToList();
+            return DatabaseAsync?.TableMappings.ToList();
         }
 
-        public async Task RebuildAllTableAsync()
-        {
-            await InitTablesAsync();
-        }
-
+        public Task RebuildAllTableAsync() => InitTablesAsync();
+        
         public async Task DropAllTableAsync()
         {
-            //List<Task> tasks = new();
             foreach (TableMapping mapping in DatabaseAsync.TableMappings)
             {
                 await DatabaseAsync.DropTableAsync(mapping);
-                //tasks.Add(Database?.DeleteAllAsync(mapping));
             }
-            //await Task.WhenAll(tasks);
         }
 
         public async Task TryDropAllTableAsync()
@@ -428,7 +317,6 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 return false;
             }
-
         }
 
         public async Task ClearAllTableAsync()
@@ -459,26 +347,18 @@ namespace AndreasReitberger.Print3d.SQLite
             }
         }
 
-        public async Task BackupDatabaseAsync(string targetFolder, string databaseName)
-        {
-            await DatabaseAsync.BackupAsync(targetFolder, databaseName);
-        }
-
-        public void BackupDatabase(string targetFolder, string databaseName)
-        {
-            Database?.Backup(targetFolder, databaseName);
-        }
-
+        public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
+        
+        public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
+        
         public void Close()
         {
             Database?.Close();
             DatabaseAsync?.CloseAsync();
         }
 
-        public void Dispose()
-        {
-            Close();
-        }
+        public void Dispose() =>  Close();
+        
         #endregion
 
         #region Static
@@ -500,7 +380,6 @@ namespace AndreasReitberger.Print3d.SQLite
                 result = action();
             }
             timer.Stop();
-            //var t = new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
             return new Tuple<T, TimeSpan?>(result, timer?.Elapsed);
         }
 
@@ -519,10 +398,8 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Clone
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public object Clone() => MemberwiseClone();
+        
         #endregion
 
         #endregion

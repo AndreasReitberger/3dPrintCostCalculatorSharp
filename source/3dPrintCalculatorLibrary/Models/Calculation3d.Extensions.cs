@@ -665,11 +665,8 @@ namespace AndreasReitberger.Print3d.Models
             RecalculationRequired = false;
         }
 
-        public async Task CalculateCostsAsync()
-        {
-            await Task.Run(CalculateCosts);
-        }
-
+        public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
+        
         public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
@@ -837,6 +834,7 @@ namespace AndreasReitberger.Print3d.Models
                 return 0;
             }
         }
+
         #endregion
     }
 }

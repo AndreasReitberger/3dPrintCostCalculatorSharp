@@ -1,27 +1,31 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Realm.StorageAdditions;
 using AndreasReitberger.Print3d.Utilities;
-using Realms;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace AndreasReitberger.Print3d.Realm
+namespace AndreasReitberger.Print3d.Models.StorageAdditions
 {
-    public partial class Storage3d : RealmObject, IStorage3d
+    public partial class Storage3dLocation : ObservableObject, IStorage3dLocation
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public int Capacity { get; set; } = 32;
-        public IList<Storage3dItem> Items { get; }
+        [ObservableProperty]
+        Guid id;
+
+        [ObservableProperty]
+        string location;
+
+        [ObservableProperty]
+        int capacity = 32;
+
+        [ObservableProperty]
+        ObservableCollection<Storage3dItem> items = new();
         #endregion
 
         #region Ctor
-        public Storage3d()
+        public Storage3dLocation()
         {
             Id = Guid.NewGuid();
         }

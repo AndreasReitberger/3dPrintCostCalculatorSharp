@@ -1,27 +1,38 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Realm.StorageAdditions;
 using AndreasReitberger.Print3d.Utilities;
-using Realms;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 
-namespace AndreasReitberger.Print3d.Realm
+namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
-    public partial class Storage3d : RealmObject, IStorage3d
+    [Table("StorageLocations")]
+    public partial class Storage3dLocation : ObservableObject, IStorage3dLocation
     {
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
-        [Required]
-        public string Name { get; set; }
-        public int Capacity { get; set; } = 32;
-        public IList<Storage3dItem> Items { get; }
+        [ObservableProperty]
+        [property: PrimaryKey]
+        Guid id;
+
+        //[ObservableProperty]
+        //[property: ForeignKey(typeof(Storage3d))]
+        //Guid storageId;
+
+        [ObservableProperty]
+        string location = string.Empty;
+
+        [ObservableProperty]
+        int capacity = 32;
+
+        [ObservableProperty]
+        [property: ManyToMany(typeof(Storage3dItemStorage3dLocation), CascadeOperations = CascadeOperation.All)]   
+        ObservableCollection<Storage3dItem> items = new();
         #endregion
 
         #region Ctor
-        public Storage3d()
+        public Storage3dLocation()
         {
             Id = Guid.NewGuid();
         }
@@ -39,7 +50,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public void AddToStock(Storage3dItem item, double amount, Unit unit)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
                 if (item?.Material.Unit == unit)
                 {
@@ -54,18 +65,26 @@ namespace AndreasReitberger.Print3d.Realm
                 }
             }
         }
-        public void AddToStock(Material3d material, double amount, Unit unit)
+        public Storage3dTransaction AddToStock(Material3d material, double amount, Unit unit)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
-                CreateStockItem(material, amount, unit);
+                item = CreateStockItem(material, amount, unit);
+            return new()
+            {
+                Amount = amount,
+                Unit = unit,
+                CalculationId = null,
+                DateTime = DateTime.Now,
+                Item = item,
+            };
         }
 
         public Storage3dTransaction AddToStock(Material3d material, double amount, Unit unit, Guid? calculationId = null)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
@@ -82,7 +101,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public bool TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
                 if (item.Amount >= amount)
                 {
@@ -114,13 +133,13 @@ namespace AndreasReitberger.Print3d.Realm
 
         public bool TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
             {
                 return new()

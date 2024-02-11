@@ -757,20 +757,26 @@ namespace AndreasReitberger.NUnitTest
                     Amount = startAmount,
                 };
 
+                Print3d.Models.StorageAdditions.Storage3dLocation location = new()
+                {
+                    Location = "LR-01-01-01",
+                    Capacity = 32,
+                };
+                location.Items.Add(item);
                 Print3d.Models.Storage3d storage = new()
                 {
                     Name = "Main material storage",
-                    Items = new() { item },
                 };
+                storage.Locations.Add(location);
 
-                storage.AddToStock(material, 750, Unit.Gram);
-                var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                location.AddToStock(material, 750, Unit.Gram);
+                var newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
                 Assert.That(newItem?.Amount == startAmount + 0.75);
 
                 // Just to check if the unit conversion is working
-                storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
-                newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                location.TakeFromStock(material, 0.001, Unit.MetricTons, false);
+                newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
                 Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
             }

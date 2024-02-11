@@ -56,7 +56,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString() =>  JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object obj)
         {
@@ -65,9 +65,9 @@ namespace AndreasReitberger.Print3d.Models
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
     }

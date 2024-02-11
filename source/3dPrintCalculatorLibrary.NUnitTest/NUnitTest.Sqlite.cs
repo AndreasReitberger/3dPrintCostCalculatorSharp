@@ -575,7 +575,7 @@ namespace AndreasReitberger.NUnitTest
                 List<CalculationProcedureParameterAddition> additionalInfo =
                 [
                     new CalculationProcedureParameterAddition("replacementcosts", 20),
-                    new CalculationProcedureParameterAddition( "wearfactor", 0.5 ),
+                    new CalculationProcedureParameterAddition("wearfactor", 0.5),
                 ];
 
                 //List<CalculationProcedureParameter> paramters = new List<CalculationProcedureParameter>();
@@ -1173,7 +1173,7 @@ namespace AndreasReitberger.NUnitTest
                         Capacity = 20,
                         Items = new() { item },
                     };
-                    
+
                     Storage3d storage = new()
                     {
                         Name = "Main material storage",
@@ -1435,8 +1435,8 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         File = file,
-                        MaterialUsages = [ new() { Material = material, Percentage = 1 }],
-                        Printer = printer,  
+                        MaterialUsages = [new() { Material = material, Percentage = 1 }],
+                        Printer = printer,
                         Items = [usage],
                     };
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info);
@@ -1452,7 +1452,7 @@ namespace AndreasReitberger.NUnitTest
                     Calculation3dEnhanced calc = new()
                     {
                         Name = "Test Calculation",
-                        PrintInfos = [ info, info2 ],
+                        PrintInfos = [info, info2],
                     };
 
                     calc.CalculateCosts();

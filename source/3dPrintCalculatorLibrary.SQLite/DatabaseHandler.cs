@@ -235,15 +235,15 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Public
 
         #region Init
-        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));           
+        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));
 
-        
+
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
-        
+
         public void CreateTable(Type table) => Database?.CreateTable(table);
-        
+
         public void CreateTables(List<Type> tables) => Database?.CreateTables(CreateFlags.None, tables?.ToArray());
-        
+
         #endregion
 
         #region Delegates
@@ -290,7 +290,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task RebuildAllTableAsync() => InitTablesAsync();
-        
+
         public async Task DropAllTableAsync()
         {
             foreach (TableMapping mapping in DatabaseAsync.TableMappings)
@@ -356,17 +356,17 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
-        
+
         public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
-        
+
         public void Close()
         {
             Database?.Close();
             DatabaseAsync?.CloseAsync();
         }
 
-        public void Dispose() =>  Close();
-        
+        public void Dispose() => Close();
+
         #endregion
 
         #region Static
@@ -407,7 +407,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Clone
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
         #endregion

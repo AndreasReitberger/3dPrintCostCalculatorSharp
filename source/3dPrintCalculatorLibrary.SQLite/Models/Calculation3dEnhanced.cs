@@ -361,7 +361,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Constructor
         public Calculation3dEnhanced()
         {
-            Id = Guid.NewGuid(); 
+            Id = Guid.NewGuid();
             PrintInfos = [];
         }
         #endregion

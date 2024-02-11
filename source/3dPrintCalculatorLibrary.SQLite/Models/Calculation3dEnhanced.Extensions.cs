@@ -8,7 +8,7 @@ namespace AndreasReitberger.Print3d.SQLite
     public partial class Calculation3dEnhanced
     {
         #region Methods
-        
+
         public void CalculateCosts()
         {
             PrintTimes?.Clear();
@@ -23,7 +23,7 @@ namespace AndreasReitberger.Print3d.SQLite
             CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
             CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             CalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
-            
+
             // New approach
             foreach (Print3dInfo info in PrintInfos)
             {
@@ -68,7 +68,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     if (percentageUsage > 1 || percentageUsage <= 0)
                         throw new ArgumentOutOfRangeException($"The overall percentage of the material usage is greater than 1 (=100%): {percentageUsage}");
                     foreach (Material3dUsage materialUsageInfo in info.MaterialUsages)
-                    { 
+                    {
                         //Material3d material = info.Material;
                         Material3d material = materialUsageInfo.Material;
                         if (material is not null)
@@ -614,7 +614,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
-        
+
         public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
@@ -636,7 +636,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         // If a specific type is requested
                         OverallMaterialCosts
                             .Where(cost => cost.Type == calculationAttributeType))
-                            .Select(value => Convert.ToDouble(value.Value));                 
+                            .Select(value => Convert.ToDouble(value.Value));
 
                 double total = 0;
                 foreach (var cost in costs)

@@ -666,7 +666,7 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
-        
+
         public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try

@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         [Obsolete("Use Calculation3dEnhanced instead")]
         public Guid CalculationId { get; set; }
-        
+
         public Guid CalculationEnhancedId { get; set; }
 
         public Guid FileId { get; set; }
@@ -45,7 +45,7 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Overrides
-        public override string ToString() =>  JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object obj)
         {
@@ -54,9 +54,9 @@ namespace AndreasReitberger.Print3d.Realm
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
     }

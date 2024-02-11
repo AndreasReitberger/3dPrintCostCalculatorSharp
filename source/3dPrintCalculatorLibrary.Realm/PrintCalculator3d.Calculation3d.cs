@@ -1,18 +1,19 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Models;
 using AndreasReitberger.Print3d.Utilities;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AndreasReitberger.Print3d.Realm
 {
-    public static class PrintCalculator3d
+    public static partial class PrintCalculator3d
     {
         #region Public
-        public static ObservableCollection<Calculation3dChartItem> GetCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var Costs = new ObservableCollection<Calculation3dChartItem>(
+            if (!calculation.IsCalculated) return [];
+            var Costs = new List<Calculation3dChartItem>(
                 calculation.Costs.Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,
@@ -23,10 +24,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return Costs;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetMaterialUsage(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetMaterialUsage(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MaterialUsage = new ObservableCollection<Calculation3dChartItem>(
+            if (!calculation.IsCalculated) return [];
+            var MaterialUsage = new List<Calculation3dChartItem>(
                 calculation.MaterialUsage.Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,
@@ -37,10 +39,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return MaterialUsage;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetMachineCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetMachineCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MachineCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallPrinterCosts
+            if (!calculation.IsCalculated) return [];
+            var MachineCosts = new List<Calculation3dChartItem>(calculation.OverallPrinterCosts
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Machine ||
                     cost.Type == CalculationAttributeType.Energy ||
@@ -57,10 +60,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return MachineCosts;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetMaterialCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetMaterialCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var MaterialCosts = new ObservableCollection<Calculation3dChartItem>(calculation.OverallMaterialCosts
+            if (!calculation.IsCalculated) return [];
+            var MaterialCosts = new List<Calculation3dChartItem>(calculation.OverallMaterialCosts
                 .Where(cost => (
                     cost.Type == CalculationAttributeType.Material ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition) &&
@@ -75,10 +79,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return MaterialCosts;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetWorkstepCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetWorkstepCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            if (!calculation.IsCalculated) return [];
+            var WorkstepCosts = new List<Calculation3dChartItem>(calculation.Costs
                 .Where(cost =>
                     cost.Type == CalculationAttributeType.Workstep ||
                     cost.Type == CalculationAttributeType.ProcedureSpecificAddition)
@@ -92,10 +97,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return WorkstepCosts;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetCustomAdditionsCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetCustomAdditionsCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var WorkstepCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            if (!calculation.IsCalculated) return [];
+            var WorkstepCosts = new List<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.CustomAddition)
                 .Select(cost => new Calculation3dChartItem()
                 {
@@ -107,10 +113,11 @@ namespace AndreasReitberger.Print3d.Realm
                 }));
             return WorkstepCosts;
         }
-        public static ObservableCollection<Calculation3dChartItem> GetRatesCosts(Calculation3d calculation)
+        [Obsolete("Will be replaced with Calculation3dEnhanced")]
+        public static List<Calculation3dChartItem> GetRatesCosts(Calculation3d calculation)
         {
-            if (!calculation.IsCalculated) return new ObservableCollection<Calculation3dChartItem>();
-            var RatesCosts = new ObservableCollection<Calculation3dChartItem>(calculation.Costs
+            if (!calculation.IsCalculated) return [];
+            var RatesCosts = new List<Calculation3dChartItem>(calculation.Costs
                 .Where(cost => cost.Type == CalculationAttributeType.Margin || cost.Type == CalculationAttributeType.Tax || cost.Type == CalculationAttributeType.CustomAddition)
                 .Select(cost => new Calculation3dChartItem()
                 {

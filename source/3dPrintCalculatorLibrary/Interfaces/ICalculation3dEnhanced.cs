@@ -11,6 +11,7 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Basics
         string Name { get; set; }
+        CalculationState State { get; set; }
         DateTimeOffset Created { get; set; }
         public Guid CustomerId { get; set; }
         //ICustomer3d Customer { get; set; }

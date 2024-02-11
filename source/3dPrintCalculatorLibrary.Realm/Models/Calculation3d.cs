@@ -11,6 +11,7 @@ using ErrorEventArgs = System.IO.ErrorEventArgs;
 
 namespace AndreasReitberger.Print3d.Realm
 {
+    [Obsolete("Use Calculation3dEnhanced instead")]
     public partial class Calculation3d : RealmObject, ICalculation3d, ICloneable
     {
 

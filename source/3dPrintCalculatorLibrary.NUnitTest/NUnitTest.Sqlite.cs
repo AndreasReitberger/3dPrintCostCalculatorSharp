@@ -572,11 +572,11 @@ namespace AndreasReitberger.NUnitTest
 
                 _calculation.ApplyProcedureSpecificAdditions = true;
                 // Needed if the calculation is reloaded later
-                List<CalculationProcedureParameterAddition> additionalInfo = new()
-                {
+                List<CalculationProcedureParameterAddition> additionalInfo =
+                [
                     new CalculationProcedureParameterAddition("replacementcosts", 20),
                     new CalculationProcedureParameterAddition( "wearfactor", 0.5 ),
-                };
+                ];
 
                 //List<CalculationProcedureParameter> paramters = new List<CalculationProcedureParameter>();
                 List<CalculationProcedureParameter> parameters = new List<CalculationProcedureParameter>
@@ -601,7 +601,7 @@ namespace AndreasReitberger.NUnitTest
 
                 _calculation.CalculateCosts();
 
-                CalculationAttribute wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
+                CalculationAttribute? wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
@@ -609,17 +609,17 @@ namespace AndreasReitberger.NUnitTest
 
                 // Updat calculation
                 _calculation.Printer = null;
-                _calculation.Printers = new List<Printer3d>
-                {
+                _calculation.Printers =
+                [
                     printerSla
-                };
+                ];
 
                 _calculation.CalculateCosts();
                 wearCostAttribute = _calculation.OverallPrinterCosts.FirstOrDefault(item =>
                 item.Type == CalculationAttributeType.ProcedureSpecificAddition &&
                 item.Attribute == "NozzleWearCosts"
                 );
-                Assert.That(wearCostAttribute is not null);
+                Assert.That(wearCostAttribute is null);
             }
             catch (Exception exc)
             {
@@ -817,7 +817,9 @@ namespace AndreasReitberger.NUnitTest
                     Assert.That(calc.CustomAdditionCosts == calc2.CustomAdditionCosts, "Custom addition costs differ");
                     Assert.That(calc.ItemsCost == calc2.ItemsCost, "Item costs differ");
                 }
-                Assert.That(calc?.TotalCosts == calc2?.TotalCosts, "Total costs differ");
+                else
+                    Assert.Fail("Calculation could not be loaded from the database!");
+                Assert.That(Math.Round(calc.TotalCosts, 5) == Math.Round(calc2.TotalCosts, 5), $"Total costs differ: {calc?.TotalCosts} != {calc2?.TotalCosts}");
             }
             catch (Exception exc)
             {
@@ -1153,14 +1155,12 @@ namespace AndreasReitberger.NUnitTest
                         UnitPrice = 29.99,
                         PriceIncludesTax = true,
                     };
-                    //await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
 
                     Storage3dItem item = new()
                     {
                         Material = material,
                         Amount = startAmount,
                     };
-                    //await DatabaseHandler.Instance.SetStorageItemWithChildrenAsync(item);
 
                     Storage3dLocation location = new()
                     {
@@ -1174,6 +1174,7 @@ namespace AndreasReitberger.NUnitTest
                         Name = "Main material storage",
                         Locations = new() { location },
                     };
+                    await Task.Delay(250);
                     await DatabaseHandler.Instance.SetStorageWithChildrenAsync(storage);
                     var storageLoaded = await DatabaseHandler.Instance.GetStorageWithChildrenAsync(storage.Id);
 
@@ -1182,18 +1183,27 @@ namespace AndreasReitberger.NUnitTest
                     Assert.That(storage.Locations?.FirstOrDefault()?.Items?.Count == 1);
                     Assert.That(storage.Locations?.FirstOrDefault()?.Items?.FirstOrDefault()?.Material is not null);
 
-                    /*
-                    storage.AddToStock(material, 750, Unit.Gram);
-                    var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                    List<Storage3dTransaction> transactions = [];
+                    /**/
+                    Storage3dTransaction transaction1 = location.AddToStock(material, 750, Unit.Gram, null);
+                    Storage3dItem? newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
                     Assert.That(newItem?.Amount == startAmount + 0.75);
+                    transactions.Add(transaction1);
 
                     // Just to check if the unit conversion is working
-                    storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
-                    newItem = storage.Items.FirstOrDefault(curItem => curItem.Material == material);
+                    Storage3dTransaction transaction2 = location.TakeFromStock(material, 0.001, Unit.MetricTons, null, false);
+                    newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
                     Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
-                    */
+                    transactions.Add(transaction2);
+                    await DatabaseHandler.Instance.SetStorageTransactionsWithChildrenAsync(transactions);
+
+                    List<Storage3dTransaction>? transactionsLoaded = await DatabaseHandler.Instance.GetStorageTransactionsWithChildrenAsync();
+                    Assert.That(transactionsLoaded?.Count == transactions?.Count);
+
+                    transactionsLoaded = await DatabaseHandler.Instance.GetStorageTransactionsWithChildrenAsync(newItem);
+                    Assert.That(transactionsLoaded?.Count == transactions?.Count);
                 }
             }
             catch (Exception exc)

@@ -64,13 +64,13 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task<List<Material3dType>> GetMaterialTypesWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Material3dType>(recursive: true);
 
         public List<Material3dType> GetMaterialTypes() => Database.Table<Material3dType>().ToList();
-        
+
         public Task<Material3dType> GetMaterialTypeWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Material3dType>(id, recursive: true);
 
         public Material3dType GetMaterialType(Guid id) => Database.Table<Material3dType>()
                     .Where(i => i.Id == id)
                     .FirstOrDefault();
-        
+
 
         public Task SetMaterialTypeWithChildrenAsync(Material3dType materialType) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(materialType, recursive: true);
 
@@ -93,7 +93,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task<int> DeleteMaterialTypeAsync(Material3dType materialType) => DatabaseAsync.DeleteAsync<Material3dType>(materialType?.Id);
 
         public int? DeleteMaterialType(Material3dType materialType) => Database?.Delete<Material3dType>(materialType?.Id);
-        
+
         #endregion
 
         #region Materials
@@ -166,8 +166,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task SetMaintenanceWithChildrenAsync(Maintenance3d maintenance) => DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(maintenance, recursive: true);
-                
-        
+
+
 
         public async Task SetMaintenancesWithChildrenAsync(List<Maintenance3d> maintenances, bool replaceExisting = true)
         {
@@ -216,7 +216,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task<int> DeleteCustomerAsync(Customer3d customer) => DatabaseAsync
                 .DeleteAsync<Customer3d>(customer.Id);
-        
+
 
         public async Task<int[]> DeleteCustomersAsync(List<Customer3d> customers)
         {
@@ -686,7 +686,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Storage Transaction
         public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(recursive: true);
-
+        public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync(Storage3dItem item) => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(filter: transaction => transaction.StorageItemId == item.Id, recursive: true);
+        
         public Task<Storage3dTransaction> GetStorageTransactionWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Storage3dTransaction>(id, recursive: true);
 
         public Task SetStorageTransactionWithChildrenAsync(Storage3dTransaction transaction) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(transaction, recursive: true);

@@ -50,7 +50,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         public void AddToStock(Storage3dItem item, double amount, Unit unit)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
                 if (item?.Material.Unit == unit)
                 {
@@ -65,18 +65,26 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
                 }
             }
         }
-        public void AddToStock(Material3d material, double amount, Unit unit)
+        public Storage3dTransaction AddToStock(Material3d material, double amount, Unit unit)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
-                CreateStockItem(material, amount, unit);
+                item = CreateStockItem(material, amount, unit);
+            return new()
+            {
+                Amount = amount,
+                Unit = unit,
+                CalculationId = null,
+                DateTime = DateTime.Now,
+                Item = item,
+            };
         }
 
         public Storage3dTransaction AddToStock(Material3d material, double amount, Unit unit, Guid? calculationId = null)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
@@ -93,7 +101,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         public bool TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
                 if (item.Amount >= amount)
                 {
@@ -125,13 +133,13 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         public bool TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
             {
                 return new()

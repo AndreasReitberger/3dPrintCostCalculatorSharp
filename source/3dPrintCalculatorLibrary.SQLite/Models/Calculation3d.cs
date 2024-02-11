@@ -144,7 +144,7 @@ namespace AndreasReitberger.Print3d.SQLite
         List<Workstep> workSteps = [];
         [ObservableProperty]
         [Obsolete("Use the WorkstepUsages class instead")]
-        [property: OneToMany]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<WorkstepDuration> workStepDurations = [];
 
         [ObservableProperty]
@@ -152,7 +152,7 @@ namespace AndreasReitberger.Print3d.SQLite
         List<WorkstepUsage> workstepUsages = [];
 
         [ObservableProperty]
-        [property: OneToMany]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<Item3dUsage> additionalItems = [];
 
         [ObservableProperty]

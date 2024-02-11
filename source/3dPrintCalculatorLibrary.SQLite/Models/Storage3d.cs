@@ -22,7 +22,6 @@ namespace AndreasReitberger.Print3d.SQLite
         int capacity = 32;
 
         [ObservableProperty]
-        //[property: OneToMany(CascadeOperations = CascadeOperation.All)]
         [property: ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
         ObservableCollection<Storage3dLocation> locations = new();
         #endregion

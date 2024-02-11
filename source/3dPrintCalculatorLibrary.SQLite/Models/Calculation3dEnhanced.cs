@@ -97,15 +97,15 @@ namespace AndreasReitberger.Print3d.SQLite
         public List<Material3d>? AvailableMaterials => PrintInfos.SelectMany(pi => pi?.MaterialUsages).Select(mu => mu.Material)?.Distinct()?.ToList();
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(CustomAdditionCalculation3dEnhanced))]
+        [property: ManyToMany(typeof(CustomAdditionCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
         List<CustomAddition> customAdditions = [];
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(WorkstepUsageCalculation3dEnhanced))]
+        [property: ManyToMany(typeof(WorkstepUsageCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
         List<WorkstepUsage> workstepUsages = [];
 
         [ObservableProperty]
-        [property: OneToMany]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
         List<Item3dUsage> additionalItems = [];
 
         [ObservableProperty]

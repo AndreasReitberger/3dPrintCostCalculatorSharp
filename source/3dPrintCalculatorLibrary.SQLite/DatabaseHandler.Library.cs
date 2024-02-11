@@ -269,14 +269,14 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task<List<Print3dInfo>> GetPrintInfosWithChildrenAsync() => DatabaseAsync
                 .GetAllWithChildrenAsync<Print3dInfo>(recursive: true)
                 ;
-       
+
         public Task<Print3dInfo> GetPrintInfoWithChildrenAsync(Guid id) => DatabaseAsync
-                .GetWithChildrenAsync<Print3dInfo>(id, recursive: true);     
+                .GetWithChildrenAsync<Print3dInfo>(id, recursive: true);
 
         // https://stackoverflow.com/questions/35975235/one-to-many-relationship-in-sqlite-xamarin
         public Task SetPrintInfoWithChildrenAsync(Print3dInfo file) => DatabaseAsync
                 .InsertOrReplaceWithChildrenAsync(file, recursive: true);
-        
+
         public async Task SetPrintInfosWithChildrenAsync(List<Print3dInfo> files, bool replaceExisting = true)
         {
             if (replaceExisting)
@@ -286,7 +286,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task<int> DeletePrintInfoAsync(Print3dInfo file) => DatabaseAsync
-                .DeleteAsync<File3d>(file.Id);      
+                .DeleteAsync<File3d>(file.Id);
 
         public async Task<int[]> DeletePrintInfosAsync(List<Print3dInfo> files)
         {
@@ -504,7 +504,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task<Calculation3dEnhanced> GetEnhancedCalculationWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Calculation3dEnhanced>(id, recursive: true);
-        
+
         public async Task RerfreshEnhancedCalculationsAsync()
         {
             EnhancedCalculations = await GetEnhancedCalculationsWithChildrenAsync();
@@ -850,7 +850,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Storage Transaction
         public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(recursive: true);
         public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync(Storage3dItem item) => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(filter: transaction => transaction.StorageItemId == item.Id, recursive: true);
-        
+
         public Task<Storage3dTransaction> GetStorageTransactionWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Storage3dTransaction>(id, recursive: true);
 
         public Task SetStorageTransactionWithChildrenAsync(Storage3dTransaction transaction) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(transaction, recursive: true);

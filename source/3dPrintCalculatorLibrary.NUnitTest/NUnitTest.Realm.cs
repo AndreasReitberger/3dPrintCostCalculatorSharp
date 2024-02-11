@@ -1105,7 +1105,7 @@ namespace AndreasReitberger.NUnitTest
                 Assert.Fail(exc.Message);
             }
         }
-        
+
         [Test]
         public void PrintInfoCalculationTest()
         {
@@ -1223,8 +1223,8 @@ namespace AndreasReitberger.NUnitTest
                         File = file2,
                         Printer = printer2,
                     };
-                    info2.MaterialUsages.Add(new() { Material = material, Percentage = 0.5});
-                    info2.MaterialUsages.Add(new() { Material = material2, Percentage = 0.5});
+                    info2.MaterialUsages.Add(new() { Material = material, Percentage = 0.5 });
+                    info2.MaterialUsages.Add(new() { Material = material2, Percentage = 0.5 });
 
                     Calculation3dEnhanced calc = new()
                     {

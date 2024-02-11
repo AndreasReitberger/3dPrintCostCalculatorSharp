@@ -344,7 +344,7 @@ namespace AndreasReitberger.Print3d.Models
         #region Constructor
         public Calculation3dEnhanced()
         {
-            Id = Guid.NewGuid(); 
+            Id = Guid.NewGuid();
             PrintInfos = [];
         }
         #endregion

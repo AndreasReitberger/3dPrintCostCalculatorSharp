@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using Realms;
 using System;
@@ -24,6 +23,8 @@ namespace AndreasReitberger.Print3d.Realm
         public Guid Id { get; set; }
 
         public Guid CalculationId { get; set; }
+        public Guid CalculationProfileId { get; set; }
+        public Guid PrintInfoId { get; set; }
 
         public Guid ItemId { get; set; }
 

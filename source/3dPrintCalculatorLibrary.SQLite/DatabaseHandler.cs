@@ -58,14 +58,13 @@ namespace AndreasReitberger.Print3d.SQLite
         SQLiteAsyncConnection databaseAsync;
 
         [ObservableProperty]
-        List<Action> delegates = new();
+        List<Action> delegates = [];
 
         [ObservableProperty]
-        List<Type> tables = new();
+        List<Type> tables = [];
 
         [ObservableProperty]
-        List<Type> defaultTables = new()
-        {
+        List<Type> defaultTables = [
             typeof(Manufacturer),
             typeof(Supplier),
             typeof(Printer3d),
@@ -77,6 +76,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Material3dType),
             typeof(Material3dAttribute),
             typeof(Material3dProcedureAttribute),
+            typeof(Material3dUsage),
             typeof(Material3d),
             typeof(WorkstepCategory),
             typeof(Workstep),
@@ -88,6 +88,9 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(CalculationProcedureParameter),
             typeof(CalculationProcedureParameterAddition),
             typeof(Calculation3d),
+            typeof(Calculation3dEnhanced),
+            typeof(CustomAdditionCalculation3dEnhanced),
+            typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(ModelWeight),
             typeof(Address),
@@ -114,9 +117,10 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Storage3dItemStorage3dLocation),
             typeof(ProcedureAddition),
             typeof(ProcedureCalculationParameter),
+            typeof(Print3dInfo),
 
-            typeof(DatabaseSettingsKeyValuePair),
-        };
+            typeof(DatabaseSettingsKeyValuePair)
+        ];
 
         [ObservableProperty]
         Func<Type, Task> onDatabaseOpertions;
@@ -125,6 +129,9 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Collections
         [ObservableProperty]
         List<Calculation3d> calculations = new();
+
+        [ObservableProperty]
+        List<Calculation3dEnhanced> enhancedCalculations = new();
 
         [ObservableProperty]
         List<Printer3d> printers = new();
@@ -229,6 +236,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Init
         public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));           
+
         
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
         

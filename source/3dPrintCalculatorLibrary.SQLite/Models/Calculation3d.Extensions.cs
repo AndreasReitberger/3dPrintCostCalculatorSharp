@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using AndreasReitberger.Print3d.Utilities;
@@ -662,11 +661,8 @@ namespace AndreasReitberger.Print3d.SQLite
             RecalculationRequired = false;
         }
 
-        public async Task CalculateCostsAsync()
-        {
-            await Task.Run(CalculateCosts);
-        }
-
+        public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
+        
         public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try

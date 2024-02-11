@@ -265,6 +265,41 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #endregion
 
+        #region PrintInfos
+        public Task<List<Print3dInfo>> GetPrintInfosWithChildrenAsync() => DatabaseAsync
+                .GetAllWithChildrenAsync<Print3dInfo>(recursive: true)
+                ;
+       
+        public Task<Print3dInfo> GetPrintInfoWithChildrenAsync(Guid id) => DatabaseAsync
+                .GetWithChildrenAsync<Print3dInfo>(id, recursive: true);     
+
+        // https://stackoverflow.com/questions/35975235/one-to-many-relationship-in-sqlite-xamarin
+        public Task SetPrintInfoWithChildrenAsync(Print3dInfo file) => DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(file, recursive: true);
+        
+        public async Task SetPrintInfosWithChildrenAsync(List<Print3dInfo> files, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(files);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(files);
+        }
+
+        public Task<int> DeletePrintInfoAsync(Print3dInfo file) => DatabaseAsync
+                .DeleteAsync<File3d>(file.Id);      
+
+        public async Task<int[]> DeletePrintInfosAsync(List<Print3dInfo> files)
+        {
+            Stack<int> results = new();
+            for (int i = 0; i < files?.Count; i++)
+            {
+                results.Push(await DatabaseAsync.DeleteAsync<Print3dInfo>(files[i]?.Id));
+            }
+            return results.ToArray();
+        }
+
+        #endregion
+
         #region Addresses
         public async Task<List<Address>> GetAddressesWithChildrenAsync()
         {
@@ -428,6 +463,134 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 await RerfreshCalculationsAsync();
             }
+        }
+
+        #endregion
+
+        #region Calculations (Enhanced)
+        public async Task<List<Calculation3dEnhanced>> GetEnhancedCalculationsWithChildrenAsync()
+        {
+            List<Calculation3dEnhanced> calculations = await DatabaseAsync
+                .GetAllWithChildrenAsync<Calculation3dEnhanced>(recursive: true)
+                ;
+            // Workaround, because the foreign keys from the printer / materials are not loaded somehow...
+            /*
+            for (int i = 0; i < calculations?.Count; i++)
+            {
+                /*
+                Calculation3d calculation = calculations[i];
+                for (int j = 0; j < calculation.Printers?.Count; j++)
+                {
+                    Printer3d printer = calculation.Printers[j];
+                    calculation.Printers[j] = await GetPrinterWithChildrenAsync(printer.Id);
+                }
+                calculations[i].Printer =
+                    calculations[i].Printers.FirstOrDefault(item => item.Id == calculations[i].Printer?.Id) ??
+                    calculations[i].Printers.FirstOrDefault();
+
+                for (int j = 0; j < calculation.Materials?.Count; j++)
+                {
+                    Material3d material = calculation.Materials[j];
+                    calculation.Materials[j] = await GetMaterialWithChildrenAsync(material.Id);
+                }
+                calculations[i].Material =
+                    calculations[i].Materials.FirstOrDefault(item => item.Id == calculations[i].Material?.Id) ??
+                    calculations[i].Materials.FirstOrDefault();
+
+                calculations[i]?.CalculateCosts();
+            }
+            */
+            return calculations;
+        }
+
+        public Task<Calculation3dEnhanced> GetEnhancedCalculationWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Calculation3dEnhanced>(id, recursive: true);
+        
+        public async Task RerfreshEnhancedCalculationsAsync()
+        {
+            EnhancedCalculations = await GetEnhancedCalculationsWithChildrenAsync();
+            OnCalculationsChangedEvent(new Calculation3dEnhancedChangedDatabaseEventArgs()
+            {
+                Calculations = EnhancedCalculations,
+            });
+        }
+
+        public async Task SetEnhancedCalculationWithChildrenAsync(Calculation3dEnhanced calculation, bool updateList = true)
+        {
+            List<WorkstepUsage> workstepCollection = calculation.WorkstepUsages
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (workstepCollection?.Count > 0)
+                await SetWorkstepUsagesWithChildrenAsync(workstepCollection, replaceExisting: true);
+            List<Item3dUsage> itemCollection = calculation.AdditionalItems
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (itemCollection?.Count > 0)
+                await SetItemUsagesWithChildrenAsync(itemCollection, replaceExisting: true);
+
+            await DatabaseAsync
+                .InsertOrReplaceWithChildrenAsync(calculation, recursive: true)
+                ;
+            if (updateList)
+            {
+                await RerfreshEnhancedCalculationsAsync();
+            }
+        }
+
+        public async Task SetCalculationsWithChildrenAsync(List<Calculation3dEnhanced> calculations, bool replaceExisting = true, bool updateList = true)
+        {
+            List<WorkstepUsage> itemCollection = calculations
+                .SelectMany(i => i.WorkstepUsages)
+                .Where(i => i is not null)
+                .ToList()
+                ;
+            if (itemCollection?.Count > 0)
+                await SetWorkstepUsagesWithChildrenAsync(itemCollection, replaceExisting);
+
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(calculations);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(calculations);
+            if (updateList)
+            {
+                await RerfreshEnhancedCalculationsAsync();
+            }
+        }
+
+        public async Task<int> DeleteEnhancedCalculationAsync(Calculation3dEnhanced calculation, bool updateList = true)
+        {
+            int result = await DatabaseAsync.DeleteAsync<Calculation3dEnhanced>(calculation?.Id);
+            if (updateList)
+            {
+                await RerfreshEnhancedCalculationsAsync();
+            }
+            return result;
+        }
+
+        public async Task<int[]> DeleteEnhancedCalculationsAsync(List<Calculation3dEnhanced> calculations, bool updateList = true)
+        {
+            Stack<int> results = new();
+            for (int i = 0; i < calculations?.Count; i++)
+            {
+                int rowId = await DatabaseAsync.DeleteAsync<Calculation3dEnhanced>(calculations[i]?.Id);
+                results.Push(rowId);
+            }
+            if (updateList)
+            {
+                await RerfreshCalculationsAsync();
+            }
+            return [.. results];
+        }
+
+        public async Task<int> DeleteAllEnhancedCalculationsAsync(bool updateList = true)
+        {
+            int result = await DatabaseAsync.DeleteAllAsync<Calculation3dEnhanced>();
+            if (updateList)
+            {
+                await RerfreshEnhancedCalculationsAsync();
+            }
+            return result;
         }
 
         #endregion

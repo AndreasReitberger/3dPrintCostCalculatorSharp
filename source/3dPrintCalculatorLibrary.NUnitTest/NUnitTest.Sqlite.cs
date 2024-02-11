@@ -925,6 +925,11 @@ namespace AndreasReitberger.NUnitTest
                 LinkedToFile = false,
             };
 
+            Print3dInfo info = new()
+            {
+
+            };
+
             _calculation = new Calculation3d()
             {
                 Name = "My awesome calculation"
@@ -1292,6 +1297,173 @@ namespace AndreasReitberger.NUnitTest
 
                 Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
                 Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public async Task PrintInfoCalculationTestAsync()
+        {
+            try
+            {
+                string databasePath = "testdatabase_info.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
+                if (DatabaseHandler.Instance.IsInitialized)
+                {
+                    // Clear all tables
+                    await DatabaseHandler.Instance.TryClearAllTableAsync();
+                    await DatabaseHandler.Instance.TryDropAllTableAsync();
+
+                    // Recreate tables
+                    await DatabaseHandler.Instance.RebuildAllTableAsync();
+                    await Task.Delay(250);
+
+                    Manufacturer manufacturer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Name = "Prusa"
+                    };
+                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(manufacturer);
+
+                    Material3d material = new()
+                    {
+                        Name = "Test",
+                        SKU = "Some material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 29.99,
+                        PriceIncludesTax = true,
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material);
+
+                    Material3d material2 = new()
+                    {
+                        Name = "Test 2",
+                        SKU = "Some other material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 59.99,
+                        PriceIncludesTax = true,
+                    };
+                    await DatabaseHandler.Instance.SetMaterialWithChildrenAsync(material2);
+
+                    HourlyMachineRate hmr = new()
+                    {
+                        ReplacementCosts = 799,
+                        MachineHours = 160,
+                        PerYear = false,
+                        EnergyCosts = 20,
+                    };
+                    await DatabaseHandler.Instance.SetHourlyMachineRateWithChildrenAsync(hmr);
+
+                    Printer3d printer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL MK1",
+                        Price = 799,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 210,
+                        HourlyMachineRate = hmr,
+                    };
+                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer);
+                    Printer3d printer2 = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL - Dual Head",
+                        Price = 2499,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 400,
+                        HourlyMachineRate = hmr,
+                    };
+                    await DatabaseHandler.Instance.SetPrinterWithChildrenAsync(printer2);
+
+                    File3d file = new()
+                    {
+                        Name = "My cool file",
+                        Volume = 251.54,
+                        PrintTime = 2.34,
+                        Quantity = 1,
+                    };
+                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file);
+                    File3d file2 = new()
+                    {
+                        Name = "Another cool file",
+                        Volume = 23.64,
+                        PrintTime = 0.55,
+                        Quantity = 5,
+                    };
+                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file2);
+
+                    Manufacturer wuerth = new()
+                    {
+                        Name = "Würth",
+                        DebitorNumber = "DE26265126",
+                        Website = "https://www.wuerth.de/",
+                    };
+                    await DatabaseHandler.Instance.SetManufacturerWithChildrenAsync(wuerth);
+
+                    Item3d item = new()
+                    {
+                        Name = "Nuts M3",
+                        PackageSize = 100,
+                        PackagePrice = 9.99d,
+                        Manufacturer = wuerth,
+                        SKU = "2302423-1223"
+                    };
+                    await DatabaseHandler.Instance.SetItemWithChildrenAsync(item);
+                    Item3dUsage usage = new()
+                    {
+                        Item = item,
+                        Quantity = 5,
+                    };
+                    await DatabaseHandler.Instance.SetItemUsageWithChildrenAsync(usage);
+
+                    Print3dInfo info = new()
+                    {
+                        File = file,
+                        MaterialUsages = [ new() { Material = material, Percentage = 1 }],
+                        Printer = printer,  
+                        Items = [usage],
+                    };
+                    await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info);
+                    Print3dInfo info2 = new()
+                    {
+                        File = file2,
+                        // Multi-Material for one file
+                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
+                        Printer = printer2,
+                    };
+                    await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info2);
+
+                    Calculation3dEnhanced calc = new()
+                    {
+                        Name = "Test Calculation",
+                        PrintInfos = [ info, info2 ],
+                    };
+
+                    calc.CalculateCosts();
+                    double total = calc.GetTotalCosts();
+
+                    await DatabaseHandler.Instance.SetEnhancedCalculationWithChildrenAsync(calc);
+                    Calculation3dEnhanced loadedCalc = await DatabaseHandler.Instance.GetEnhancedCalculationWithChildrenAsync(calc.Id);
+                    loadedCalc.CalculateCosts();
+                    double totalLoaded = loadedCalc.GetTotalCosts();
+                    Assert.That(total == totalLoaded);
+                }
             }
             catch (Exception exc)
             {

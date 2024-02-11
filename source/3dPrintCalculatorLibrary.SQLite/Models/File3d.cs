@@ -23,6 +23,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
+        [Obsolete("The file is now linked to the `Print3dInfo` instead of the `Calculation3d`. This property will be removed later")]
         [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
 

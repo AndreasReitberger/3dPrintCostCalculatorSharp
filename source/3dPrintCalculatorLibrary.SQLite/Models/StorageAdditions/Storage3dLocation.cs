@@ -16,10 +16,6 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         [property: PrimaryKey]
         Guid id;
 
-        //[ObservableProperty]
-        //[property: ForeignKey(typeof(Storage3d))]
-        //Guid storageId;
-
         [ObservableProperty]
         string location = string.Empty;
 
@@ -28,7 +24,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         [ObservableProperty]
         [property: ManyToMany(typeof(Storage3dItemStorage3dLocation), CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Storage3dItem> items = new();
+        ObservableCollection<Storage3dItem> items = [];
         #endregion
 
         #region Ctor

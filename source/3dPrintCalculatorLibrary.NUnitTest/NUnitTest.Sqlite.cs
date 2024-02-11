@@ -57,8 +57,8 @@ namespace AndreasReitberger.NUnitTest
                     List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
                     Assert.That(manufacturers?.Count > 0);
 
-                    List<Material3dType> materialTypes = new()
-                    {
+                    List<Material3dType> materialTypes =
+                    [
                         new Material3dType()
                         {
                             Material = "ABS",
@@ -84,7 +84,7 @@ namespace AndreasReitberger.NUnitTest
                             Material = "PET",
                             Family = Material3dFamily.Filament,
                         },
-                    };
+                    ];
                     await DatabaseHandler.Instance.SetMaterialTypesWithChildrenAsync(materialTypes);
                     List<Material3dType> types = await DatabaseHandler.Instance.GetMaterialTypesWithChildrenAsync();
                     Assert.That(materialTypes.Count == types?.Count);
@@ -652,7 +652,6 @@ namespace AndreasReitberger.NUnitTest
                     DebitorNumber = "DE26265126",
                     Website = "https://www.wuerth.de/",
                 };
-                await handler.SetManufacturerWithChildrenAsync(wuerth);
 
                 Item3d item1 = new()
                 {
@@ -678,7 +677,6 @@ namespace AndreasReitberger.NUnitTest
 
                 var loadedItems = await handler.GetItemsWithChildrenAsync();
                 Assert.That(loadedItems?.Count == 2);
-
 
                 Item3dUsage usage = new()
                 {
@@ -1464,6 +1462,234 @@ namespace AndreasReitberger.NUnitTest
                     double totalLoaded = loadedCalc.GetTotalCosts();
                     Assert.That(total == totalLoaded);
                 }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+        [Test]
+        public async Task RecurringDatabaseCalculationEnhancedSaveAndLoadTest()
+        {
+            try
+            {
+                string databasePath = "testdatabase_enhanced.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                DatabaseHandler.Instance = new DatabaseHandler(databasePath);
+                if (DatabaseHandler.Instance.IsInitialized)
+                {
+                    // Clear all tables
+                    await DatabaseHandler.Instance.TryClearAllTableAsync();
+                    await DatabaseHandler.Instance.TryDropAllTableAsync();
+
+                    // Recreate tables
+                    await DatabaseHandler.Instance.RebuildAllTableAsync();
+                    await Task.Delay(250);
+
+                    Manufacturer manufacturer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        IsActive = true,
+                        Name = "Prusa"
+                    };
+                    
+                    Material3d material = new()
+                    {
+                        Name = "Test",
+                        SKU = "Some material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 29.99,
+                        PriceIncludesTax = true,
+                    };
+                    Material3d material2 = new()
+                    {
+                        Name = "Test 2",
+                        SKU = "Some other material number",
+                        Manufacturer = manufacturer,
+                        PackageSize = 1,
+                        Unit = Unit.Kilogram,
+                        UnitPrice = 59.99,
+                        PriceIncludesTax = true,
+                    };
+
+                    HourlyMachineRate hmr = new()
+                    {
+                        ReplacementCosts = 799,
+                        MachineHours = 160,
+                        PerYear = false,
+                        EnergyCosts = 20,
+                    };
+
+                    Printer3d printer = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL MK1",
+                        Price = 799,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 210,
+                        HourlyMachineRate = hmr,
+                    };
+                    Printer3d printer2 = new()
+                    {
+                        Id = Guid.NewGuid(),
+                        Manufacturer = manufacturer,
+                        Model = "XL - Dual Head",
+                        Price = 2499,
+                        MaterialType = Material3dFamily.Filament,
+                        Type = Printer3dType.FDM,
+                        PowerConsumption = 400,
+                        HourlyMachineRate = hmr,
+                    };
+
+                    File3d file = new()
+                    {
+                        Name = "My cool file",
+                        Volume = 251.54,
+                        PrintTime = 2.34,
+                        Quantity = 1,
+                    };
+                    File3d file2 = new()
+                    {
+                        Name = "Another cool file",
+                        Volume = 23.64,
+                        PrintTime = 0.55,
+                        Quantity = 5,
+                    };
+
+                    Manufacturer wuerth = new()
+                    {
+                        Name = "Würth",
+                        DebitorNumber = "DE26265126",
+                        Website = "https://www.wuerth.de/",
+                    };
+
+                    Item3d item = new()
+                    {
+                        Name = "Nuts M3",
+                        PackageSize = 100,
+                        PackagePrice = 9.99d,
+                        Manufacturer = wuerth,
+                        SKU = "2302423-1223"
+                    };
+                    Item3dUsage usage = new()
+                    {
+                        Item = item,
+                        Quantity = 5,
+                    };
+
+                    Print3dInfo info = new()
+                    {
+                        File = file,
+                        MaterialUsages = [new() { Material = material, Percentage = 1 }],
+                        Printer = printer,
+                        Items = [usage],
+                    };
+                    Print3dInfo info2 = new()
+                    {
+                        File = file2,
+                        // Multi-Material for one file
+                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
+                        Printer = printer2,
+                    };
+
+                    Calculation3dEnhanced calc = new()
+                    {
+                        Name = "Test Calculation",
+                        PrintInfos = [info, info2],
+                    };
+
+                    calc.CalculateCosts();
+                    double total = calc.GetTotalCosts();
+
+                    await DatabaseHandler.Instance.SetEnhancedCalculationWithChildrenAsync(calc);
+                    Calculation3dEnhanced loadedCalc = await DatabaseHandler.Instance.GetEnhancedCalculationWithChildrenAsync(calc.Id);
+                    loadedCalc.CalculateCosts();
+                    double totalLoaded = loadedCalc.GetTotalCosts();
+                    Assert.That(Math.Round(total, 5) == Math.Round(totalLoaded, 5));
+
+                    Assert.That(loadedCalc?.AvailableMaterials?.Count == 2);
+                    Assert.That(loadedCalc?.AvailablePrinters?.Count == 2);
+                    Assert.That(loadedCalc?.PrintInfos?.Count == 2);
+
+                    List<Printer3d> printers = await DatabaseHandler.Instance.GetPrintersWithChildrenAsync();
+                    Assert.That(printers?.Count == 2);
+
+                    List<Material3d> materials = await DatabaseHandler.Instance.GetMaterialsWithChildrenAsync();
+                    Assert.That(materials?.Count == 2);
+
+                    List<File3d> files = await DatabaseHandler.Instance.GetFilesWithChildrenAsync();
+                    Assert.That(files?.Count == 2);
+
+                    List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
+                    Assert.That(manufacturers?.Count == 2);
+                }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+
+        [Test]
+        public async Task RecurringDatabaseCalculationSaveAndLoadTest()
+        {
+            try
+            {
+                string databasePath = "testdatabase_recurring.db";
+                if (File.Exists(databasePath))
+                {
+                    File.Delete(databasePath);
+                }
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithDefaultTables()
+                    .Build();
+
+                await Task.Delay(250);
+
+                Calculation3d calc = GetTestCalculation();
+                calc.Material = calc.Materials.First();
+                calc.Printer = calc.Printers.First();
+
+                await calc.CalculateCostsAsync();
+                await handler.SetCalculationWithChildrenAsync(calc);
+                Calculation3d calc2 = await handler.GetCalculationWithChildrenAsync(calc.Id);
+
+                await Task.Delay(250);
+                Assert.That(calc2 is not null);
+
+                List<Item3d> items = await handler.GetItemsWithChildrenAsync();
+                Assert.That(items?.Count > 0);
+
+                Guid itemId = calc.AdditionalItems.FirstOrDefault().Item.Id;
+                var item = await handler.GetItemWithChildrenAsync(itemId);
+                calc2.Material = calc.Materials.First();
+                calc2.Printer = calc.Printers.First();
+
+                await calc2.CalculateCostsAsync();
+                await Task.Delay(250);
+                if (calc2 is not null)
+                {
+                    Assert.That(calc.MachineCosts == calc2.MachineCosts, "Machine costs differ");
+                    Assert.That(calc.MaterialCosts == calc2.MaterialCosts, "Material costs differ");
+                    Assert.That(calc.CalculatedMargin == calc2.CalculatedMargin, "Margin differs");
+                    Assert.That(calc.CalculatedTax == calc2.CalculatedTax, "Tax differs");
+                    Assert.That(calc.EnergyCosts == calc2.EnergyCosts, "Energy costs differ");
+                    Assert.That(calc.CustomAdditionCosts == calc2.CustomAdditionCosts, "Custom addition costs differ");
+                    Assert.That(calc.ItemsCost == calc2.ItemsCost, "Item costs differ");
+                }
+                else
+                    Assert.Fail("Calculation could not be loaded from the database!");
+                Assert.That(Math.Round(calc.TotalCosts, 5) == Math.Round(calc2.TotalCosts, 5), $"Total costs differ: {calc?.TotalCosts} != {calc2?.TotalCosts}");
             }
             catch (Exception exc)
             {

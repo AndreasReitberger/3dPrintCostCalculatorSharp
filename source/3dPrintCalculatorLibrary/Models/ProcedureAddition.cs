@@ -3,7 +3,6 @@ using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.Models

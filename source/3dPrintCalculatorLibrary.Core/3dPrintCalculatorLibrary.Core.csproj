@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	<RootNamespace>AndreasReitberger.Print3d.Core</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	  
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<RootNamespace>AndreasReitberger.Print3d</RootNamespace>
+	<Title>3dPrintCalculatorLibrary.Core</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>

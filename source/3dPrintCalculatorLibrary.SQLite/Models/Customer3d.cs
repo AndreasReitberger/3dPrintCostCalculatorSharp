@@ -82,6 +82,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Customer3d()
         {
+            Id = Guid.NewGuid();
         }
 
         #endregion

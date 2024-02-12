@@ -61,6 +61,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Customer3d()
         {
+            Id = Guid.NewGuid();
         }
 
         #endregion

@@ -57,7 +57,7 @@ namespace AndreasReitberger.Print3d.SQLite.FileAdditions
         #endregion
 
         #region Methods
-        void RecalculateWeight()
+        public void RecalculateWeight()
         {
             if (RecalculateWeightInGramm)
             {

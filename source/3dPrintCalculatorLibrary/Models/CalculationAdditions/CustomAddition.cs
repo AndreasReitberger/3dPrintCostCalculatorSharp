@@ -7,13 +7,6 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 {
     public partial class CustomAddition : ObservableObject, ICloneable, ICustomAddition
     {
-        #region Clone
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-        #endregion
-
         #region Properties
         [ObservableProperty]
         Guid id;
@@ -40,5 +33,13 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
             Id = Guid.NewGuid();
         }
         #endregion
+
+        #region Clone
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+        #endregion
+
     }
 }

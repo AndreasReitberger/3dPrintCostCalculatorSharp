@@ -42,13 +42,13 @@ namespace AndreasReitberger.Print3d.Models
         double factorLToKg = 1;
 
         [ObservableProperty]
-        List<Material3dAttribute> attributes = new();
+        List<Material3dAttribute> attributes = [];
 
         [ObservableProperty]
-        List<Material3dProcedureAttribute> procedureAttributes = new();
+        List<Material3dProcedureAttribute> procedureAttributes = [];
 
         [ObservableProperty]
-        List<Material3dColor> colors = new();
+        List<Material3dColor> colors = [];
 
         [ObservableProperty]
         Material3dFamily materialFamily = Material3dFamily.Filament;
@@ -96,7 +96,7 @@ namespace AndreasReitberger.Print3d.Models
         double spoolWeight = 200;
 
         [ObservableProperty]
-        byte[] image = Array.Empty<byte>();
+        byte[] image = [];
         #endregion
 
         #region Constructor

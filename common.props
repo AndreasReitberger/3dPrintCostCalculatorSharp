@@ -15,7 +15,8 @@
         <Copyright>Andreas Reitberger</Copyright>
 		<LangVersion>12</LangVersion>
         <PublishReadyToRun>false</PublishReadyToRun>
-
+		<Nullable>enable</Nullable>
+		
         <!--Source-Linking-->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>

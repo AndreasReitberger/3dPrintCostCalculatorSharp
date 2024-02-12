@@ -53,7 +53,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         #endregion
 
         #region Methods
-        void RecalculateWeight()
+        public void RecalculateWeight()
         {
             if (RecalculateWeightInGramm)
             {

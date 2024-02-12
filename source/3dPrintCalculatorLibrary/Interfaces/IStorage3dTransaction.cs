@@ -10,7 +10,7 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         public Guid? CalculationId { get; set; }
 
-        DateTimeOffset DateTime { get; set; }
+        public DateTimeOffset DateTime { get; set; }
 
         public double Amount { get; set; }
 

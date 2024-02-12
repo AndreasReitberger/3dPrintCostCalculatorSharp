@@ -1,5 +1,4 @@
-﻿using AndreasReitberger.Print3d.Enums;
-using System;
+﻿using System;
 
 namespace AndreasReitberger.Print3d.Interfaces
 {

@@ -66,7 +66,7 @@ namespace AndreasReitberger.Print3d.Realm.FileAdditions
         #endregion
 
         #region Methods
-        void RecalculateWeight()
+        public void RecalculateWeight()
         {
             if (RecalculateWeightInGramm)
             {

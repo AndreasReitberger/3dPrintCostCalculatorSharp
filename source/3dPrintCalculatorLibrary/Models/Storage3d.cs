@@ -19,11 +19,8 @@ namespace AndreasReitberger.Print3d.Models
         int capacity = 32;
 
         [ObservableProperty]
-        ObservableCollection<Storage3dLocation> locations = new();
-        /*
-        [ObservableProperty]
-        ObservableCollection<Storage3dItem> items = new();
-        */
+        ObservableCollection<Storage3dLocation> locations = [];
+
         #endregion
 
         #region Ctor

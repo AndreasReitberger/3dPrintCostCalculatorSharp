@@ -79,6 +79,7 @@ namespace AndreasReitberger.Print3d.Models
         double totalCosts = 0;
 
         [ObservableProperty]
+        [property: Obsolete("Not needed anymore, will be removed")]
         bool combineMaterialCosts = false;
 
         [ObservableProperty]
@@ -363,7 +364,7 @@ namespace AndreasReitberger.Print3d.Models
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object obj)
         {
-            if (obj is not Calculation3d item)
+            if (obj is not Calculation3dEnhanced item)
                 return false;
             return Id.Equals(item.Id);
         }

@@ -50,13 +50,13 @@ namespace AndreasReitberger.Print3d.Models
         ContactPerson contactPerson;
 
         [ObservableProperty]
-        List<Address> addresses = new();
+        List<Address> addresses = [];
 
         [ObservableProperty]
-        List<Email> emailAddresses = new();
+        List<Email> emailAddresses = [];
 
         [ObservableProperty]
-        List<PhoneNumber> phoneNumbers = new();
+        List<PhoneNumber> phoneNumbers = [];
 
         [ObservableProperty]
         string handler = string.Empty;
@@ -73,6 +73,7 @@ namespace AndreasReitberger.Print3d.Models
 
         public Customer3d()
         {
+            Id = Guid.NewGuid();
         }
 
         #endregion

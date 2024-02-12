@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Linked Customer
         [ObservableProperty]
-        public List<Customer3d> customers = new();
+        public List<Customer3d> customers = [];
         #endregion
 
         #region Presets
@@ -174,7 +174,7 @@ namespace AndreasReitberger.Print3d.Models
         #region Custom
 
         [ObservableProperty]
-        ObservableCollection<IProcedureAddition> procedureAdditions = new();
+        ObservableCollection<IProcedureAddition> procedureAdditions = [];
         #endregion
 
         #endregion

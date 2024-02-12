@@ -60,7 +60,7 @@ namespace AndreasReitberger.Print3d.Models
 
         public override bool Equals(object obj)
         {
-            if (obj is not Printer3d item)
+            if (obj is not Print3dInfo item)
                 return false;
             return Id.Equals(item.Id);
         }

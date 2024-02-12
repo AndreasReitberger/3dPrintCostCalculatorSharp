@@ -66,7 +66,7 @@ namespace AndreasReitberger.Print3d.Models
         double printTimeQuantityFactor = 1;
 
         [ObservableProperty]
-        byte[] image = Array.Empty<byte>();
+        byte[] image = [];
         #endregion
 
         #region Constructor

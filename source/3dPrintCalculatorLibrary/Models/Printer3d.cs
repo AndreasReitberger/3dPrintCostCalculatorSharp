@@ -73,7 +73,6 @@ namespace AndreasReitberger.Print3d.Models
         [ObservableProperty]
         ObservableCollection<Maintenance3d> maintenances = new();
 
-
         [ObservableProperty]
         Guid slicerConfigId;
 
@@ -81,13 +80,13 @@ namespace AndreasReitberger.Print3d.Models
         Printer3dSlicerConfig slicerConfig = new();
 
         [ObservableProperty]
-        byte[] image = Array.Empty<byte>();
+        byte[] image = [];
 
         [ObservableProperty]
         string note = string.Empty;
 
         [JsonIgnore]
-        public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer.Name}, {Model}" : Model;
+        public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer?.Name}, {Model}" : Model;
 
         [JsonIgnore]
         public double Volume => CalculateVolume();

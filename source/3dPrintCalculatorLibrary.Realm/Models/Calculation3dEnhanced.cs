@@ -70,6 +70,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public double TotalCosts { get; set; } = 0;
 
+        [Obsolete("Not needed anymore, will be removed")]
         public bool CombineMaterialCosts { get; set; } = false;
 
         public bool DifferFileCosts { get; set; } = true;
@@ -78,9 +79,9 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Details
 
-        public IList<Printer3d> Printers { get; }
+        public IList<Printer3d> AvailablePrinters { get; }
 
-        public IList<Material3d> Materials { get; }
+        public IList<Material3d> AvailableMaterials { get; }
 
         public IList<CustomAddition> CustomAdditions { get; }
 
@@ -342,7 +343,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public override bool Equals(object obj)
         {
-            if (obj is not Calculation3d item)
+            if (obj is not Calculation3dEnhanced item)
                 return false;
             return Id.Equals(item.Id);
         }

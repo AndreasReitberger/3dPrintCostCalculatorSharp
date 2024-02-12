@@ -22,7 +22,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         ProcedureAttribute attribute;
 
         [ObservableProperty]
-        List<CalculationProcedureParameter> parameters = new();
+        List<CalculationProcedureParameter> parameters = [];
 
         [ObservableProperty]
         CalculationLevel level = CalculationLevel.Printer;

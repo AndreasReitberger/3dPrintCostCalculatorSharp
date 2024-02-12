@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.Print3d.Core.Interfaces
 {
-    public interface IPrinter3d
+    public interface IPrinter3d : ICloneable
     {
         #region Properties
         public Guid Id { get; set; }

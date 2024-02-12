@@ -1,5 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Models.Events;
+using AndreasReitberger.Print3d.Core.Events;
 
 namespace AndreasReitberger.Print3d.Core.Interfaces
 {
@@ -22,7 +22,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         double EnergyCostsPerkWh { get; set; }
         bool ApplyEnergyCost { get; set; }
         double TotalCosts { get; set; }
-        bool CombineMaterialCosts { get; set; }
         bool DifferFileCosts { get; set; }
 
         #endregion
@@ -86,8 +85,14 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #endregion
 
         #region Methods
-        void Clone();
-        void CalculateCosts();
+        public object Clone();
+        public void CalculateCosts();
+        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All);
+        public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All);
+        public int GetTotalQuantity();
+        public double GetTotalPrintTime();
+        public double GetTotalVolume();
+        public double GetTotalMaterialUsed();
         #endregion
     }
 }

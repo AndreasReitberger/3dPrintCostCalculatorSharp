@@ -1,10 +1,9 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.Models.WorkstepAdditions;
+﻿using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
 
-namespace AndreasReitberger.Print3d.Models
+namespace AndreasReitberger.Print3d.Core
 {
     public partial class WorkstepUsage : ObservableObject, IWorkstepUsage
     {
@@ -13,19 +12,10 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
-        Guid calculationId;
+        IWorkstep? workstep;
 
         [ObservableProperty]
-        Guid workstepId;
-
-        [ObservableProperty]
-        Workstep workstep;
-
-        [ObservableProperty]
-        Guid usageParameterId;
-
-        [ObservableProperty]
-        WorkstepUsageParameter usageParameter;
+        IWorkstepUsageParameter? usageParameter;
 
         [ObservableProperty]
         double totalCosts = 0;

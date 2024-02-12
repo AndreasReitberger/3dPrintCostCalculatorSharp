@@ -1,11 +1,12 @@
 ﻿namespace AndreasReitberger.Print3d.Core.Interfaces
 {
-    public interface IItem3d
+    public interface IItem3d : ICloneable
     {
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string SKU { get; set; }
+        public IManufacturer Manufacturer { get; set; }
         public double PackageSize { get; set; }
         public double PackagePrice { get; set; }
         public double Tax { get; set; }

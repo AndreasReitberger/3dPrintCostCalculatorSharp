@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	<ProjectReference Include="..\3dPrintCalculatorLibrary.Core\3dPrintCalculatorLibrary.Core.csproj" />
 	<ProjectReference Include="..\3dPrintCalculatorLibrary.Realm\3dPrintCalculatorLibrary.Realm.csproj" />
 	<ProjectReference Include="..\3dPrintCalculatorLibrary.SQLite\3dPrintCalculatorLibrary.SQLite.csproj" />
   </ItemGroup>

@@ -9,7 +9,7 @@
         public string FileName { get; set; }
         public string FilePath { get; set; }
         public double Volume { get; set; }
-        public IModelWeight Weight { get; set; }
+        public IFile3dWeight Weight { get; set; }
         public double PrintTime { get; set; }
         public int Quantity { get; set; }
         public bool MultiplyPrintTimeWithQuantity { get; set; }

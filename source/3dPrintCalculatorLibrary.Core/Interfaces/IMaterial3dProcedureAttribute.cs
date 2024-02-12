@@ -6,7 +6,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
     {
         #region Properties
         public Guid Id { get; set; }
-        public Guid MaterialId { get; set; }
         public Material3dFamily Family { get; set; }
         public ProcedureAttribute Attribute { get; set; }
         public double Value { get; set; }

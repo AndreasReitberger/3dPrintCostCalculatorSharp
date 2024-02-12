@@ -8,7 +8,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #region Properties
 
         public Guid Id { get; set; }
-        public Guid CalculationId { get; set; }
         public string Name { get; set; }
         public double Percentage { get; set; }
         public int Order { get; set; }
@@ -16,7 +15,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #endregion
 
         #region Metods
-        public void Clone();
+        public object Clone();
         #endregion
     }
 }

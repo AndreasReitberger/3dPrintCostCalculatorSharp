@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.Print3d.Core.Interfaces
 {
-    public interface IModelWeight
+    public interface IFile3dWeight
     {
         #region Properties
         public Guid Id { get; set; }

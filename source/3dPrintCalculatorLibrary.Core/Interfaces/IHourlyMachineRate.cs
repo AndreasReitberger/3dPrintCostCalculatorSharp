@@ -25,5 +25,10 @@
         public double TotalCosts { get; }
         #endregion
 
+        #region Methods
+        public double GetMachineHourRate();
+        public double GetTotalCosts();
+        #endregion
+
     }
 }

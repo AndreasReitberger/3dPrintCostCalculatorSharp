@@ -1,7 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Core.Interfaces;
 using Newtonsoft.Json;
 
-namespace AndreasReitberger.Print3d.Core.Models.Events
+namespace AndreasReitberger.Print3d.Core.Events
 {
     public class PrinterChangedEventArgs : CalculatorEventArgs
     {

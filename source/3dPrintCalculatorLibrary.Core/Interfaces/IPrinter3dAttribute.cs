@@ -4,7 +4,6 @@
     {
         #region Properties
         public Guid Id { get; set; }
-        public Guid PrinterId { get; set; }
         public string Attribute { get; set; }
         public double Value { get; set; }
         #endregion

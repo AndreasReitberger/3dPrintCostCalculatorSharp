@@ -1,14 +1,8 @@
-﻿using AndreasReitberger.Print3d.Core.Utilities;
-using AndreasReitberger.Print3d.Core.Events;
+﻿using AndreasReitberger.Print3d.Core.Events;
 using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Core
@@ -51,9 +45,6 @@ namespace AndreasReitberger.Print3d.Core
                 });
             }
         }
-
-        [ObservableProperty]
-        int quantity = 1;
 
         [ObservableProperty]
         double powerLevel = 0;

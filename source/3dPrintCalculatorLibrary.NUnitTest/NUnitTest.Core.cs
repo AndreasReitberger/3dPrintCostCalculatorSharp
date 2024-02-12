@@ -2,6 +2,7 @@ using AndreasReitberger.Print3d.Core;
 using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using NUnit.Framework;
+using Remotion.Linq.Utilities;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -95,7 +96,7 @@ namespace AndreasReitberger.NUnitTest
                             Model = "i3 MK3S",
                             PowerConsumption = 210,
                             Price = 899,
-
+                            MaterialType = Material3dFamily.Filament,
                         },
                         Items = [
                             new Item3dUsage()
@@ -144,14 +145,83 @@ namespace AndreasReitberger.NUnitTest
                         ],
                         Printer = new Printer3d()
                         {
-                            Type = Printer3dType.LENS,
+                            Type = Printer3dType.DLP,
                             Model = "Photon X",
                             PowerConsumption = 160,
                             Price = 599,
-
+                            MaterialType = Material3dFamily.Resin,
                         }
                     }
-                ]
+                ],
+                WorkstepUsages = [
+                    new WorkstepUsage() {
+                        Workstep = new Workstep(){
+                            Name = "Cleanup",
+                            CalculationType = CalculationType.PerPiece,
+                            Category = new WorkstepCategory() { Name = "Post-Processing" },
+                            Price = 0.5,
+                            Note = "Contains the removal of supports and general cleanup",
+                            Type = WorkstepType.Post,
+                        },
+                        UsageParameter = new WorkstepUsageParameter() {
+                            ParameterType = WorkstepUsageParameterType.Quantity,
+                            Value = 1,
+                        }
+                    },
+                    new WorkstepUsage() {
+                        Workstep = new Workstep(){
+                            Name = "Packaging",
+                            CalculationType = CalculationType.PerJob,
+                            Category = new WorkstepCategory() { Name = "Post-Processing" },
+                            Price = 1,
+                            Note = "Contains the packaging of the prints",
+                            Type = WorkstepType.Post,
+                        },
+                        UsageParameter = new WorkstepUsageParameter() {
+                            ParameterType = WorkstepUsageParameterType.Quantity,
+                            Value = 1,
+                        }
+                    }
+                    ],
+                ApplyEnergyCost = true,
+                PowerLevel = 75,
+                EnergyCostsPerkWh = 0.4,
+                AdditionalItems = [
+                    new Item3dUsage() {
+                        Item = new Item3d() {
+
+                            Name = "Nuts M3",
+                            PackageSize = 100,
+                            PackagePrice = 9.99d,
+                            Manufacturer = new Manufacturer()
+                            {
+                                Name = "Würth",
+                                DebitorNumber = "DE26265126",
+                                Website = "https://www.wuerth.de/",
+                            },
+                            SKU = "2302423-1223"
+                        },
+                        Quantity = 2,
+                    }, 
+                    new Item3dUsage() {
+                        Item = new Item3d()
+                        {
+                            Name = "Screws M3 20mm",
+                            PackageSize = 50,
+                            PackagePrice = 14.99d,
+                            Manufacturer = new Manufacturer()
+                            {
+                                Name = "Würth",
+                                DebitorNumber = "DE26265126",
+                                Website = "https://www.wuerth.de/",
+                            },
+                            SKU = "2302423-6413"
+                        },
+                        Quantity = 2,
+                    }
+                    ],
+                FailRate = 5,
+                State = CalculationState.Draft,
             };
         }
 
@@ -350,7 +420,6 @@ namespace AndreasReitberger.NUnitTest
                 calculation.ApplyProcedureSpecificAdditions = true;
                 calculation.CalculateCosts();
 
-                // Todo: Check why the procedure specific stuff is not added
                 Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
                 Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
             }

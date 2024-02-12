@@ -16,7 +16,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         ICustomer3d Customer { get; set; }
         bool IsCalculated { get; }
         bool RecalculationRequired { get; }
-        int Quantity { get; set; }
         double PowerLevel { get; set; }
         double FailRate { get; set; }
         double EnergyCostsPerkWh { get; set; }

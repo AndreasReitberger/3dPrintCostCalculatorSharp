@@ -838,7 +838,7 @@ namespace AndreasReitberger.NUnitTest
                 if (!realm.IsClosed)
                 {
                     realm.Write(() => realm.RemoveAll());
-                    double startAmount = 2.68;
+                    double startAmount = 0;
                     Material3d material = new()
                     {
                         Name = "Test",
@@ -853,7 +853,6 @@ namespace AndreasReitberger.NUnitTest
                     Storage3dItem item = new()
                     {
                         Material = material,
-                        Amount = startAmount,
                     };
                     realm.Write(() => realm.Add(item));
                     Storage3d storage = new()
@@ -870,10 +869,10 @@ namespace AndreasReitberger.NUnitTest
                         Assert.That(newItem?.Amount == startAmount + 0.75);
 
                         // Just to check if the unit conversion is working
-                        storage.TakeFromStock(material, 0.001, Unit.MetricTons, false);
+                        storage.TakeFromStock(material, 0.0005, Unit.MetricTons, false);
                         newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
                         // Check if the addition was successfully
-                        Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
+                        Assert.That(newItem?.Amount == startAmount + 0.75 - 0.5);
                     });
                 }
             }

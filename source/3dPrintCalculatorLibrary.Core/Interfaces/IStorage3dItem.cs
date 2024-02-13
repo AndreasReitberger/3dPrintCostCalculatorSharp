@@ -6,7 +6,12 @@
         public Guid Id { get; set; }    
         public string Name { get; set; }
         public IMaterial3d Material { get; set; }
-        public double Amount { get; set; }
+        public IList<IStorage3dTransaction> Transactions { get; set; }
+        public double Amount { get; }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount();
         #endregion
     }
 }

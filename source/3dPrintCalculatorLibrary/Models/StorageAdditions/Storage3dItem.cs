@@ -1,6 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AndreasReitberger.Print3d.Models.StorageAdditions
 {
@@ -20,7 +22,10 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         Material3d material;
 
         [ObservableProperty]
-        double amount;
+        [NotifyPropertyChangedFor(nameof(Amount))]
+        ObservableCollection<Storage3dTransaction> transactions = [];
+
+        public double Amount => GetAvailableAmount();
         #endregion
 
         #region Ctor
@@ -28,6 +33,11 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         {
             Id = Guid.NewGuid();
         }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
+
         #endregion
     }
 }

@@ -7,7 +7,11 @@ namespace AndreasReitberger.Print3d.Interfaces
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public double Amount { get; set; }
+        public double Amount { get; }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount();
         #endregion
     }
 }

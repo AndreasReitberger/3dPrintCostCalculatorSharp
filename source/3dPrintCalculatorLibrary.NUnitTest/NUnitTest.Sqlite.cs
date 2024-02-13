@@ -1148,7 +1148,7 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
                     await Task.Delay(250);
 
-                    double startAmount = 2.68;
+                    double startAmount = 0;
                     Material3d material = new()
                     {
                         Name = "Test",
@@ -1162,7 +1162,6 @@ namespace AndreasReitberger.NUnitTest
                     Storage3dItem item = new()
                     {
                         Material = material,
-                        Amount = startAmount,
                     };
 
                     Storage3dLocation location = new()
@@ -1195,17 +1194,14 @@ namespace AndreasReitberger.NUnitTest
                     transactions.Add(transaction1);
 
                     // Just to check if the unit conversion is working
-                    Storage3dTransaction transaction2 = location.TakeFromStock(material, 0.001, Unit.MetricTons, null, false);
+                    Storage3dTransaction transaction2 = location.TakeFromStock(material, 0.0005, Unit.MetricTons, null, false);
                     newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
-                    Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
+                    Assert.That(newItem?.Amount == startAmount + 0.75 - 0.5);
                     transactions.Add(transaction2);
                     await DatabaseHandler.Instance.SetStorageTransactionsWithChildrenAsync(transactions);
 
                     List<Storage3dTransaction>? transactionsLoaded = await DatabaseHandler.Instance.GetStorageTransactionsWithChildrenAsync();
-                    Assert.That(transactionsLoaded?.Count == transactions?.Count);
-
-                    transactionsLoaded = await DatabaseHandler.Instance.GetStorageTransactionsWithChildrenAsync(newItem);
                     Assert.That(transactionsLoaded?.Count == transactions?.Count);
                 }
             }

@@ -16,7 +16,10 @@ namespace AndreasReitberger.Print3d.Core
         IMaterial3d? material;
 
         [ObservableProperty]
-        double amount;
+        [NotifyPropertyChangedFor(nameof(Amount))]
+        IList<IStorage3dTransaction> transactions = [];
+
+        public double Amount => GetAvailableAmount();
         #endregion
 
         #region Ctor
@@ -24,6 +27,11 @@ namespace AndreasReitberger.Print3d.Core
         {
             Id = Guid.NewGuid();
         }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
+        
         #endregion
     }
 }

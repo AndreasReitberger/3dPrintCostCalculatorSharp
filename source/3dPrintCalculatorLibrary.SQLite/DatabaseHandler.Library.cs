@@ -788,7 +788,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Storage Transaction
         public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(recursive: true);
-        public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync(Storage3dItem item) => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(filter: transaction => transaction.StorageItemId == item.Id, recursive: true);
+        //public Task<List<Storage3dTransaction>> GetStorageTransactionsWithChildrenAsync(Storage3dItem item) => DatabaseAsync.GetAllWithChildrenAsync<Storage3dTransaction>(filter: transaction => transaction.StorageItemId == item.Id, recursive: true);
 
         public Task<Storage3dTransaction> GetStorageTransactionWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Storage3dTransaction>(id, recursive: true);
 

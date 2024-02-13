@@ -1,6 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using Realms;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AndreasReitberger.Print3d.Realm.StorageAdditions
 {
@@ -16,7 +18,9 @@ namespace AndreasReitberger.Print3d.Realm.StorageAdditions
 
         public Material3d Material { get; set; }
 
-        public double Amount { get; set; }
+        public IList<Storage3dTransaction> Transactions { get; }
+
+        public double Amount => GetAvailableAmount();
         #endregion
 
         #region Ctor
@@ -24,6 +28,11 @@ namespace AndreasReitberger.Print3d.Realm.StorageAdditions
         {
             Id = Guid.NewGuid();
         }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
+
         #endregion
     }
 }

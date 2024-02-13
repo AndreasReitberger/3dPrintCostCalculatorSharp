@@ -17,7 +17,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
 
         public IStorage3dItem CreateStockItem(IMaterial3d material, double amount = 0, Unit unit = Unit.Kilogram);
         public void AddToStock(IStorage3dItem item, double amount, Unit unit);
-        public void AddToStock(IMaterial3d material, double amount, Unit unit);
+        public IStorage3dTransaction AddToStock(IMaterial3d material, double amount, Unit unit);
         public IStorage3dTransaction AddToStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null);
         public bool TakeFromStock(IStorage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false);
         public bool TakeFromStock(IMaterial3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false);

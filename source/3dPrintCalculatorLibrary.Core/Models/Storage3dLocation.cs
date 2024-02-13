@@ -40,63 +40,70 @@ namespace AndreasReitberger.Print3d.Core
 
         public void AddToStock(IStorage3dItem item, double amount, Unit unit)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
+                IStorage3dTransaction transaction = new Storage3dTransaction()
+                {
+                    DateTime = DateTimeOffset.Now,
+                    Unit = unit,
+                };
                 if (item?.Material.Unit == unit)
                 {
-                    item.Amount += amount;
+                    transaction.Amount += amount;
                 }
                 else
                 {
                     int target = UnitFactor.GetUnitFactor(item.Material.Unit);
                     int current = UnitFactor.GetUnitFactor(unit);
 
-                    item.Amount += target > current ? amount / (target / current) : amount * (current / target);
+                    transaction.Amount += target > current ? amount / (target / current) : amount * (current / target);
                 }
+                item.Transactions.Add(transaction);
             }
         }
-        public void AddToStock(IMaterial3d material, double amount, Unit unit)
+        public IStorage3dTransaction? AddToStock(IMaterial3d material, double amount, Unit unit)
         {
-            IStorage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
                 CreateStockItem(material, amount, unit);
+            return item?.Transactions.LastOrDefault();
         }
 
-        public IStorage3dTransaction AddToStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null)
+        public IStorage3dTransaction? AddToStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null)
         {
-            IStorage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
                 item = CreateStockItem(material, amount, unit);
-            return new Storage3dTransaction()
-            {
-                Amount = amount,
-                Unit = unit,
-                DateTime = DateTime.Now,
-                Item = item,
-            };
+            return item?.Transactions.LastOrDefault();
         }
 
         public bool TakeFromStock(IStorage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            if (item?.Material != null)
+            if (item?.Material is not null)
             {
-                if (item.Amount >= amount)
+                IStorage3dTransaction transaction = new Storage3dTransaction()
                 {
-                    if (item?.Material.Unit == unit)
-                    {
-                        item.Amount -= amount;
-                    }
-                    else
-                    {
-                        int target = UnitFactor.GetUnitFactor(item.Material.Unit);
-                        int current = UnitFactor.GetUnitFactor(unit);
+                    DateTime = DateTimeOffset.Now,
+                    Unit = unit,
+                };
+                if (item?.Material.Unit == unit)
+                {
+                    transaction.Amount -= amount;
+                }
+                else
+                {
+                    int target = UnitFactor.GetUnitFactor(item.Material.Unit);
+                    int current = UnitFactor.GetUnitFactor(unit);
 
-                        item.Amount -= target > current ? amount / (target / current) : amount * (current / target);
-                    }
+                    transaction.Amount -= target > current ? amount / (target / current) : amount * (current / target);
+                }
+                if (item?.Amount + transaction.Amount >= 0)
+                {
+                    item?.Transactions.Add(transaction);
                     return true;
                 }
                 else if (throwIfMaterialIsNotInStock)
@@ -114,22 +121,16 @@ namespace AndreasReitberger.Print3d.Core
 
         public bool TakeFromStock(IMaterial3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            IStorage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
-        public IStorage3dTransaction TakeFromStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
+        public IStorage3dTransaction? TakeFromStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
-            IStorage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
             {
-                return new Storage3dTransaction()
-                {
-                    Amount = -amount,
-                    Unit = unit,
-                    DateTime = DateTime.Now,
-                    Item = item,
-                };
+                return item?.Transactions.LastOrDefault();
             }
             else return null;
         }

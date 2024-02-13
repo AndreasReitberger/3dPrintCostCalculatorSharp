@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
+using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
@@ -12,10 +13,6 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         [ObservableProperty]
         [property: PrimaryKey]
         Guid id;
-
-        //[ObservableProperty]
-        //[property: ForeignKey(typeof(Storage3dLocation))]
-        //Guid storageLocationId;
 
         [ObservableProperty]
         string name;
@@ -28,7 +25,11 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Material3d material;
 
         [ObservableProperty]
-        double amount;
+        [NotifyPropertyChangedFor(nameof(Amount))]
+        [property: ManyToMany(typeof(Storage3dItemStorage3dTransaction), CascadeOperations = CascadeOperation.All)]
+        ObservableCollection<Storage3dTransaction> transactions = [];
+
+        public double Amount => GetAvailableAmount();
         #endregion
 
         #region Ctor
@@ -36,6 +37,11 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         {
             Id = Guid.NewGuid();
         }
+        #endregion
+
+        #region Methods
+        public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
+
         #endregion
     }
 }

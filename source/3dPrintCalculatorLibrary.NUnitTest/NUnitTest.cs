@@ -741,7 +741,7 @@ namespace AndreasReitberger.NUnitTest
         {
             try
             {
-                double startAmount = 2.68;
+                double startAmount = 0;
                 Print3d.Models.Material3d material = new()
                 {
                     Name = "Test",
@@ -754,7 +754,6 @@ namespace AndreasReitberger.NUnitTest
                 Print3d.Models.StorageAdditions.Storage3dItem item = new()
                 {
                     Material = material,
-                    Amount = startAmount,
                 };
 
                 Print3d.Models.StorageAdditions.Storage3dLocation location = new()
@@ -775,10 +774,10 @@ namespace AndreasReitberger.NUnitTest
                 Assert.That(newItem?.Amount == startAmount + 0.75);
 
                 // Just to check if the unit conversion is working
-                location.TakeFromStock(material, 0.001, Unit.MetricTons, false);
+                location.TakeFromStock(material, 0.0005, Unit.MetricTons, false);
                 newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                 // Check if the addition was successfully
-                Assert.That(newItem?.Amount == startAmount + 0.75 - 1);
+                Assert.That(newItem?.Amount == startAmount + 0.75 - 0.5);
             }
             catch (Exception exc)
             {

@@ -23,21 +23,19 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         [ObservableProperty]
         DateTimeOffset dateTime;
-        /*
-        [ObservableProperty]
-        Guid storageItemId;
-
-        [ObservableProperty]
-        [property: ManyToOne(nameof(StorageItemId), CascadeOperations = CascadeOperation.All)]
-        Storage3dItem item;
-        */
 
         [ObservableProperty]
         Unit unit;
 
         [ObservableProperty]
         double amount;
+        partial void OnAmountChanged(double value)
+        {
+            IsAddition = value > 0;
+        }
 
+        [ObservableProperty]
+        bool isAddition = false;
         #endregion
 
         #region Ctor

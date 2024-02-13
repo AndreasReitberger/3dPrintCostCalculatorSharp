@@ -10,6 +10,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public IStorage3dItem Item { get; set; }
         public double Amount { get; set; }
         public Unit Unit { get; set; }
+        public bool IsAddition { get; }
         #endregion
     }
 }

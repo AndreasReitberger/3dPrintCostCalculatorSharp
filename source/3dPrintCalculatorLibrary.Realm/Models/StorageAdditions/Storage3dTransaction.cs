@@ -25,6 +25,8 @@ namespace AndreasReitberger.Print3d.Realm.StorageAdditions
             set { UnitId = (int)value; }
         }
         public int UnitId { get; set; }
+
+        public bool IsAddition { get; }
         #endregion
 
         #region Ctor

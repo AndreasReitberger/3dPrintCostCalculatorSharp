@@ -15,6 +15,8 @@ namespace AndreasReitberger.Print3d.Interfaces
         public double Amount { get; set; }
 
         public Unit Unit { get; set; }
+        public bool IsAddition { get; }
+
         #endregion
     }
 }

@@ -38,7 +38,7 @@ namespace AndreasReitberger.Print3d.Core
             return item;
         }
 
-        public void AddToStock(IStorage3dItem item, double amount, Unit unit)
+        public IStorage3dTransaction? AddToStock(IStorage3dItem item, double amount, Unit unit)
         {
             if (item?.Material is not null)
             {
@@ -58,8 +58,10 @@ namespace AndreasReitberger.Print3d.Core
 
                     transaction.Amount += target > current ? amount / (target / current) : amount * (current / target);
                 }
-                item.Transactions.Add(transaction);
+                item?.Transactions.Add(transaction);
+                return transaction;
             }
+            else return null;
         }
         public IStorage3dTransaction? AddToStock(IMaterial3d material, double amount, Unit unit)
         {
@@ -81,7 +83,7 @@ namespace AndreasReitberger.Print3d.Core
             return item?.Transactions.LastOrDefault();
         }
 
-        public bool TakeFromStock(IStorage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public IStorage3dTransaction? TakeFromStock(IStorage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             if (item?.Material is not null)
             {
@@ -104,22 +106,22 @@ namespace AndreasReitberger.Print3d.Core
                 if (item?.Amount + transaction.Amount >= 0)
                 {
                     item?.Transactions.Add(transaction);
-                    return true;
+                    return transaction;
                 }
                 else if (throwIfMaterialIsNotInStock)
                 {
                     throw new ArgumentOutOfRangeException($"The amount of the material `{item?.Material}` is not sufficient for this transaction (In stock: {item?.Amount} / Requested: {amount}!");
                 }
-                else return false;
+                else return null;
             }
             else if (throwIfMaterialIsNotInStock)
             {
                 throw new ArgumentOutOfRangeException($"The material `{item?.Material}` is not available in the stock!");
             }
-            else return false;
+            else return null;
         }
 
-        public bool TakeFromStock(IMaterial3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public IStorage3dTransaction? TakeFromStock(IMaterial3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
@@ -128,25 +130,20 @@ namespace AndreasReitberger.Print3d.Core
         public IStorage3dTransaction? TakeFromStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
             IStorage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
-            if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
-            {
-                return item?.Transactions.LastOrDefault();
-            }
-            else return null;
+            return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
-        public bool UpdateStockAmount(IStorage3dItem item, double amount, Unit unit = Unit.Kilogram)
+        public IStorage3dTransaction? UpdateStockAmount(IStorage3dItem item, double amount, Unit unit = Unit.Kilogram)
         {
             if (amount > 0)
             {
-                AddToStock(item: item, amount: amount, unit: unit);
-                return true;
+                return AddToStock(item: item, amount: amount, unit: unit);
             }
             else if (amount < 0)
             {
                 return TakeFromStock(item: item, amount: Math.Abs(amount), unit: unit);
             }
-            return false;
+            return null;
         }
         #endregion
     }

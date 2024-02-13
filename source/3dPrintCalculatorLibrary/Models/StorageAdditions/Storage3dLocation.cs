@@ -41,7 +41,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
             return item;
         }
 
-        public void AddToStock(Storage3dItem item, double amount, Unit unit)
+        public Storage3dTransaction? AddToStock(Storage3dItem item, double amount, Unit unit)
         {
             if (item?.Material is not null)
             {
@@ -62,7 +62,9 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
                     transaction.Amount += target > current ? amount / (target / current) : amount * (current / target);
                 }
                 item.Transactions.Add(transaction);
+                return transaction;
             }
+            else return null;
         }
         public Storage3dTransaction? AddToStock(Material3d material, double amount, Unit unit)
         {
@@ -84,7 +86,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
             return item?.Transactions.LastOrDefault();
         }
 
-        public bool TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public Storage3dTransaction? TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             if (item?.Material is not null)
             {
@@ -107,49 +109,44 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
                 if (item?.Amount + transaction.Amount >= 0)
                 {
                     item?.Transactions.Add(transaction);
-                    return true;
+                    return transaction;
                 }
                 else if (throwIfMaterialIsNotInStock)
                 {
                     throw new ArgumentOutOfRangeException($"The amount of the material `{item?.Material}` is not sufficient for this transaction (In stock: {item?.Amount} / Requested: {amount}!");
                 }
-                else return false;
+                else return null;
             }
             else if (throwIfMaterialIsNotInStock)
             {
                 throw new ArgumentOutOfRangeException($"The material `{item?.Material}` is not available in the stock!");
             }
-            else return false;
+            else return null;
         }
 
-        public bool TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
-            Storage3dItem item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
-            if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
-            {
-                return item?.Transactions.LastOrDefault();
-            }
-            else return null;
+            Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
-        public bool UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogram)
+        public Storage3dTransaction? UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogram)
         {
             if (amount > 0)
             {
-                AddToStock(item: item, amount: amount, unit: unit);
-                return true;
+                return AddToStock(item: item, amount: amount, unit: unit);
             }
             else if (amount < 0)
             {
                 return TakeFromStock(item: item, amount: Math.Abs(amount), unit: unit);
             }
-            return false;
+            return null;
         }
         #endregion
     }

@@ -277,7 +277,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Addresses
         public Task<List<Address>> GetAddressesWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Address>(recursive: true);
-        
+
         public Task<Address> GetAddressWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Address>(id, recursive: true);
 
         public Task SetAddressWithChildrenAsync(Address address) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(address, recursive: true);
@@ -304,7 +304,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task<int> DeleteAllAddressesAsync() => DatabaseAsync.DeleteAllAsync<Address>();
-        
+
 
         #endregion
 
@@ -312,7 +312,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task<List<Calculation3d>> GetCalculationsWithChildrenAsync()
         {
             List<Calculation3d> calculations = await DatabaseAsync.GetAllWithChildrenAsync<Calculation3d>(recursive: true);
-            #if Workaround_96
+#if Workaround_96
             // Workaround, because the foreign keys from the printer / materials are not loaded somehow...
             /**/
             for (int i = 0; i < calculations?.Count; i++)
@@ -433,7 +433,7 @@ namespace AndreasReitberger.Print3d.SQLite
             return id;
         }
 
-#endregion
+        #endregion
 
         #region Calculations (Enhanced)
         public Task<List<Calculation3dEnhanced>> GetEnhancedCalculationsWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Calculation3dEnhanced>(recursive: true);

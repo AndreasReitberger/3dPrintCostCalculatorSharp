@@ -59,12 +59,12 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Clone
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        
+
         public override bool Equals(object obj)
         {
             if (obj is not Item3d item)

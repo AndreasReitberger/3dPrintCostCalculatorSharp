@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Core
         ISlicer3d? slicer;
 
         [ObservableProperty]
-        string name =  string.Empty;
+        string name = string.Empty;
 
         [ObservableProperty]
         string command = string.Empty;

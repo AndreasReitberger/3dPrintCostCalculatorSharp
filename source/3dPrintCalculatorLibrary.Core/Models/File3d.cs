@@ -64,7 +64,7 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Clone
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
         #region Overrides

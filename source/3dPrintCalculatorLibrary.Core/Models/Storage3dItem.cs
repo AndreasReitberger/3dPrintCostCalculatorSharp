@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Methods
         public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
-        
+
         #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int Capacity { get; set; }   
+        public int Capacity { get; set; }
         public IList<IStorage3dLocation> Locations { get; set; }
         #endregion
 

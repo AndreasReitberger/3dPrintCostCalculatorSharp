@@ -11,7 +11,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         public static void AddRange(this ICalculationProcedureParameter parameter, IList<ICalculationProcedureParameterAddition> items)
         {
-            for(int i = 0; i < items.Count; i++)
+            for (int i = 0; i < items.Count; i++)
             {
                 parameter.Additions.Add(items[i]);
             }

@@ -1492,7 +1492,7 @@ namespace AndreasReitberger.NUnitTest
                         IsActive = true,
                         Name = "Prusa"
                     };
-                    
+
                     Material3d material = new()
                     {
                         Name = "Test",

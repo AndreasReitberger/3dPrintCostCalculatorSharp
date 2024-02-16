@@ -101,13 +101,13 @@ namespace AndreasReitberger.NUnitTest
                         Items = [
                             new Item3dUsage()
                             {
-                                  Item = new Item3d()
-                                  {
-                                      Name = "M3x16 Screws",
-                                      PackagePrice = 20,
-                                      PackageSize = 100,
-                                  }, 
-                                  Quantity = 10,
+                                Item = new Item3d()
+                                {
+                                    Name = "M3x16 Screws",
+                                    PackagePrice = 20,
+                                    PackageSize = 100,
+                                },
+                                Quantity = 10,
                             },
                         ]
                     },
@@ -154,8 +154,10 @@ namespace AndreasReitberger.NUnitTest
                     }
                 ],
                 WorkstepUsages = [
-                    new WorkstepUsage() {
-                        Workstep = new Workstep(){
+                    new WorkstepUsage()
+                    {
+                        Workstep = new Workstep()
+                        {
                             Name = "Cleanup",
                             CalculationType = CalculationType.PerPiece,
                             Category = new WorkstepCategory() { Name = "Post-Processing" },
@@ -163,13 +165,16 @@ namespace AndreasReitberger.NUnitTest
                             Note = "Contains the removal of supports and general cleanup",
                             Type = WorkstepType.Post,
                         },
-                        UsageParameter = new WorkstepUsageParameter() {
+                        UsageParameter = new WorkstepUsageParameter()
+                        {
                             ParameterType = WorkstepUsageParameterType.Quantity,
                             Value = 1,
                         }
                     },
-                    new WorkstepUsage() {
-                        Workstep = new Workstep(){
+                    new WorkstepUsage()
+                    {
+                        Workstep = new Workstep()
+                        {
                             Name = "Packaging",
                             CalculationType = CalculationType.PerJob,
                             Category = new WorkstepCategory() { Name = "Post-Processing" },
@@ -177,7 +182,8 @@ namespace AndreasReitberger.NUnitTest
                             Note = "Contains the packaging of the prints",
                             Type = WorkstepType.Post,
                         },
-                        UsageParameter = new WorkstepUsageParameter() {
+                        UsageParameter = new WorkstepUsageParameter()
+                        {
                             ParameterType = WorkstepUsageParameterType.Quantity,
                             Value = 1,
                         }
@@ -187,8 +193,10 @@ namespace AndreasReitberger.NUnitTest
                 PowerLevel = 75,
                 EnergyCostsPerkWh = 0.4,
                 AdditionalItems = [
-                    new Item3dUsage() {
-                        Item = new Item3d() {
+                    new Item3dUsage()
+                    {
+                        Item = new Item3d()
+                        {
 
                             Name = "Nuts M3",
                             PackageSize = 100,
@@ -202,8 +210,9 @@ namespace AndreasReitberger.NUnitTest
                             SKU = "2302423-1223"
                         },
                         Quantity = 2,
-                    }, 
-                    new Item3dUsage() {
+                    },
+                    new Item3dUsage()
+                    {
                         Item = new Item3d()
                         {
                             Name = "Screws M3 20mm",
@@ -225,7 +234,7 @@ namespace AndreasReitberger.NUnitTest
             };
         }
 
-        
+
 
         [Test]
         public void Item3dTests()

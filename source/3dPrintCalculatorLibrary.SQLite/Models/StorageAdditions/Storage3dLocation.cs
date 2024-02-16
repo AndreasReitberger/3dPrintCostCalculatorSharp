@@ -95,7 +95,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
-                }; 
+                };
                 if (item?.Material.Unit == unit)
                 {
                     transaction.Amount -= amount;

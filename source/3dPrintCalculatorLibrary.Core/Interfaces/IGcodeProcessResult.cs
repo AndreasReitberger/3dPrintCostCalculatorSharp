@@ -13,9 +13,9 @@
         public double MinY { get; set; }
         public double MaxZ { get; set; }
         public double MinZ { get; set; }
-        public double PrintTimeAddition { get; set; } 
-        public double TotalFilament { get; set; } 
-        public double LastSpeed { get; set; } 
+        public double PrintTimeAddition { get; set; }
+        public double TotalFilament { get; set; }
+        public double LastSpeed { get; set; }
         public long Order { get; set; }
         public IGcode Gcode { get; set; }
         #endregion

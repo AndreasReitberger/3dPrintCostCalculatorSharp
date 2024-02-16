@@ -31,8 +31,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Constructors
-        public Workstep() 
-        {   
+        public Workstep()
+        {
             Id = Guid.NewGuid();
         }
         #endregion
@@ -53,7 +53,7 @@ namespace AndreasReitberger.Print3d.Core
             return Id.GetHashCode();
         }
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
     }
 }

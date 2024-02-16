@@ -19,9 +19,16 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         double amount;
+        partial void OnAmountChanged(double value)
+        {
+            IsAddition = value > 0;
+        }
 
         [ObservableProperty]
         Unit unit;
+
+        [ObservableProperty]
+        bool isAddition = false;
         #endregion
 
         #region Ctor

@@ -1,8 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Core
 {
@@ -16,7 +14,10 @@ namespace AndreasReitberger.Print3d.Core
         IMaterial3d? material;
 
         [ObservableProperty]
-        double percentage = 1;
+        [NotifyPropertyChangedFor(nameof(Percentage))]
+        double percentageValue = 1;
+
+        public double Percentage => PercentageValue * 100;
 
         #endregion
 

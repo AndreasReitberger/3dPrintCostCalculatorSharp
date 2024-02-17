@@ -35,7 +35,10 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         Material3d material;
 
         [ObservableProperty]
-        double percentage = 1;
+        [NotifyPropertyChangedFor(nameof(Percentage))]
+        double percentageValue = 1;
+
+        public double Percentage => PercentageValue * 100;
 
         #endregion
 

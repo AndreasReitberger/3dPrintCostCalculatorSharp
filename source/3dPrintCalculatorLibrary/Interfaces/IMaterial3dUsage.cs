@@ -8,7 +8,8 @@ namespace AndreasReitberger.Print3d.Interfaces
         public Guid Id { get; set; }
         public Guid PrintInfoId { get; set; }
         public Guid MaterialId { get; set; }
-        public double Percentage { get; set; }
+        public double PercentageValue { get; set; }
+        public double Percentage { get; }
         #endregion 
     }
 }

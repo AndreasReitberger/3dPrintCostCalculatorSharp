@@ -24,7 +24,9 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public Material3d Material { get; set; }
 
-        public double Percentage { get; set; } = 1;
+        public double PercentageValue { get; set; } = 1;
+
+        public double Percentage => PercentageValue * 100;
 
         #endregion
 

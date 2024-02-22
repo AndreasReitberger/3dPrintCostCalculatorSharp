@@ -1429,7 +1429,7 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         File = file,
-                        MaterialUsages = [new() { Material = material, Percentage = 1 }],
+                        MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
@@ -1438,7 +1438,7 @@ namespace AndreasReitberger.NUnitTest
                     {
                         File = file2,
                         // Multi-Material for one file
-                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
+                        MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
                     };
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info2);
@@ -1584,7 +1584,7 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         File = file,
-                        MaterialUsages = [new() { Material = material, Percentage = 1 }],
+                        MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
@@ -1592,7 +1592,7 @@ namespace AndreasReitberger.NUnitTest
                     {
                         File = file2,
                         // Multi-Material for one file
-                        MaterialUsages = [new() { Material = material, Percentage = 0.5 }, new() { Material = material2, Percentage = 0.5 }],
+                        MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
                     };
 

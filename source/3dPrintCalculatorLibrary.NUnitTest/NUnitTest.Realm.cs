@@ -1214,7 +1214,7 @@ namespace AndreasReitberger.NUnitTest
                         File = file,
                         Printer = printer,
                     };
-                    info.MaterialUsages.Add(new() { Material = material, Percentage = 1 });
+                    info.MaterialUsages.Add(new() { Material = material, PercentageValue = 1 });
                     info.Items.Add(usage);
 
                     Print3dInfo info2 = new()
@@ -1222,8 +1222,8 @@ namespace AndreasReitberger.NUnitTest
                         File = file2,
                         Printer = printer2,
                     };
-                    info2.MaterialUsages.Add(new() { Material = material, Percentage = 0.5 });
-                    info2.MaterialUsages.Add(new() { Material = material2, Percentage = 0.5 });
+                    info2.MaterialUsages.Add(new() { Material = material, PercentageValue = 0.5 });
+                    info2.MaterialUsages.Add(new() { Material = material2, PercentageValue = 0.5 });
 
                     Calculation3dEnhanced calc = new()
                     {

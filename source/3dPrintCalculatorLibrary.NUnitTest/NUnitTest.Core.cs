@@ -8,6 +8,12 @@ namespace AndreasReitberger.NUnitTest
 {
     public class TestsCore
     {
+        bool ApplyResinGlovesCosts =  true;
+        bool ApplyResinWashingCosts =  true;
+        bool ApplyResinFilterCosts =  true;
+        bool ApplyResinTankWearCosts =  true;
+
+
         ICalculation3dEnhanced? calculation;
 
         [SetUp]
@@ -68,7 +74,7 @@ namespace AndreasReitberger.NUnitTest
                                         Name = "Prusa",
                                     }
                                 },
-                                Percentage = 0.5,
+                                PercentageValue = 0.5,
                             },
                             new Material3dUsage()
                             {
@@ -87,7 +93,7 @@ namespace AndreasReitberger.NUnitTest
                                         Name = "Prusa",
                                     }
                                 },
-                                Percentage = 0.5,
+                                PercentageValue = 0.5,
                             }
                         ],
                         Printer = new Printer3d()
@@ -120,7 +126,7 @@ namespace AndreasReitberger.NUnitTest
                             FileName = "Batman.dlp",
                             PrintTime = 2.65,
                             Volume = 65.546,
-                            Quantity = 2,
+                            Quantity = 20,
                         },
                         Materials = [
                             new Material3dUsage()
@@ -140,7 +146,7 @@ namespace AndreasReitberger.NUnitTest
                                         Name = "Anycubic",
                                     }
                                 },
-                                Percentage = 1,
+                                PercentageValue = 1,
                             }
                         ],
                         Printer = new Printer3d()
@@ -231,10 +237,165 @@ namespace AndreasReitberger.NUnitTest
                     ],
                 FailRate = 5,
                 State = CalculationState.Draft,
+                ApplyProcedureSpecificAdditions = true,
+                ProcedureAdditions =
+                [
+                    new ProcedureAddition() 
+                    {
+                        Target = ProcedureAdditionTarget.Machine,
+
+                    },
+                ]
             };
+
+            List<ICalculationProcedureParameter> parameters = [];
+            List<ICalculationProcedureParameterAddition> additionalInfo = [];
+
+            if (ApplyResinGlovesCosts)
+            {
+                if (true)
+                {
+                    // Needed if the calculation is reloaded later
+                    additionalInfo =
+                    [
+                        new CalculationProcedureParameterAddition("amount", 100),
+                        new CalculationProcedureParameterAddition("price", 25),
+                        new CalculationProcedureParameterAddition("perjob", 2),
+                    ];
+
+                    parameters =
+                    [
+                        new CalculationProcedureParameter()
+                        {
+                            Type = ProcedureParameter.GloveCosts,
+                            Value = 2 * (25 / 100),
+                            Additions = additionalInfo,
+                        }
+                    ];
+                    calculation.ProcedureAttributes.Add(
+                        new CalculationProcedureAttribute()
+                        {
+                            Attribute = ProcedureAttribute.GlovesCosts,
+                            Family = Material3dFamily.Resin,
+                            Parameters = parameters,
+                            Level = CalculationLevel.Printer,
+                        });
+                }
+            }
+            if (ApplyResinWashingCosts)
+            {
+                if (true)
+                {
+                    // Needed if the calculation is reloaded later
+                    additionalInfo =
+                    [
+                        new CalculationProcedureParameterAddition("amount", 5),
+                        new CalculationProcedureParameterAddition("price", 50),
+                        new CalculationProcedureParameterAddition("perjob", 0.01d),
+                    ];
+
+                    parameters =
+                    [
+                        new CalculationProcedureParameter()
+                        {
+                            Type = ProcedureParameter.WashingCosts,
+                            Value = 0.01d * (5 / 50),
+                            Additions = additionalInfo,
+                        }
+                    ];
+                    calculation.ProcedureAttributes.Add(
+                        new CalculationProcedureAttribute()
+                        {
+                            Attribute = ProcedureAttribute.WashingCosts,
+                            Family = Material3dFamily.Resin,
+                            Parameters = parameters,
+                            Level = CalculationLevel.Printer,
+                        });
+                }
+            }
+            if (ApplyResinFilterCosts)
+            {
+                if (true)
+                {
+                    // Needed if the calculation is reloaded later
+                    additionalInfo =
+                    [
+                        new CalculationProcedureParameterAddition("amount", 50),
+                        new CalculationProcedureParameterAddition("price", 25),
+                        new CalculationProcedureParameterAddition("perjob", 1),
+                    ];
+
+                    parameters =
+                    [
+                        new CalculationProcedureParameter()
+                        {
+                            Type = ProcedureParameter.FilterCosts,
+                            Value = 1 * (25 / 50),
+                            Additions = additionalInfo,
+                        }
+                    ];
+                    calculation.ProcedureAttributes.Add(
+                        new CalculationProcedureAttribute()
+                        {
+                            Attribute = ProcedureAttribute.FilterCosts,
+                            Family = Material3dFamily.Resin,
+                            Parameters = parameters,
+                            Level = CalculationLevel.Printer,
+                        });
+                }
+            }
+            if (ApplyResinTankWearCosts)
+            {
+                if (true)
+                {
+                    // Needed if the calculation is reloaded later
+                    additionalInfo = 
+                    [
+                            new CalculationProcedureParameterAddition("replacementcosts", 120),
+                            new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                    ];
+                    parameters =
+                    [
+                        new CalculationProcedureParameter()
+                        {
+                            Type = ProcedureParameter.ResinTankWearCosts,
+                            Value = 120  * 0.01d,
+                            Additions = additionalInfo,
+                        }
+                    ];
+                    calculation.ProcedureAttributes.Add(
+                        new CalculationProcedureAttribute()
+                        {
+                            Attribute = ProcedureAttribute.ResinTankWear,
+                            Family = Material3dFamily.Resin,
+                            Parameters = parameters,
+                            Level = CalculationLevel.Printer,
+
+                        });
+                }
+            }
+
         }
 
+        [Test]
+        public void TestProcedureSpecificAddition()
+        {
+            try
+            {
+                calculation.ApplyProcedureSpecificAdditions = false;
+                calculation.CalculateCosts();
+                var total = calculation.TotalCosts;
 
+                calculation.ApplyProcedureSpecificAdditions = true;
+                var total2 = calculation.TotalCosts;
+                Assert.That(total < total2);
+                var procedureCosts = calculation.Costs;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         [Test]
         public void Item3dTests()
@@ -544,7 +705,7 @@ namespace AndreasReitberger.NUnitTest
                     IPrint3dInfo info = new Print3dInfo()
                     {
                         File = file,
-                        Materials = [new Material3dUsage() { Material = material, Percentage = 1 }],
+                        Materials = [new Material3dUsage() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
@@ -552,7 +713,7 @@ namespace AndreasReitberger.NUnitTest
                     {
                         File = file2,
                         // Multi-Material for one file
-                        Materials = [new Material3dUsage() { Material = material, Percentage = 0.5 }, new Material3dUsage() { Material = material2, Percentage = 0.5 }],
+                        Materials = [new Material3dUsage() { Material = material, PercentageValue = 0.5 }, new Material3dUsage() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
                     };
 

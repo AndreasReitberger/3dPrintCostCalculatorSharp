@@ -262,15 +262,19 @@ namespace AndreasReitberger.Print3d.Models
                             {
                                 foreach (CalculationProcedureParameter parameter in attribute.Parameters)
                                 {
-                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    if (attribute.PerFile || (OverallPrinterCosts?
+                                            .FirstOrDefault(attr => attr.Attribute == parameter.Type.ToString() && attr.LinkedId == printer.Id) is null))
                                     {
-                                        LinkedId = printer.Id,
-                                        Attribute = parameter.Type.ToString(),
-                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
-                                        Value = parameter.Value,
-                                        FileId = file.Id,
-                                        FileName = file.FileName,
-                                    });
+                                        OverallPrinterCosts?.Add(new CalculationAttribute()
+                                        {
+                                            LinkedId = printer.Id,
+                                            Attribute = parameter.Type.ToString(),
+                                            Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Value = attribute.PerPiece ? parameter.Value * file.Quantity : parameter.Value,
+                                            FileId = file.Id,
+                                            FileName = file.FileName,
+                                        });
+                                    }
                                 }
                             }
 

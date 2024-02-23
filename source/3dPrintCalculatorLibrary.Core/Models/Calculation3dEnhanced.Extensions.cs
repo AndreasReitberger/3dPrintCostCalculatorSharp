@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
+using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.Core
 {
@@ -62,7 +63,7 @@ namespace AndreasReitberger.Print3d.Core
                             FileName = file.FileName,
                         });
                     }
-                    double percentageUsage = info.Materials?.Select(mu => mu.Percentage).Sum() ?? 1;
+                    double percentageUsage = info.Materials?.Select(mu => mu.PercentageValue).Sum() ?? 1;
                     if (percentageUsage > 1 || percentageUsage <= 0)
                         throw new ArgumentOutOfRangeException($"The overall percentage of the material usage is greater than 1 (=100%): {percentageUsage}");
                     foreach (IMaterial3dUsage materialUsageInfo in info.Materials)
@@ -81,7 +82,7 @@ namespace AndreasReitberger.Print3d.Core
                                 _weight = file.Weight.Weight * Convert.ToDouble(UnitFactor.GetUnitFactor(file.Weight.Unit));
                             }
                             // Needed material in g
-                            double _material = _weight * file.Quantity * materialUsageInfo.Percentage;
+                            double _material = _weight * file.Quantity * materialUsageInfo.PercentageValue;
                             MaterialUsages?.Add(new CalculationAttribute()
                             {
                                 Attribute = material.Name,
@@ -249,15 +250,19 @@ namespace AndreasReitberger.Print3d.Core
                             {
                                 foreach (ICalculationProcedureParameter parameter in attribute.Parameters)
                                 {
-                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    if (attribute.PerFile || (OverallPrinterCosts?
+                                            .FirstOrDefault(attr => attr.Attribute == parameter.Type.ToString() && attr.LinkedId == printer.Id) is null))
                                     {
-                                        LinkedId = printer.Id,
-                                        Attribute = parameter.Type.ToString(),
-                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
-                                        Value = parameter.Value * file.Quantity,
-                                        FileId = file.Id,
-                                        FileName = file.FileName,
-                                    });
+                                        OverallPrinterCosts?.Add(new CalculationAttribute()
+                                        {
+                                            LinkedId = printer.Id,
+                                            Attribute = parameter.Type.ToString(),
+                                            Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Value = attribute.PerPiece ? parameter.Value * file.Quantity : parameter.Value,
+                                            FileId = file.Id,
+                                            FileName = file.FileName,
+                                        });
+                                    }
                                 }
                             }
 

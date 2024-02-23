@@ -11,6 +11,8 @@ namespace AndreasReitberger.Print3d.Interfaces
         public Material3dFamily Family { get; set; }
         public ProcedureAttribute Attribute { get; set; }
         public CalculationLevel Level { get; set; }
+        public bool PerPiece { get; set; }
+        public bool PerFile { get; set; }
         #endregion
 
         #region List

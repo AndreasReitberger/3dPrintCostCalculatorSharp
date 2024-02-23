@@ -36,6 +36,9 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
             set { LevelId = (int)value; }
         }
         public int LevelId { get; set; } = (int)CalculationLevel.Printer;
+
+        public bool PerFile { get; set; } = false;
+        public bool PerPiece { get; set; } = false;
         #endregion
 
         #region Constructor

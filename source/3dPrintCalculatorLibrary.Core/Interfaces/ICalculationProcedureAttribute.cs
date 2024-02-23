@@ -11,6 +11,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public ProcedureAttribute Attribute { get; set; }
         public IList<ICalculationProcedureParameter> Parameters { get; set; }
         public CalculationLevel Level { get; set; }
+        public bool PerPiece { get; set; }
+        public bool PerFile { get; set; }
         #endregion
     }
 }

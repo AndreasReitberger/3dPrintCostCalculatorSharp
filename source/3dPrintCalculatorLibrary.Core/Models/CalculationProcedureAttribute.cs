@@ -24,6 +24,15 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         CalculationLevel level = CalculationLevel.Printer;
+
+        /// <summary>
+        /// Multiplies the costs per piece (quantity of the files)
+        /// </summary>
+        [ObservableProperty]
+        bool perPiece = false;
+
+        [ObservableProperty]
+        bool perFile = false;
         #endregion
 
         #region Constructor

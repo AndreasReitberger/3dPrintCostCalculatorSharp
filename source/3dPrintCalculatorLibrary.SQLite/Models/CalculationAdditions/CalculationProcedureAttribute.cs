@@ -31,10 +31,16 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<CalculationProcedureParameter> parameters = new();
+        List<CalculationProcedureParameter> parameters = [];
 
         [ObservableProperty]
         CalculationLevel level = CalculationLevel.Printer;
+
+        [ObservableProperty]
+        bool perFile = false;
+
+        [ObservableProperty]
+        bool perPiece = false;
         #endregion
 
         #region Constructor

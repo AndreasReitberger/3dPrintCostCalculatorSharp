@@ -26,6 +26,12 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
 
         [ObservableProperty]
         CalculationLevel level = CalculationLevel.Printer;
+
+        [ObservableProperty]
+        bool perFile = false;
+
+        [ObservableProperty]
+        bool perPiece = false;
         #endregion
 
         #region Constructor

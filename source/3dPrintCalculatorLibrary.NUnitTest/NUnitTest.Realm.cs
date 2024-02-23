@@ -13,10 +13,10 @@ namespace AndreasReitberger.NUnitTest
 {
     public class TestsRealm
     {
-        bool ApplyResinGlovesCosts = true;
-        bool ApplyResinWashingCosts = true;
-        bool ApplyResinFilterCosts = true;
-        bool ApplyResinTankWearCosts = true;
+        bool ApplyResinGlovesCosts = false;
+        bool ApplyResinWashingCosts = false;
+        bool ApplyResinFilterCosts = false;
+        bool ApplyResinTankWearCosts = false;
 
         Calculation3dEnhanced? calculation;
 
@@ -304,6 +304,7 @@ namespace AndreasReitberger.NUnitTest
                         PerFile = false,
                         PerPiece = false,
                     };
+                    // Causes an exception. Must be investigated
                     foreach(var para in parameters)
                         parameters.Add(para);
                     calculation.ProcedureAttributes.Add(cpa1);

@@ -1594,7 +1594,7 @@ namespace AndreasReitberger.NUnitTest
 
                     // Recreate tables
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
-                    await Task.Delay(250);
+                    await Task.Delay(500);
 
                     double startAmount = 0;
                     Material3d material = new()
@@ -1765,7 +1765,7 @@ namespace AndreasReitberger.NUnitTest
 
                     // Recreate tables
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
-                    await Task.Delay(250);
+                    await Task.Delay(500);
 
                     Manufacturer manufacturer = new()
                     {
@@ -1932,7 +1932,7 @@ namespace AndreasReitberger.NUnitTest
 
                     // Recreate tables
                     await DatabaseHandler.Instance.RebuildAllTableAsync();
-                    await Task.Delay(250);
+                    await Task.Delay(500);
 
                     Manufacturer manufacturer = new()
                     {

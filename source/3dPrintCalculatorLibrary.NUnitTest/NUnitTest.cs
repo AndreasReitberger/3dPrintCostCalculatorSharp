@@ -948,6 +948,7 @@ namespace AndreasReitberger.NUnitTest
                         Price = 50,
                         WearFactor = 1000,
                         QuantityInPackage = 1,
+
                     }
                 }
             });

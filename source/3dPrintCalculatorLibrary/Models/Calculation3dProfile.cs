@@ -182,16 +182,16 @@ namespace AndreasReitberger.Print3d.Models
         #region Presets
 
         [ObservableProperty]
-        ObservableCollection<IPrinter3d> printers = new();
+        ObservableCollection<IPrinter3d> printers = [];
 
         [ObservableProperty]
-        ObservableCollection<IMaterial3d> materials = new();
+        ObservableCollection<IMaterial3d> materials = [];
 
         [ObservableProperty]
-        ObservableCollection<IItem3dUsage> items = new();
+        ObservableCollection<IItem3dUsage> items = [];
 
         [ObservableProperty]
-        ObservableCollection<IWorkstepUsage> worksteps = new();
+        ObservableCollection<IWorkstepUsage> worksteps = [];
         #endregion
 
         #endregion

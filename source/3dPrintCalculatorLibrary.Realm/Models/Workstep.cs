@@ -120,7 +120,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return string.Format("{0} ({1}) - {2:C2}", Name, Type, Price);
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Workstep item)
                 return false;

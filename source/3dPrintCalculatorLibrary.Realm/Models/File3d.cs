@@ -77,7 +77,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return Name;
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not File3d item)
                 return false;

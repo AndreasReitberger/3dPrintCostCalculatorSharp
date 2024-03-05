@@ -70,9 +70,6 @@ namespace AndreasReitberger.Print3d.Realm
 
         public double TotalCosts { get; set; } = 0;
 
-        [Obsolete("Not needed anymore, will be removed")]
-        public bool CombineMaterialCosts { get; set; } = false;
-
         public bool DifferFileCosts { get; set; } = true;
 
         #endregion
@@ -86,12 +83,6 @@ namespace AndreasReitberger.Print3d.Realm
         public IList<CustomAddition> CustomAdditions { get; }
 
         public IList<WorkstepUsage> WorkstepUsages { get; }
-
-        [Obsolete("Use the WorkstepUsages class instead")]
-        public IList<Workstep> WorkSteps { get; }
-
-        [Obsolete("Use the WorkstepUsages class instead")]
-        public IList<WorkstepDuration> WorkStepDurations { get; }
 
         public IList<Item3dUsage> AdditionalItems { get; }
 
@@ -341,7 +332,7 @@ namespace AndreasReitberger.Print3d.Realm
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Calculation3dEnhanced item)
                 return false;

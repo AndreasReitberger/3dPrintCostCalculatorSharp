@@ -24,7 +24,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Linked Customer
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Customer3d> customers = new();
+        public List<Customer3d> customers = [];
         #endregion
 
         #region Presets
@@ -181,7 +181,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<ProcedureAddition> procedureAdditions = new();
+        ObservableCollection<ProcedureAddition> procedureAdditions = [];
         #endregion
 
         #endregion
@@ -192,19 +192,19 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Printer3d> printers = new();
+        ObservableCollection<Printer3d> printers = [];
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Material3d> materials = new();
+        ObservableCollection<Material3d> materials = [];
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Item3dUsage> items = new();
+        ObservableCollection<Item3dUsage> items = [];
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<WorkstepUsage> worksteps = new();
+        ObservableCollection<WorkstepUsage> worksteps = [];
         #endregion
 
         #endregion

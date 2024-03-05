@@ -22,7 +22,7 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public Guid CalculationId { get; set; }
+        public Guid CalculationEnhancedId { get; set; }
         public Guid CalculationProfileId { get; set; }
         public Guid PrintInfoId { get; set; }
 
@@ -66,7 +66,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Item3dUsage item)
                 return false;

@@ -59,7 +59,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Item3d item)
                 return false;

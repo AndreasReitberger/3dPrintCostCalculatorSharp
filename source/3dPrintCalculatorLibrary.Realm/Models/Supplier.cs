@@ -41,7 +41,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return string.IsNullOrEmpty(DebitorNumber) ? Name : string.Format("{0} ({1})", Name, DebitorNumber);
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Supplier item)
                 return false;

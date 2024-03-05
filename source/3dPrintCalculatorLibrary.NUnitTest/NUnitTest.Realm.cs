@@ -540,7 +540,7 @@ namespace AndreasReitberger.NUnitTest
                         },
                     };
 
-                    List<Material3dType> types = realm.All<Material3dType>().ToList();
+                    List<Material3dType> types = [.. realm.All<Material3dType>()];
                     realm.Write(() => realm.Add(materialTypes));
                     types = realm.All<Material3dType>().ToList();
                     Assert.That(materialTypes.Count == types?.Count);
@@ -576,7 +576,7 @@ namespace AndreasReitberger.NUnitTest
                         HourlyMachineRate = hourlyMachineRate,
                     };
                     realm.Write(() => realm.Add(prusaXL));
-                    Printer3d printer = realm.Find<Printer3d>(prusaXL.Id);
+                    Printer3d? printer = realm.Find<Printer3d>(prusaXL.Id);
                     List<Printer3d> printers = realm.All<Printer3d>().ToList();
                     Assert.That(printers?.Count > 0);
 

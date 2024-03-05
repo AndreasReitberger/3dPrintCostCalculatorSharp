@@ -26,7 +26,7 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
         {
             return Name;
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not WorkstepCategory item)
                 return false;

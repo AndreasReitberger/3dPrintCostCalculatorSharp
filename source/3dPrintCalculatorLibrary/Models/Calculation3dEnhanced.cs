@@ -362,7 +362,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Calculation3dEnhanced item)
                 return false;

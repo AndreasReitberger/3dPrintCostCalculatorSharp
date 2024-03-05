@@ -89,7 +89,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
             return item.Transactions.LastOrDefault();
         }
 
-        public Storage3dTransaction? TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public Storage3dTransaction? TakeFromStock(Storage3dItem? item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             if (item?.Material is not null)
             {

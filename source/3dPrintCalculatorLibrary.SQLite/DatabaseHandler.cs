@@ -228,7 +228,6 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Init
         public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));
 
-
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
 
         public void CreateTable(Type table) => Database?.CreateTable(table);

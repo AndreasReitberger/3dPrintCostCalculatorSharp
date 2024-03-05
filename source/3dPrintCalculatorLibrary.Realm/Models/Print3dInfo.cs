@@ -17,9 +17,6 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string? Name { get; set; }
 
-        [Obsolete("Use Calculation3dEnhanced instead")]
-        public Guid CalculationId { get; set; }
-
         public Guid CalculationEnhancedId { get; set; }
 
         public Guid FileId { get; set; }

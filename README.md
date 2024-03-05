@@ -72,9 +72,9 @@ var files = new List<File3d>() {
   },
 }
 ```
-Eventually create the Calculation3d object and apply your information.
+Eventually create the Calculation3dEnhanced object and apply your information.
 ```csharp
-_calculation = new Calculation3d();
+_calculation = new Calculation3dEnhanced();
 // Add data
 _calculation.Files = files;
 _calculation.Printers.Add(printer);

@@ -23,7 +23,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
-        Guid calculationId;
+        Guid calculationEnhancedId;
 
         [ObservableProperty]
         Guid calculationProfileId;

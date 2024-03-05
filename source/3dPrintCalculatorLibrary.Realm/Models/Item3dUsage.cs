@@ -22,7 +22,7 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public Guid CalculationId { get; set; }
+        public Guid CalculationEnhancedId { get; set; }
         public Guid CalculationProfileId { get; set; }
         public Guid PrintInfoId { get; set; }
 

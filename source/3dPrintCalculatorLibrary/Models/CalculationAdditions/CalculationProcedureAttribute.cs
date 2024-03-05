@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         Guid id;
 
         [ObservableProperty]
-        Guid calculationId;
+        Guid calculationEnhancedId;
 
         [ObservableProperty]
         Material3dFamily family;

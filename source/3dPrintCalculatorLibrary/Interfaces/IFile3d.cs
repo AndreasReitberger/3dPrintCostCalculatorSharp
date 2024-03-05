@@ -7,9 +7,6 @@ namespace AndreasReitberger.Print3d.Interfaces
 
         #region Properties
         public Guid Id { get; set; }
-
-        [Obsolete("The file is now linked to the `Print3dInfo` instead of the `Calculation3d`. This property will be removed later")]
-        public Guid CalculationId { get; set; }
         public string Name { get; set; }
         public object File { get; set; }
         public string FileName { get; set; }

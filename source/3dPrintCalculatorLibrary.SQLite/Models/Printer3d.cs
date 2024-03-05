@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3d))]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
         Guid calculationId;
 
         [ObservableProperty]

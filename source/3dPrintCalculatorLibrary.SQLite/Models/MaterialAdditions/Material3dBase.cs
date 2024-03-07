@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         {
             return string.IsNullOrEmpty(Type.ToString()) ? Material : string.Format("{0} ({1})", Material, Type.ToString());
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Material3dBase item)
                 return false;

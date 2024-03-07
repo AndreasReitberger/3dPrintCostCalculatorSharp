@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 namespace AndreasReitberger.Print3d.Core
 {
@@ -38,11 +37,9 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return string.Format("{0} ({1}) - {2:C2}", Name, Type, Price);
-        }
-        public override bool Equals(object obj)
+        public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
+        
+        public override bool Equals(object? obj)
         {
             if (obj is not Workstep item)
                 return false;

@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Core
         {
             return Name;
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Sparepart item)
                 return false;

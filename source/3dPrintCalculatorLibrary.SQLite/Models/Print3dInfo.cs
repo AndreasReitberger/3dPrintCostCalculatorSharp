@@ -62,7 +62,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Print3dInfo item)
                 return false;

@@ -429,7 +429,7 @@ namespace AndreasReitberger.NUnitTest
             try
             {
                 Assert.That(calculation is not null);
-                Assert.That(calculation?.ProcedureAttributes?.Count > 0);
+                Assert.That(calculation?.ProcedureAdditions?.Count > 0);
                 calculation.ApplyProcedureSpecificAdditions = false;
                 calculation.CalculateCosts();
                 var total = calculation.TotalCosts;
@@ -846,15 +846,17 @@ namespace AndreasReitberger.NUnitTest
                 double glovesCosts = gloves.CalculateCosts();
                 Assert.That(glovesCosts == 1d);
 
-                Calculation3dEnhanced calculation = new();
-                calculation.ProcedureAdditions.Add(resinTank);
-                calculation.ProcedureAdditions.Add(gloves);
-                calculation.Procedure = Material3dFamily.Resin;
-                calculation.ApplyProcedureSpecificAdditions = true;
-                calculation.CalculateCosts();
+                if (calculation is not null)
+                {
+                    calculation.ProcedureAdditions.Add(resinTank);
+                    calculation.ProcedureAdditions.Add(gloves);
+                    calculation.Procedure = Material3dFamily.Resin;
+                    calculation.ApplyProcedureSpecificAdditions = true;
+                    calculation.CalculateCosts();
 
-                Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
-                Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
+                    Assert.That(calculation.OverallPrinterCosts?.FirstOrDefault(cost => cost.Attribute == "Resin Tank Replacement") is not null);
+                    Assert.That(calculation.Costs?.FirstOrDefault(cost => cost.Attribute == "Gloves") is not null);
+                }
             }
             catch (Exception exc)
             {

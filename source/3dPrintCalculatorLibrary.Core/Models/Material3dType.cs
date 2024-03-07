@@ -51,7 +51,7 @@ namespace AndreasReitberger.Print3d.Core
         {
             return string.IsNullOrEmpty(Family.ToString()) ? Material : string.Format("{0} ({1})", Material, Family.ToString());
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is not Material3dType item)
                 return false;

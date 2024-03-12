@@ -5,7 +5,7 @@ using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
+namespace AndreasReitberger.Print3d.SQLite.FileAdditions
 {
     [Table("MaterialUsages")]
     public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage

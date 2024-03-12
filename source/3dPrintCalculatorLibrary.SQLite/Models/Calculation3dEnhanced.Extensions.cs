@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.FileAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using AndreasReitberger.Print3d.Utilities;
 
@@ -17,7 +18,7 @@ namespace AndreasReitberger.Print3d.SQLite
             OverallPrinterCosts?.Clear();
             Costs?.Clear();
 
-            int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file.Quantity).ToList().Sum();
+            int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file?.Quantity ?? 0).ToList().Sum();
             // Add the handling fee based on the file quantity
             CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
             CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
@@ -751,7 +752,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 //int quantity = Files.Select(file => file.Quantity).ToList().Sum();
                 int quantity = PrintInfos
                     .Select(pi => pi.FileUsage)
-                    .Select(file => file.Quantity)
+                    .Select(file => file?.Quantity ?? 0)
                     .ToList()
                     .Sum();
                 return quantity;

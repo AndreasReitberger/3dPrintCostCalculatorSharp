@@ -91,6 +91,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(CustomAdditionCalculation3dEnhanced),
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
+            typeof(File3dUsage),
             typeof(ModelWeight),
             typeof(Address),
             typeof(Email),

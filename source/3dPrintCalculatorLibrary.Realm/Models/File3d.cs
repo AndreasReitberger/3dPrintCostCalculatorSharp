@@ -55,13 +55,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public double PrintTime { get; set; } = 0;
 
-        public int Quantity { get; set; } = 1;
-
-        public bool MultiplyPrintTimeWithQuantity { get; set; } = true;
-
-        public double PrintTimeQuantityFactor { get; set; } = 1;
-
-        public byte[] Image { get; set; } = Array.Empty<byte>();
+        public byte[] Image { get; set; } = [];
 
         #endregion
 

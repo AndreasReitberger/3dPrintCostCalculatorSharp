@@ -245,6 +245,40 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         #endregion
+        
+        #region FileUsages
+        public async Task<List<File3dUsage>> GetFileUsagesWithChildrenAsync()
+        {
+            return await DatabaseAsync
+                .GetAllWithChildrenAsync<File3dUsage>(recursive: true)
+                ;
+        }
+
+        public Task<File3dUsage> GetFileUsageWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<File3dUsage>(id, recursive: true);
+
+        public Task SetFileUsageWithChildrenAsync(File3dUsage fileUsage) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(fileUsage, recursive: true);
+
+        public async Task SetFileUsagesWithChildrenAsync(List<File3dUsage> fileUsages, bool replaceExisting = true)
+        {
+            if (replaceExisting)
+                await DatabaseAsync.InsertOrReplaceAllWithChildrenAsync(fileUsages);
+            else
+                await DatabaseAsync.InsertAllWithChildrenAsync(fileUsages);
+        }
+
+        public Task<int> DeleteFileUsageAsync(File3dUsage fileUsage) => DatabaseAsync.DeleteAsync<File3dUsage>(fileUsage.Id);
+
+        public async Task<int[]> DeleteFileUsagesAsync(List<File3dUsage> fileUsages)
+        {
+            Stack<int> results = new();
+            for (int i = 0; i < fileUsages?.Count; i++)
+            {
+                results.Push(await DatabaseAsync.DeleteAsync<File3dUsage>(fileUsages[i]?.Id));
+            }
+            return [.. results];
+        }
+
+        #endregion
 
         #region PrintInfos
         public Task<List<Print3dInfo>> GetPrintInfosWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Print3dInfo>(recursive: true);

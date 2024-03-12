@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Realm.MaterialAdditions;
+using AndreasReitberger.Print3d.Realm.FileAdditions;
 using AndreasReitberger.Print3d.Realm.CalculationAdditions;
 using AndreasReitberger.Print3d.Utilities;
 using System;
@@ -21,7 +22,7 @@ namespace AndreasReitberger.Print3d.Realm
             OverallPrinterCosts?.Clear();
             Costs?.Clear();
 
-            int quantity = PrintInfos.Select(f => f.File).Select(file => file.Quantity).ToList().Sum();
+            int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity
             CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
             CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
@@ -30,10 +31,11 @@ namespace AndreasReitberger.Print3d.Realm
             // New approach
             foreach (Print3dInfo info in PrintInfos)
             {
-                File3d file = info.File;
+                File3dUsage fileUsage = info.FileUsage;
+                File3d file = fileUsage.File;
                 if (file is not null)
                 {
-                    double printTime = file.PrintTime * (file.MultiplyPrintTimeWithQuantity ? (file.Quantity * file.PrintTimeQuantityFactor) : 1);
+                    double printTime = file.PrintTime * (fileUsage.MultiplyPrintTimeWithQuantity ? (fileUsage.Quantity * fileUsage.PrintTimeQuantityFactor) : 1);
                     PrintTimes?.Add(new CalculationAttribute()
                     {
                         Attribute = file.FileName,
@@ -50,7 +52,7 @@ namespace AndreasReitberger.Print3d.Realm
                         {
                             Attribute = "HandlingFee",
                             Type = CalculationAttributeType.FixCost,
-                            Value = Convert.ToDouble(handlingsFee?.Value * file.Quantity),
+                            Value = Convert.ToDouble(handlingsFee?.Value * fileUsage.Quantity),
                             FileId = file.Id,
                             FileName = file.FileName,
                         });
@@ -87,7 +89,7 @@ namespace AndreasReitberger.Print3d.Realm
                                 _weight = file.Weight.Weight * Convert.ToDouble(UnitFactor.GetUnitFactor(file.Weight.Unit));
                             }
                             // Needed material in g
-                            double _material = _weight * file.Quantity * materialUsageInfo.PercentageValue;
+                            double _material = _weight * fileUsage.Quantity * materialUsageInfo.PercentageValue;
                             MaterialUsage?.Add(new CalculationAttribute()
                             {
                                 Attribute = material.Name,
@@ -263,7 +265,7 @@ namespace AndreasReitberger.Print3d.Realm
                                             LinkedId = printer.Id,
                                             Attribute = parameter.Type.ToString(),
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
-                                            Value = attribute.PerPiece ? parameter.Value * file.Quantity : parameter.Value,
+                                            Value = attribute.PerPiece ? parameter.Value * fileUsage.Quantity : parameter.Value,
                                             FileId = file.Id,
                                             FileName = file.FileName,
                                         });
@@ -303,7 +305,7 @@ namespace AndreasReitberger.Print3d.Realm
                         {
                             Workstep ws = wsu.Workstep;
                             if (ws is null) continue;
-                            double totalPerPiece = wsu.TotalCosts * file.Quantity;
+                            double totalPerPiece = wsu.TotalCosts * fileUsage.Quantity;
                             Costs?.Add(new CalculationAttribute()
                             {
                                 LinkedId = ws.Id,
@@ -324,7 +326,7 @@ namespace AndreasReitberger.Print3d.Realm
                             // If the item is not for the current file, continue
                             if (item?.Item == null || file.Id != item.File.Id) continue;
 
-                            double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                            double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * fileUsage.Quantity;
                             Costs?.Add(new CalculationAttribute()
                             {
                                 LinkedId = item.Id,
@@ -344,7 +346,7 @@ namespace AndreasReitberger.Print3d.Realm
                             // If the item is not for the current file, continue
                             if (item?.Item == null) continue;
 
-                            double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                            double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * fileUsage.Quantity;
                             Costs?.Add(new CalculationAttribute()
                             {
                                 LinkedId = item.Id,
@@ -437,7 +439,7 @@ namespace AndreasReitberger.Print3d.Realm
                         CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
                     if (customAdditionsAfterMargin.Count > 0)
                     {
-                        SortedDictionary<int, double> additions = new();
+                        SortedDictionary<int, double> additions = [];
                         foreach (CustomAddition ca in customAdditionsAfterMargin)
                         {
                             if (additions.ContainsKey(ca.Order))
@@ -753,7 +755,7 @@ namespace AndreasReitberger.Print3d.Realm
             {
                 //int quantity = Files.Select(file => file.Quantity).ToList().Sum();
                 int quantity = PrintInfos
-                    .Select(pi => pi.File)
+                    .Select(pi => pi.FileUsage)
                     .Select(file => file.Quantity)
                     .ToList()
                     .Sum();
@@ -786,7 +788,7 @@ namespace AndreasReitberger.Print3d.Realm
             try
             {
                 IEnumerable<double> volumes = PrintInfos
-                    .Select(f => f.File)?
+                    .Select(f => f.FileUsage.File)?
                     .Select(value => Convert.ToDouble(value?.Volume ?? 0));
                 double total = 0;
                 foreach (double vol in volumes)

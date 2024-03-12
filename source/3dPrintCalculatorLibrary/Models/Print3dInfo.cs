@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
@@ -30,7 +31,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid fileId;
 
         [ObservableProperty]
-        File3d file;
+        File3dUsage fileUsage;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]

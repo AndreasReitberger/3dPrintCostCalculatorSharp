@@ -1,12 +1,14 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
+using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System.Xml.Serialization;
 
-namespace AndreasReitberger.Print3d.Models.MaterialAdditions
+namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 {
-    public partial class Material3dUsage : ObservableObject, ICloneable, IMaterial3dUsage
+    [Table("MaterialUsages")]
+    public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage
     {
         #region Clone
         public object Clone()
@@ -17,28 +19,34 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 
         #region Properties
         [ObservableProperty]
+        [property: PrimaryKey]
         Guid id;
 
         [ObservableProperty]
+        [property: ForeignKey(typeof(Print3dInfo))]
         Guid printInfoId;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
-        Guid materialId;
+        Guid fileId;
 
         [ObservableProperty]
-        Material3d material;
+        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        File3d file;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(Percentage))]
-        double percentageValue = 1;
+        int quantity = 1;
 
-        public double Percentage => PercentageValue * 100;
+        [ObservableProperty]
+        bool multiplyPrintTimeWithQuantity = true;
+
+        [ObservableProperty]
+        double printTimeQuantityFactor = 1;
 
         #endregion
 
         #region Constructor
-        public Material3dUsage()
+        public File3dUsage()
         {
             Id = Guid.NewGuid();
         }
@@ -49,7 +57,7 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Material3dUsage item)
+            if (obj is not File3dUsage item)
                 return false;
             return Id.Equals(item.Id);
         }

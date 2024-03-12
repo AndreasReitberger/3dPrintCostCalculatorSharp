@@ -4,25 +4,28 @@ using Newtonsoft.Json;
 
 namespace AndreasReitberger.Print3d.Core
 {
-    public partial class Material3dUsage : ObservableObject, ICloneable, IMaterial3dUsage
+    public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage
     {
         #region Properties
         [ObservableProperty]
         Guid id;
 
         [ObservableProperty]
-        IMaterial3d? material;
+        IFile3d? file;
 
         [ObservableProperty]
-        [NotifyPropertyChangedFor(nameof(Percentage))]
-        double percentageValue = 1;
+        int quantity = 1;
 
-        public double Percentage => PercentageValue * 100;
+        [ObservableProperty]
+        bool multiplyPrintTimeWithQuantity = true;
+
+        [ObservableProperty]
+        double printTimeQuantityFactor = 1;
 
         #endregion
 
         #region Constructor
-        public Material3dUsage()
+        public File3dUsage()
         {
             Id = Guid.NewGuid();
         }
@@ -38,7 +41,7 @@ namespace AndreasReitberger.Print3d.Core
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Material3dUsage item)
+            if (obj is not File3dUsage item)
                 return false;
             return Id.Equals(item.Id);
         }

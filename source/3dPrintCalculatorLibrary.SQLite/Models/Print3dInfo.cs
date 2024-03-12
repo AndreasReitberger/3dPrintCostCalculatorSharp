@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3d file;
+        File3dUsage fileUsage;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]

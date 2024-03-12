@@ -43,15 +43,6 @@ namespace AndreasReitberger.Print3d.Core
         double printTime = 0;
 
         [ObservableProperty]
-        int quantity = 1;
-
-        [ObservableProperty]
-        bool multiplyPrintTimeWithQuantity = true;
-
-        [ObservableProperty]
-        double printTimeQuantityFactor = 1;
-
-        [ObservableProperty]
         byte[] image = [];
         #endregion
 

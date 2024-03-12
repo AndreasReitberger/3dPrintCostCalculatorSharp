@@ -3,7 +3,7 @@ using AndreasReitberger.Print3d.SQLite;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
+using AndreasReitberger.Print3d.SQLite.FileAdditions;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using NUnit.Framework;
@@ -70,11 +70,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My awesome print job",
-                        File = new File3d()
+                        FileUsage = new() 
                         {
-                            FileName = "my.gcode",
-                            PrintTime = 5.263,
-                            Volume = 35.54,
+                            File = new File3d()
+                            {
+                                FileName = "my.gcode",
+                                PrintTime = 5.263,
+                                Volume = 35.54,
+                            },
                             Quantity = 5,
                         },
                         MaterialUsages = [
@@ -135,11 +138,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        File = new File3d()
+                        FileUsage = new() 
                         {
-                            FileName = "Batman.dlp",
-                            PrintTime = 2.65,
-                            Volume = 65.546,
+                            File = new File3d()
+                            {
+                                FileName = "Batman.dlp",
+                                PrintTime = 2.65,
+                                Volume = 65.546,
+                            },
                             Quantity = 20,
                         },
                         MaterialUsages = [
@@ -168,11 +174,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        File = new File3d()
+                        FileUsage = new() 
                         {
-                            FileName = "Superman.dlp",
-                            PrintTime = 1.42,
-                            Volume = 35.4536,
+                            File = new File3d()
+                            {
+                                FileName = "Superman.dlp",
+                                PrintTime = 1.42,
+                                Volume = 35.4536,
+                            },
                             Quantity = 3,
                         },
                         MaterialUsages = [
@@ -452,7 +461,7 @@ namespace AndreasReitberger.NUnitTest
                 Assert.That(washingCosts?.Count == fileCount);
                 foreach (var washCost in washingCosts)
                 {
-                    File3d f = calculation.PrintInfos.FirstOrDefault(pi => pi.File.Id == washCost.FileId).File;
+                    File3dUsage f = calculation.PrintInfos.FirstOrDefault(pi => pi.FileUsage.File.Id == washCost.FileId).FileUsage;
                     Assert.That(washCost.Value / f.Quantity == 1d);
                 }
 
@@ -1036,17 +1045,25 @@ namespace AndreasReitberger.NUnitTest
                         Name = "My cool file",
                         Volume = 251.54,
                         PrintTime = 2.34,
+                    };
+                    File3dUsage fileUsage = new()
+                    {
+                        File = file,
                         Quantity = 1,
                     };
-                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file);
+                    await DatabaseHandler.Instance.SetFileUsageWithChildrenAsync(fileUsage);
                     File3d file2 = new()
                     {
                         Name = "Another cool file",
                         Volume = 23.64,
                         PrintTime = 0.55,
+                    };
+                    File3dUsage fileUsage1 = new()
+                    {
+                        File = file2,
                         Quantity = 5,
                     };
-                    await DatabaseHandler.Instance.SetFileWithChildrenAsync(file2);
+                    await DatabaseHandler.Instance.SetFileUsageWithChildrenAsync(fileUsage1);
 
                     Manufacturer wuerth = new()
                     {
@@ -1074,7 +1091,7 @@ namespace AndreasReitberger.NUnitTest
 
                     Print3dInfo info = new()
                     {
-                        File = file,
+                        FileUsage = fileUsage,
                         MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
@@ -1082,7 +1099,7 @@ namespace AndreasReitberger.NUnitTest
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info);
                     Print3dInfo info2 = new()
                     {
-                        File = file2,
+                        FileUsage = fileUsage1,
                         // Multi-Material for one file
                         MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
@@ -1196,6 +1213,10 @@ namespace AndreasReitberger.NUnitTest
                         Name = "My cool file",
                         Volume = 251.54,
                         PrintTime = 2.34,
+                    };
+                    File3dUsage fileUsage = new()
+                    {
+                        File = file,
                         Quantity = 1,
                     };
                     File3d file2 = new()
@@ -1203,6 +1224,10 @@ namespace AndreasReitberger.NUnitTest
                         Name = "Another cool file",
                         Volume = 23.64,
                         PrintTime = 0.55,
+                    };
+                    File3dUsage fileUsage2 = new()
+                    {
+                        File = file2,
                         Quantity = 5,
                     };
 
@@ -1229,14 +1254,14 @@ namespace AndreasReitberger.NUnitTest
 
                     Print3dInfo info = new()
                     {
-                        File = file,
+                        FileUsage = fileUsage,
                         MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
                     Print3dInfo info2 = new()
                     {
-                        File = file2,
+                        FileUsage = fileUsage2,
                         // Multi-Material for one file
                         MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,

@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 using Realms;
 using System;
 
-namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
+namespace AndreasReitberger.Print3d.Realm.FileAdditions
 {
-    public partial class Material3dUsage : RealmObject, ICloneable, IMaterial3dUsage
+    public partial class File3dUsage : RealmObject, ICloneable, IFile3dUsage
     {
         #region Clone
         public object Clone()
@@ -20,18 +20,20 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public Guid PrintInfoId { get; set; }
 
-        public Guid MaterialId { get; set; }
+        public Guid FileId { get; set; }
 
-        public Material3d Material { get; set; }
+        public File3d File { get; set; }
 
-        public double PercentageValue { get; set; } = 1;
+        public int Quantity { get; set; } = 1;
 
-        public double Percentage => PercentageValue * 100;
+        public bool MultiplyPrintTimeWithQuantity { get; set; } = true;
+
+        public double PrintTimeQuantityFactor { get; set; } = 1;
 
         #endregion
 
         #region Constructor
-        public Material3dUsage()
+        public File3dUsage()
         {
             Id = Guid.NewGuid();
         }
@@ -42,7 +44,7 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Material3dUsage item)
+            if (obj is not File3dUsage item)
                 return false;
             return Id.Equals(item.Id);
         }

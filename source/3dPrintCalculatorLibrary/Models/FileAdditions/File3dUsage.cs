@@ -1,11 +1,12 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using Realms;
 using System;
+using System.Xml.Serialization;
 
-namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
+namespace AndreasReitberger.Print3d.Models.FileAdditions
 {
-    public partial class Material3dUsage : RealmObject, ICloneable, IMaterial3dUsage
+    public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage
     {
         #region Clone
         public object Clone()
@@ -15,23 +16,32 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
         #endregion
 
         #region Properties
-        [PrimaryKey]
-        public Guid Id { get; set; }
+        [ObservableProperty]
+        Guid id;
 
-        public Guid PrintInfoId { get; set; }
+        [ObservableProperty]
+        Guid printInfoId;
 
-        public Guid MaterialId { get; set; }
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        Guid fileId;
 
-        public Material3d Material { get; set; }
+        [ObservableProperty]
+        File3d file;
 
-        public double PercentageValue { get; set; } = 1;
+        [ObservableProperty]
+        int quantity = 1;
 
-        public double Percentage => PercentageValue * 100;
+        [ObservableProperty]
+        bool multiplyPrintTimeWithQuantity = true;
+
+        [ObservableProperty]
+        double printTimeQuantityFactor = 1;
 
         #endregion
 
         #region Constructor
-        public Material3dUsage()
+        public File3dUsage()
         {
             Id = Guid.NewGuid();
         }
@@ -42,7 +52,7 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Material3dUsage item)
+            if (obj is not File3dUsage item)
                 return false;
             return Id.Equals(item.Id);
         }

@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Core
         string? name = string.Empty;
 
         [ObservableProperty]
-        IFile3d? file;
+        IFile3dUsage? fileUsage;
 
         [ObservableProperty]
         IPrinter3d? printer;

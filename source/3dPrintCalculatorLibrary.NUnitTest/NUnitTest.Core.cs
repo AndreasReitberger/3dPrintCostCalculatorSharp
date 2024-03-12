@@ -66,11 +66,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My awesome print job",
-                        File = new File3d()
+                        FileUsage = new File3dUsage()
                         {
-                            FileName = "my.gcode",
-                            PrintTime = 5.263,
-                            Volume = 35.54,
+                            File = new File3d()
+                            {
+                                FileName = "my.gcode",
+                                PrintTime = 5.263,
+                                Volume = 35.54,
+                            },
                             Quantity = 5,
                         },
                         Materials = [
@@ -131,11 +134,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        File = new File3d()
+                        FileUsage = new File3dUsage() 
                         {
-                            FileName = "Batman.dlp",
-                            PrintTime = 2.65,
-                            Volume = 65.546,
+                            File = new File3d()
+                            {
+                                FileName = "Batman.dlp",
+                                PrintTime = 2.65,
+                                Volume = 65.546,
+                            },
                             Quantity = 20,
                         },
                         Materials = [
@@ -164,11 +170,14 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        File = new File3d()
+                        FileUsage = new File3dUsage()
                         {
-                            FileName = "Superman.dlp",
-                            PrintTime = 1.42,
-                            Volume = 35.4536,
+                            File = new File3d()
+                            {
+                                FileName = "Superman.dlp",
+                                PrintTime = 1.42,
+                                Volume = 35.4536,
+                            },
                             Quantity = 3,
                         },
                         Materials = [
@@ -448,7 +457,7 @@ namespace AndreasReitberger.NUnitTest
                 Assert.That(washingCosts?.Count == fileCount);
                 foreach(var washCost in washingCosts)
                 {
-                    IFile3d f = calculation.PrintInfos.FirstOrDefault(pi => pi.File.Id == washCost.FileId).File;
+                    IFile3dUsage? f = calculation.PrintInfos.FirstOrDefault(pi => pi.FileUsage.File.Id == washCost.FileId).FileUsage;
                     Assert.That(washCost.Value / f.Quantity  == 1d);
                 }
 
@@ -730,12 +739,15 @@ namespace AndreasReitberger.NUnitTest
                         PowerConsumption = 400,
                         HourlyMachineRate = hmr,
                     };
-
                     IFile3d file = new File3d()
                     {
                         Name = "My cool file",
                         Volume = 251.54,
                         PrintTime = 2.34,
+                    };
+                    IFile3dUsage file3DUsage = new File3dUsage()
+                    {
+                        File = file,
                         Quantity = 1,
                     };
                     IFile3d file2 = new File3d()
@@ -743,9 +755,13 @@ namespace AndreasReitberger.NUnitTest
                         Name = "Another cool file",
                         Volume = 23.64,
                         PrintTime = 0.55,
-                        Quantity = 5,
                     };
 
+                    IFile3dUsage file3DUsage2 = new File3dUsage()
+                    {
+                        File = file2,
+                        Quantity = 5,
+                    };
                     IManufacturer wuerth = new Manufacturer()
                     {
                         Name = "Würth",
@@ -769,14 +785,14 @@ namespace AndreasReitberger.NUnitTest
 
                     IPrint3dInfo info = new Print3dInfo()
                     {
-                        File = file,
+                        FileUsage = file3DUsage,
                         Materials = [new Material3dUsage() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
                     IPrint3dInfo info2 = new Print3dInfo()
                     {
-                        File = file2,
+                        FileUsage = file3DUsage2,
                         // Multi-Material for one file
                         Materials = [new Material3dUsage() { Material = material, PercentageValue = 0.5 }, new Material3dUsage() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,

@@ -14,6 +14,11 @@
     <Nullable>enable</Nullable>
     <Title>3dPrintCalculatorLibrary.SQLite</Title>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\licenses\CommunityToolkit.Mvvm.txt" Link="Licenes\CommunityToolkit.Mvvm.txt" />
+    <Content Include="..\..\licenses\SQLite-Net Extensions.txt" Link="Licenes\SQLite-Net Extensions.txt" />
+    <Content Include="..\..\licenses\sqlite-net.txt" Link="Licenes\sqlite-net.txt" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />

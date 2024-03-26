@@ -1,9 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
-using AndreasReitberger.Core.Utilities;
-using Newtonsoft.Json;
 using SQLite;
-using System;
 using SQLiteNetExtensions.Attributes;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;

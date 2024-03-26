@@ -1,11 +1,8 @@
-﻿using AndreasReitberger.Core.Utilities;
-using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite

@@ -14,15 +14,31 @@ namespace AndreasReitberger.Print3d.SQLite
 
             #region Method
 
+            public async Task<DatabaseHandler> BuildAsync()
+            {
+                if (!string.IsNullOrEmpty(_databaseHandler.DatabasePath))
+                {
+                    SQLiteConnectionString con = 
+                        new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
+                    _databaseHandler.DatabaseAsync = new(con);
+                    _databaseHandler.IsInitialized = true;
+                    if (_databaseHandler.Tables?.Count > 0)
+                    {
+                        await _databaseHandler.CreateTablesAsync(_databaseHandler.Tables);
+                    }
+                    else
+                        await _databaseHandler.InitTablesAsync();
+                }
+                return _databaseHandler;
+            }
+
             public DatabaseHandler Build()
             {
                 if (!string.IsNullOrEmpty(_databaseHandler.DatabasePath))
                 {
                     SQLiteConnectionString con = 
                         new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
-                    _databaseHandler.Database = new(con);
                     _databaseHandler.DatabaseAsync = new(con);
-
                     _databaseHandler.IsInitialized = true;
                     if (_databaseHandler.Tables?.Count > 0)
                     {

@@ -14,6 +14,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -54,9 +56,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         string passphrase = string.Empty;
-
-        [ObservableProperty]
-        SQLiteConnection database;
 
         [ObservableProperty]
         SQLiteAsyncConnection databaseAsync;
@@ -222,7 +221,6 @@ namespace AndreasReitberger.Print3d.SQLite
             // Some examples: https://github.com/praeclarum/sqlite-net/blob/master/tests/SQLite.Tests/SQLCipherTest.cs
             SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
             DatabaseAsync = new SQLiteAsyncConnection(connection);
-            Database = new SQLiteConnection(connection);
             
             InitTables();
             IsInitialized = true;
@@ -235,13 +233,14 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Public
 
         #region Init
-        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));
-
+        public void InitTables() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
 
-        public void CreateTable(Type table) => Database?.CreateTable(table);
+        public Task<CreateTableResult> CreateTableAsnyc(Type table) => DatabaseAsync.CreateTableAsync(table);
+        public void CreateTable(Type table) => DatabaseAsync.CreateTableAsync(table);
 
-        public void CreateTables(List<Type> tables) => Database?.CreateTables(CreateFlags.None, tables?.ToArray());
+        public Task<CreateTablesResult> CreateTablesAsync(List<Type> tables) => DatabaseAsync.CreateTablesAsync(CreateFlags.None, tables?.ToArray());
+        public void CreateTables(List<Type> tables) => tables.ForEach(async type => await DatabaseAsync.CreateTableAsync(type, CreateFlags.None));
 
         #endregion
 
@@ -259,7 +258,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
             DatabaseAsync = new SQLiteAsyncConnection(connection);
-            Database = new SQLiteConnection(connection);
+
             InitTables();
             IsInitialized = true;
             Instance = this;
@@ -269,18 +268,14 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
             DatabaseAsync = new SQLiteAsyncConnection(connection);
-            Database = new SQLiteConnection(connection);
+
             await InitTablesAsync();
             IsInitialized = true;
             Instance = this;
         }
 
-        public async Task CloseDatabaseAsync()
-        {
-            Database?.Close();
-            await DatabaseAsync.CloseAsync();
-        }
-
+        public Task CloseDatabaseAsync() => DatabaseAsync.CloseAsync();
+        
         public List<TableMapping>? GetTableMappings(string databasePath = "")
         {
             if (DatabaseAsync == null && !string.IsNullOrWhiteSpace(databasePath))
@@ -358,8 +353,6 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
 
-        public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
-
         public void RekeyDatabase(string newPassword)
         {
             // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
@@ -377,12 +370,20 @@ namespace AndreasReitberger.Print3d.SQLite
             command.ExecuteNonQuery();
         }
 
-        public void Close()
+        public async Task RekeyDatabaseAsync(string newPassword)
         {
-            Database?.Close();
-            DatabaseAsync?.CloseAsync();
+            // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
+            string quotedNewPassword = await DatabaseAsync
+                .ExecuteScalarAsync<string>(
+                    "SELECT quote($newPassword);",
+                    new Dictionary<string, object>() { { "$newPassword", newPassword } }
+                    );
+            await DatabaseAsync.ExecuteAsync($"PRAGMA rekey = {quotedNewPassword}");
         }
 
+        public Task CloseAsync() => DatabaseAsync.CloseAsync();
+        public void Close() => DatabaseAsync?.CloseAsync();
+        
         public void Dispose() => Close();
 
         #endregion

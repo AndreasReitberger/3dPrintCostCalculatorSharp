@@ -12,6 +12,7 @@ using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -212,10 +213,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Constructor
         public DatabaseHandler() { }
-        public DatabaseHandler(string databasePath, bool updateInstance = true)
+        public DatabaseHandler(string databasePath, bool updateInstance = true, string? passphrase = null)
         {
-            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
-            Database = new SQLiteConnection(databasePath);
+            // Docs: https://github.com/praeclarum/sqlite-net?tab=readme-ov-file#using-sqlcipher
+            // Some examples: https://github.com/praeclarum/sqlite-net/blob/master/tests/SQLite.Tests/SQLCipherTest.cs
+            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
+            DatabaseAsync = new SQLiteAsyncConnection(connection);
+            Database = new SQLiteConnection(connection);
+            
             InitTables();
             IsInitialized = true;
             if (updateInstance) Instance = this;
@@ -247,19 +252,21 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Database
-        public void InitDatabase(string databasePath)
+        public void InitDatabase(string databasePath, string? passphrase = null)
         {
-            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
-            Database = new SQLiteConnection(databasePath);
+            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
+            DatabaseAsync = new SQLiteAsyncConnection(connection);
+            Database = new SQLiteConnection(connection);
             InitTables();
             IsInitialized = true;
             Instance = this;
         }
 
-        public async Task InitDatabaseAsync(string databasePath)
+        public async Task InitDatabaseAsync(string databasePath, string? passphrase = null)
         {
-            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
-            Database = new SQLiteConnection(databasePath);
+            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
+            DatabaseAsync = new SQLiteAsyncConnection(connection);
+            Database = new SQLiteConnection(connection);
             await InitTablesAsync();
             IsInitialized = true;
             Instance = this;
@@ -349,6 +356,23 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
 
         public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
+
+        public void RekeyDatabase(string newPassword)
+        {
+            // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
+            SQLiteConnectionWithLock con = DatabaseAsync.GetConnection();
+            SQLiteCommand command = con
+                .CreateCommand(
+                    "SELECT quote($newPassword);",
+                    new Dictionary<string, object>() { { "$newPassword", newPassword } }
+                    );
+            string quotedNewPassword = command.ExecuteScalar<string>();
+            command = con
+                .CreateCommand(
+                    $"PRAGMA rekey = {quotedNewPassword}"
+                    );
+            command.ExecuteNonQuery();
+        }
 
         public void Close()
         {

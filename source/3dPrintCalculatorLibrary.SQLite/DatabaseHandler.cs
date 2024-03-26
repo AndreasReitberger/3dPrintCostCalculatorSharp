@@ -50,7 +50,10 @@ namespace AndreasReitberger.Print3d.SQLite
         bool isInitialized = false;
 
         [ObservableProperty]
-        string databasePath = "";
+        string databasePath = string.Empty;
+
+        [ObservableProperty]
+        string passphrase = string.Empty;
 
         [ObservableProperty]
         SQLiteConnection database;

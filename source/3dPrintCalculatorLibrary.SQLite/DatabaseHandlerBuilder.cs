@@ -1,4 +1,6 @@
 ﻿
+using SQLite;
+
 namespace AndreasReitberger.Print3d.SQLite
 {
     public partial class DatabaseHandler
@@ -16,8 +18,11 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 if (!string.IsNullOrEmpty(_databaseHandler.DatabasePath))
                 {
-                    _databaseHandler.Database = new(_databaseHandler.DatabasePath);
-                    _databaseHandler.DatabaseAsync = new(_databaseHandler.DatabasePath);
+                    SQLiteConnectionString con = 
+                        new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
+                    _databaseHandler.Database = new(con);
+                    _databaseHandler.DatabaseAsync = new(con);
+
                     _databaseHandler.IsInitialized = true;
                     if (_databaseHandler.Tables?.Count > 0)
                     {
@@ -61,6 +66,11 @@ namespace AndreasReitberger.Print3d.SQLite
             public DatabaseHandlerBuilder WithDatabaseOperationTask(Func<Type, Task> task)
             {
                 _databaseHandler.OnDatabaseOpertions = task;
+                return this;
+            }
+            public DatabaseHandlerBuilder WithPassphrase(string passphrase)
+            {
+                _databaseHandler.Passphrase = passphrase;
                 return this;
             }
 

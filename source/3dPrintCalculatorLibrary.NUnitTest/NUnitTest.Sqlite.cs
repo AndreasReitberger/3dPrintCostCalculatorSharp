@@ -8,6 +8,7 @@ using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using NUnit.Framework;
 using SQLite;
+using AndreasReitberger.Shared.Core.Utilities;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -18,11 +19,15 @@ namespace AndreasReitberger.NUnitTest
         bool ApplyResinFilterCosts = true;
         bool ApplyResinTankWearCosts = true;
 
+        string key = "K4eO9Qq4GTO9D0g0aBPzYGp0KsBoYYyFT9S3SX1VgOg=";
         Calculation3dEnhanced? calculation;
 
         [SetUp]
         public void Setup()
         {
+            // Example for key generation
+            //string t = EncryptionManager.GenerateBase64Key();
+
             Printer3d printerFDM = new Printer3d()
             {
                 Type = Printer3dType.FDM,
@@ -1298,6 +1303,80 @@ namespace AndreasReitberger.NUnitTest
                     List<Manufacturer> manufacturers = await DatabaseHandler.Instance.GetManufacturersWithChildrenAsync();
                     Assert.That(manufacturers?.Count == 2);
                 }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+
+
+        [Test]
+        public async Task DatabaseEncrytpionTestAsync()
+        {
+            try
+            {
+                string databasePath = "testdatabase_secure.db";
+                if (File.Exists(databasePath))
+                    File.Delete(databasePath);
+
+                using DatabaseHandler handler = new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTable(typeof(Manufacturer))
+                    .WithTables([typeof(Material3dType), typeof(Material3d)])
+                    .WithPassphrase(key)
+                    .Build();
+
+                List<TableMapping>? mappings = handler.GetTableMappings();
+                Assert.That(mappings?.Count > 0);
+
+                handler.SetMaterialType(new()
+                {
+                    Id = Guid.NewGuid(),
+                    Family = Material3dFamily.Filament,
+                    Material = "PETG",
+                });
+                List<Material3dType> types = await handler.GetMaterialTypesWithChildrenAsync();
+                Assert.That(types?.Count > 0);
+
+                await handler.CloseDatabaseAsync();
+                try
+                {
+                    using DatabaseHandler handlerUnseure = new DatabaseHandler.DatabaseHandlerBuilder()
+                        .WithDatabasePath(databasePath)
+                        //.WithPassphrase(key)
+                        .Build();
+                    Assert.Fail("Building without the key should throw an exception");
+                }
+                catch(Exception) { }
+
+                try
+                {
+                    using DatabaseHandler handlerUnseure = new DatabaseHandler.DatabaseHandlerBuilder()
+                        .WithDatabasePath(databasePath)
+                        // Different key also should throw
+                        .WithPassphrase(EncryptionManager.GenerateBase64Key())
+                        .Build();
+                    Assert.Fail("Building without the key should throw an exception");
+                }
+                catch(Exception) { }
+
+                // try to rekey
+                string newKey = EncryptionManager.GenerateBase64Key();
+                handler.RekeyDatabase(newKey);
+
+                types = await handler.GetMaterialTypesWithChildrenAsync();
+                Assert.That(types?.Count > 0);
+                await handler.CloseDatabaseAsync();
+                try
+                {
+                    using DatabaseHandler handlerUnseure = new DatabaseHandler.DatabaseHandlerBuilder()
+                        .WithDatabasePath(databasePath)
+                        .WithPassphrase(key)
+                        .Build();
+                    Assert.Fail("Building with the old key should throw an exception");
+                }
+                catch (Exception) { }
             }
             catch (Exception exc)
             {

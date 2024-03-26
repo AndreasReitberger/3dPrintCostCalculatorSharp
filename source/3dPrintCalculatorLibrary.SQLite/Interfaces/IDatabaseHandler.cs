@@ -1,7 +1,5 @@
 ﻿using SQLite;
-using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
 {
@@ -26,9 +24,9 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         public Task InitTablesAsync();
         //#endif
 
-        public void InitDatabase(string databasePath);
+        public void InitDatabase(string databasePath, string? passphrase);
 
-        public Task InitDatabaseAsync(string databasePath);
+        public Task InitDatabaseAsync(string databasePath, string? passphrase);
 
         public Task RebuildAllTableAsync();
 

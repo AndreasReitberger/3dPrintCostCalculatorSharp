@@ -8,11 +8,8 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         #region Properties
         public bool IsInitialized { get; }
         public string DatabasePath { get; }
-        //#if DB_SYNC
-        public SQLiteConnection Database { get; }
-        //#else
+        public string Passphrase { get; }
         public SQLiteAsyncConnection DatabaseAsync { get; }
-        //#endif
         #endregion
 
         #region Methods

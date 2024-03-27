@@ -58,21 +58,9 @@ namespace AndreasReitberger.Print3d.SQLite
         #region MaterialTypes
         public Task<List<Material3dType>> GetMaterialTypesWithChildrenAsync() => DatabaseAsync.GetAllWithChildrenAsync<Material3dType>(recursive: true);
 
-        public List<Material3dType> GetMaterialTypes() => Database.Table<Material3dType>().ToList();
-
         public Task<Material3dType> GetMaterialTypeWithChildrenAsync(Guid id) => DatabaseAsync.GetWithChildrenAsync<Material3dType>(id, recursive: true);
 
-        public Material3dType GetMaterialType(Guid id) => Database.Table<Material3dType>().Where(i => i.Id == id).FirstOrDefault();
-
         public Task SetMaterialTypeWithChildrenAsync(Material3dType materialType) => DatabaseAsync.InsertOrReplaceWithChildrenAsync(materialType, recursive: true);
-
-        public int? SetMaterialType(Material3dType materialType)
-        {
-            Material3dType item = GetMaterialType(materialType.Id);
-            return item != null ?
-                Database?.Update(materialType) :
-                Database?.Insert(materialType);
-        }
 
         public async Task SetMaterialTypesWithChildrenAsync(List<Material3dType> materialTypes, bool replaceExisting = true)
         {
@@ -83,8 +71,6 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task<int> DeleteMaterialTypeAsync(Material3dType materialType) => DatabaseAsync.DeleteAsync<Material3dType>(materialType?.Id);
-
-        public int? DeleteMaterialType(Material3dType materialType) => Database?.Delete<Material3dType>(materialType?.Id);
 
         #endregion
 

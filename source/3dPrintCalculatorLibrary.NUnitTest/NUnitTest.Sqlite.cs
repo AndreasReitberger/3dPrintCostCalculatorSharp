@@ -1317,7 +1317,6 @@ namespace AndreasReitberger.NUnitTest
             }
         }
 
-
         [Test]
         public async Task DatabaseEncrytpionTestAsync()
         {
@@ -1346,7 +1345,9 @@ namespace AndreasReitberger.NUnitTest
                 List<Material3dType> types = await handler.GetMaterialTypesWithChildrenAsync();
                 Assert.That(types?.Count > 0);
 
-                //await handler.CloseDatabaseAsync();
+                await handler.CloseDatabaseAsync();
+                handler.Dispose();
+
                 try
                 {
                     using DatabaseHandler handlerUnseure = await new DatabaseHandler.DatabaseHandlerBuilder()
@@ -1355,12 +1356,6 @@ namespace AndreasReitberger.NUnitTest
                         .WithTables([typeof(Material3dType), typeof(Material3d)])
                         //.WithPassphrase(key)
                         .BuildAsync();
-
-                    mappings = handler.GetTableMappings();
-                    Assert.That(mappings?.Count > 0);
-
-                    types = await handler.GetMaterialTypesWithChildrenAsync();
-                    Assert.That(types?.Count > 0);
                     Assert.Fail("Building without the key should throw an exception");
                 }
                 catch(Exception) { }
@@ -1377,24 +1372,65 @@ namespace AndreasReitberger.NUnitTest
                     Assert.Fail("Building without the key should throw an exception");
                 }
                 catch(Exception) { }
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+        [Test]
+        public async Task DatabaseEncrytpionRekeyTestAsync()
+        {
+            try
+            {
+                string databasePath = "testdatabase_secure.db";
+                if (File.Exists(databasePath))
+                    File.Delete(databasePath);
+
+                using DatabaseHandler handler = await new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTable(typeof(Manufacturer))
+                    .WithTables([typeof(Material3dType), typeof(Material3d)])
+                    .WithPassphrase(key)
+                    .BuildAsync();
+
+                List<TableMapping>? mappings = handler.GetTableMappings();
+                Assert.That(mappings?.Count > 0);
+
+                await handler.SetMaterialTypeWithChildrenAsync(new()
+                {
+                    Id = Guid.NewGuid(),
+                    Family = Material3dFamily.Filament,
+                    Material = "PETG",
+                });
+                List<Material3dType> types = await handler.GetMaterialTypesWithChildrenAsync();
+                Assert.That(types?.Count > 0);
 
                 // try to rekey
                 string newKey = EncryptionManager.GenerateBase64Key();
-                //handler.RekeyDatabase(newKey);
                 await handler.RekeyDatabaseAsync(newKey);
 
-                types = await handler.GetMaterialTypesWithChildrenAsync();
+                await handler.CloseDatabaseAsync();
+                using DatabaseHandler handler2 = await new DatabaseHandler.DatabaseHandlerBuilder()
+                    .WithDatabasePath(databasePath)
+                    .WithTable(typeof(Manufacturer))
+                    .WithTables([typeof(Material3dType), typeof(Material3d)])
+                    .WithPassphrase(newKey)
+                    .BuildAsync();
+
+                types = await handler2.GetMaterialTypesWithChildrenAsync();
                 Assert.That(types?.Count > 0);
-                //await handler.CloseDatabaseAsync();
+                await handler2.CloseDatabaseAsync();
                 try
                 {
-                    using DatabaseHandler handlerUnseure = await new DatabaseHandler.DatabaseHandlerBuilder()
+                    using DatabaseHandler handler3 = await new DatabaseHandler.DatabaseHandlerBuilder()
                         .WithDatabasePath(databasePath)
                         .WithTable(typeof(Manufacturer))
                         .WithTables([typeof(Material3dType), typeof(Material3d)])
                         .WithPassphrase(key)
                         .BuildAsync();
-                    Assert.Fail("Building with the old key should throw an exception");
+                    await handler2.CloseDatabaseAsync();
+                    Assert.Fail("Should throw on wrong key");
                 }
                 catch (Exception) { }
             }

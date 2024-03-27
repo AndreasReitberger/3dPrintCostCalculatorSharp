@@ -372,13 +372,19 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public async Task RekeyDatabaseAsync(string newPassword)
         {
-            // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
-            string quotedNewPassword = await DatabaseAsync
-                .ExecuteScalarAsync<string>(
-                    "SELECT quote($newPassword);",
-                    new Dictionary<string, object>() { { "$newPassword", newPassword } }
-                    );
-            await DatabaseAsync.ExecuteAsync($"PRAGMA rekey = {quotedNewPassword}");
+            try
+            {
+                // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
+                string quotedNewPassword = await DatabaseAsync
+                    .ExecuteScalarAsync<string>(
+                        $"SELECT quote('{newPassword}');"
+                        );
+                await DatabaseAsync.ExecuteAsync($"PRAGMA rekey = {quotedNewPassword}");
+            }
+            catch (Exception exc)
+            {
+                OnErrorEvent(new ErrorEventArgs(exc));
+            }
         }
 
         public Task CloseAsync() => DatabaseAsync.CloseAsync();

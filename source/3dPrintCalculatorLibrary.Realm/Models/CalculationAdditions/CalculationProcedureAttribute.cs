@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public Guid CalculationEnhancedId { get; set; }
+        public Guid CalculationId { get; set; }
 
         public Material3dFamily Family
         {

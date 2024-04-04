@@ -25,7 +25,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
 
         [ObservableProperty]
@@ -52,15 +52,15 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dAttribute> attributes = [];
+        List<Material3dAttribute> attributes = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dProcedureAttribute> procedureAttributes = [];
+        List<Material3dProcedureAttribute> procedureAttributes = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dColor> colors = [];
+        List<Material3dColor> colors = new();
 
         [ObservableProperty]
         Material3dFamily materialFamily = Material3dFamily.Filament;
@@ -111,7 +111,7 @@ namespace AndreasReitberger.Print3d.SQLite
         double spoolWeight = 200;
 
         [ObservableProperty]
-        byte[] image = [];
+        byte[] image = Array.Empty<byte>();
         #endregion
 
         #region Constructor
@@ -126,7 +126,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             return Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Material3d item)
                 return false;

@@ -11,6 +11,9 @@
         public double Volume { get; set; }
         public IFile3dWeight Weight { get; set; }
         public double PrintTime { get; set; }
+        public int Quantity { get; set; }
+        public bool MultiplyPrintTimeWithQuantity { get; set; }
+        public double PrintTimeQuantityFactor { get; set; }
         public byte[] Image { get; set; }
         #endregion
 

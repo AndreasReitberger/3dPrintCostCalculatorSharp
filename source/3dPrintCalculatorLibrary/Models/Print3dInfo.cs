@@ -1,6 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
-using AndreasReitberger.Print3d.Models.FileAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
@@ -31,7 +30,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid fileId;
 
         [ObservableProperty]
-        File3dUsage fileUsage;
+        File3d file;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -59,7 +58,7 @@ namespace AndreasReitberger.Print3d.Models
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Print3dInfo item)
                 return false;

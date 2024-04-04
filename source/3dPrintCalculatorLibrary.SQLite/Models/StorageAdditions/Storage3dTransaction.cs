@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         [ObservableProperty]
         [property: ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
-        Calculation3dEnhanced? calculation;
+        Calculation3d? calculation;
 
         [ObservableProperty]
         DateTimeOffset dateTime;

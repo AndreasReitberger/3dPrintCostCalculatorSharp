@@ -1,5 +1,4 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
@@ -23,6 +22,11 @@ namespace AndreasReitberger.Print3d.SQLite
         string? name;
 
         [ObservableProperty]
+        [property: Obsolete("Use Calculation3dEnhanced instead")]
+        [property: ForeignKey(typeof(Calculation3d))]
+        Guid calculationId;
+
+        [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3dEnhanced))]
         Guid calculationEnhancedId;
 
@@ -32,7 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3dUsage fileUsage;
+        File3d file;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -63,7 +67,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Print3dInfo item)
                 return false;

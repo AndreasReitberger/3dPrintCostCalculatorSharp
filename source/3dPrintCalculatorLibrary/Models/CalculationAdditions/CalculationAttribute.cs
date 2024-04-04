@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         Guid id;
 
         [ObservableProperty]
-        Guid calculationEnhancedId;
+        Guid calculationId;
 
         [ObservableProperty]
         Guid fileId = Guid.Empty;

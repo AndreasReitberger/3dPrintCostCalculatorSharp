@@ -1,5 +1,7 @@
 ﻿using SQLite;
+using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
 {
@@ -8,8 +10,11 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         #region Properties
         public bool IsInitialized { get; }
         public string DatabasePath { get; }
-        public string Passphrase { get; }
+        //#if DB_SYNC
+        public SQLiteConnection Database { get; }
+        //#else
         public SQLiteAsyncConnection DatabaseAsync { get; }
+        //#endif
         #endregion
 
         #region Methods
@@ -21,9 +26,9 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         public Task InitTablesAsync();
         //#endif
 
-        public void InitDatabase(string databasePath, string? passphrase);
+        public void InitDatabase(string databasePath);
 
-        public Task InitDatabaseAsync(string databasePath, string? passphrase);
+        public Task InitDatabaseAsync(string databasePath);
 
         public Task RebuildAllTableAsync();
 

@@ -109,7 +109,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             return IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Customer3d item)
                 return false;

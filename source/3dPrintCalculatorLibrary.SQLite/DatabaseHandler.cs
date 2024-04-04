@@ -12,10 +12,7 @@ using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -52,10 +49,10 @@ namespace AndreasReitberger.Print3d.SQLite
         bool isInitialized = false;
 
         [ObservableProperty]
-        string databasePath = string.Empty;
+        string databasePath = "";
 
         [ObservableProperty]
-        string passphrase = string.Empty;
+        SQLiteConnection _database;
 
         [ObservableProperty]
         SQLiteAsyncConnection databaseAsync;
@@ -90,20 +87,27 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(CalculationProcedureAttribute),
             typeof(CalculationProcedureParameter),
             typeof(CalculationProcedureParameterAddition),
+            typeof(Calculation3d),
             typeof(Calculation3dEnhanced),
             typeof(CustomAdditionCalculation3dEnhanced),
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
-            typeof(File3dUsage),
             typeof(ModelWeight),
             typeof(Address),
             typeof(Email),
             typeof(PhoneNumber),
             typeof(ContactPerson),
             typeof(Calculation3dProfile),
+            typeof(Printer3dCalculation),
+            typeof(Material3dCalculation),
+            typeof(WorkstepCalculation),
+            typeof(CustomAdditionCalculation),
+            typeof(WorkstepDuration),
             typeof(WorkstepUsage),
             typeof(WorkstepUsageParameter),
+            typeof(WorkstepUsageCalculation),
             typeof(Item3d),
+            typeof(Item3dCalculation),
             typeof(Item3dUsage),
             typeof(Storage3dLocation),
             typeof(Storage3dTransaction),
@@ -124,12 +128,14 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Collections
+        [ObservableProperty]
+        List<Calculation3d> calculations = new();
 
         [ObservableProperty]
-        List<Calculation3dEnhanced> enhancedCalculations = [];
+        List<Calculation3dEnhanced> enhancedCalculations = new();
 
         [ObservableProperty]
-        List<Printer3d> printers = [];
+        List<Printer3d> printers = new();
         partial void OnPrintersChanged(List<Printer3d> value)
         {
             OnPrintersChangedEvent(new PrintersChangedDatabaseEventArgs()
@@ -139,7 +145,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Material3d> materials = [];
+        List<Material3d> materials = new();
         partial void OnMaterialsChanged(List<Material3d> value)
         {
             OnMaterialsChangedEvent(new MaterialsChangedDatabaseEventArgs()
@@ -149,7 +155,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Customer3d> customers = [];
+        List<Customer3d> customers = new();
         partial void OnCustomersChanged(List<Customer3d> value)
         {
             OnCustomersChangedEvent(new CustomersChangedDatabaseEventArgs()
@@ -159,7 +165,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<File3d> files = [];
+        List<File3d> files = new();
         partial void OnFilesChanged(List<File3d> value)
         {
             OnFilesChangedEvent(new FilesChangedDatabaseEventArgs()
@@ -169,7 +175,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Workstep> worksteps = [];
+        List<Workstep> worksteps = new();
         partial void OnWorkstepsChanged(List<Workstep> value)
         {
             OnWorkstepsChangedEvent(new WorkstepsChangedDatabaseEventArgs()
@@ -179,7 +185,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsage> workstepUsages = [];
+        List<WorkstepUsage> workstepUsages = new();
         partial void OnWorkstepUsagesChanged(List<WorkstepUsage> value)
         {
             /*
@@ -191,7 +197,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsageParameter> workstepUsageParameters = [];
+        List<WorkstepUsageParameter> workstepUsageParameters = new();
         partial void OnWorkstepUsageParametersChanged(List<WorkstepUsageParameter> value)
         {
             /*
@@ -203,7 +209,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<HourlyMachineRate> hourlyMachineRates = [];
+        List<HourlyMachineRate> hourlyMachineRates = new();
         partial void OnHourlyMachineRatesChanged(List<HourlyMachineRate> value)
         {
             OnHourlyMachineRatesChangedEvent(new HourlyMachineRatesChangedDatabaseEventArgs()
@@ -215,13 +221,10 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Constructor
         public DatabaseHandler() { }
-        public DatabaseHandler(string databasePath, bool updateInstance = true, string? passphrase = null)
+        public DatabaseHandler(string databasePath, bool updateInstance = true)
         {
-            // Docs: https://github.com/praeclarum/sqlite-net?tab=readme-ov-file#using-sqlcipher
-            // Some examples: https://github.com/praeclarum/sqlite-net/blob/master/tests/SQLite.Tests/SQLCipherTest.cs
-            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
-            DatabaseAsync = new SQLiteAsyncConnection(connection);
-            
+            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
+            Database = new SQLiteConnection(databasePath);
             InitTables();
             IsInitialized = true;
             if (updateInstance) Instance = this;
@@ -233,14 +236,14 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Public
 
         #region Init
-        public void InitTables() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
+        public void InitTables() => DefaultTables?.ForEach(type => Database?.CreateTable(type));
+
+
         public async Task InitTablesAsync() => DefaultTables?.ForEach(async type => await DatabaseAsync.CreateTableAsync(type));
 
-        public Task<CreateTableResult> CreateTableAsnyc(Type table) => DatabaseAsync.CreateTableAsync(table);
-        public void CreateTable(Type table) => DatabaseAsync.CreateTableAsync(table);
+        public void CreateTable(Type table) => Database?.CreateTable(table);
 
-        public Task<CreateTablesResult> CreateTablesAsync(List<Type> tables) => DatabaseAsync.CreateTablesAsync(CreateFlags.None, tables?.ToArray());
-        public void CreateTables(List<Type> tables) => tables.ForEach(async type => await DatabaseAsync.CreateTableAsync(type, CreateFlags.None));
+        public void CreateTables(List<Type> tables) => Database?.CreateTables(CreateFlags.None, tables?.ToArray());
 
         #endregion
 
@@ -254,28 +257,30 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Database
-        public void InitDatabase(string databasePath, string? passphrase = null)
+        public void InitDatabase(string databasePath)
         {
-            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
-            DatabaseAsync = new SQLiteAsyncConnection(connection);
-
+            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
+            Database = new SQLiteConnection(databasePath);
             InitTables();
             IsInitialized = true;
             Instance = this;
         }
 
-        public async Task InitDatabaseAsync(string databasePath, string? passphrase = null)
+        public async Task InitDatabaseAsync(string databasePath)
         {
-            SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
-            DatabaseAsync = new SQLiteAsyncConnection(connection);
-
+            DatabaseAsync = new SQLiteAsyncConnection(databasePath);
+            Database = new SQLiteConnection(databasePath);
             await InitTablesAsync();
             IsInitialized = true;
             Instance = this;
         }
 
-        public Task CloseDatabaseAsync() => DatabaseAsync.CloseAsync();
-        
+        public async Task CloseDatabaseAsync()
+        {
+            Database?.Close();
+            await DatabaseAsync.CloseAsync();
+        }
+
         public List<TableMapping>? GetTableMappings(string databasePath = "")
         {
             if (DatabaseAsync == null && !string.IsNullOrWhiteSpace(databasePath))
@@ -353,43 +358,14 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task BackupDatabaseAsync(string targetFolder, string databaseName) => DatabaseAsync.BackupAsync(targetFolder, databaseName);
 
-        public void RekeyDatabase(string newPassword)
+        public void BackupDatabase(string targetFolder, string databaseName) => Database?.Backup(targetFolder, databaseName);
+
+        public void Close()
         {
-            // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
-            SQLiteConnectionWithLock con = DatabaseAsync.GetConnection();
-            SQLiteCommand command = con
-                .CreateCommand(
-                    "SELECT quote($newPassword);",
-                    new Dictionary<string, object>() { { "$newPassword", newPassword } }
-                    );
-            string quotedNewPassword = command.ExecuteScalar<string>();
-            command = con
-                .CreateCommand(
-                    $"PRAGMA rekey = {quotedNewPassword}"
-                    );
-            command.ExecuteNonQuery();
+            Database?.Close();
+            DatabaseAsync?.CloseAsync();
         }
 
-        public async Task RekeyDatabaseAsync(string newPassword)
-        {
-            try
-            {
-                // Bases on: https://learn.microsoft.com/en-us/dotnet/standard/data/sqlite/encryption?tabs=netcore-cli
-                string quotedNewPassword = await DatabaseAsync
-                    .ExecuteScalarAsync<string>(
-                        $"SELECT quote('{newPassword}');"
-                        );
-                await DatabaseAsync.ExecuteAsync($"PRAGMA rekey = {quotedNewPassword}");
-            }
-            catch (Exception exc)
-            {
-                OnErrorEvent(new ErrorEventArgs(exc));
-            }
-        }
-
-        public Task CloseAsync() => DatabaseAsync.CloseAsync();
-        public void Close() => DatabaseAsync?.CloseAsync();
-        
         public void Dispose() => Close();
 
         #endregion

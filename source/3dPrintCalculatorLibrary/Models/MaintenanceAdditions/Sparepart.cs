@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
         {
             return Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Sparepart item)
                 return false;

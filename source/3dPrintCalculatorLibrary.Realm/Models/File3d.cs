@@ -55,7 +55,13 @@ namespace AndreasReitberger.Print3d.Realm
 
         public double PrintTime { get; set; } = 0;
 
-        public byte[] Image { get; set; } = [];
+        public int Quantity { get; set; } = 1;
+
+        public bool MultiplyPrintTimeWithQuantity { get; set; } = true;
+
+        public double PrintTimeQuantityFactor { get; set; } = 1;
+
+        public byte[] Image { get; set; } = Array.Empty<byte>();
 
         #endregion
 
@@ -71,7 +77,7 @@ namespace AndreasReitberger.Print3d.Realm
         {
             return Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not File3d item)
                 return false;

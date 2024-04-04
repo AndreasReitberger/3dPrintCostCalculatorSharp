@@ -14,17 +14,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\licenses\CommunityToolkit.Mvvm.txt" Link="Licenes\CommunityToolkit.Mvvm.txt" />
-    <Content Include="..\..\licenses\Newtonsoft.Json.txt" Link="Licenes\Newtonsoft.Json.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Licenes\" />
   </ItemGroup>
 
 </Project>

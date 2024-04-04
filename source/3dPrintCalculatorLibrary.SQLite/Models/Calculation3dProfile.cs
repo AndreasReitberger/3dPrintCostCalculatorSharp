@@ -1,8 +1,11 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -21,7 +24,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Linked Customer
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Customer3d> customers = [];
+        public List<Customer3d> customers = new();
         #endregion
 
         #region Presets
@@ -178,7 +181,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<ProcedureAddition> procedureAdditions = [];
+        ObservableCollection<ProcedureAddition> procedureAdditions = new();
         #endregion
 
         #endregion
@@ -189,19 +192,19 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Printer3d> printers = [];
+        ObservableCollection<Printer3d> printers = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Material3d> materials = [];
+        ObservableCollection<Material3d> materials = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Item3dUsage> items = [];
+        ObservableCollection<Item3dUsage> items = new();
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<WorkstepUsage> worksteps = [];
+        ObservableCollection<WorkstepUsage> worksteps = new();
         #endregion
 
         #endregion

@@ -31,23 +31,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\licenses\CommunityToolkit.Mvvm.txt" Link="Licenes\CommunityToolkit.Mvvm.txt" />
-    <Content Include="..\..\licenses\Newtonsoft.Json.txt" Link="Licenes\Newtonsoft.Json.txt" />
-    <Content Include="..\..\licenses\Realm.txt" Link="Licenes\Realm.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RCoreSharp" Version="1.0.9" />
     <PackageReference Include="Realm" Version="11.7.0" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\3dPrintCalculatorLibrary\3dPrintCalculatorLibrary.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Licenes\" />
   </ItemGroup>
 </Project>

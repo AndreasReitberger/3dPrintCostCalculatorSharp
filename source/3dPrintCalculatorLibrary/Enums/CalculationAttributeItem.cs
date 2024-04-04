@@ -7,5 +7,6 @@
         Tax,
         Margin,
         PowderRefresh,
+        File,
     }
 }

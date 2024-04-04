@@ -16,7 +16,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        [property: ForeignKey(typeof(Calculation3d))]
         Guid calculationId;
 
         [ObservableProperty]
@@ -67,7 +67,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not WorkstepUsage item)
                 return false;

@@ -5,12 +5,14 @@ namespace AndreasReitberger.Print3d.SQLite.Events
     public class CalculationChangedDatabaseEventArgs : DatabaseEventArgs
     {
         #region Properties
-        public List<Calculation3dEnhanced> Calculations { get; set; } = [];
+        public List<Calculation3d> Calculations { get; set; } = new();
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
         #endregion
     }
 }

@@ -23,6 +23,7 @@ namespace AndreasReitberger.Print3d.Realm.Interfaces
         double EnergyCostsPerkWh { get; set; }
         bool ApplyEnergyCost { get; set; }
         double TotalCosts { get; set; }
+        bool CombineMaterialCosts { get; set; }
         bool DifferFileCosts { get; set; }
 
         #endregion

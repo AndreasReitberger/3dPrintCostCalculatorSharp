@@ -60,7 +60,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             return this.Description;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Maintenance3d item)
                 return false;

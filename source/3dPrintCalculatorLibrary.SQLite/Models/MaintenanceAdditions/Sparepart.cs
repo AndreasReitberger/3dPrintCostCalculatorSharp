@@ -39,7 +39,7 @@ namespace AndreasReitberger.Print3d.SQLite.MaintenanceAdditions
         {
             return Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Sparepart item)
                 return false;

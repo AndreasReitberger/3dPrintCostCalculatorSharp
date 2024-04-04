@@ -57,6 +57,15 @@ namespace AndreasReitberger.Print3d.Models
         double printTime = 0;
 
         [ObservableProperty]
+        int quantity = 1;
+
+        [ObservableProperty]
+        bool multiplyPrintTimeWithQuantity = true;
+
+        [ObservableProperty]
+        double printTimeQuantityFactor = 1;
+
+        [ObservableProperty]
         byte[] image = [];
         #endregion
 
@@ -72,7 +81,7 @@ namespace AndreasReitberger.Print3d.Models
         {
             return Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not File3d item)
                 return false;

@@ -48,7 +48,7 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         {
             return $"{Name} (#{HexColorCode})";
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Material3dColor item)
                 return false;

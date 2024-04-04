@@ -1,7 +1,12 @@
-﻿using AndreasReitberger.Print3d.Enums;
+﻿using AndreasReitberger.Core.Utilities;
+using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.CalculationAdditions;
 using AndreasReitberger.Print3d.Models.Events;
+using AndreasReitberger.Print3d.Models.MaterialAdditions;
+using AndreasReitberger.Print3d.Models.PrinterAdditions;
+using AndreasReitberger.Print3d.Models.WorkstepAdditions;
+using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System;
@@ -357,7 +362,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Calculation3dEnhanced item)
                 return false;

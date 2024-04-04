@@ -1,6 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.MaterialAdditions;
-using AndreasReitberger.Print3d.Realm.FileAdditions;
 using Newtonsoft.Json;
 using Realms;
 using System;
@@ -18,11 +17,14 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string? Name { get; set; }
 
+        [Obsolete("Use Calculation3dEnhanced instead")]
+        public Guid CalculationId { get; set; }
+
         public Guid CalculationEnhancedId { get; set; }
 
         public Guid FileId { get; set; }
 
-        public File3dUsage FileUsage { get; set; }
+        public File3d File { get; set; }
 
         public Guid PrinterId { get; set; }
 
@@ -45,7 +47,7 @@ namespace AndreasReitberger.Print3d.Realm
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not Print3dInfo item)
                 return false;

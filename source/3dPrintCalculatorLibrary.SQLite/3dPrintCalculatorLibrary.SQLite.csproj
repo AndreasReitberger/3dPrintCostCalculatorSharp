@@ -14,18 +14,12 @@
     <Nullable>enable</Nullable>
     <Title>3dPrintCalculatorLibrary.SQLite</Title>
   </PropertyGroup>
-  <ItemGroup>
-    <Content Include="..\..\licenses\CommunityToolkit.Mvvm.txt" Link="Licenes\CommunityToolkit.Mvvm.txt" />
-    <Content Include="..\..\licenses\SQLite-Net Extensions.txt" Link="Licenes\SQLite-Net Extensions.txt" />
-    <Content Include="..\..\licenses\sqlite-net.txt" Link="Licenes\sqlite-net.txt" />
-  </ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
-		<PackageReference Include="sqlite-net-sqlcipher" Version="1.8.116" />
-		<PackageReference Include="SQLiteNetCipherExtensions" Version="2.1.0" />
-		<PackageReference Include="SQLiteNetCipherExtensions.Async" Version="2.1.0" />
+		<PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
+		<PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
 		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.8" />
 	</ItemGroup>
 

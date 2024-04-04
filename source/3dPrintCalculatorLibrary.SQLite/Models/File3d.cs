@@ -23,6 +23,11 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
+        [Obsolete("The file is now linked to the `Print3dInfo` instead of the `Calculation3d`. This property will be removed later")]
+        [property: ForeignKey(typeof(Calculation3d))]
+        Guid calculationId;
+
+        [ObservableProperty]
         string name = string.Empty;
 
         [ObservableProperty]
@@ -57,7 +62,16 @@ namespace AndreasReitberger.Print3d.SQLite
         double printTime = 0;
 
         [ObservableProperty]
-        byte[] image = [];
+        int quantity = 1;
+
+        [ObservableProperty]
+        bool multiplyPrintTimeWithQuantity = true;
+
+        [ObservableProperty]
+        double printTimeQuantityFactor = 1;
+
+        [ObservableProperty]
+        byte[] image = Array.Empty<byte>();
 
         #endregion
 
@@ -71,17 +85,17 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Overrides
         public override string ToString()
         {
-            return Name;
+            return this.Name;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not File3d item)
                 return false;
-            return Id.Equals(item.Id);
+            return this.Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return Id.GetHashCode();
+            return this.Id.GetHashCode();
         }
         #endregion
     }

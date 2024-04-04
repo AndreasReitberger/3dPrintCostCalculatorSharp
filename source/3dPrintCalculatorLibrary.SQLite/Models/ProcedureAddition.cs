@@ -25,6 +25,11 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
+        [property: Obsolete("Use Calculation3dEnhanced instead")]
+        [property: ForeignKey(typeof(Calculation3d))]
+        Guid calculationId;
+
+        [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3dEnhanced))]
         Guid calculationEnhancedId;
 
@@ -93,7 +98,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #region Override
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
-        public override bool Equals(object? obj)
+        public override bool Equals(object obj)
         {
             if (obj is not ProcedureAddition item)
                 return false;

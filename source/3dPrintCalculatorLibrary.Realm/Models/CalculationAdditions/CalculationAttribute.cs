@@ -21,6 +21,13 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 
         public string Attribute { get; set; }
 
+        public CalculationAttributeTarget Target
+        {
+            get => (CalculationAttributeTarget)TargetId;
+            set { TargetId = (int)value; }
+        }
+        public int TargetId { get; set; }
+
         public CalculationAttributeType Type
         {
             get => (CalculationAttributeType)TypeId;

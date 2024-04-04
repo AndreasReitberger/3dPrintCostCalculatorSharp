@@ -20,22 +20,25 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         Guid fileId = Guid.Empty;
 
         [ObservableProperty]
-        string fileName;
+        string fileName = string.Empty;
 
         [ObservableProperty]
         Guid linkedId = Guid.Empty;
 
         [ObservableProperty]
-        string attribute;
+        string attribute = string.Empty;
 
         [ObservableProperty]
         CalculationAttributeType type;
 
         [ObservableProperty]
+        CalculationAttributeTarget target;
+
+        [ObservableProperty]
         CalculationAttributeItem item = CalculationAttributeItem.Default;
 
         [ObservableProperty]
-        double value;
+        double value = 0;
 
         [ObservableProperty]
         bool isPercentageValue = false;

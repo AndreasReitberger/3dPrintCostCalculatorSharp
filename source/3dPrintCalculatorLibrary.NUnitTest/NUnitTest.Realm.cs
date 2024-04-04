@@ -1020,6 +1020,71 @@ namespace AndreasReitberger.NUnitTest
                 Assert.Fail(exc.Message);
             }
         }
-    }
 
+        [Test]
+        public void MarginCalculationTest()
+        {
+            try
+            {
+                Calculation3dEnhanced? marginTestCalculation = calculation;
+                marginTestCalculation?.CalculateCosts();
+
+                double margin = marginTestCalculation?.CalculatedMargin ?? 0;
+                Assert.That(margin == 0);
+
+                calculation.Rates.Add(new CalculationAttribute()
+                {
+                    Target = CalculationAttributeTarget.Fee,
+                    Type = CalculationAttributeType.Margin,
+                    Value = 100, // 100 % margin
+                    IsPercentageValue = true,
+                });
+                marginTestCalculation?.CalculateCosts();
+                margin = marginTestCalculation?.CalculatedMargin ?? 0;
+                Assert.That(margin > 0);
+
+                calculation.Rates.Add(new CalculationAttribute()
+                {
+                    Target = CalculationAttributeTarget.Fee,
+                    Type = CalculationAttributeType.HandlingFee,
+                    Value = 5, // 5€ fee
+                    IsPercentageValue = false,
+                    ApplyPerFile = false,
+                });
+
+                marginTestCalculation?.CalculateCosts();
+                var margin2 = marginTestCalculation?.CalculatedMargin ?? 0;
+                Assert.That(margin2 > margin);
+
+                calculation.Rates.Clear();
+                calculation.Rates.Add(new CalculationAttribute()
+                {
+                    Target = CalculationAttributeTarget.Fee,
+                    Type = CalculationAttributeType.Margin,
+                    Value = 200, // 200 % margin
+                    IsPercentageValue = true,
+                });
+                marginTestCalculation?.CalculateCosts();
+                var margin3 = marginTestCalculation?.CalculatedMargin ?? 0;
+                Assert.That(margin3 == margin * 2);
+
+                calculation.Rates.Add(new CalculationAttribute()
+                {
+                    Target = CalculationAttributeTarget.Fee,
+                    Type = CalculationAttributeType.HandlingFee,
+                    Value = 5, // 5€ fee
+                    IsPercentageValue = false,
+                    ApplyPerFile = true,
+                });
+                marginTestCalculation?.CalculateCosts();
+                var margin4 = marginTestCalculation?.CalculatedMargin ?? 0;
+                Assert.That(margin3 == margin * 2);
+
+            }
+            catch (Exception exc)
+            {
+                Assert.Fail(exc.Message);
+            }
+        }
+    }
 }

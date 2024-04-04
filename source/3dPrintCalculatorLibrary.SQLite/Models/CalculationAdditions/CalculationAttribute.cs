@@ -34,6 +34,9 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         string attribute;
 
         [ObservableProperty]
+        CalculationAttributeTarget target;
+
+        [ObservableProperty]
         CalculationAttributeType type;
 
         [ObservableProperty]

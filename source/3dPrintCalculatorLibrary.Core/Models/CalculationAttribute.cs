@@ -27,13 +27,16 @@ namespace AndreasReitberger.Print3d.Core
         string attribute = string.Empty;
 
         [ObservableProperty]
+        CalculationAttributeTarget target;
+
+        [ObservableProperty]
         CalculationAttributeType type;
 
         [ObservableProperty]
         CalculationAttributeItem item = CalculationAttributeItem.Default;
 
         [ObservableProperty]
-        double value;
+        double value = 0;
 
         [ObservableProperty]
         bool isPercentageValue = false;

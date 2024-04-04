@@ -13,5 +13,6 @@
         FixCost,
         ProcedureSpecificAddition,
         AdditionalItem,
+        HandlingFee,
     }
 }

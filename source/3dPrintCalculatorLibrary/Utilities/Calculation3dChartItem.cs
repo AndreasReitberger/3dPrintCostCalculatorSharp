@@ -8,6 +8,7 @@ namespace AndreasReitberger.Print3d.Utilities
         #region Properties
         public string Name { get; set; }
         public double Value { get; set; }
+        public CalculationAttributeTarget AttributeTarget { get; set; }
         public CalculationAttributeType AttributeType { get; set; }
         public CalculationAttributeItem AttributeItem { get; set; }
         public Guid FileId { get; set; }

@@ -17,6 +17,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -33,6 +34,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -55,6 +57,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -75,6 +78,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -93,6 +97,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -112,6 +117,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -129,6 +135,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));
@@ -146,6 +153,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     Value = cost.Value,
                     AttributeType = cost.Type,
                     AttributeItem = cost.Item,
+                    AttributeTarget = cost.Target,
                     FileId = cost.FileId,
                     FileName = cost.FileName,
                 }));

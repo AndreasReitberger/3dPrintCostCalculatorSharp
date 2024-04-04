@@ -11,6 +11,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public string FileName { get; set; }
         public Guid LinkedId { get; set; }
         public string Attribute { get; set; }
+        public CalculationAttributeTarget Target { get; set; }
         public CalculationAttributeType Type { get; set; }
         public CalculationAttributeItem Item { get; set; }
         public double Value { get; set; }

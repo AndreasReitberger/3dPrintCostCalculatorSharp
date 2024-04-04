@@ -27,6 +27,9 @@ namespace AndreasReitberger.Print3d.Core
         string attribute = string.Empty;
 
         [ObservableProperty]
+        CalculationAttributeTarget target;
+
+        [ObservableProperty]
         CalculationAttributeType type;
 
         [ObservableProperty]

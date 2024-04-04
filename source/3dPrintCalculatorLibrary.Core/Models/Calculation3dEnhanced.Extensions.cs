@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.Core
 
             int quantity = PrintInfos.Select(f => f.File).Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity
-            ICalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
+            ICalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee" || costs.Type == CalculationAttributeType.HandlingFee);
             ICalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             ICalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
 
@@ -46,6 +46,7 @@ namespace AndreasReitberger.Print3d.Core
                         {
                             Attribute = "HandlingFee",
                             Type = CalculationAttributeType.FixCost,
+                            Target = CalculationAttributeTarget.File,
                             Value = Convert.ToDouble(handlingsFee?.Value * file.Quantity),
                             FileId = file.Id,
                             FileName = file.FileName,
@@ -58,6 +59,7 @@ namespace AndreasReitberger.Print3d.Core
                             Attribute = $"{file.FileName}_FailRate",
                             Type = CalculationAttributeType.Machine,
                             Item = CalculationAttributeItem.FailRate,
+                            Target = CalculationAttributeTarget.File,
                             Value = printTime * FailRate / 100,
                             FileId = file.Id,
                             FileName = file.FileName,
@@ -89,6 +91,7 @@ namespace AndreasReitberger.Print3d.Core
                                 Value = _material,
                                 Type = CalculationAttributeType.Material,
                                 Item = CalculationAttributeItem.Default,
+                                Target = CalculationAttributeTarget.File,
                                 FileId = file.Id,
                                 FileName = file.FileName,
                             });
@@ -100,6 +103,7 @@ namespace AndreasReitberger.Print3d.Core
                                     Value = _material * FailRate / 100,
                                     Type = CalculationAttributeType.Material,
                                     Item = CalculationAttributeItem.FailRate,
+                                    Target = CalculationAttributeTarget.File,
                                     FileId = file.Id,
                                     FileName = file.FileName,
                                 });
@@ -153,6 +157,7 @@ namespace AndreasReitberger.Print3d.Core
                                             LinkedId = material.Id,
                                             Attribute = add.Name,
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Target = CalculationAttributeTarget.File,
                                             Value = costs,
                                             FileId = file.Id,
                                             FileName = file.FileName,
@@ -191,6 +196,7 @@ namespace AndreasReitberger.Print3d.Core
                                     Attribute = $"{material.Name} (Refreshed)",
                                     Type = CalculationAttributeType.Material,
                                     Item = CalculationAttributeItem.PowderRefresh,
+                                    Target = CalculationAttributeTarget.File,
                                     Value = refreshCosts,
                                     FileId = file.Id,
                                     FileName = file.FileName,
@@ -214,6 +220,7 @@ namespace AndreasReitberger.Print3d.Core
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Machine,
+                                        Target = CalculationAttributeTarget.File,
                                         Item = pt.Item,
                                         Value = machineHourRate,
                                         FileId = pt.FileId,
@@ -233,6 +240,7 @@ namespace AndreasReitberger.Print3d.Core
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Energy,
+                                        Target = CalculationAttributeTarget.File,
                                         Item = pt.Item,
                                         Value = totalEnergyCost,
                                         FileId = pt.FileId,
@@ -258,6 +266,7 @@ namespace AndreasReitberger.Print3d.Core
                                             LinkedId = printer.Id,
                                             Attribute = parameter.Type.ToString(),
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Target = CalculationAttributeTarget.File,
                                             Value = attribute.PerPiece ? parameter.Value * file.Quantity : parameter.Value,
                                             FileId = file.Id,
                                             FileName = file.FileName,
@@ -282,6 +291,7 @@ namespace AndreasReitberger.Print3d.Core
                                         LinkedId = printer.Id,
                                         Attribute = add.Name,
                                         Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Target = CalculationAttributeTarget.File,
                                         Value = costs,
                                         FileId = file.Id,
                                         FileName = file.FileName,
@@ -304,6 +314,7 @@ namespace AndreasReitberger.Print3d.Core
                                 LinkedId = ws.Id,
                                 Attribute = ws.Name,
                                 Type = CalculationAttributeType.Workstep,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -325,6 +336,7 @@ namespace AndreasReitberger.Print3d.Core
                                 LinkedId = item.Id,
                                 Attribute = item.Item.Name,
                                 Type = CalculationAttributeType.AdditionalItem,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -345,6 +357,7 @@ namespace AndreasReitberger.Print3d.Core
                                 LinkedId = item.Id,
                                 Attribute = item.Item.Name,
                                 Type = CalculationAttributeType.AdditionalItem,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -373,6 +386,7 @@ namespace AndreasReitberger.Print3d.Core
                             {
                                 Attribute = string.Format("CustomAdditionPreMargin_Order{0}", pairs.Key),
                                 Type = CalculationAttributeType.CustomAddition,
+                                Target = CalculationAttributeTarget.File,
                                 Value = pairs.Value * costsSoFar / 100.0,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -407,7 +421,7 @@ namespace AndreasReitberger.Print3d.Core
                         }
 
                         // Get all items where margin calculation is disabled.
-                        List<ICalculationAttribute>? skipMarginCalculation = Rates?.Where(rate => rate.SkipForMargin).ToList();
+                        List<ICalculationAttribute>? skipMarginCalculation = Rates?.Where(rate => rate.SkipForMargin && rate.ApplyPerFile).ToList();
                         skipMarginCalculation?.ForEach((item) =>
                         {
                             costsSoFar -= item.Value;
@@ -420,6 +434,7 @@ namespace AndreasReitberger.Print3d.Core
                             {
                                 Attribute = "Margin",
                                 Type = CalculationAttributeType.Margin,
+                                Target = CalculationAttributeTarget.File,
                                 Value = marginValue,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -449,6 +464,7 @@ namespace AndreasReitberger.Print3d.Core
                                 {
                                     Attribute = $"CustomAdditionPostMargin_Order{pairs.Key}",
                                     Type = CalculationAttributeType.CustomAddition,
+                                    Target = CalculationAttributeTarget.File,
                                     Value = pairs.Value * costsSoFar / 100.0,
                                     FileId = file.Id,
                                     FileName = file.FileName,
@@ -469,6 +485,7 @@ namespace AndreasReitberger.Print3d.Core
                             {
                                 Attribute = "Tax",
                                 Type = CalculationAttributeType.Tax,
+                                Target = CalculationAttributeTarget.File,
                                 Value = taxValue,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -485,6 +502,7 @@ namespace AndreasReitberger.Print3d.Core
                 {
                     Attribute = "HandlingFee",
                     Type = CalculationAttributeType.FixCost,
+                    Target = CalculationAttributeTarget.Project,
                     Value = handlingsFee.Value,
                     FileId = Guid.Empty,
                     FileName = string.Empty,
@@ -498,6 +516,7 @@ namespace AndreasReitberger.Print3d.Core
                         {
                             Attribute = "Margin",
                             Type = CalculationAttributeType.Margin,
+                            Target = CalculationAttributeTarget.Project,
                             Value = marginValue,
                             FileId = Guid.Empty,
                             FileName = string.Empty,
@@ -519,6 +538,7 @@ namespace AndreasReitberger.Print3d.Core
                         LinkedId = ws.Id,
                         Attribute = ws.Name,
                         Type = CalculationAttributeType.Workstep,
+                        Target = CalculationAttributeTarget.Project,
                         Value = totalPerJob,
                     });
                 }
@@ -538,6 +558,7 @@ namespace AndreasReitberger.Print3d.Core
                         LinkedId = item.Id,
                         Attribute = item.Item.Name,
                         Type = CalculationAttributeType.AdditionalItem,
+                        Target = CalculationAttributeTarget.Project,
                         Value = totalPerPiece,
                     });
                 }
@@ -584,6 +605,7 @@ namespace AndreasReitberger.Print3d.Core
                             LinkedId = Guid.Empty,
                             Attribute = add.Name,
                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                            Target = CalculationAttributeTarget.Project,
                             Value = costs,
                         });
                     }
@@ -603,6 +625,7 @@ namespace AndreasReitberger.Print3d.Core
                     {
                         Attribute = "Tax",
                         Type = CalculationAttributeType.Tax,
+                        Target = CalculationAttributeTarget.Project,
                         Value = taxValue,
                         FileId = Guid.Empty,
                         FileName = string.Empty,

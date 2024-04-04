@@ -5,5 +5,7 @@
         PrintTime,
         Material,
         Fee,
+        File,
+        Project
     }
 }

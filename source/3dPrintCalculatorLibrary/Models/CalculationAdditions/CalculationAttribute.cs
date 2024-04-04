@@ -29,6 +29,9 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         string attribute;
 
         [ObservableProperty]
+        CalculationAttributeTarget target;
+
+        [ObservableProperty]
         CalculationAttributeType type;
 
         [ObservableProperty]

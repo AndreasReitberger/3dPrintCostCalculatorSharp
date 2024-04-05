@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file?.Quantity ?? 0).ToList().Sum();
             // Add the handling fee based on the file quantity
-            CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee");
+            CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee" || costs.Type == CalculationAttributeType.HandlingFee);
             CalculationAttribute? margin = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Margin);
             CalculationAttribute? tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
 
@@ -38,6 +38,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         Value = printTime,
                         Type = CalculationAttributeType.Machine,
                         Item = CalculationAttributeItem.Default,
+                        Target = CalculationAttributeTarget.File,
                         FileId = file.Id,
                         FileName = file.FileName,
                     });
@@ -48,6 +49,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         {
                             Attribute = "HandlingFee",
                             Type = CalculationAttributeType.FixCost,
+                            Target = CalculationAttributeTarget.File,
                             Value = Convert.ToDouble(handlingsFee?.Value * fileUsage.Quantity),
                             FileId = file.Id,
                             FileName = file.FileName,
@@ -60,6 +62,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             Attribute = $"{file.FileName}_FailRate",
                             Type = CalculationAttributeType.Machine,
                             Item = CalculationAttributeItem.FailRate,
+                            Target = CalculationAttributeTarget.File,
                             Value = printTime * FailRate / 100,
                             FileId = file.Id,
                             FileName = file.FileName,
@@ -92,6 +95,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 Value = _material,
                                 Type = CalculationAttributeType.Material,
                                 Item = CalculationAttributeItem.Default,
+                                Target = CalculationAttributeTarget.File,
                                 FileId = file.Id,
                                 FileName = file.FileName,
                             });
@@ -103,6 +107,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                     Value = _material * FailRate / 100,
                                     Type = CalculationAttributeType.Material,
                                     Item = CalculationAttributeItem.FailRate,
+                                    Target = CalculationAttributeTarget.File,
                                     FileId = file.Id,
                                     FileName = file.FileName,
                                 });
@@ -117,15 +122,15 @@ namespace AndreasReitberger.Print3d.SQLite
                                         attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
                                     if (attribute != null)
                                     {
-                                        CalculationProcedureParameter minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
+                                        CalculationProcedureParameter? minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
                                         if (minPowderNeeded != null)
                                         {
                                             double powderInBuildArea = minPowderNeeded.Value;
-                                            MaterialAdditions.Material3dProcedureAttribute refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
+                                            Material3dProcedureAttribute? refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
                                             if (refreshRatio != null)
                                             {
                                                 // this value is in liter
-                                                CalculationAttribute materialPrintObject = MaterialUsage.FirstOrDefault(usage =>
+                                                CalculationAttribute? materialPrintObject = MaterialUsage?.FirstOrDefault(usage =>
                                                     usage.Attribute == material.Name);
                                                 if (materialPrintObject != null)
                                                 {
@@ -156,6 +161,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                             LinkedId = material.Id,
                                             Attribute = add.Name,
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Target = CalculationAttributeTarget.File,
                                             Value = costs,
                                             FileId = file.Id,
                                             FileName = file.FileName,
@@ -177,6 +183,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                     // Keep the linking to the currently used material
                                     Attribute = materialUsage.Item == CalculationAttributeItem.FailRate ? $"{material.Name}_FailRate" : material.Name,
                                     Type = CalculationAttributeType.Material,
+                                    Target = CalculationAttributeTarget.File,
                                     Item = materialUsage.Item,
                                     Value = totalCosts,
                                     FileId = materialUsage.FileId,
@@ -194,6 +201,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                     Attribute = $"{material.Name} (Refreshed)",
                                     Type = CalculationAttributeType.Material,
                                     Item = CalculationAttributeItem.PowderRefresh,
+                                    Target = CalculationAttributeTarget.File,
                                     Value = refreshCosts,
                                     FileId = file.Id,
                                     FileName = file.FileName,
@@ -217,6 +225,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Machine,
+                                        Target = CalculationAttributeTarget.File,
                                         Item = pt.Item,
                                         Value = machineHourRate,
                                         FileId = pt.FileId,
@@ -236,6 +245,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = printer.Name,
                                         Type = CalculationAttributeType.Energy,
+                                        Target = CalculationAttributeTarget.File,
                                         Item = pt.Item,
                                         Value = totalEnergyCost,
                                         FileId = pt.FileId,
@@ -261,6 +271,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                             LinkedId = printer.Id,
                                             Attribute = parameter.Type.ToString(),
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Target = CalculationAttributeTarget.File,
                                             Value = attribute.PerPiece ? parameter.Value * fileUsage.Quantity : parameter.Value,
                                             FileId = file.Id,
                                             FileName = file.FileName,
@@ -285,6 +296,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                         LinkedId = printer.Id,
                                         Attribute = add.Name,
                                         Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                        Target = CalculationAttributeTarget.File,
                                         Value = costs,
                                         FileId = file.Id,
                                         FileName = file.FileName,
@@ -307,6 +319,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 LinkedId = ws.Id,
                                 Attribute = ws.Name,
                                 Type = CalculationAttributeType.Workstep,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -328,6 +341,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 LinkedId = item.Id,
                                 Attribute = item.Item.Name,
                                 Type = CalculationAttributeType.AdditionalItem,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -348,6 +362,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 LinkedId = item.Id,
                                 Attribute = item.Item.Name,
                                 Type = CalculationAttributeType.AdditionalItem,
+                                Target = CalculationAttributeTarget.File,
                                 Value = totalPerPiece,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -376,6 +391,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             {
                                 Attribute = string.Format("CustomAdditionPreMargin_Order{0}", pairs.Key),
                                 Type = CalculationAttributeType.CustomAddition,
+                                Target = CalculationAttributeTarget.File,
                                 Value = pairs.Value * costsSoFar / 100.0,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -410,7 +426,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         }
 
                         // Get all items where margin calculation is disabled.
-                        List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin).ToList();
+                        List<CalculationAttribute> skipMarginCalculation = Rates.Where(rate => rate.SkipForMargin && rate.ApplyPerFile).ToList();
                         skipMarginCalculation.ForEach((item) =>
                         {
                             costsSoFar -= item.Value;
@@ -423,6 +439,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             {
                                 Attribute = "Margin",
                                 Type = CalculationAttributeType.Margin,
+                                Target = CalculationAttributeTarget.File,
                                 Value = marginValue,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -435,7 +452,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
                     if (customAdditionsAfterMargin.Count > 0)
                     {
-                        SortedDictionary<int, double> additions = new();
+                        SortedDictionary<int, double> additions = [];
                         foreach (CustomAddition ca in customAdditionsAfterMargin)
                         {
                             if (additions.ContainsKey(ca.Order))
@@ -452,6 +469,7 @@ namespace AndreasReitberger.Print3d.SQLite
                                 {
                                     Attribute = $"CustomAdditionPostMargin_Order{pairs.Key}",
                                     Type = CalculationAttributeType.CustomAddition,
+                                    Target = CalculationAttributeTarget.File,
                                     Value = pairs.Value * costsSoFar / 100.0,
                                     FileId = file.Id,
                                     FileName = file.FileName,
@@ -472,6 +490,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             {
                                 Attribute = "Tax",
                                 Type = CalculationAttributeType.Tax,
+                                Target = CalculationAttributeTarget.File,
                                 Value = taxValue,
                                 FileId = file.Id,
                                 FileName = file.FileName,
@@ -488,6 +507,7 @@ namespace AndreasReitberger.Print3d.SQLite
                 {
                     Attribute = "HandlingFee",
                     Type = CalculationAttributeType.FixCost,
+                    Target = CalculationAttributeTarget.Project,
                     Value = handlingsFee.Value,
                     FileId = Guid.Empty,
                     FileName = string.Empty,
@@ -501,6 +521,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         {
                             Attribute = "Margin",
                             Type = CalculationAttributeType.Margin,
+                            Target = CalculationAttributeTarget.Project,
                             Value = marginValue,
                             FileId = Guid.Empty,
                             FileName = string.Empty,
@@ -522,6 +543,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         LinkedId = ws.Id,
                         Attribute = ws.Name,
                         Type = CalculationAttributeType.Workstep,
+                        Target = CalculationAttributeTarget.Project,
                         Value = totalPerJob,
                     });
                 }
@@ -541,6 +563,7 @@ namespace AndreasReitberger.Print3d.SQLite
                         LinkedId = item.Id,
                         Attribute = item.Item.Name,
                         Type = CalculationAttributeType.AdditionalItem,
+                        Target = CalculationAttributeTarget.Project,
                         Value = totalPerPiece,
                     });
                 }
@@ -587,6 +610,7 @@ namespace AndreasReitberger.Print3d.SQLite
                             LinkedId = Guid.Empty,
                             Attribute = add.Name,
                             Type = CalculationAttributeType.ProcedureSpecificAddition,
+                            Target = CalculationAttributeTarget.Project,
                             Value = costs,
                         });
                     }
@@ -606,6 +630,7 @@ namespace AndreasReitberger.Print3d.SQLite
                     {
                         Attribute = "Tax",
                         Type = CalculationAttributeType.Tax,
+                        Target = CalculationAttributeTarget.Project,
                         Value = taxValue,
                         FileId = Guid.Empty,
                         FileName = string.Empty,

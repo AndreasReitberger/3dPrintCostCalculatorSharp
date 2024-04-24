@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
         Guid customerId;
 
         [ObservableProperty]
-        string phone;
+        string phone = string.Empty;
         #endregion
 
         #region Constructor

@@ -6,7 +6,7 @@ namespace AndreasReitberger.Print3d.Models.Events
     public class CalculatorEventArgs : EventArgs
     {
         #region Properties
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
         public Guid CalculationId { get; set; }
         #endregion
 

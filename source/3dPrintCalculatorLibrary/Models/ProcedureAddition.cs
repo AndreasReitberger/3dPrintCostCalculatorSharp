@@ -21,13 +21,13 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string description;
+        string description = string.Empty;
 
         [ObservableProperty]
-        string toolTip;
+        string toolTip = string.Empty;
 
         [ObservableProperty]
         bool enabled;

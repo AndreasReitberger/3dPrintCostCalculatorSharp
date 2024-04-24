@@ -14,19 +14,19 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
         Guid customerId;
 
         [ObservableProperty]
-        string supplement;
+        string supplement = string.Empty;
 
         [ObservableProperty]
-        string street;
+        string street = string.Empty;
 
         [ObservableProperty]
-        string zip;
+        string zip = string.Empty;
 
         [ObservableProperty]
-        string city;
+        string city = string.Empty;
 
         [ObservableProperty]
-        string countryCode;
+        string countryCode = string.Empty;
         #endregion
 
         #region Constructor

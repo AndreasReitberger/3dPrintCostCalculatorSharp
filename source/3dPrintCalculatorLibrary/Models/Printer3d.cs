@@ -29,7 +29,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid manufacturerId;
 
         [ObservableProperty]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double price = 0;
@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.Models
         Material3dFamily materialType = Material3dFamily.Filament;
 
         [ObservableProperty]
-        List<Printer3dAttribute> attributes = new();
+        List<Printer3dAttribute> attributes = [];
 
         [ObservableProperty]
         double powerConsumption = 0;
@@ -68,10 +68,10 @@ namespace AndreasReitberger.Print3d.Models
         Guid hourlyMachineRateId;
 
         [ObservableProperty]
-        HourlyMachineRate hourlyMachineRate;
+        HourlyMachineRate? hourlyMachineRate;
 
         [ObservableProperty]
-        ObservableCollection<Maintenance3d> maintenances = new();
+        ObservableCollection<Maintenance3d> maintenances = [];
 
         [ObservableProperty]
         Guid slicerConfigId;

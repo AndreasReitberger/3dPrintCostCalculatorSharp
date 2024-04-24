@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid itemId;
 
         [ObservableProperty]
-        Item3d item;
+        Item3d? item;
 
         [ObservableProperty]
         double quantity;
@@ -44,8 +44,8 @@ namespace AndreasReitberger.Print3d.Models
         Guid? fileId;
 
         [ObservableProperty]
-        File3d file;
-        partial void OnFileChanged(File3d value)
+        File3d? file;
+        partial void OnFileChanged(File3d? value)
         {
             FileId = value?.Id ?? Guid.Empty;
             LinkedToFile = value is not null;

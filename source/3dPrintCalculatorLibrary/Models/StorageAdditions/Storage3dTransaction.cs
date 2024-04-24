@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         DateTimeOffset dateTime;
 
         [ObservableProperty]
-        Storage3dItem item;
+        Storage3dItem? item;
 
         [ObservableProperty]
         double amount;

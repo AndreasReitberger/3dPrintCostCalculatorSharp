@@ -13,13 +13,13 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
         Guid materialId;
 
         [ObservableProperty]
-        Material3d material;
+        Material3d? material;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]

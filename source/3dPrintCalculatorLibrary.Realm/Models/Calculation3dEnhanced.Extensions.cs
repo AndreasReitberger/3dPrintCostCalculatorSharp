@@ -14,13 +14,18 @@ namespace AndreasReitberger.Print3d.Realm
     {
         #region Methods
 
+        public void ClearCalculation()
+        {
+            PrintTimes.Clear();
+            MaterialUsage.Clear();
+            OverallMaterialCosts.Clear();
+            OverallPrinterCosts.Clear();
+            Costs.Clear();
+        }
+
         public void CalculateCosts()
         {
-            PrintTimes?.Clear();
-            MaterialUsage?.Clear();
-            OverallMaterialCosts?.Clear();
-            OverallPrinterCosts?.Clear();
-            Costs?.Clear();
+            ClearCalculation();
 
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity

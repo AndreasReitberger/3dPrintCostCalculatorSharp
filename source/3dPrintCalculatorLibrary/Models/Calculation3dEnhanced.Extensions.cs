@@ -14,13 +14,24 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Methods
 
+        public void ClearCalculation()
+        {
+            PrintTimes ??= [];
+            MaterialUsage ??= [];
+            OverallMaterialCosts ??= [];
+            OverallPrinterCosts ??= [];
+            Costs ??= [];
+
+            PrintTimes.Clear();
+            MaterialUsage.Clear();
+            OverallMaterialCosts.Clear();
+            OverallPrinterCosts.Clear();
+            Costs.Clear();
+        }
+
         public void CalculateCosts()
         {
-            PrintTimes?.Clear();
-            MaterialUsage?.Clear();
-            OverallMaterialCosts?.Clear();
-            OverallPrinterCosts?.Clear();
-            Costs?.Clear();
+            ClearCalculation();
 
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity
@@ -46,7 +57,7 @@ namespace AndreasReitberger.Print3d.Models
                         FileName = file.FileName,
                     });
 
-                    if (handlingsFee != null && handlingsFee.Value > 0 && handlingsFee.ApplyPerFile)
+                    if (handlingsFee is not null && handlingsFee.Value > 0 && handlingsFee.ApplyPerFile)
                     {
                         Costs?.Add(new CalculationAttribute()
                         {
@@ -86,7 +97,7 @@ namespace AndreasReitberger.Print3d.Models
                                 double _volume = file.Volume;
                                 _weight = _volume * Convert.ToDouble(material?.Density ?? 1);
                             }
-                            else if (file.Weight != null)
+                            else if (file.Weight is not null)
                             {
                                 _weight = file.Weight.Weight * Convert.ToDouble(UnitFactor.GetUnitFactor(file.Weight.Unit));
                             }
@@ -123,19 +134,19 @@ namespace AndreasReitberger.Print3d.Models
                                 {
                                     CalculationProcedureAttribute? attribute = ProcedureAttributes.FirstOrDefault(
                                         attr => attr.Attribute == ProcedureAttribute.MaterialRefreshingRatio && attr.Level == CalculationLevel.Material);
-                                    if (attribute != null)
+                                    if (attribute is not null)
                                     {
                                         CalculationProcedureParameter? minPowderNeeded = attribute.Parameters.FirstOrDefault(para => para.Type == ProcedureParameter.MinPowderNeeded);
-                                        if (minPowderNeeded != null)
+                                        if (minPowderNeeded is not null)
                                         {
                                             double powderInBuildArea = minPowderNeeded.Value;
                                             Material3dProcedureAttribute? refreshRatio = material.ProcedureAttributes.FirstOrDefault(ratio => ratio.Attribute == ProcedureAttribute.MaterialRefreshingRatio);
-                                            if (refreshRatio != null)
+                                            if (refreshRatio is not null)
                                             {
                                                 // this value is in liter
                                                 CalculationAttribute? materialPrintObject = MaterialUsage?.FirstOrDefault(usage =>
                                                     usage.Attribute == material.Name);
-                                                if (materialPrintObject != null)
+                                                if (materialPrintObject is not null)
                                                 {
                                                     double refreshedMaterial = (powderInBuildArea -
                                                         (materialPrintObject.Value * material.FactorLToKg / UnitFactor.GetUnitFactor(Unit.Kilogram))) * refreshRatio.Value / 100f;
@@ -218,7 +229,7 @@ namespace AndreasReitberger.Print3d.Models
                         foreach (CalculationAttribute pt in PrintTimes?.Where(pt => pt?.FileId == file?.Id))
                         {
                             // Calculate the machine costs based on the hourly machine rate
-                            if (printer?.HourlyMachineRate != null)
+                            if (printer?.HourlyMachineRate is not null)
                             {
                                 double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * pt.Value;
                                 if (machineHourRate > 0)
@@ -403,7 +414,7 @@ namespace AndreasReitberger.Print3d.Models
                     }
 
                     //Margin
-                    if (margin != null && !margin.SkipForCalculation)
+                    if (margin is not null && !margin.SkipForCalculation)
                     {
                         double costsSoFar = GetTotalCosts(file.Id);
                         if (ApplyEnhancedMarginSettings)
@@ -483,7 +494,7 @@ namespace AndreasReitberger.Print3d.Models
 
                     //Tax
                     //CalculationAttribute? Tax = Rates?.FirstOrDefault(costs => costs.Type == CalculationAttributeType.Tax);
-                    if (tax != null && !tax.SkipForCalculation)
+                    if (tax is not null && !tax.SkipForCalculation)
                     {
                         double costsSoFar = GetTotalCosts(file.Id);
                         double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
@@ -504,7 +515,7 @@ namespace AndreasReitberger.Print3d.Models
             }
 
             // If the handling fee is not set per file, add it once afterwards
-            if (handlingsFee != null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
+            if (handlingsFee is not null && handlingsFee.Value > 0 && !handlingsFee.ApplyPerFile)
             {
                 Costs?.Add(new CalculationAttribute()
                 {
@@ -621,11 +632,10 @@ namespace AndreasReitberger.Print3d.Models
             }
 
             // Add the tax for the unlinked file costs
-            if (tax != null && !tax.SkipForCalculation)
+            if (tax is not null && !tax.SkipForCalculation)
             {
-                IEnumerable<CalculationAttribute> unlinkedCosts = Costs.Where(c => c.FileId == Guid.Empty);
+                IEnumerable<CalculationAttribute>? unlinkedCosts = Costs.Where(c => c.FileId == Guid.Empty);
                 double costsSoFar = unlinkedCosts?.Sum(cost => cost.Value) ?? 0;
-
                 double taxValue = costsSoFar * tax.Value / (tax.IsPercentageValue ? 100.0 : 1.0);
                 if (taxValue > 0)
                 {
@@ -794,11 +804,14 @@ namespace AndreasReitberger.Print3d.Models
         {
             try
             {
-                IEnumerable<double> times = PrintTimes?.Select(value => Convert.ToDouble(value?.Value ?? 0));
+                IEnumerable<double>? times = PrintTimes?.Select(value => Convert.ToDouble(value?.Value ?? 0));
                 double total = 0;
-                foreach (double time in times)
+                if (times?.Count() > 0)
                 {
-                    total += time;
+                    foreach (double time in times)
+                    {
+                        total += time;
+                    }
                 }
                 return total;
             }
@@ -811,13 +824,16 @@ namespace AndreasReitberger.Print3d.Models
         {
             try
             {
-                IEnumerable<double> volumes = PrintInfos
+                IEnumerable<double>? volumes = PrintInfos
                     .Select(f => f.FileUsage?.File)?
                     .Select(value => Convert.ToDouble(value?.Volume ?? 0));
                 double total = 0;
-                foreach (double vol in volumes)
+                if (volumes?.Count() > 0)
                 {
-                    total += vol;
+                    foreach (double vol in volumes)
+                    {
+                        total += vol;
+                    }
                 }
                 return total;
             }
@@ -831,11 +847,14 @@ namespace AndreasReitberger.Print3d.Models
         {
             try
             {
-                IEnumerable<double> materials = MaterialUsage?.Select(value => Convert.ToDouble(value?.Value ?? 0));
+                IEnumerable<double>? materials = MaterialUsage?.Select(value => Convert.ToDouble(value?.Value ?? 0));
                 double total = 0;
-                foreach (double material in materials)
+                if (materials?.Count() > 0)
                 {
-                    total += material;
+                    foreach (double material in materials)
+                    {
+                        total += material;
+                    }
                 }
                 return total;
             }

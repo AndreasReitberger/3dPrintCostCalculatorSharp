@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.Models
         double additionalCosts;
 
         [ObservableProperty]
-        List<Sparepart> spareparts = new();
+        List<Sparepart> spareparts = [];
 
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
         #endregion

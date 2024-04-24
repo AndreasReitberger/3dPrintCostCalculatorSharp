@@ -19,16 +19,16 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber;
+        string debitorNumber = string.Empty;
 
         [ObservableProperty]
         bool isActive;
 
         [ObservableProperty]
-        string website;
+        string website = string.Empty;
 
         #endregion
 

@@ -10,14 +10,24 @@ namespace AndreasReitberger.Print3d.SQLite
     {
         #region Methods
 
+        public void ClearCalculation()
+        {
+            PrintTimes ??= [];
+            MaterialUsage ??= [];
+            OverallMaterialCosts ??= [];
+            OverallPrinterCosts ??= [];
+            Costs ??= [];
+
+            PrintTimes.Clear();
+            MaterialUsage.Clear();
+            OverallMaterialCosts.Clear();
+            OverallPrinterCosts.Clear();
+            Costs.Clear();
+        }
+
         public void CalculateCosts()
         {
-            PrintTimes?.Clear();
-            MaterialUsage?.Clear();
-            OverallMaterialCosts?.Clear();
-            OverallPrinterCosts?.Clear();
-            Costs?.Clear();
-
+            ClearCalculation();
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file?.Quantity ?? 0).ToList().Sum();
             // Add the handling fee based on the file quantity
             CalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee" || costs.Type == CalculationAttributeType.HandlingFee);

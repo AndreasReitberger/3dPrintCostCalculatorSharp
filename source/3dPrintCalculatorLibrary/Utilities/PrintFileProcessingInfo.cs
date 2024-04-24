@@ -12,10 +12,10 @@ namespace AndreasReitberger.Print3d.Utilities
         Guid id;
 
         [ObservableProperty]
-        string fileName;
+        string fileName = string.Empty;
 
         [ObservableProperty]
-        string filePath;
+        string filePath = string.Empty;
 
         [ObservableProperty]
         double progress = 0;

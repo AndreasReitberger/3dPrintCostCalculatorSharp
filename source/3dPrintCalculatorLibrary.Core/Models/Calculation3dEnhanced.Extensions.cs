@@ -9,14 +9,24 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Methods
 
+        public void ClearCalculation()
+        {
+            PrintTimes ??= [];
+            MaterialUsages ??= [];
+            OverallMaterialCosts ??= [];
+            OverallPrinterCosts ??= [];
+            Costs ??= [];
+
+            PrintTimes.Clear();
+            MaterialUsages.Clear();
+            OverallMaterialCosts.Clear();
+            OverallPrinterCosts.Clear();
+            Costs.Clear();
+        }
+
         public void CalculateCosts()
         {
-            PrintTimes?.Clear();
-            MaterialUsages?.Clear();
-            OverallMaterialCosts?.Clear();
-            OverallPrinterCosts?.Clear();
-            Costs?.Clear();
-
+            ClearCalculation();
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file.Quantity).ToList().Sum();
             // Add the handling fee based on the file quantity
             ICalculationAttribute? handlingsFee = Rates?.FirstOrDefault(costs => costs.Attribute == "HandlingFee" || costs.Type == CalculationAttributeType.HandlingFee);

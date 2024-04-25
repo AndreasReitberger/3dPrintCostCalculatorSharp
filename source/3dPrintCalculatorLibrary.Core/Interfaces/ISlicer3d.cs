@@ -12,8 +12,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public string DownloadUri { get; set; }
         public string Author { get; set; }
         public string RepoUri { get; set; }
-        public Version Version { get; set; }
-        public Version LatestVersion { get; set; }
+        public Version? Version { get; set; }
+        public Version? LatestVersion { get; set; }
         public string DisplayName { get; }
         #endregion
     }

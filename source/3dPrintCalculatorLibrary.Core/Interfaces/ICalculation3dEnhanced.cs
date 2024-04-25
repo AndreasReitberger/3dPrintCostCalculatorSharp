@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         string Name { get; set; }
         CalculationState State { get; set; }
         DateTimeOffset Created { get; set; }
-        ICustomer3d Customer { get; set; }
+        ICustomer3d? Customer { get; set; }
         bool IsCalculated { get; }
         bool RecalculationRequired { get; }
         double PowerLevel { get; set; }
@@ -26,8 +26,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #endregion
 
         #region Details
-        public IList<IPrinter3d> AvailablePrinters { get; }
-        public IList<IMaterial3d> AvailableMaterials { get; }
+        public IList<IPrinter3d?> AvailablePrinters { get; }
+        public IList<IMaterial3d?> AvailableMaterials { get; }
         public IList<ICustomAddition> CustomAdditions { get; set; }
         public IList<IWorkstepUsage> WorkstepUsages { get; set; }
         public IList<ICalculationAttribute> PrintTimes { get; set; }
@@ -76,10 +76,10 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
 
         #region Event Handlers
 
-        public event EventHandler Error;
-        public event EventHandler<CalculatorEventArgs> RecalculationNeeded;
-        public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
-        public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
+        public event EventHandler? Error;
+        public event EventHandler<CalculatorEventArgs>? RecalculationNeeded;
+        public event EventHandler<PrinterChangedEventArgs>? PrinterChanged;
+        public event EventHandler<MaterialChangedEventArgs>? MaterialChanged;
 
         #endregion
 

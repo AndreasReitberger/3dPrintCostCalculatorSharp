@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AndreasReitberger.Print3d.Core.Interfaces
+﻿namespace AndreasReitberger.Print3d.Core.Interfaces
 {
     public interface IMaterial3dAttribute
     {

@@ -16,6 +16,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public bool Enabled { get; set; }
 
         public Material3dFamily TargetFamily { get; set; }
+
         public ProcedureAdditionTarget Target { get; set; }
         #endregion
 

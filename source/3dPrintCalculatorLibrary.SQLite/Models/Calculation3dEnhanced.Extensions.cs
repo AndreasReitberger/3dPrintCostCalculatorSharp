@@ -801,7 +801,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             try
             {
-                IEnumerable<double> times = PrintTimes?.Select(value => Convert.ToDouble(value?.Value ?? 0));
+                IEnumerable<double> times = PrintTimes.Select(value => Convert.ToDouble(value?.Value ?? 0));
                 double total = 0;
                 foreach (double time in times)
                 {
@@ -819,7 +819,7 @@ namespace AndreasReitberger.Print3d.SQLite
             try
             {
                 IEnumerable<double> volumes = PrintInfos
-                    .Select(f => f.FileUsage.File)?
+                    .Select(f => f.FileUsage.File)
                     .Select(value => Convert.ToDouble(value?.Volume ?? 0));
                 double total = 0;
                 foreach (double vol in volumes)
@@ -838,7 +838,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             try
             {
-                IEnumerable<double> materials = MaterialUsage?.Select(value => Convert.ToDouble(value?.Value ?? 0));
+                IEnumerable<double> materials = MaterialUsage.Select(value => Convert.ToDouble(value?.Value ?? 0));
                 double total = 0;
                 foreach (double material in materials)
                 {

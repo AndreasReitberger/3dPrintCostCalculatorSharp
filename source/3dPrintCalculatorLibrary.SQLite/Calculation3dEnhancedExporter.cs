@@ -49,7 +49,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
             FileStream myFileStream = new(path, FileMode.Open);
             // Call the Deserialize method and cast to the object type.  
-            Calculation3dEnhanced retval = (Calculation3dEnhanced)mySerializer.Deserialize(myFileStream);
+            Calculation3dEnhanced? retval = (Calculation3dEnhanced)mySerializer.Deserialize(myFileStream);
             myFileStream.Close();
             calc = retval;
             return true;
@@ -64,7 +64,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
             FileStream myFileStream = new(path, FileMode.Open);
             // Call the Deserialize method and cast to the object type.  
-            Calculation3dEnhanced[] retval = (Calculation3dEnhanced[])mySerializer.Deserialize(myFileStream);
+            Calculation3dEnhanced[]? retval = (Calculation3dEnhanced[])mySerializer.Deserialize(myFileStream);
             myFileStream.Close();
             calcs = retval;
             return true;
@@ -96,7 +96,7 @@ namespace AndreasReitberger.Print3d.SQLite
             return true;
         }
 
-        public static Calculation3dEnhanced DecryptAndDeserialize(string filename)
+        public static Calculation3dEnhanced? DecryptAndDeserialize(string filename)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
@@ -107,7 +107,7 @@ namespace AndreasReitberger.Print3d.SQLite
             XmlSerializer xmlser = new(typeof(Calculation3dEnhanced));
             return (Calculation3dEnhanced)xmlser.Deserialize(cs);
         }
-        public static Calculation3dEnhanced[] DecryptAndDeserializeArray(string filename)
+        public static Calculation3dEnhanced[]? DecryptAndDeserializeArray(string filename)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));

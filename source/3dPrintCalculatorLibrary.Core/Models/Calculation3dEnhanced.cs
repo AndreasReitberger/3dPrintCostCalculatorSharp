@@ -67,9 +67,9 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Details
-        public IList<IPrinter3d>? AvailablePrinters => PrintInfos.Select(pi => pi?.Printer)?.Distinct()?.ToList();
+        public IList<IPrinter3d?> AvailablePrinters => PrintInfos.Select(pi => pi.Printer).Distinct().ToList();
 
-        public IList<IMaterial3d>? AvailableMaterials => PrintInfos.SelectMany(pi => pi?.Materials).Select(mu => mu.Material)?.Distinct()?.ToList();
+        public IList<IMaterial3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu.Material).Distinct().ToList();
 
         [ObservableProperty]
         IList<ICustomAddition> customAdditions = [];
@@ -291,7 +291,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region EventHandlers
-        public event EventHandler Error;
+        public event EventHandler? Error;
         protected virtual void OnError()
         {
             Error?.Invoke(this, EventArgs.Empty);
@@ -305,19 +305,19 @@ namespace AndreasReitberger.Print3d.Core
             Error?.Invoke(this, e);
         }
 
-        public event EventHandler<CalculatorEventArgs> RecalculationNeeded;
+        public event EventHandler<CalculatorEventArgs>? RecalculationNeeded;
         protected virtual void OnRecalculationNeeded(CalculatorEventArgs e)
         {
             RecalculationNeeded?.Invoke(this, e);
         }
 
-        public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
+        public event EventHandler<PrinterChangedEventArgs>? PrinterChanged;
         protected virtual void OnPrinterChangedEvent(PrinterChangedEventArgs e)
         {
             PrinterChanged?.Invoke(this, e);
         }
 
-        public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
+        public event EventHandler<MaterialChangedEventArgs>? MaterialChanged;
         protected virtual void OnMaterialChangedEvent(MaterialChangedEventArgs e)
         {
             MaterialChanged?.Invoke(this, e);

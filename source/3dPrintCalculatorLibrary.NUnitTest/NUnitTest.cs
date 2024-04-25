@@ -447,10 +447,10 @@ namespace AndreasReitberger.NUnitTest
                  */
 
                 var gloveCosts = calculation.OverallPrinterCosts.Where(c => c.Attribute == "GloveCosts")?.ToList();
-                Assert.That(gloveCosts?.Count == calculation.AvailablePrinters.Where(printer => printer.MaterialType == Material3dFamily.Resin).Count());
+                Assert.That(gloveCosts?.Count == calculation.AvailablePrinters?.Where(printer => printer.MaterialType == Material3dFamily.Resin).Count());
                 Assert.That(gloveCosts?.Sum(c => c.Value) == 0.5d);
 
-                int fileCount = calculation.PrintInfos.Where(pi => pi.Printer.MaterialType == Material3dFamily.Resin).Count();
+                int fileCount = calculation.PrintInfos.Where(pi => pi.Printer?.MaterialType == Material3dFamily.Resin).Count();
 
                 var filterCosts = calculation.OverallPrinterCosts.Where(c => c.Attribute == "FilterCosts")?.ToList();
                 Assert.That(filterCosts?.Count == fileCount);
@@ -460,7 +460,7 @@ namespace AndreasReitberger.NUnitTest
                 Assert.That(washingCosts?.Count == fileCount);
                 foreach (var washCost in washingCosts)
                 {
-                    File3dUsage f = calculation.PrintInfos.FirstOrDefault(pi => pi.FileUsage.File.Id == washCost.FileId).FileUsage;
+                    File3dUsage? f = calculation.PrintInfos.FirstOrDefault(pi => pi.FileUsage.File.Id == washCost.FileId)?.FileUsage;
                     Assert.That(washCost.Value / f.Quantity == 1d);
                 }
 

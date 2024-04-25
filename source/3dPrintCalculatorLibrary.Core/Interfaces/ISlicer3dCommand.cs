@@ -5,7 +5,7 @@
         #region Properties
         public Guid Id { get; set; }
 
-        public ISlicer3d Slicer { get; set; }
+        public ISlicer3d? Slicer { get; set; }
 
         public string Name { get; set; }
 

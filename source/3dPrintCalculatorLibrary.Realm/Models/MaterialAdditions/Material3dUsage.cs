@@ -22,7 +22,7 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public Guid MaterialId { get; set; }
 
-        public Material3d Material { get; set; }
+        public Material3d? Material { get; set; }
 
         public double PercentageValue { get; set; } = 1;
 

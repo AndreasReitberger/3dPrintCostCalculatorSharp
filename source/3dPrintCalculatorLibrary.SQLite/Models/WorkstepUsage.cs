@@ -28,16 +28,16 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
-        Workstep workstep;
-        partial void OnWorkstepChanged(Workstep value) => TotalCosts = GetTotalCosts();
+        Workstep? workstep;
+        partial void OnWorkstepChanged(Workstep? value) => TotalCosts = GetTotalCosts();
 
         [ObservableProperty]
         Guid usageParameterId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
-        WorkstepUsageParameter usageParameter;
-        partial void OnUsageParameterChanged(WorkstepUsageParameter value) => TotalCosts = GetTotalCosts();
+        WorkstepUsageParameter? usageParameter;
+        partial void OnUsageParameterChanged(WorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
 
         [ObservableProperty]
         double totalCosts = 0;

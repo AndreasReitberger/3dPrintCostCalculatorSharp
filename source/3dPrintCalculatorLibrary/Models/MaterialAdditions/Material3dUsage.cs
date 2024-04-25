@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
         Guid materialId;
 
         [ObservableProperty]
-        Material3d material;
+        Material3d? material;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Percentage))]

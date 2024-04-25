@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
         Guid materialId;
 
         [ObservableProperty]
-        string attribute;
+        string attribute = string.Empty;
 
         [ObservableProperty]
         double value;

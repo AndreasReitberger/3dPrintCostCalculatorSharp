@@ -11,13 +11,13 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
         #region Properties
         [ObservableProperty]
         [property: PrimaryKey]
-        string key;
+        string key = string.Empty;
 
         [ObservableProperty]
-        string jsonValue;
+        string jsonValue = string.Empty;
 
         [ObservableProperty]
-        string valueType;
+        string valueType = string.Empty;
         partial void OnValueTypeChanged(string value)
         {
             if (!string.IsNullOrEmpty(value))
@@ -26,7 +26,7 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
 
         [ObservableProperty]
         [property: Ignore]
-        Type type;
+        Type? type;
         #endregion
 
         #region Constructor
@@ -35,13 +35,13 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
         {
             Key = key;
             JsonValue = value;
-            ValueType = value?.GetType().Name;
+            ValueType = value.GetType().Name;
         }
         public DatabaseSettingsKeyValuePair(string key, object value)
         {
             Key = key;
             JsonValue = JsonConvert.SerializeObject(value);
-            ValueType = value?.GetType().Name;
+            ValueType = value.GetType().Name;
         }
         #endregion
 

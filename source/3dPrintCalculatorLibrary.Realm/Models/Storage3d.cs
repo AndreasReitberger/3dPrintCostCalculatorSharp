@@ -15,9 +15,9 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Capacity { get; set; } = 32;
-        public IList<Storage3dItem> Items { get; }
+        public IList<Storage3dItem> Items { get; } = [];
         #endregion
 
         #region Ctor
@@ -39,14 +39,14 @@ namespace AndreasReitberger.Print3d.Realm
 
         public void AddToStock(Storage3dItem item, double amount, Unit unit)
         {
-            if (item?.Material is not null)
+            if (item.Material is not null)
             {
                 Storage3dTransaction transaction = new()
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
                 };
-                if (item?.Material.Unit == unit)
+                if (item.Material.Unit == unit)
                 {
                     transaction.Amount += amount;
                 }
@@ -82,14 +82,14 @@ namespace AndreasReitberger.Print3d.Realm
 
         public bool TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            if (item?.Material != null)
+            if (item.Material != null)
             {
                 Storage3dTransaction transaction = new()
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
                 };
-                if (item?.Material.Unit == unit)
+                if (item.Material.Unit == unit)
                 {
                     transaction.Amount -= amount;
                 }
@@ -100,20 +100,20 @@ namespace AndreasReitberger.Print3d.Realm
 
                     transaction.Amount -= target > current ? amount / (target / current) : amount * (current / target);
                 }
-                if (item?.Amount + transaction.Amount >= 0)
+                if (item.Amount + transaction.Amount >= 0)
                 {
-                    item?.Transactions.Add(transaction);
+                    item.Transactions.Add(transaction);
                     return true;
                 }
                 else if (throwIfMaterialIsNotInStock)
                 {
-                    throw new ArgumentOutOfRangeException($"The amount of the material `{item?.Material}` is not sufficient for this transaction (In stock: {item?.Amount} / Requested: {amount}!");
+                    throw new ArgumentOutOfRangeException($"The amount of the material `{item.Material}` is not sufficient for this transaction (In stock: {item.Amount} / Requested: {amount}!");
                 }
                 else return false;
             }
             else if (throwIfMaterialIsNotInStock)
             {
-                throw new ArgumentOutOfRangeException($"The material `{item?.Material}` is not available in the stock!");
+                throw new ArgumentOutOfRangeException($"The material `{item.Material}` is not available in the stock!");
             }
             else return false;
         }
@@ -121,13 +121,14 @@ namespace AndreasReitberger.Print3d.Realm
         public bool TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            if (item is null) return false;
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
             Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
-            if (TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
+            if (item is not null && TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock))
             {
                 return item?.Transactions.LastOrDefault();
             }

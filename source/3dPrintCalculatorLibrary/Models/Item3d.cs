@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid manufacturerId;
 
         [ObservableProperty]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double packageSize = 1;

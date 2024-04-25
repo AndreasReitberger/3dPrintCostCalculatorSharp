@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
@@ -13,28 +12,30 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         Slicer slicerName = Slicer.Unkown;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(DisplayName))]
         SlicerExecutionType executionType = SlicerExecutionType.GUI;
 
         [ObservableProperty]
-        string installationPath;
+        string installationPath = string.Empty;
 
         [ObservableProperty]
-        string downloadUri;
+        string downloadUri = string.Empty;
 
         [ObservableProperty]
-        string author;
+        string author = string.Empty;
 
         [ObservableProperty]
-        string repoUri;
+        string repoUri = string.Empty;
 
         [ObservableProperty]
-        Version version;
+        Version? version;
 
         [ObservableProperty]
-        Version latestVersion;
+        Version? latestVersion;
 
         public string DisplayName => $"{SlicerName} ({ExecutionType})";
         #endregion

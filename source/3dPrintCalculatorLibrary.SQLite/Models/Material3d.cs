@@ -71,7 +71,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(MaterialTypeId), CascadeOperations = CascadeOperation.All)]
-        Material3dType typeOfMaterial;
+        Material3dType? typeOfMaterial;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -79,7 +79,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double unitPrice;

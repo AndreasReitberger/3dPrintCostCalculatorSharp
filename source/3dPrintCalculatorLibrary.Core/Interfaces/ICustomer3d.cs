@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AndreasReitberger.Print3d.Core.Interfaces
+﻿namespace AndreasReitberger.Print3d.Core.Interfaces
 {
     public interface ICustomer3d
     {
@@ -12,7 +10,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public string Name { get; set; }
         public string LastName { get; set; }
         public string VAT { get; set; }
-        public IPerson ContactPerson { get; set; }
+        public IPerson? ContactPerson { get; set; }
         public IList<IAddress> Addresses { get; set; }
         public IList<IEmail> EmailAddresses { get; set; }
         public IList<IPhoneNumber> PhoneNumbers { get; set; }

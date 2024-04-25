@@ -512,10 +512,10 @@ namespace AndreasReitberger.NUnitTest
                         IsActive = true,
                     };
                     realm.Write(() => realm.Add(prusa));
-                    Manufacturer addedManufacturer = realm.Find<Manufacturer>(prusa.Id);
+                    Manufacturer? addedManufacturer = realm.Find<Manufacturer>(prusa.Id);
                     Assert.That(addedManufacturer is not null);
                     Assert.That(
-                        prusa.Name == addedManufacturer.Name &&
+                        prusa.Name == addedManufacturer?.Name &&
                         prusa.DebitorNumber == addedManufacturer.DebitorNumber &&
                         prusa.Website == addedManufacturer.Website
                         );
@@ -567,7 +567,7 @@ namespace AndreasReitberger.NUnitTest
                         MaintenanceCosts = 120,
                     };
                     realm.Write(() => realm.Add(mhr));
-                    HourlyMachineRate hourlyMachineRate = realm.Find<HourlyMachineRate>(mhr.Id);
+                    HourlyMachineRate? hourlyMachineRate = realm.Find<HourlyMachineRate>(mhr.Id);
                     List<HourlyMachineRate> hourlyMachineRates = realm.All<HourlyMachineRate>().ToList();
                     Assert.That(hourlyMachineRates?.Count > 0);
 
@@ -611,7 +611,7 @@ namespace AndreasReitberger.NUnitTest
                         Uri = "https://www.prusa3d.com/product/prusament-petg-anthracite-grey-1kg/#a_aid=AndreasReitberger"
                     };
                     realm.Write(() => realm.Add(materialPETG));
-                    Material3d material = realm.Find<Material3d>(materialPETG.Id);
+                    Material3d? material = realm.Find<Material3d>(materialPETG.Id);
                     List<Material3d> materials = realm.All<Material3d>().ToList();
                     Assert.That(materials?.Count > 0);
 

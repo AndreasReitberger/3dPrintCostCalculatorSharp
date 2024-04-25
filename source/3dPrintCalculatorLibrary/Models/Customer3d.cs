@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid contactPersonId;
 
         [ObservableProperty]
-        ContactPerson contactPerson;
+        ContactPerson? contactPerson;
 
         [ObservableProperty]
         List<Address> addresses = [];
@@ -62,7 +62,7 @@ namespace AndreasReitberger.Print3d.Models
         string handler = string.Empty;
 
         [JsonIgnore]
-        public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
+        public string FullName => IsCompany ? Name : $"{LastName}, {Name}";
 
         [JsonIgnore]
         public string MainAddress => GetAddress(0);

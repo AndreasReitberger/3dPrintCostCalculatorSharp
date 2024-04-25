@@ -16,21 +16,21 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public Guid CalculationEnhancedId { get; set; }
 
         public Guid FileId { get; set; }
 
-        public File3dUsage FileUsage { get; set; }
+        public File3dUsage? FileUsage { get; set; }
 
         public Guid PrinterId { get; set; }
 
-        public Printer3d Printer { get; set; }
+        public Printer3d? Printer { get; set; }
 
-        public IList<Item3dUsage> Items { get; }
+        public IList<Item3dUsage> Items { get; } = [];
 
-        public IList<Material3dUsage> MaterialUsages { get; }
+        public IList<Material3dUsage> MaterialUsages { get; } = [];
         #endregion
 
         #region Constructor

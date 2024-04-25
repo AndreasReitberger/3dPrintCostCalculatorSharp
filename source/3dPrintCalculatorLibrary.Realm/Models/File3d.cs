@@ -24,7 +24,7 @@ namespace AndreasReitberger.Print3d.Realm
         public string Name { get; set; } = string.Empty;
 
         [Ignored]
-        public object File { get; set; }
+        public object? File { get; set; }
 
         public string FileName { get; set; } = string.Empty;
 

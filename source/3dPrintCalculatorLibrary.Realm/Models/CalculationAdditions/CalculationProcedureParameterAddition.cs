@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 
         public Guid CalculationProcedureParameterId { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public double Value { get; set; } = 0;
 

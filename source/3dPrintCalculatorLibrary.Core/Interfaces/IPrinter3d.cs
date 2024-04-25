@@ -8,7 +8,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid Id { get; set; }
         public string Model { get; set; }
         public Printer3dType Type { get; set; }
-        public IManufacturer Manufacturer { get; set; }
+        public IManufacturer? Manufacturer { get; set; }
         public double Price { get; set; }
         public double Tax { get; set; }
         public bool PriceIncludesTax { get; set; }
@@ -19,9 +19,9 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public double Width { get; set; }
         public double Depth { get; set; }
         public double Height { get; set; }
-        public IHourlyMachineRate HourlyMachineRate { get; set; }
+        public IHourlyMachineRate?   HourlyMachineRate { get; set; }
         public IList<IMaintenance3d> Maintenances { get; set; }
-        public IPrinter3dSlicerConfig SlicerConfig { get; set; }
+        public IPrinter3dSlicerConfig? SlicerConfig { get; set; }
         public byte[] Image { get; set; }
         public string Note { get; set; }
         public string Name { get; }

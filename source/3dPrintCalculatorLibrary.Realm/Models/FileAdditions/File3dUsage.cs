@@ -22,7 +22,7 @@ namespace AndreasReitberger.Print3d.Realm.FileAdditions
 
         public Guid FileId { get; set; }
 
-        public File3d File { get; set; }
+        public File3d? File { get; set; }
 
         public int Quantity { get; set; } = 1;
 

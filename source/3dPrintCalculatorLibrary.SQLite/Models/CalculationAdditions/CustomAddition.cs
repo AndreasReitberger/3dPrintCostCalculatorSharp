@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         Guid calculationId;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
         double percentage;

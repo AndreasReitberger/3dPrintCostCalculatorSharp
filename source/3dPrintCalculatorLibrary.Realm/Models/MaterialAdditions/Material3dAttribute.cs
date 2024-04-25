@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public Guid MaterialId { get; set; }
 
-        public string Attribute { get; set; }
+        public string Attribute { get; set; } = string.Empty;
 
         public double Value { get; set; }
         #endregion

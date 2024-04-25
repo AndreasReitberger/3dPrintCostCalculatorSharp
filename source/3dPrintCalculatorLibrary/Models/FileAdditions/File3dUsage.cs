@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         Guid fileId;
 
         [ObservableProperty]
-        File3d file;
+        File3d? file;
 
         [ObservableProperty]
         int quantity = 1;

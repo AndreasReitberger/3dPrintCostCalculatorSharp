@@ -37,7 +37,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double packageSize = 1;

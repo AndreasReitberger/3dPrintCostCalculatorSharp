@@ -33,7 +33,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid CustomerId { get; set; }
 
-        public Customer3d Customer { get; set; }
+        public Customer3d? Customer { get; set; }
 
         public bool IsCalculated { get; private set; } = false;
 
@@ -76,29 +76,29 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Details
 
-        public IList<Printer3d> AvailablePrinters { get; }
+        public IList<Printer3d> AvailablePrinters { get; } = [];
 
-        public IList<Material3d> AvailableMaterials { get; }
+        public IList<Material3d> AvailableMaterials { get; } = [];
 
-        public IList<CustomAddition> CustomAdditions { get; }
+        public IList<CustomAddition> CustomAdditions { get; } = [];
 
-        public IList<WorkstepUsage> WorkstepUsages { get; }
+        public IList<WorkstepUsage> WorkstepUsages { get; } = [];
 
-        public IList<Item3dUsage> AdditionalItems { get; }
+        public IList<Item3dUsage> AdditionalItems { get; } = [];
 
-        public IList<CalculationAttribute> PrintTimes { get; }
+        public IList<CalculationAttribute> PrintTimes { get; } = [];
 
-        public IList<CalculationAttribute> MaterialUsage { get; }
+        public IList<CalculationAttribute> MaterialUsage { get; } = [];
 
-        public IList<CalculationAttribute> OverallMaterialCosts { get; }
+        public IList<CalculationAttribute> OverallMaterialCosts { get; } = [];
 
-        public IList<CalculationAttribute> OverallPrinterCosts { get; }
+        public IList<CalculationAttribute> OverallPrinterCosts { get; } = [];
 
-        public IList<CalculationAttribute> Costs { get; }
+        public IList<CalculationAttribute> Costs { get; } = [];
 
-        public IList<CalculationAttribute> Rates { get; }
+        public IList<CalculationAttribute> Rates { get; } = [];
 
-        public IList<Print3dInfo> PrintInfos { get; }
+        public IList<Print3dInfo> PrintInfos { get; } = [];
         #endregion
 
         #region AdditionalSettings
@@ -124,9 +124,9 @@ namespace AndreasReitberger.Print3d.Realm
         }
         public int ProcedureId { get; set; } = (int)Material3dFamily.Misc;
 
-        public IList<CalculationProcedureAttribute> ProcedureAttributes { get; }
+        public IList<CalculationProcedureAttribute> ProcedureAttributes { get; } = [];
 
-        public IList<ProcedureAddition> ProcedureAdditions { get; }
+        public IList<ProcedureAddition> ProcedureAdditions { get; } = [];
         #endregion
 
         #region Calculated
@@ -282,7 +282,7 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region EventHandlers
-        public event EventHandler Error;
+        public event EventHandler? Error;
         protected virtual void OnError()
         {
             Error?.Invoke(this, EventArgs.Empty);
@@ -296,19 +296,19 @@ namespace AndreasReitberger.Print3d.Realm
             Error?.Invoke(this, e);
         }
 
-        public event EventHandler<CalculatorEventArgs> RecalculationNeeded;
+        public event EventHandler<CalculatorEventArgs>? RecalculationNeeded;
         protected virtual void OnRecalculationNeeded(CalculatorEventArgs e)
         {
             RecalculationNeeded?.Invoke(this, e);
         }
 
-        public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
+        public event EventHandler<PrinterChangedEventArgs>? PrinterChanged;
         protected virtual void OnPrinterChangedEvent(PrinterChangedEventArgs e)
         {
             PrinterChanged?.Invoke(this, e);
         }
 
-        public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
+        public event EventHandler<MaterialChangedEventArgs>? MaterialChanged;
         protected virtual void OnMaterialChangedEvent(MaterialChangedEventArgs e)
         {
             MaterialChanged?.Invoke(this, e);

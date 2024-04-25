@@ -28,7 +28,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         [property: JsonIgnore]
-        object file;
+        object? file;
 
         [ObservableProperty]
         string fileName = string.Empty;

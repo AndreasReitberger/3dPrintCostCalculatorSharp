@@ -17,7 +17,7 @@ namespace AndreasReitberger.Print3d.Models
         Guid id;
 
         [ObservableProperty]
-        string? name;
+        string name = string.Empty;
 
         [ObservableProperty]
         [property: Obsolete("Use Calculation3dEnhanced instead")]
@@ -31,14 +31,14 @@ namespace AndreasReitberger.Print3d.Models
         Guid fileId;
 
         [ObservableProperty]
-        File3dUsage fileUsage;
+        File3dUsage? fileUsage;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
         Guid printerId;
 
         [ObservableProperty]
-        Printer3d printer;
+        Printer3d? printer;
 
         [ObservableProperty]
         List<Item3dUsage> items = [];

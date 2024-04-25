@@ -57,13 +57,13 @@ namespace AndreasReitberger.Print3d.Models
         Guid materialTypeId;
 
         [ObservableProperty]
-        Material3dType typeOfMaterial;
+        Material3dType? typeOfMaterial;
 
         [ObservableProperty]
         Guid manufacturerId;
 
         [ObservableProperty]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double unitPrice;

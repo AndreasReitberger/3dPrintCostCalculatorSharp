@@ -1,17 +1,29 @@
 ﻿using AndreasReitberger.Print3d.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 
 namespace AndreasReitberger.Print3d.Utilities
 {
-    public class Calculation3dChartItem
+    public partial class Calculation3dChartItem : ObservableObject
     {
         #region Properties
-        public string Name { get; set; }
-        public double Value { get; set; }
-        public CalculationAttributeType AttributeType { get; set; }
-        public CalculationAttributeItem AttributeItem { get; set; }
-        public Guid FileId { get; set; }
-        public string FileName { get; set; }
+        [ObservableProperty]
+        string name = string.Empty;
+
+        [ObservableProperty]
+        double value;
+
+        [ObservableProperty]
+        CalculationAttributeType attributeType;
+
+        [ObservableProperty]
+        CalculationAttributeItem attributeItem;
+
+        [ObservableProperty]
+        Guid fileId;
+
+        [ObservableProperty]
+        string fileName = string.Empty;
         #endregion
 
         #region Constructor

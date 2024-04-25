@@ -875,18 +875,22 @@ namespace AndreasReitberger.NUnitTest
 
                     List<Storage3dTransaction> transactions = [];
                     /**/
-                    Storage3dTransaction transaction1 = location.AddToStock(material, 750, Unit.Gram, null);
+                    Storage3dTransaction? transaction1 = location.AddToStock(material, 750, Unit.Gram, null);
                     Storage3dItem? newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
                     Assert.That(newItem?.Amount == startAmount + 0.75);
-                    transactions.Add(transaction1);
+                    Assert.That(transaction1 is not null);
+                    if (transaction1 is not null)
+                        transactions.Add(transaction1);
 
                     // Just to check if the unit conversion is working
-                    Storage3dTransaction transaction2 = location.TakeFromStock(material, 0.0005, Unit.MetricTons, null, false);
+                    Storage3dTransaction? transaction2 = location.TakeFromStock(material, 0.0005, Unit.MetricTons, null, false);
                     newItem = location.Items.FirstOrDefault(curItem => curItem.Material == material);
                     // Check if the addition was successfully
                     Assert.That(newItem?.Amount == startAmount + 0.75 - 0.5);
-                    transactions.Add(transaction2);
+                    Assert.That(transaction2 is not null);
+                    if (transaction2 is not null)
+                        transactions.Add(transaction2);
                     await DatabaseHandler.Instance.SetStorageTransactionsWithChildrenAsync(transactions);
 
                     List<Storage3dTransaction>? transactionsLoaded = await DatabaseHandler.Instance.GetStorageTransactionsWithChildrenAsync();

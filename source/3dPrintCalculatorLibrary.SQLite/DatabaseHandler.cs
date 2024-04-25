@@ -12,10 +12,7 @@ using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SQLite;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -34,7 +31,6 @@ namespace AndreasReitberger.Print3d.SQLite
                 }
                 return _instance;
             }
-
             set
             {
                 if (_instance == value) return;
@@ -43,7 +39,6 @@ namespace AndreasReitberger.Print3d.SQLite
                     _instance = value;
                 }
             }
-
         }
         #endregion
 
@@ -120,7 +115,7 @@ namespace AndreasReitberger.Print3d.SQLite
         ];
 
         [ObservableProperty]
-        Func<Type, Task> onDatabaseOpertions;
+        Func<Type, Task>? onDatabaseOpertions;
         #endregion
 
         #region Collections

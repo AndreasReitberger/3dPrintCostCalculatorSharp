@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite.PrinterAdditions
         Guid printerId;
 
         [ObservableProperty]
-        string attribute;
+        string attribute = string.Empty;
 
         [ObservableProperty]
         double value;

@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Models.PrinterAdditions
         Guid printerId;
 
         [ObservableProperty]
-        string attribute;
+        string attribute = string.Empty;
 
         [ObservableProperty]
         double value;

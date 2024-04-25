@@ -33,13 +33,13 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid calculationProfileId;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string description;
+        string description = string.Empty;
 
         [ObservableProperty]
-        string toolTip;
+        string toolTip = string.Empty;
 
         [ObservableProperty]
         bool enabled;

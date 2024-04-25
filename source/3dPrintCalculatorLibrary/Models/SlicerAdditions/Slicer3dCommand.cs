@@ -1,8 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Models.SlicerAdditions
 {
@@ -16,16 +14,16 @@ namespace AndreasReitberger.Print3d.Models.SlicerAdditions
         Guid slicerId;
 
         [ObservableProperty]
-        Slicer3d slicer;
+        Slicer3d? slicer;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string command;
+        string command = string.Empty;
 
         [ObservableProperty]
-        string outputFilePatternString;
+        string outputFilePatternString = string.Empty;
 
         [ObservableProperty]
         bool autoAddFilePath;

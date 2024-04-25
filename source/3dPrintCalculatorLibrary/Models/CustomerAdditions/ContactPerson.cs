@@ -11,19 +11,19 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
         Guid id;
 
         [ObservableProperty]
-        string salutation;
+        string salutation = string.Empty;
 
         [ObservableProperty]
-        string firstName;
+        string firstName = string.Empty;
 
         [ObservableProperty]
-        string lastName;
+        string lastName = string.Empty;
 
         [ObservableProperty]
-        string email;
+        string email = string.Empty;
 
         [ObservableProperty]
-        string phoneNumber;
+        string phoneNumber = string.Empty;
 
         [ObservableProperty]
         bool showOnDocuments;

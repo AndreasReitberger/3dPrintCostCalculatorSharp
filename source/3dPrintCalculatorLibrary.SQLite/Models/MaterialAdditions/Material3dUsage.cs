@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 
         [ObservableProperty]
         [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
-        Material3d material;
+        Material3d? material;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Percentage))]

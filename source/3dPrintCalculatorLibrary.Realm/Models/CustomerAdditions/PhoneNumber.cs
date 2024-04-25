@@ -12,7 +12,7 @@ namespace AndreasReitberger.Print3d.Realm.CustomerAdditions
 
         public Guid CustomerId { get; set; }
 
-        public string Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

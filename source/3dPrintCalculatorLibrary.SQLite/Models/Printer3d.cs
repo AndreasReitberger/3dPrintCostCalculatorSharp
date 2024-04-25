@@ -37,7 +37,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer manufacturer;
+        Manufacturer? manufacturer;
 
         [ObservableProperty]
         double price = 0;
@@ -56,7 +56,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Printer3dAttribute> attributes = new();
+        List<Printer3dAttribute> attributes = [];
 
         [ObservableProperty]
         double powerConsumption = 0;
@@ -78,7 +78,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(HourlyMachineRateId), CascadeOperations = CascadeOperation.All)]
-        HourlyMachineRate hourlyMachineRate;
+        HourlyMachineRate? hourlyMachineRate;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
@@ -92,14 +92,14 @@ namespace AndreasReitberger.Print3d.SQLite
         Printer3dSlicerConfig slicerConfig = new();
 
         [ObservableProperty]
-        byte[] image = Array.Empty<byte>();
+        byte[] image = [];
 
         [ObservableProperty]
         [property: JsonIgnore]
         string note = string.Empty;
 
         [JsonIgnore]
-        public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer.Name}, {Model}" : Model;
+        public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer?.Name}, {Model}" : Model;
 
         [JsonIgnore]
         public double Volume => CalculateVolume();

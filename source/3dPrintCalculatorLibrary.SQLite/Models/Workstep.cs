@@ -34,7 +34,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
-        WorkstepCategory category;
+        WorkstepCategory? category;
 
         [ObservableProperty]
         CalculationType calculationType;

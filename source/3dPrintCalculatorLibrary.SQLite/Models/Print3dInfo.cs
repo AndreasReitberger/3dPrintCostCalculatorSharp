@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.SQLite
         Guid id;
 
         [ObservableProperty]
-        string? name;
+        string name = string.Empty;
 
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3dEnhanced))]
@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3dUsage fileUsage;
+        File3dUsage? fileUsage;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
-        Printer3d printer;
+        Printer3d? printer;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]

@@ -14,10 +14,10 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
         Guid materialId;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string hexColorCode;
+        string hexColorCode = string.Empty;
 
         #endregion
 

@@ -44,7 +44,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
-        Customer3d customer;
+        Customer3d? customer;
 
         [ObservableProperty]
         [property: Ignore, JsonIgnore, XmlIgnore]
@@ -92,9 +92,9 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Details
-        public List<Printer3d>? AvailablePrinters => PrintInfos.Select(pi => pi?.Printer)?.Distinct()?.ToList();
+        public List<Printer3d?> AvailablePrinters => PrintInfos.Select(pi => pi?.Printer).Distinct().ToList();
 
-        public List<Material3d>? AvailableMaterials => PrintInfos.SelectMany(pi => pi?.MaterialUsages).Select(mu => mu.Material)?.Distinct()?.ToList();
+        public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.MaterialUsages).Select(mu => mu?.Material).Distinct().ToList();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(CustomAdditionCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
@@ -328,7 +328,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region EventHandlers
-        public event EventHandler Error;
+        public event EventHandler? Error;
         protected virtual void OnError()
         {
             Error?.Invoke(this, EventArgs.Empty);
@@ -342,19 +342,19 @@ namespace AndreasReitberger.Print3d.SQLite
             Error?.Invoke(this, e);
         }
 
-        public event EventHandler<CalculatorEventArgs> RecalculationNeeded;
+        public event EventHandler<CalculatorEventArgs>? RecalculationNeeded;
         protected virtual void OnRecalculationNeeded(CalculatorEventArgs e)
         {
             RecalculationNeeded?.Invoke(this, e);
         }
 
-        public event EventHandler<PrinterChangedEventArgs> PrinterChanged;
+        public event EventHandler<PrinterChangedEventArgs>? PrinterChanged;
         protected virtual void OnPrinterChangedEvent(PrinterChangedEventArgs e)
         {
             PrinterChanged?.Invoke(this, e);
         }
 
-        public event EventHandler<MaterialChangedEventArgs> MaterialChanged;
+        public event EventHandler<MaterialChangedEventArgs>? MaterialChanged;
         protected virtual void OnMaterialChangedEvent(MaterialChangedEventArgs e)
         {
             MaterialChanged?.Invoke(this, e);

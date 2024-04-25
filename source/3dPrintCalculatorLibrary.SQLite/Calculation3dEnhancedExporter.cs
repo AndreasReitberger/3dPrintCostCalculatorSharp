@@ -20,11 +20,15 @@ namespace AndreasReitberger.Print3d.SQLite
             //string appFolder = AppDomain.CurrentDomain.BaseDirectory;
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             DirectoryInfo tempDir = new(path);
-            Directory.CreateDirectory(tempDir.Parent.FullName);
-            TextWriter writer = new StreamWriter(tempDir.FullName);
-            x.Serialize(writer, calc);
-            writer.Close();
-            return true;
+            if (tempDir.Parent is not null)
+            {
+                Directory.CreateDirectory(tempDir.Parent.FullName);
+                TextWriter writer = new StreamWriter(tempDir.FullName);
+                x.Serialize(writer, calc);
+                writer.Close();
+                return true;
+            }
+            return false;
         }
 
         public static bool Save(Calculation3dEnhanced[] calcs, string path)
@@ -33,14 +37,17 @@ namespace AndreasReitberger.Print3d.SQLite
             //string appFolder = AppDomain.CurrentDomain.BaseDirectory;
             XmlSerializer x = new(typeof(Calculation3dEnhanced[]));
             DirectoryInfo tempDir = new(path);
-            Directory.CreateDirectory(tempDir.Parent.FullName);
-            TextWriter writer = new StreamWriter(tempDir.FullName);
-            x.Serialize(writer, calcs);
-            writer.Close();
-            return true;
-
+            if (tempDir.Parent is not null)
+            {
+                Directory.CreateDirectory(tempDir.Parent.FullName);
+                TextWriter writer = new StreamWriter(tempDir.FullName);
+                x.Serialize(writer, calcs);
+                writer.Close();
+                return true;
+            }
+            return false;
         }
-        public static bool Load(string path, out Calculation3dEnhanced calc)
+        public static bool Load(string path, out Calculation3dEnhanced? calc)
         {
             // Construct an instance of the XmlSerializer with the type  
             // of object that is being deserialized.  
@@ -49,12 +56,12 @@ namespace AndreasReitberger.Print3d.SQLite
 
             FileStream myFileStream = new(path, FileMode.Open);
             // Call the Deserialize method and cast to the object type.  
-            Calculation3dEnhanced retval = (Calculation3dEnhanced)mySerializer.Deserialize(myFileStream);
+            Calculation3dEnhanced? retval = (Calculation3dEnhanced?)mySerializer.Deserialize(myFileStream);
             myFileStream.Close();
             calc = retval;
             return true;
         }
-        public static bool Load(string path, out Calculation3dEnhanced[] calcs)
+        public static bool Load(string path, out Calculation3dEnhanced[]? calcs)
         {
 
             // Construct an instance of the XmlSerializer with the type  
@@ -64,14 +71,15 @@ namespace AndreasReitberger.Print3d.SQLite
 
             FileStream myFileStream = new(path, FileMode.Open);
             // Call the Deserialize method and cast to the object type.  
-            Calculation3dEnhanced[] retval = (Calculation3dEnhanced[])mySerializer.Deserialize(myFileStream);
+            Calculation3dEnhanced[]? retval = (Calculation3dEnhanced[]?)mySerializer.Deserialize(myFileStream);
             myFileStream.Close();
             calcs = retval;
             return true;
         }
 
         // https://stackoverflow.com/questions/965042/c-sharp-serializing-deserializing-a-des-encrypted-file-from-a-stream
-        public static bool EncryptAndSerialize(string filename, Calculation3dEnhanced obj)
+        [Obsolete("Will be deleted")]
+        internal static bool EncryptAndSerialize(string filename, Calculation3dEnhanced obj)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform e = key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
@@ -83,7 +91,8 @@ namespace AndreasReitberger.Print3d.SQLite
             xmlser.Serialize(cs, obj);
             return true;
         }
-        public static bool EncryptAndSerialize(string filename, Calculation3dEnhanced[] objs)
+        [Obsolete("Will be deleted")]
+        internal static bool EncryptAndSerialize(string filename, Calculation3dEnhanced[] objs)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform e = key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
@@ -96,7 +105,8 @@ namespace AndreasReitberger.Print3d.SQLite
             return true;
         }
 
-        public static Calculation3dEnhanced DecryptAndDeserialize(string filename)
+        [Obsolete("Will be deleted")]
+        internal static Calculation3dEnhanced? DecryptAndDeserialize(string filename)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
@@ -105,9 +115,11 @@ namespace AndreasReitberger.Print3d.SQLite
             using CryptoStream cs = new(fs, d, CryptoStreamMode.Read);
 
             XmlSerializer xmlser = new(typeof(Calculation3dEnhanced));
-            return (Calculation3dEnhanced)xmlser.Deserialize(cs);
+            return (Calculation3dEnhanced?)xmlser.Deserialize(cs);
         }
-        public static Calculation3dEnhanced[] DecryptAndDeserializeArray(string filename)
+
+        [Obsolete("Will be deleted")]
+        internal static Calculation3dEnhanced[]? DecryptAndDeserializeArray(string filename)
         {
             DESCryptoServiceProvider key = new();
             ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
@@ -116,7 +128,7 @@ namespace AndreasReitberger.Print3d.SQLite
             using CryptoStream cs = new(fs, d, CryptoStreamMode.Read);
 
             XmlSerializer xmlser = new(typeof(Calculation3dEnhanced[]));
-            return (Calculation3dEnhanced[])xmlser.Deserialize(cs);
+            return (Calculation3dEnhanced[]?)xmlser.Deserialize(cs);
         }
     }
 #endif

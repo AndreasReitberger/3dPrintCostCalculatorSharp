@@ -19,13 +19,13 @@ namespace AndreasReitberger.Print3d.Models
         Guid workstepId;
 
         [ObservableProperty]
-        Workstep workstep;
+        Workstep? workstep;
 
         [ObservableProperty]
         Guid usageParameterId;
 
         [ObservableProperty]
-        WorkstepUsageParameter usageParameter;
+        WorkstepUsageParameter? usageParameter;
 
         [ObservableProperty]
         double totalCosts = 0;

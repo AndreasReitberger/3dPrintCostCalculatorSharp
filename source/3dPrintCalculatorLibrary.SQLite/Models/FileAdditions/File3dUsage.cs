@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.SQLite.FileAdditions
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3d file;
+        File3d? file;
 
         [ObservableProperty]
         int quantity = 1;

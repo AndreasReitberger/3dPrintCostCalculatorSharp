@@ -16,8 +16,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public IList<IMaterial3dProcedureAttribute> ProcedureAttributes { get; set; }
         public IList<IMaterial3dColor> Colors { get; set; }
         public Material3dFamily MaterialFamily { get; set; }
-        public IMaterial3dType TypeOfMaterial { get; set; }
-        public IManufacturer Manufacturer { get; set; }
+        public IMaterial3dType? TypeOfMaterial { get; set; }
+        public IManufacturer? Manufacturer { get; set; }
         public double UnitPrice { get; set; }
         public double Tax { get; set; }
         public bool PriceIncludesTax { get; set; }

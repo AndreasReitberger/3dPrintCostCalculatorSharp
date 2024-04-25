@@ -12,13 +12,13 @@ namespace AndreasReitberger.Print3d.Realm.StorageAdditions
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public Guid MaterialId { get; set; }
 
-        public Material3d Material { get; set; }
+        public Material3d? Material { get; set; }
 
-        public IList<Storage3dTransaction> Transactions { get; }
+        public IList<Storage3dTransaction> Transactions { get; } = [];
 
         public double Amount => GetAvailableAmount();
         #endregion

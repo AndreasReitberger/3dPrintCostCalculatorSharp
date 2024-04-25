@@ -20,22 +20,22 @@ namespace AndreasReitberger.Print3d.SQLite
         SlicerExecutionType executionType = SlicerExecutionType.GUI;
 
         [ObservableProperty]
-        string installationPath;
+        string installationPath = string.Empty;
 
         [ObservableProperty]
-        string downloadUri;
+        string downloadUri = string.Empty;
 
         [ObservableProperty]
-        string author;
+        string author = string.Empty;
 
         [ObservableProperty]
-        string repoUri;
+        string repoUri = string.Empty;
 
         [ObservableProperty]
-        Version version;
+        Version? version;
 
         [ObservableProperty]
-        Version latestVersion;
+        Version? latestVersion;
 
         public string DisplayName => $"{SlicerName} ({ExecutionType})";
         #endregion

@@ -25,13 +25,13 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         Guid fileId = Guid.Empty;
 
         [ObservableProperty]
-        string fileName;
+        string fileName = string.Empty;
 
         [ObservableProperty]
         Guid linkedId = Guid.Empty;
 
         [ObservableProperty]
-        string attribute;
+        string attribute = string.Empty;
 
         [ObservableProperty]
         CalculationAttributeTarget target;

@@ -1,9 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using Realms;
 using System;
-using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.Realm.SlicerAdditions
 {
@@ -15,13 +12,13 @@ namespace AndreasReitberger.Print3d.Realm.SlicerAdditions
 
         public Guid SlicerId { get; set; }
 
-        public Slicer3d Slicer { get; set; }
+        public Slicer3d? Slicer { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string Command { get; set; }
+        public string Command { get; set; } = string.Empty;
 
-        public string OutputFilePatternString { get; set; }
+        public string OutputFilePatternString { get; set; } = string.Empty;
 
         public bool AutoAddFilePath { get; set; }
 

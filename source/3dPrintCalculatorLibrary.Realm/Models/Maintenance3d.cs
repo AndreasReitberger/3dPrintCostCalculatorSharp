@@ -37,7 +37,7 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Collections
-        public IList<Sparepart> Spareparts { get; }
+        public IList<Sparepart> Spareparts { get; } = [];
         #endregion
 
         #region Constructor

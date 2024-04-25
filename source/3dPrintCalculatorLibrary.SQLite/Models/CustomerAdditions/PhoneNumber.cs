@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
         Guid customerId;
 
         [ObservableProperty]
-        string phone;
+        string phone = string.Empty;
         #endregion
 
         #region Constructor

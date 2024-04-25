@@ -20,10 +20,10 @@ namespace AndreasReitberger.Print3d.SQLite.ProcedureAdditions
         Guid procedureAdditionId;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string description;
+        string description = string.Empty;
 
         [ObservableProperty]
         ProcedureCalculationType type;

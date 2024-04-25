@@ -28,7 +28,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
         }
         public int AttributeId { get; set; }
 
-        public IList<CalculationProcedureParameter> Parameters { get; }
+        public IList<CalculationProcedureParameter> Parameters { get; } = [];
 
         public CalculationLevel Level
         {

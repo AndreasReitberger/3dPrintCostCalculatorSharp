@@ -14,8 +14,8 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid CalculationId { get; set; }
         public Guid WorkstepId { get; set; }
-        public Workstep Workstep { get; set; }
-        public WorkstepUsageParameter UsageParameter { get; set; }
+        public Workstep? Workstep { get; set; }
+        public WorkstepUsageParameter? UsageParameter { get; set; }
         public double TotalCosts { get; set; }
 
         #endregion

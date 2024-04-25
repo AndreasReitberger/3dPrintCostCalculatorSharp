@@ -5,7 +5,7 @@ namespace AndreasReitberger.Print3d.Realm.Events
     public class MaterialChangedEventArgs : CalculatorEventArgs
     {
         #region Properties
-        public Material3d Material { get; set; }
+        public Material3d? Material { get; set; }
         #endregion
 
         #region Overrides

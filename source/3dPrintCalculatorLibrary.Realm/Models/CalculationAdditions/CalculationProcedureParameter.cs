@@ -23,7 +23,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 
         public double Value { get; set; } = 0;
 
-        public IList<CalculationProcedureParameterAddition> Additions { get; }
+        public IList<CalculationProcedureParameterAddition> Additions { get; } = [];
 
         #endregion
 

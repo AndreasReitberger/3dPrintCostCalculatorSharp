@@ -28,7 +28,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid ManufacturerId { get; set; }
 
-        public Manufacturer Manufacturer { get; set; }
+        public Manufacturer? Manufacturer { get; set; }
 
         public double Price { get; set; } = 0;
 
@@ -55,13 +55,13 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid HourlyMachineRateId { get; set; }
 
-        public HourlyMachineRate HourlyMachineRate { get; set; }
+        public HourlyMachineRate? HourlyMachineRate { get; set; }
 
         public Guid SlicerConfigId { get; set; }
 
         public Printer3dSlicerConfig SlicerConfig { get; set; } = new();
 
-        public byte[] Image { get; set; } = Array.Empty<byte>();
+        public byte[] Image { get; set; } = [];
 
         public string Note { get; set; } = string.Empty;
 
@@ -73,9 +73,9 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Collections
-        public IList<Printer3dAttribute> Attributes { get; }
+        public IList<Printer3dAttribute> Attributes { get; } = [];
 
-        public IList<Maintenance3d> Maintenances { get; }
+        public IList<Maintenance3d> Maintenances { get; } = [];
         #endregion
 
         #region Constructor

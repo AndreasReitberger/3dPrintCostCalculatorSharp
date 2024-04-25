@@ -21,16 +21,16 @@ namespace AndreasReitberger.Print3d.SQLite.SlicerAdditions
 
         [ObservableProperty]
         [property: ManyToOne(nameof(SlicerId), CascadeOperations = CascadeOperation.All)]
-        Slicer3d slicer;
+        Slicer3d? slicer;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
-        string command;
+        string command = string.Empty;
 
         [ObservableProperty]
-        string outputFilePatternString;
+        string outputFilePatternString = string.Empty;
 
         [ObservableProperty]
         bool autoAddFilePath;

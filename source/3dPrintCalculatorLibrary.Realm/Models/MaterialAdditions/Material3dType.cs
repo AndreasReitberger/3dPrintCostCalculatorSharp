@@ -18,9 +18,9 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
         }
         public int FamilyId { get; set; }
 
-        public string Material { get; set; }
+        public string Material { get; set; } = string.Empty;
 
-        public string Polymer { get; set; }
+        public string Polymer { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

@@ -21,11 +21,11 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
-        public string ToolTip { get; set; }
+        public string ToolTip { get; set; } = string.Empty;
 
         public bool Enabled { get; set; }
 
@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Collections
 
-        public IList<ProcedureCalculationParameter> Parameters { get; }
+        public IList<ProcedureCalculationParameter> Parameters { get; } = [];
         #endregion
 
         #region Constructor

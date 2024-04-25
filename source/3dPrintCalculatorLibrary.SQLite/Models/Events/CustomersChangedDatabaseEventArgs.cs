@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace AndreasReitberger.Print3d.SQLite.Events
 {
     public class CustomersChangedDatabaseEventArgs : DatabaseEventArgs
     {
         #region Properties
-        public List<Customer3d> Customers { get; set; } = new();
+        public List<Customer3d> Customers { get; set; } = [];
         #endregion
 
         #region Overrides

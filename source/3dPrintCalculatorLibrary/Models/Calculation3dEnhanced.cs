@@ -83,9 +83,9 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Details
-        public List<Printer3d>? AvailablePrinters => PrintInfos.Select(pi => pi.Printer)?.Distinct()?.ToList();
+        public List<Printer3d?> AvailablePrinters => PrintInfos.Select(pi => pi.Printer).Distinct().ToList();
 
-        public List<Material3d>? AvailableMaterials => PrintInfos.SelectMany(pi => pi.MaterialUsages).Select(mu => mu.Material)?.Distinct()?.ToList();
+        public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.MaterialUsages).Select(mu => mu.Material).Distinct().ToList();
 
         [ObservableProperty]
         List<CustomAddition> customAdditions = [];

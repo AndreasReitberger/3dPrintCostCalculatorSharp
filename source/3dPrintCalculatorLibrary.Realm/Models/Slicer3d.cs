@@ -25,27 +25,27 @@ namespace AndreasReitberger.Print3d.Realm
         }
         public int ExecutionTypeId { get; set; } = (int)SlicerExecutionType.GUI;
 
-        public string InstallationPath { get; set; }
+        public string InstallationPath { get; set; } = string.Empty;
 
-        public string DownloadUri { get; set; }
+        public string DownloadUri { get; set; } = string.Empty;
 
-        public string Author { get; set; }
+        public string Author { get; set; } = string.Empty;
 
-        public string RepoUri { get; set; }
+        public string RepoUri { get; set; } = string.Empty;
 
         public Version Version
         {
             get => Version.Parse(VersionString);
-            set => VersionString = value?.ToString();
+            set => VersionString = value.ToString();
         }
-        public string VersionString { get; set; }
+        public string VersionString { get; set; } = string.Empty;
 
         public Version LatestVersion
         {
             get => Version.Parse(LatestVersionString);
-            set => LatestVersionString = value?.ToString();
+            set => LatestVersionString = value.ToString();
         }
-        public string LatestVersionString { get; set; }
+        public string LatestVersionString { get; set; } = string.Empty;
         #endregion
 
         #region Constructor 

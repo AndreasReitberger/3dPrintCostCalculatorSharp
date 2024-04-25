@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Realm.StorageAdditions
 
         public DateTimeOffset DateTime { get; set; }
 
-        public Storage3dItem Item { get; set; }
+        public Storage3dItem? Item { get; set; }
 
         public double Amount { get; set; }
 

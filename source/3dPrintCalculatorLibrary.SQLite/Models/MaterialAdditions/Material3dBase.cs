@@ -16,10 +16,10 @@ namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
         Material3dTypes type;
 
         [ObservableProperty]
-        string material;
+        string material = string.Empty;
 
         [ObservableProperty]
-        string polymer;
+        string polymer = string.Empty;
         #endregion
 
         #region Constructors

@@ -47,11 +47,11 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid MaterialTypeId { get; set; }
 
-        public Material3dType TypeOfMaterial { get; set; }
+        public Material3dType? TypeOfMaterial { get; set; }
 
         public Guid ManufacturerId { get; set; }
 
-        public Manufacturer Manufacturer { get; set; }
+        public Manufacturer? Manufacturer { get; set; }
 
         public double UnitPrice { get; set; } = 0;
 
@@ -78,16 +78,16 @@ namespace AndreasReitberger.Print3d.Realm
 
         public double SpoolWeight { get; set; } = 200;
 
-        public byte[] Image { get; set; } = Array.Empty<byte>();
+        public byte[] Image { get; set; } = [];
         #endregion
 
         #region Collections
 
-        public IList<Material3dAttribute> Attributes { get; }
+        public IList<Material3dAttribute> Attributes { get; } = [];
 
-        public IList<Material3dProcedureAttribute> ProcedureAttributes { get; }
+        public IList<Material3dProcedureAttribute> ProcedureAttributes { get; } = [];
 
-        public IList<Material3dColor> Colors { get; }
+        public IList<Material3dColor> Colors { get; } = [];
         #endregion
 
         #region Constructor

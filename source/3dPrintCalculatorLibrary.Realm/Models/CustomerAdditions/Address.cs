@@ -12,15 +12,15 @@ namespace AndreasReitberger.Print3d.Realm.CustomerAdditions
 
         public Guid CustomerId { get; set; }
 
-        public string Supplement { get; set; }
+        public string Supplement { get; set; } = string.Empty;
 
-        public string Street { get; set; }
+        public string Street { get; set; } = string.Empty;
 
-        public string Zip { get; set; }
+        public string Zip { get; set; } = string.Empty;
 
-        public string City { get; set; }
+        public string City { get; set; } = string.Empty;
 
-        public string CountryCode { get; set; }
+        public string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

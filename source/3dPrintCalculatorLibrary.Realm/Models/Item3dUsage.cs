@@ -28,14 +28,14 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid ItemId { get; set; }
 
-        public Item3d Item { get; set; }
+        public Item3d? Item { get; set; }
 
         public double Quantity { get; set; }
 
         public Guid? FileId { get; set; }
 
-        File3d file { get; set; }
-        public File3d File
+        File3d? file { get; set; }
+        public File3d? File
         {
             get => file;
             set
@@ -44,7 +44,7 @@ namespace AndreasReitberger.Print3d.Realm
                 OnFileChanged(value);
             }
         }
-        void OnFileChanged(File3d value)
+        void OnFileChanged(File3d? value)
         {
             FileId = value?.Id ?? Guid.Empty;
             LinkedToFile = value is not null;

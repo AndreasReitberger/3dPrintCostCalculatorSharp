@@ -15,11 +15,11 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 
         public Guid FileId { get; set; } = Guid.Empty;
 
-        public string FileName { get; set; }
+        public string FileName { get; set; } = string.Empty;
 
         public Guid LinkedId { get; set; } = Guid.Empty;
 
-        public string Attribute { get; set; }
+        public string Attribute { get; set; } = string.Empty;
 
         public CalculationAttributeTarget Target
         {

@@ -27,7 +27,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: JsonIgnore, Ignore]
-        object file;
+        object? file;
 
         [ObservableProperty]
         string fileName = string.Empty;

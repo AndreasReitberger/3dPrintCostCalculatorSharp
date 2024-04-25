@@ -25,7 +25,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public string SKU { get; set; } = string.Empty;
 
-        public Manufacturer Manufacturer { get; set; }
+        public Manufacturer? Manufacturer { get; set; }
 
         public double PackageSize { get; set; } = 1;
 

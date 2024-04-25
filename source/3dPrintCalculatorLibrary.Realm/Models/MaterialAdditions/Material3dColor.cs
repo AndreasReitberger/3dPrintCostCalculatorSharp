@@ -12,9 +12,9 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
 
         public Guid MaterialId { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string HexColorCode { get; set; }
+        public string HexColorCode { get; set; } = string.Empty;
 
         #endregion
 

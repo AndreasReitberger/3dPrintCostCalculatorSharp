@@ -46,14 +46,14 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
         public Storage3dTransaction? AddToStock(Storage3dItem item, double amount, Unit unit)
         {
-            if (item?.Material is not null)
+            if (item.Material is not null)
             {
                 Storage3dTransaction transaction = new()
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
                 };
-                if (item?.Material.Unit == unit)
+                if (item.Material.Unit == unit)
                 {
                     transaction.Amount += amount;
                 }
@@ -89,16 +89,16 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
             return item.Transactions.LastOrDefault();
         }
 
-        public Storage3dTransaction? TakeFromStock(Storage3dItem? item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+        public Storage3dTransaction? TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
-            if (item?.Material is not null)
+            if (item.Material is not null)
             {
                 Storage3dTransaction transaction = new()
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
                 };
-                if (item?.Material.Unit == unit)
+                if (item.Material.Unit == unit)
                 {
                     transaction.Amount -= amount;
                 }
@@ -109,20 +109,20 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 
                     transaction.Amount -= target > current ? amount / (target / current) : amount * (current / target);
                 }
-                if (item?.Amount + transaction.Amount >= 0)
+                if (item.Amount + transaction.Amount >= 0)
                 {
-                    item?.Transactions.Add(transaction);
+                    item.Transactions.Add(transaction);
                     return transaction;
                 }
                 else if (throwIfMaterialIsNotInStock)
                 {
-                    throw new ArgumentOutOfRangeException($"The amount of the material `{item?.Material}` is not sufficient for this transaction (In stock: {item?.Amount} / Requested: {amount}!");
+                    throw new ArgumentOutOfRangeException($"The amount of the material `{item.Material}` is not sufficient for this transaction (In stock: {item.Amount} / Requested: {amount}!");
                 }
                 else return null;
             }
             else if (throwIfMaterialIsNotInStock)
             {
-                throw new ArgumentOutOfRangeException($"The material `{item?.Material}` is not available in the stock!");
+                throw new ArgumentOutOfRangeException($"The material `{item.Material}` is not available in the stock!");
             }
             else return null;
         }
@@ -130,12 +130,14 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
         {
             Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            if (item is null) return null;
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
         public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
         {
             Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+            if (item is null) return null;
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 

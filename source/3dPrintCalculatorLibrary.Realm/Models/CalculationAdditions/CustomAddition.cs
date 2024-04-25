@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.Realm.CalculationAdditions
 
         public Guid CalculationId { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public double Percentage { get; set; }
 

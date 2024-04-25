@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Linked Customer
 
-        public IList<Customer3d> Customers { get; }
+        public IList<Customer3d> Customers { get; } = [];
         #endregion
 
         #region Presets
@@ -106,20 +106,20 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Custom
-        public IList<ProcedureAddition> ProcedureAdditions { get; }
+        public IList<ProcedureAddition> ProcedureAdditions { get; } = [];
         #endregion
 
         #endregion
 
         #region Presets
 
-        public IList<Printer3d> Printers { get; }
+        public IList<Printer3d> Printers { get; } = [];
 
-        public IList<Material3d> Materials { get; }
+        public IList<Material3d> Materials { get; } = [];
 
-        public IList<Item3dUsage> Items { get; }
+        public IList<Item3dUsage> Items { get; } = [];
 
-        public IList<WorkstepUsage> Worksteps { get; }
+        public IList<WorkstepUsage> Worksteps { get; } = [];
         #endregion
 
         #endregion

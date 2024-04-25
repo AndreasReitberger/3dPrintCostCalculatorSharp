@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
         Guid calculationProcedureParameterId;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
         double value = 0;

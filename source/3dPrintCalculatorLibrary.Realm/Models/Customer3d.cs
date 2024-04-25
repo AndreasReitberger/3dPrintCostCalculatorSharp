@@ -36,7 +36,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         public Guid ContactPersonId { get; set; }
 
-        public ContactPerson ContactPerson { get; set; }
+        public ContactPerson? ContactPerson { get; set; }
 
         public string Handler { get; set; } = string.Empty;
 
@@ -50,11 +50,11 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Collections
 
-        public IList<Address> Addresses { get; }
+        public IList<Address> Addresses { get; } = [];
 
-        public IList<Email> EmailAddresses { get; }
+        public IList<Email> EmailAddresses { get; } = [];
 
-        public IList<PhoneNumber> PhoneNumbers { get; }
+        public IList<PhoneNumber> PhoneNumbers { get; } = [];
         #endregion
 
         #region Constructor

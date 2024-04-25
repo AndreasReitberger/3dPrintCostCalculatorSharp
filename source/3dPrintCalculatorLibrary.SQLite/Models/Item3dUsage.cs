@@ -43,7 +43,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
-        Item3d item;
+        Item3d? item;
 
         [ObservableProperty]
         [property: JsonIgnore, XmlIgnore]
@@ -51,8 +51,8 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3d file;
-        partial void OnFileChanged(File3d value)
+        File3d? file;
+        partial void OnFileChanged(File3d? value)
         {
             FileId = value?.Id ?? Guid.Empty;
             LinkedToFile = value is not null;

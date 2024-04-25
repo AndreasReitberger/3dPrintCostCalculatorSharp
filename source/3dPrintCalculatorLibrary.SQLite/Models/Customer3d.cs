@@ -53,19 +53,19 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
-        ContactPerson contactPerson;
+        ContactPerson? contactPerson;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Address> addresses = new();
+        List<Address> addresses = [];
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Email> emailAddresses = new();
+        List<Email> emailAddresses = [];
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<PhoneNumber> phoneNumbers = new();
+        List<PhoneNumber> phoneNumbers = [];
 
         [ObservableProperty]
         string handler = string.Empty;

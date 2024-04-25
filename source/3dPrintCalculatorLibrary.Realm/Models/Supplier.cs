@@ -18,18 +18,18 @@ namespace AndreasReitberger.Print3d.Realm
         [PrimaryKey]
         public Guid Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
-        public string DebitorNumber { get; set; }
+        public string DebitorNumber { get; set; } = string.Empty;
 
         public bool IsActive { get; set; }
 
-        public string Website { get; set; }
+        public string Website { get; set; } = string.Empty;
 
         #endregion
 
         #region Collections
-        public IList<Manufacturer> Manufacturers { get; }
+        public IList<Manufacturer> Manufacturers { get; } = [];
         #endregion
 
         #region Constructor

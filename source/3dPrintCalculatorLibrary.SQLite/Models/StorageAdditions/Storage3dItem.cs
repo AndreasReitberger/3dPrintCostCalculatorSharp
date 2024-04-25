@@ -15,14 +15,14 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
         Guid id;
 
         [ObservableProperty]
-        string name;
+        string name = string.Empty;
 
         [ObservableProperty]
         Guid materialId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
-        Material3d material;
+        Material3d? material;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]

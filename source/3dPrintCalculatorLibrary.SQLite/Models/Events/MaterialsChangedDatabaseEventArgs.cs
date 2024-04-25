@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 
 namespace AndreasReitberger.Print3d.SQLite.Events
@@ -7,7 +6,7 @@ namespace AndreasReitberger.Print3d.SQLite.Events
     public class MaterialsChangedDatabaseEventArgs : DatabaseEventArgs
     {
         #region Properties
-        public List<Material3d> Materials { get; set; } = new();
+        public List<Material3d> Materials { get; set; } = [];
         #endregion
 
         #region Overrides

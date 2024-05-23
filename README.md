@@ -3,6 +3,16 @@ A library to calculate 3d print costs, manager 3d printers & materials and many 
 
 [![.NET](https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml/badge.svg)]([https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml](https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp/actions/workflows/dotnet-unittest.yml))
 
+# Support me
+If you want to support me, you can order over following affilate links (I'll get a small share from your purchase from the corresponding store).
+
+- Prusa: http://www.prusa3d.com/#a_aid=AndreasReitberger *
+- Jake3D: https://tidd.ly/3x9JOBp * 
+- Amazon: https://amzn.to/2Z8PrDu *
+
+(*) Affiliate link
+Thank you very much for supporting me!
+
 # Nuget
 Get the latest version from nuget.org<br>
 

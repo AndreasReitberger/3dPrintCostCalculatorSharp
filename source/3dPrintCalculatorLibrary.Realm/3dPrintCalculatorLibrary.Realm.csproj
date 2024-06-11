@@ -39,7 +39,7 @@
   <ItemGroup>
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Realm" Version="11.7.0" />
+    <PackageReference Include="Realm" Version="12.2.0" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 

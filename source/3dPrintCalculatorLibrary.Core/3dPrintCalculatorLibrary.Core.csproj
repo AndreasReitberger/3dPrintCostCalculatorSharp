@@ -6,7 +6,8 @@
 	<RootNamespace>AndreasReitberger.Print3d.Core</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  
+
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<RootNamespace>AndreasReitberger.Print3d</RootNamespace>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+	<None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

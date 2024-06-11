@@ -173,7 +173,7 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        FileUsage = new File3dUsage() 
+                        FileUsage = new File3dUsage()
                         {
                             File = new File3d()
                             {
@@ -398,14 +398,14 @@ namespace AndreasReitberger.NUnitTest
                     additionalInfo =
                     [
                             new CalculationProcedureParameterAddition("replacementcosts", 120),
-                            new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                        new CalculationProcedureParameterAddition("wearfactor", 0.01d)
                     ];
                     parameters =
                     [
                         new CalculationProcedureParameter()
                         {
                             Type = ProcedureParameter.ResinTankWearCosts,
-                            Value = 120d  * 0.01d,
+                            Value = 120d * 0.01d,
                             Additions = additionalInfo,
 
                         }

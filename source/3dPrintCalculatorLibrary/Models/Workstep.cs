@@ -20,7 +20,7 @@ namespace AndreasReitberger.Print3d.Models
 
         [ObservableProperty]
         double price = 0;
- 
+
         [ObservableProperty]
         Guid categoryId;
 
@@ -43,7 +43,7 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Overrides
         public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
-        
+
         public override bool Equals(object? obj)
         {
             if (obj is not Workstep item)

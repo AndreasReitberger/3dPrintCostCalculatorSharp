@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 if (!string.IsNullOrEmpty(_databaseHandler.DatabasePath))
                 {
-                    SQLiteConnectionString con = 
+                    SQLiteConnectionString con =
                         new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
                     _databaseHandler.DatabaseAsync = new(con);
                     _databaseHandler.IsInitialized = true;
@@ -36,7 +36,7 @@ namespace AndreasReitberger.Print3d.SQLite
             {
                 if (!string.IsNullOrEmpty(_databaseHandler.DatabasePath))
                 {
-                    SQLiteConnectionString con = 
+                    SQLiteConnectionString con =
                         new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
                     _databaseHandler.DatabaseAsync = new(con);
                     _databaseHandler.IsInitialized = true;

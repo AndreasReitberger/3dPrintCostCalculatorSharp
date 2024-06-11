@@ -8,10 +8,10 @@ namespace AndreasReitberger.NUnitTest
 {
     public class TestsCore
     {
-        bool ApplyResinGlovesCosts =  true;
-        bool ApplyResinWashingCosts =  true;
-        bool ApplyResinFilterCosts =  true;
-        bool ApplyResinTankWearCosts =  true;
+        bool ApplyResinGlovesCosts = true;
+        bool ApplyResinWashingCosts = true;
+        bool ApplyResinFilterCosts = true;
+        bool ApplyResinTankWearCosts = true;
 
 
         ICalculation3dEnhanced? calculation;
@@ -134,7 +134,7 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        FileUsage = new File3dUsage() 
+                        FileUsage = new File3dUsage()
                         {
                             File = new File3d()
                             {
@@ -392,19 +392,19 @@ namespace AndreasReitberger.NUnitTest
                 if (true)
                 {
                     // Needed if the calculation is reloaded later
-                    additionalInfo = 
+                    additionalInfo =
                     [
                             new CalculationProcedureParameterAddition("replacementcosts", 120),
-                            new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                        new CalculationProcedureParameterAddition("wearfactor", 0.01d)
                     ];
                     parameters =
                     [
                         new CalculationProcedureParameter()
                         {
                             Type = ProcedureParameter.ResinTankWearCosts,
-                            Value = 120d  * 0.01d,
+                            Value = 120d * 0.01d,
                             Additions = additionalInfo,
-                            
+
                         }
                     ];
                     calculation.ProcedureAttributes.Add(
@@ -455,10 +455,10 @@ namespace AndreasReitberger.NUnitTest
 
                 var washingCosts = calculation.OverallPrinterCosts.Where(c => c.Attribute == "WashingCosts")?.ToList();
                 Assert.That(washingCosts?.Count == fileCount);
-                foreach(var washCost in washingCosts)
+                foreach (var washCost in washingCosts)
                 {
                     IFile3dUsage? f = calculation.PrintInfos.FirstOrDefault(pi => pi.FileUsage.File.Id == washCost.FileId).FileUsage;
-                    Assert.That(washCost.Value / f.Quantity  == 1d);
+                    Assert.That(washCost.Value / f.Quantity == 1d);
                 }
 
                 var tankWearCosts = calculation.OverallPrinterCosts.Where(c => c.Attribute == "ResinTankWearCosts")?.ToList();
@@ -850,7 +850,7 @@ namespace AndreasReitberger.NUnitTest
                 var margin2 = marginTestCalculation?.CalculatedMargin ?? 0;
                 Assert.That(margin2 > margin);
 
-                calculation.Rates.Clear(); 
+                calculation.Rates.Clear();
                 calculation.Rates.Add(new CalculationAttribute()
                 {
                     Target = CalculationAttributeTarget.Fee,

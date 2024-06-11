@@ -123,7 +123,7 @@ namespace AndreasReitberger.NUnitTest
                 },
                 Quantity = 10,
             });
-            
+
             // Resing job
             var pi2 = new Print3dInfo()
             {
@@ -159,7 +159,7 @@ namespace AndreasReitberger.NUnitTest
                 },
                 PercentageValue = 1,
             });
-            
+
             var pi3 = new Print3dInfo()
             {
                 Name = "My first resin print job",
@@ -315,7 +315,7 @@ namespace AndreasReitberger.NUnitTest
                         PerPiece = false,
                     };
                     // Causes an exception. Must be investigated
-                    foreach(var para in parameters)
+                    foreach (var para in parameters)
                         parameters.Add(para);
                     calculation.ProcedureAttributes.Add(cpa1);
                 }
@@ -403,7 +403,7 @@ namespace AndreasReitberger.NUnitTest
                     additionalInfo =
                     [
                             new CalculationProcedureParameterAddition("replacementcosts", 120),
-                            new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                        new CalculationProcedureParameterAddition("wearfactor", 0.01d)
                     ];
 
                     var ad4 = new CalculationProcedureParameter()

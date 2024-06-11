@@ -75,7 +75,7 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My awesome print job",
-                        FileUsage = new() 
+                        FileUsage = new()
                         {
                             File = new File3d()
                             {
@@ -143,7 +143,7 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        FileUsage = new() 
+                        FileUsage = new()
                         {
                             File = new File3d()
                             {
@@ -179,7 +179,7 @@ namespace AndreasReitberger.NUnitTest
                     new Print3dInfo()
                     {
                         Name = "My first resin print job",
-                        FileUsage = new() 
+                        FileUsage = new()
                         {
                             File = new File3d()
                             {
@@ -404,14 +404,14 @@ namespace AndreasReitberger.NUnitTest
                     additionalInfo =
                     [
                             new CalculationProcedureParameterAddition("replacementcosts", 120),
-                            new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                        new CalculationProcedureParameterAddition("wearfactor", 0.01d)
                     ];
                     parameters =
                     [
                         new CalculationProcedureParameter()
                         {
                             Type = ProcedureParameter.ResinTankWearCosts,
-                            Value = 120d  * 0.01d,
+                            Value = 120d * 0.01d,
                             Additions = additionalInfo,
 
                         }
@@ -1362,7 +1362,7 @@ namespace AndreasReitberger.NUnitTest
                         .BuildAsync();
                     Assert.Fail("Building without the key should throw an exception");
                 }
-                catch(Exception) { }
+                catch (Exception) { }
 
                 try
                 {
@@ -1375,7 +1375,7 @@ namespace AndreasReitberger.NUnitTest
                         .BuildAsync();
                     Assert.Fail("Building without the key should throw an exception");
                 }
-                catch(Exception) { }
+                catch (Exception) { }
             }
             catch (Exception exc)
             {

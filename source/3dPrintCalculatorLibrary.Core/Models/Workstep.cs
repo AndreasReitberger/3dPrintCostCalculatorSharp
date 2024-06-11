@@ -38,7 +38,7 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Overrides
         public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
-        
+
         public override bool Equals(object? obj)
         {
             if (obj is not Workstep item)

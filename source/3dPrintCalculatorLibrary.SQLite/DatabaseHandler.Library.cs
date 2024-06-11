@@ -232,7 +232,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         #endregion
-        
+
         #region FileUsages
         public async Task<List<File3dUsage>> GetFileUsagesWithChildrenAsync()
         {

@@ -66,7 +66,7 @@ namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
                 }
                 item.Transactions.Add(transaction);
                 return item.Transactions.LastOrDefault();
-            } 
+            }
             else return null;
         }
         public Storage3dTransaction? AddToStock(Material3d material, double amount, Unit unit)

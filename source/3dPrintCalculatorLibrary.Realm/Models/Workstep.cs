@@ -48,7 +48,7 @@ namespace AndreasReitberger.Print3d.Realm
 
         #region Overrides
         public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
-        
+
         public override bool Equals(object? obj)
         {
             if (obj is not Workstep item)
@@ -60,7 +60,7 @@ namespace AndreasReitberger.Print3d.Realm
             return Id.GetHashCode();
         }
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
     }
 }

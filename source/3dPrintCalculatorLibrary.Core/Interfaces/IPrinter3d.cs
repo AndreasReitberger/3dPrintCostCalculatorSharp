@@ -19,7 +19,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public double Width { get; set; }
         public double Depth { get; set; }
         public double Height { get; set; }
-        public IHourlyMachineRate?   HourlyMachineRate { get; set; }
+        public IHourlyMachineRate? HourlyMachineRate { get; set; }
         public IList<IMaintenance3d> Maintenances { get; set; }
         public IPrinter3dSlicerConfig? SlicerConfig { get; set; }
         public byte[] Image { get; set; }

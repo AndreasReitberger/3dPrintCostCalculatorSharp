@@ -216,7 +216,7 @@ namespace AndreasReitberger.Print3d.SQLite
             // Some examples: https://github.com/praeclarum/sqlite-net/blob/master/tests/SQLite.Tests/SQLCipherTest.cs
             SQLiteConnectionString connection = new(databasePath, true, key: passphrase);
             DatabaseAsync = new SQLiteAsyncConnection(connection);
-            
+
             InitTables();
             IsInitialized = true;
             if (updateInstance) Instance = this;
@@ -270,7 +270,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         public Task CloseDatabaseAsync() => DatabaseAsync.CloseAsync();
-        
+
         public List<TableMapping>? GetTableMappings(string databasePath = "")
         {
             if (DatabaseAsync == null && !string.IsNullOrWhiteSpace(databasePath))
@@ -384,7 +384,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         public Task CloseAsync() => DatabaseAsync.CloseAsync();
         public void Close() => DatabaseAsync?.CloseAsync();
-        
+
         public void Dispose() => Close();
 
         #endregion

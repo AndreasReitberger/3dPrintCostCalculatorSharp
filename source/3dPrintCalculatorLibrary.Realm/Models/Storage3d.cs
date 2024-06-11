@@ -65,7 +65,7 @@ namespace AndreasReitberger.Print3d.Realm
             Storage3dItem? item = Items?.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
             {
-               AddToStock(item: item, amount: amount, unit: unit);
+                AddToStock(item: item, amount: amount, unit: unit);
             }
             else
                 CreateStockItem(material, amount, unit);

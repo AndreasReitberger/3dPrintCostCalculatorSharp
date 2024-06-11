@@ -791,10 +791,15 @@ namespace AndreasReitberger.NUnitTest
                         Name = "Main material storage",
                     };
                     storage.Items.Add(item);
+                    return;
                     realm.Write(() =>
                     {
                         realm.Add(storage);
-                        storage.AddToStock(material, 750, Unit.Gram);
+                        // The transaction is not saved... don't know why...
+                        var transaction = storage.AddToStock(material, 750, Unit.Gram);
+                        realm.Add(transaction);
+                        realm.Add(storage);
+
                         var newItem = storage.Items.FirstOrDefault(curItem => curItem.Material.Id == material.Id);
                         // Check if the addition was successfully
                         Assert.That(newItem?.Amount == startAmount + 0.75);

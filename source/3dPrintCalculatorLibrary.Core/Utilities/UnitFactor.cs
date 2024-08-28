@@ -4,7 +4,7 @@ namespace AndreasReitberger.Print3d.Core.Utilities
 {
     public static class UnitFactor
     {
-        public static Dictionary<Unit, int> UnitFactors = new()
+        public static  Dictionary<Unit, int> UnitFactors = new()
         {
             { Unit.Gram, 1 },
             { Unit.Kilogram, 1000 },

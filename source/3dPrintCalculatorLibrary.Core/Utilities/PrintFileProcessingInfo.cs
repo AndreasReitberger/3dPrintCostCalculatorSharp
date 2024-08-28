@@ -1,10 +1,9 @@
-﻿using AndreasReitberger.Print3d.Models;
+﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
-namespace AndreasReitberger.Print3d.Utilities
+namespace AndreasReitberger.Print3d.Core.Utilities
 {
-    public partial class PrintFileProcessingInfo : ObservableObject
+    public partial class PrintFileProcessingInfo : ObservableObject, IPrintFileProcessingInfo
     {
         #region Properties
 

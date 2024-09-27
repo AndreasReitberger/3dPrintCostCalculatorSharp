@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using SQLite;
 using System.Collections.ObjectModel;
 using SQLiteNetExtensions.Attributes;
-using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite

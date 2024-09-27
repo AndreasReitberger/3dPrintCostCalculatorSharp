@@ -1,14 +1,22 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite.FileAdditions
+{
+    [Table($"{nameof(File3dWeight)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class File3dWeight : ObservableObject, IFile3dWeight
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]

@@ -1,6 +1,5 @@
-﻿namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+﻿namespace AndreasReitberger.Print3d.Core
 {
-    [Obsolete("Use from Core namespace")]
     public static class CalculationProcedureAttributeExtension
     {
         #region Methods

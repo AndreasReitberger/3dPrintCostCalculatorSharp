@@ -19,8 +19,9 @@ using System.Xml.Serialization;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
+    #if !SQL
     [Table("CalculationsEnhanced")]
-    public partial class Calculation3dEnhanced : ObservableObject, ICalculation3dEnhanced, ICloneable
+    public partial class Calculation3dEnhancedOld : ObservableObject, ICalculation3dEnhanced, ICloneable
     {
 
         #region Properties
@@ -362,7 +363,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor
-        public Calculation3dEnhanced()
+        public Calculation3dEnhancedOld()
         {
             Id = Guid.NewGuid();
             PrintInfos = [];
@@ -390,4 +391,5 @@ namespace AndreasReitberger.Print3d.SQLite
         }
         #endregion
     }
+#endif
 }

@@ -1,9 +1,17 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
+#if SQL
+using AndreasReitberger.Print3d.SQLite.FileAdditions;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Item3dUsage)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     /// <summary>
     /// This is an additional item usage which can be added to the calculation job. 
     /// For instance, if you need to add screws or other material to the calculation.
@@ -12,18 +20,57 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationEnhancedId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Print3dInfo))]
+        Guid printInfoId;
+
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        Guid itemId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
+        Item3d? item;
+#else
         [ObservableProperty]
         IItem3d? item;
-
+#endif
         [ObservableProperty]
         double quantity;
 
+#if SQL
         [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        Guid fileId;
+#endif
+
+        [ObservableProperty]
+#if SQL
+        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        File3d? file;
+        partial void OnFileChanged(File3d? value)
+#else
         IFile3d? file;
         partial void OnFileChanged(IFile3d? value)
+#endif
         {
+#if SQL
+            FileId = value?.Id ?? Guid.Empty;
+#endif
             LinkedToFile = value is not null;
         }
 

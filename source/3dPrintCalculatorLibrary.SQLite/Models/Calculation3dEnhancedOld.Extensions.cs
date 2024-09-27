@@ -1,4 +1,5 @@
-﻿using AndreasReitberger.Print3d.Enums;
+﻿#if !SQL
+using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.FileAdditions;
 using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
@@ -6,7 +7,7 @@ using AndreasReitberger.Print3d.Utilities;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
-    public partial class Calculation3dEnhanced
+    public partial class Calculation3dEnhancedOld
     {
         #region Methods
 
@@ -854,3 +855,4 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
     }
 }
+#endif

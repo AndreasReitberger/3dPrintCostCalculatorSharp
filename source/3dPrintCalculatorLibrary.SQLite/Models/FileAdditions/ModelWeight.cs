@@ -8,6 +8,7 @@ using SQLiteNetExtensions.Attributes;
 namespace AndreasReitberger.Print3d.SQLite.FileAdditions
 {
     [Table("ModelWeights")]
+    [Obsolete("Use File3dWeight instead")]
     public partial class ModelWeight : ObservableObject, IModelWeight
     {
         #region Properties

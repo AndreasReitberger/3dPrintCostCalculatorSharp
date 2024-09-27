@@ -1,16 +1,27 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+{
+    [Table($"{nameof(CalculationProcedureParameter)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class CalculationProcedureParameter : ObservableObject, ICalculationProcedureParameter
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
+#if SQL
+        [property: ForeignKey(typeof(CalculationProcedureAttribute))]
+#endif
         Guid calculationProcedureAttributeId;
 
         [ObservableProperty]
@@ -20,7 +31,12 @@ namespace AndreasReitberger.Print3d.Core
         double value = 0;
 
         [ObservableProperty]
+#if SQL
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<CalculationProcedureParameterAddition> additions = [];
+#else
         IList<ICalculationProcedureParameterAddition> additions = [];
+#endif
 
         #endregion
 

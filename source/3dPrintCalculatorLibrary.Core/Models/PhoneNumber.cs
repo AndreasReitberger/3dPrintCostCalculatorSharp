@@ -1,15 +1,26 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
+{
+    [Table($"{nameof(PhoneNumber)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class PhoneNumber : ObservableObject, IPhoneNumber
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
+#if SQL
+        [property: ForeignKey(typeof(Customer3d))]
+#endif
         Guid customerId;
 
         [ObservableProperty]

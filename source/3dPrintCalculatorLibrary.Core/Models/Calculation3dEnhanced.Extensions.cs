@@ -1,10 +1,17 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
-using System.Diagnostics;
 
+#if SQL
+using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
+using System.Collections.ObjectModel;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Calculation3dEnhanced
     {
         #region Methods

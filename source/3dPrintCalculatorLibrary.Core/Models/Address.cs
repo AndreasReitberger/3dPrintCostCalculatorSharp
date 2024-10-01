@@ -1,11 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-#if SQL
-using SQLite;
-using SQLiteNetExtensions.Attributes;
-#endif
 
 #if SQL
-namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
+namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Address)}es")]
 #else

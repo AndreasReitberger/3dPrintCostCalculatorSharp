@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("Storages")]
-    public partial class Storage3d : ObservableObject, IStorage3d
+    public partial class Storage3dOld : ObservableObject, IStorage3d
     {
         #region Properties
         [ObservableProperty]
@@ -29,7 +29,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Ctor
-        public Storage3d()
+        public Storage3dOld()
         {
             Id = Guid.NewGuid();
         }

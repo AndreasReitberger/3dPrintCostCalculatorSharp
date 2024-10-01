@@ -19,8 +19,9 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid CalculationProfileId { get; set; }
         public Guid ManufacturerId { get; set; }
         public Manufacturer? Manufacturer { get; set; }
-        public Guid SlicerId { get; set; }
+        public Guid SlicerConfigId { get; set; }
         public List<Printer3dAttribute> Attributes { get; set; }
+        public Guid HourlyMachineRateId { get; set; }
         public HourlyMachineRate? HourlyMachineRate { get; set; }
         public List<Maintenance3d> Maintenances { get; set; }
         public Printer3dSlicerConfig? SlicerConfig { get; set; }

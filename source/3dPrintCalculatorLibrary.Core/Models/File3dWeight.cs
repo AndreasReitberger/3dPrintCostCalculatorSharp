@@ -3,7 +3,7 @@ using AndreasReitberger.Print3d.Core.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 #if SQL
-namespace AndreasReitberger.Print3d.SQLite.FileAdditions
+namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(File3dWeight)}s")]
 #else

@@ -8,6 +8,9 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
     {
         #region Properties
         public Guid Id { get; set; }
+#if SQL
+        public Guid MaterialId { get; set; }
+#endif
         public string Name { get; set; }
         public string HexColorCode { get; set; }
         #endregion

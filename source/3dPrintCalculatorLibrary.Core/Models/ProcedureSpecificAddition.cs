@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 
 #if SQL
-namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(ProcedureSpecificAddition)}s")]
 #else

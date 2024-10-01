@@ -1,21 +1,60 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(WorkstepUsage)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class WorkstepUsage : ObservableObject, IWorkstepUsage
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
+#if SQL
         [ObservableProperty]
-        IWorkstep? workstep;
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+        
+        [ObservableProperty]
+        Guid workstepId;
+        
+        [ObservableProperty]
+        [property: ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
+        Workstep? workstep;
+        partial void OnWorkstepChanged(Workstep? value) => TotalCosts = GetTotalCosts();
+        
+        [ObservableProperty]
+        Guid usageParameterId;
 
         [ObservableProperty]
         IWorkstepUsageParameter? usageParameter;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
+        WorkstepUsageParameter? usageParameter;
+        partial void OnUsageParameterChanged(WorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
+#else
+
+        [ObservableProperty]
+        IWorkstep? workstep;
+        partial void OnWorkstepChanged(IWorkstep? value) => TotalCosts = GetTotalCosts();
+
+        [ObservableProperty]
+        IWorkstepUsageParameter? usageParameter;
+        partial void OnUsageParameterChanged(IWorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
+#endif
 
         [ObservableProperty]
         double totalCosts = 0;

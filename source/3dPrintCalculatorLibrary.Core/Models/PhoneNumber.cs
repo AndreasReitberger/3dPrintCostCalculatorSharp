@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 #if SQL
-namespace AndreasReitberger.Print3d.SQLite.CustomerAdditions
+namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(PhoneNumber)}s")]
 #else

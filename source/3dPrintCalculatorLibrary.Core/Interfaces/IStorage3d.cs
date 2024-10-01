@@ -1,6 +1,8 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
 
 #if SQL
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
+
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
 #else
 namespace AndreasReitberger.Print3d.Core.Interfaces
@@ -12,7 +14,11 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int Capacity { get; set; }
+#if SQL
+        public List<Storage3dLocation> Locations { get; set; }
+#else
         public IList<IStorage3dLocation> Locations { get; set; }
+#endif
         #endregion
 
         #region Methods

@@ -1,13 +1,21 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Workstep)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Workstep : ObservableObject, IWorkstep
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
@@ -15,10 +23,25 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         double price = 0;
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
 
         [ObservableProperty]
-        IWorkstepCategory? category;
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+        
+        [ObservableProperty]
+        Guid categoryId;
 
+        [ObservableProperty]
+        [property: ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
+        WorkstepCategory? category;
+#else
+        [ObservableProperty]
+        IWorkstepCategory? category;
+#endif
         [ObservableProperty]
         CalculationType calculationType;
 

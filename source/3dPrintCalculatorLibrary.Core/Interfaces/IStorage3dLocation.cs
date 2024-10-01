@@ -13,7 +13,11 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid Id { get; set; }
         public string Location { get; set; }
         public int Capacity { get; set; }
+#if SQL
+        public List<Storage3dItem> Items { get; set; }
+#else
         public IList<IStorage3dItem> Items { get; set; }
+#endif
 
         #endregion
 

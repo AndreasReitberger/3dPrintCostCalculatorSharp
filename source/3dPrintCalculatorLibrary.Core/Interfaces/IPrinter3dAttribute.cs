@@ -8,6 +8,9 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
     {
         #region Properties
         public Guid Id { get; set; }
+#if SQL
+        public Guid PrinterId { get; set; }
+#endif
         public string Attribute { get; set; }
         public double Value { get; set; }
         #endregion

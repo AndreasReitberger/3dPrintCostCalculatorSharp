@@ -66,32 +66,52 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepCategory.cs" Link="Interfaces\IWorkstepCategory.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsage.cs" Link="Interfaces\IWorkstepUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsageParameter.cs" Link="Interfaces\IWorkstepUsageParameter.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Address.cs" Link="Models\CustomerAdditions\Address.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Address.cs" Link="Models\Address.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.cs" Link="Models\Calculation3dEnhanced.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Extensions.cs" Link="Models\Calculation3dEnhanced.Extensions.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dProfile.cs" Link="Models\Calculation3dProfile.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationAttribute.cs" Link="Models\CalculationAdditions\CalculationAttribute.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureAttribute.cs" Link="Models\CalculationAdditions\CalculationProcedureAttribute.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureParameter.cs" Link="Models\CalculationAdditions\CalculationProcedureParameter.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureParameterAddition.cs" Link="Models\CalculationAdditions\CalculationProcedureParameterAddition.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ContactPerson.cs" Link="Models\CustomerAdditions\ContactPerson.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CustomAddition.cs" Link="Models\CalculationAdditions\CustomAddition.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationAttribute.cs" Link="Models\CalculationAttribute.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureAttribute.cs" Link="Models\CalculationProcedureAttribute.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureParameter.cs" Link="Models\CalculationProcedureParameter.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureParameterAddition.cs" Link="Models\CalculationProcedureParameterAddition.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ContactPerson.cs" Link="Models\ContactPerson.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CustomAddition.cs" Link="Models\CustomAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Customer3d.cs" Link="Models\Customer3d.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Email.cs" Link="Models\CustomerAdditions\Email.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Email.cs" Link="Models\Email.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3d.cs" Link="Models\File3d.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dUsage.cs" Link="Models\FileAdditions\File3dUsage.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dWeight.cs" Link="Models\FileAdditions\File3dWeight.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dUsage.cs" Link="Models\File3dUsage.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dWeight.cs" Link="Models\File3dWeight.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\HourlyMachineRate.cs" Link="Models\HourlyMachineRate.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3d.cs" Link="Models\Item3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3dUsage.cs" Link="Models\Item3dUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Maintenance3d.cs" Link="Models\Maintenance3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Manufacturer.cs" Link="Models\Manufacturer.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3d.cs" Link="Models\Material3d.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\PhoneNumber.cs" Link="Models\CustomerAdditions\PhoneNumber.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3dAttribute.cs" Link="Models\Material3dAttribute.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3dColor.cs" Link="Models\Material3dColor.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3dProcedureAttribute.cs" Link="Models\Material3dProcedureAttribute.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3dType.cs" Link="Models\Material3dType.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3dUsage.cs" Link="Models\Material3dUsage.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\PhoneNumber.cs" Link="Models\PhoneNumber.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Print3dInfo.cs" Link="Models\Print3dInfo.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3d.cs" Link="Models\Printer3d.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3dAttribute.cs" Link="Models\Printer3dAttribute.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3dSlicerConfig.cs" Link="Models\Printer3dSlicerConfig.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureAddition.cs" Link="Models\ProcedureAddition.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureSpecificAddition.cs" Link="Models\CalculationAdditions\ProcedureSpecificAddition.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureCalculationParameter.cs" Link="Models\ProcedureCalculationParameter.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureSpecificAddition.cs" Link="Models\ProcedureSpecificAddition.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Slicer3d.cs" Link="Models\Slicer3d.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Slicer3dCommand.cs" Link="Models\Slicer3dCommand.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Sparepart.cs" Link="Models\Sparepart.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Storage3d.cs" Link="Models\Storage3d.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Storage3dItem.cs" Link="Models\Storage3dItem.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Storage3dLocation.cs" Link="Models\Storage3dLocation.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Storage3dTransaction.cs" Link="Models\Storage3dTransaction.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Supplier.cs" Link="Models\Supplier.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Workstep.cs" Link="Models\Workstep.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepCategory.cs" Link="Models\WorkstepCategory.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsage.cs" Link="Models\WorkstepUsage.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsageParameter.cs" Link="Models\WorkstepUsageParameter.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,4 @@
-﻿using SQLiteNetExtensions.Attributes;
-using System;
-
-namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+﻿namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 {
     public class CustomAdditionCalculation3dEnhanced
     {

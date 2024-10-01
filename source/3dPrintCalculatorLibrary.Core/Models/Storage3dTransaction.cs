@@ -1,21 +1,46 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Storage3dTransaction)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Storage3dTransaction : ObservableObject, IStorage3dTransaction
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
         DateTimeOffset dateTime;
 
+#if SQL
+        /*
+        [ObservableProperty]
+        Guid? calculationId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
+        Calculation3dEnhanced? calculation;
+        */
+
+        [ObservableProperty]
+        Guid? itemId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
+        Storage3dItem? item;
+#else
         [ObservableProperty]
         IStorage3dItem? item;
+#endif
 
         [ObservableProperty]
         double amount;

@@ -3,8 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Printer3d)}s")]
@@ -80,18 +78,25 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Maintenance3d> maintenances = [];
+        List<Printer3dAttribute> attributes = [];
+
+        [ObservableProperty]
+        Guid hourlyMachineRateId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(HourlyMachineRateId), CascadeOperations = CascadeOperation.All)]
+        HourlyMachineRate? hourlyMachineRate;
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Printer3dAttribute> attributes = [];
+        List<Maintenance3d> maintenances = [];
 
         [ObservableProperty]
         Guid slicerConfigId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
-        Printer3dSlicerConfig slicerConfig = new();       
+        Printer3dSlicerConfig slicerConfig = (Printer3dSlicerConfig)Printer3dSlicerConfig.Default;       
 #else
         [ObservableProperty]
         IList<IPrinter3dAttribute> attributes = [];
@@ -103,7 +108,7 @@ namespace AndreasReitberger.Print3d.Core
         IList<IMaintenance3d> maintenances = [];
 
         [ObservableProperty]
-        IPrinter3dSlicerConfig? slicerConfig;
+        IPrinter3dSlicerConfig? slicerConfig = IPrinter3dSlicerConfig.Default;
 #endif
         [ObservableProperty]
         byte[] image = [];

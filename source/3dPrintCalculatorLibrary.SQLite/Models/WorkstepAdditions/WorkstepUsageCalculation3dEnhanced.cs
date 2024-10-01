@@ -1,7 +1,4 @@
-﻿using SQLiteNetExtensions.Attributes;
-using System;
-
-namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
+﻿namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
 {
     public class WorkstepUsageCalculation3dEnhanced
     {

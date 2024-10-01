@@ -6,7 +6,7 @@ using SQLite;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("Slicers")]
-    public partial class Slicer3d : ObservableObject, ISlicer3d
+    public partial class Slicer3dOld : ObservableObject, ISlicer3d
     {
         #region Properties
         [ObservableProperty]
@@ -41,7 +41,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor 
-        public Slicer3d()
+        public Slicer3dOld()
         {
             Id = Guid.NewGuid();
         }

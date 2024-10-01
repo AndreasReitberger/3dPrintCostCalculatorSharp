@@ -1,14 +1,24 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Storage3d)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Storage3d : ObservableObject, IStorage3d
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
@@ -18,8 +28,12 @@ namespace AndreasReitberger.Print3d.Core
         int capacity = 32;
 
         [ObservableProperty]
+#if SQL
+        [property: ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
+        List<Storage3dLocation> locations = [];
+        #else
         IList<IStorage3dLocation> locations = [];
-
+#endif
         #endregion
 
         #region Ctor

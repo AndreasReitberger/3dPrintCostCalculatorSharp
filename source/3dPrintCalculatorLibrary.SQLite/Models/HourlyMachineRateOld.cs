@@ -5,7 +5,7 @@ using SQLite;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("HourlyMachineRates")]
-    public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate, ICloneable
+    public partial class HourlyMachineRateOld : ObservableObject, IHourlyMachineRate, ICloneable
     {
         #region Properties
         [ObservableProperty]
@@ -91,7 +91,7 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Constructor
-        public HourlyMachineRate()
+        public HourlyMachineRateOld()
         {
             Id = Guid.NewGuid();
         }

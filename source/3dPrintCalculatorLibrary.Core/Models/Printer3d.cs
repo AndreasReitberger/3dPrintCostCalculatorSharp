@@ -1,16 +1,36 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Printer3d)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Printer3d : ObservableObject, IPrinter3d
     {
 
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
+
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+#endif
 
         [ObservableProperty]
         string model = string.Empty;
@@ -18,8 +38,17 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         Printer3dType type = Printer3dType.FDM;
 
+#if SQL
+        [ObservableProperty]
+        Guid manufacturerId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
+        Manufacturer? manufacturer;
+#else
         [ObservableProperty]
         IManufacturer? manufacturer;
+#endif
 
         [ObservableProperty]
         double price = 0;
@@ -37,9 +66,6 @@ namespace AndreasReitberger.Print3d.Core
         Material3dFamily materialType = Material3dFamily.Filament;
 
         [ObservableProperty]
-        IList<IPrinter3dAttribute> attributes = [];
-
-        [ObservableProperty]
         double powerConsumption = 0;
 
         [ObservableProperty]
@@ -51,6 +77,25 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         double height = 1;
 
+#if SQL
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Maintenance3d> maintenances = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Printer3dAttribute> attributes = [];
+
+        [ObservableProperty]
+        Guid slicerConfigId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
+        Printer3dSlicerConfig slicerConfig = new();       
+#else
+        [ObservableProperty]
+        IList<IPrinter3dAttribute> attributes = [];
+
         [ObservableProperty]
         IHourlyMachineRate? hourlyMachineRate;
 
@@ -58,11 +103,8 @@ namespace AndreasReitberger.Print3d.Core
         IList<IMaintenance3d> maintenances = [];
 
         [ObservableProperty]
-        Guid slicerConfigId;
-
-        [ObservableProperty]
         IPrinter3dSlicerConfig? slicerConfig;
-
+#endif
         [ObservableProperty]
         byte[] image = [];
 
@@ -70,11 +112,17 @@ namespace AndreasReitberger.Print3d.Core
         string note = string.Empty;
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer?.Name}, {Model}" : Model;
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public double Volume => CalculateVolume();
-        #endregion
+#endregion
 
         #region Constructor
 
@@ -91,10 +139,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Methods
-        public double CalculateVolume()
-        {
-            return Math.Round(Width * Depth * Height, 2);
-        }
+        public double CalculateVolume() => Math.Round(Width * Depth * Height, 2);
+        
         #endregion
 
         #region Overrides
@@ -112,10 +158,8 @@ namespace AndreasReitberger.Print3d.Core
         {
             return Id.GetHashCode();
         }
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public object Clone() => MemberwiseClone();
+        
         #endregion
 
     }

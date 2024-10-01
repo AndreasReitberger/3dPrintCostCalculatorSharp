@@ -9,7 +9,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table("Printers")]
-    public partial class Printer3d : ObservableObject, IPrinter3d, ICloneable
+    public partial class Printer3dOld : ObservableObject, IPrinter3d, ICloneable
     {
 
         #region Properties
@@ -81,7 +81,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<Maintenance3d> maintenances = new();
+        ObservableCollection<Maintenance3d> maintenances = [];
 
         [ObservableProperty]
         Guid slicerConfigId;
@@ -106,11 +106,11 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Constructor
 
-        public Printer3d()
+        public Printer3dOld()
         {
             Id = Guid.NewGuid();
         }
-        public Printer3d(Printer3dType type)
+        public Printer3dOld(Printer3dType type)
         {
             Id = Guid.NewGuid();
             Type = type;

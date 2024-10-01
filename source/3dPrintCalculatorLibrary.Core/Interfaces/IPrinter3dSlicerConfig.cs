@@ -7,6 +7,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
     public interface IPrinter3dSlicerConfig
     {
         #region Properties
+        public static IPrinter3dSlicerConfig? Default { get; }
         public Guid Id { get; set; }
         public string PrinterName { get; set; }
         public double AMax_xy { get; set; }

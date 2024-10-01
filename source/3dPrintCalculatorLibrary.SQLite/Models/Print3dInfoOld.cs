@@ -11,7 +11,7 @@ namespace AndreasReitberger.Print3d.SQLite
 {
 
     [Table($"{nameof(Print3dInfo)}s")]
-    public partial class Print3dInfo : ObservableObject, IPrint3dInfo, ICloneable
+    public partial class Print3dInfoOld : ObservableObject, IPrint3dInfo, ICloneable
     {
 
         #region Properties
@@ -53,7 +53,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Constructor
 
-        public Print3dInfo()
+        public Print3dInfoOld()
         {
             Id = Guid.NewGuid();
         }

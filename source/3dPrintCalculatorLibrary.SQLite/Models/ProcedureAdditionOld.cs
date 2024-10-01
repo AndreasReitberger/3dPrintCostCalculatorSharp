@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(ProcedureAddition)}s")]
-    public partial class ProcedureAddition : ObservableObject, ICloneable, IProcedureAddition
+    public partial class ProcedureAdditionOld : ObservableObject, ICloneable, IProcedureAddition
     {
         #region Clone
         public object Clone()
@@ -56,7 +56,7 @@ namespace AndreasReitberger.Print3d.SQLite
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<ProcedureCalculationParameter> parameters = new();
+        ObservableCollection<ProcedureCalculationParameter> parameters = [];
         #endregion
 
         #region Constructor

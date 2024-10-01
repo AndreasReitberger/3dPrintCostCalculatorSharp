@@ -81,12 +81,16 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3d.cs" Link="Models\File3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dUsage.cs" Link="Models\FileAdditions\File3dUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dWeight.cs" Link="Models\FileAdditions\File3dWeight.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\HourlyMachineRate.cs" Link="Models\HourlyMachineRate.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3d.cs" Link="Models\Item3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3dUsage.cs" Link="Models\Item3dUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Maintenance3d.cs" Link="Models\Maintenance3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Manufacturer.cs" Link="Models\Manufacturer.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Material3d.cs" Link="Models\Material3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\PhoneNumber.cs" Link="Models\CustomerAdditions\PhoneNumber.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Print3dInfo.cs" Link="Models\Print3dInfo.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3d.cs" Link="Models\Printer3d.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureAddition.cs" Link="Models\ProcedureAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureSpecificAddition.cs" Link="Models\CalculationAdditions\ProcedureSpecificAddition.cs" />
   </ItemGroup>
 

@@ -14,6 +14,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public string FilePath { get; set; }
         public double Volume { get; set; }
 #if SQL
+        public Guid WeightId { get; set; }
         public File3dWeight? Weight { get; set; }
 #else
         public IFile3dWeight? Weight { get; set; }

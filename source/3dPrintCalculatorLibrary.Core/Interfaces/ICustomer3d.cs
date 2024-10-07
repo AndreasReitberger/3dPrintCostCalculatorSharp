@@ -10,6 +10,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid Id { get; set; }
 #if SQL
         public Guid CalculationProfileId { get; set; }
+        public Guid ContactPersonId { get; set; }
 #endif
         public string CustomerId { get; set; }
         public bool IsCompany { get; set; }

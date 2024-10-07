@@ -41,6 +41,10 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        //[property: ForeignKey(typeof(Customer3d))]
+        Guid customerId;
+
+        [ObservableProperty]
         [property: ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
         Customer3d? customer;
 #else

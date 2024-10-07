@@ -57,10 +57,10 @@ namespace AndreasReitberger.Print3d.SQLite
         List<Type> defaultTables = [
             typeof(Manufacturer),
             typeof(Supplier),
-            typeof(Printer3d),
-            typeof(Printer3dAttribute),
-            typeof(Printer3dSlicerConfig),
             typeof(Maintenance3d),
+            typeof(Printer3dAttribute),
+            typeof(Printer3d),
+            typeof(Printer3dSlicerConfig),
             typeof(Sparepart),
             typeof(Material3dColor),
             typeof(Material3dType),
@@ -71,6 +71,11 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepCategory),
             typeof(Workstep),
             typeof(HourlyMachineRate),
+            typeof(Print3dInfo),
+            typeof(ProcedureAddition),
+            typeof(ProcedureCalculationParameter),
+            typeof(Item3d),
+            typeof(Item3dUsage),
             typeof(Customer3d),
             typeof(CustomAddition),
             typeof(CalculationAttribute),
@@ -82,6 +87,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(File3dUsage),
+            typeof(File3dWeight),
             typeof(Address),
             typeof(Email),
             typeof(PhoneNumber),
@@ -89,8 +95,6 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Calculation3dProfile),
             typeof(WorkstepUsage),
             typeof(WorkstepUsageParameter),
-            typeof(Item3d),
-            typeof(Item3dUsage),
             typeof(Storage3dLocation),
             typeof(Storage3dTransaction),
             typeof(Storage3dItem),
@@ -98,10 +102,6 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Storage3dLocationStorage3d),
             typeof(Storage3dItemStorage3dLocation),
             typeof(Storage3dItemStorage3dTransaction),
-            typeof(ProcedureAddition),
-            typeof(ProcedureCalculationParameter),
-            typeof(Print3dInfo),
-
             typeof(DatabaseSettingsKeyValuePair)
         ];
 

@@ -21,7 +21,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         CalculationState State { get; set; }
         DateTimeOffset Created { get; set; }
 #if SQL
-        //public Guid CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         Customer3d? Customer { get; set; }
 #else
         ICustomer3d? Customer { get; set; }

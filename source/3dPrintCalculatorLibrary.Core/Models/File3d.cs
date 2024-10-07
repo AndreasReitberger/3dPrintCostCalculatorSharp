@@ -23,6 +23,9 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [property: JsonIgnore]
+#if SQL
+        [property: Ignore]
+#endif
         object? file;
 
         [ObservableProperty]
@@ -42,10 +45,16 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         double volume = 0;
 
+#if SQL
+        [ObservableProperty]
+        //[property: ForeignKey(typeof(File3dWeight))]
+        Guid weightId;
+#endif
+
         [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
-        [property: ManyToOne(nameof(ModelWeightId), CascadeOperations = CascadeOperation.All)]
+        [property: ManyToOne(nameof(WeightId), CascadeOperations = CascadeOperation.All)]
         File3dWeight weight = new(-1, Core.Enums.Unit.Gram);
 #else
         IFile3dWeight weight = new File3dWeight(-1, Enums.Unit.Gram);

@@ -23,8 +23,11 @@ namespace AndreasReitberger.Print3d.Core
         [property: ForeignKey(typeof(Printer3d))]
         Guid printerId;
 
+        /*
         [ObservableProperty]
+        [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
         Printer3d? printer;
+        */
 #else
         [ObservableProperty]
         IPrinter3d? printer;

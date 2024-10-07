@@ -24,10 +24,12 @@ namespace AndreasReitberger.Print3d.Core
         Guid id;
 
 #if SQL
-        [property: PrimaryKey]
         [ObservableProperty]
         [property: ForeignKey(typeof(Calculation3dProfile))]
         Guid calculationProfileId;
+
+        [ObservableProperty]
+        Guid contactPersonId;
 #endif
 
         [ObservableProperty]

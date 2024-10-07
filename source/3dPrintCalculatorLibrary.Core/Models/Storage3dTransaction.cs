@@ -32,7 +32,7 @@ namespace AndreasReitberger.Print3d.Core
         */
 
         [ObservableProperty]
-        Guid? itemId;
+        Guid itemId;
 
         [ObservableProperty]
         [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]

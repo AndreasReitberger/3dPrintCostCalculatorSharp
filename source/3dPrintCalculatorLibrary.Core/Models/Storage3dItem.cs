@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 #if SQL
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
+
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Storage3dItem)}s")]

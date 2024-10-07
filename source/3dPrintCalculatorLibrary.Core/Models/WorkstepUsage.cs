@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AndreasReitberger.Print3d.Core.Enums;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
 #if SQL
@@ -39,9 +40,6 @@ namespace AndreasReitberger.Print3d.Core
         Guid usageParameterId;
 
         [ObservableProperty]
-        IWorkstepUsageParameter? usageParameter;
-
-        [ObservableProperty]
         [property: ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
         WorkstepUsageParameter? usageParameter;
         partial void OnUsageParameterChanged(WorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
@@ -74,7 +72,7 @@ namespace AndreasReitberger.Print3d.Core
             double cost;
             cost = (UsageParameter?.ParameterType) switch
             {
-                Enums.WorkstepUsageParameterType.Duration => (Workstep?.Price * UsageParameter?.Value) ?? 0,
+                WorkstepUsageParameterType.Duration => (Workstep?.Price * UsageParameter?.Value) ?? 0,
                 _ => (Workstep?.Price * UsageParameter?.Value) ?? 0,
             };
             return cost;

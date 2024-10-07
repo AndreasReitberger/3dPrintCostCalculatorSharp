@@ -3,8 +3,6 @@ using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Item3dUsage)}s")]

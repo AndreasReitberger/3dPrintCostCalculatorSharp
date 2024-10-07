@@ -3,6 +3,8 @@ using AndreasReitberger.Print3d.Core.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 #if SQL
+using AndreasReitberger.Print3d.SQLite.StorageAdditions;
+
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Storage3dLocation)}s")]
@@ -45,19 +47,38 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Methods
 
+#if SQL
+        public Storage3dItem CreateStockItem(Material3d material, double amount = 0, Unit unit = Unit.Kilogram)
+#else
         public IStorage3dItem CreateStockItem(IMaterial3d material, double amount = 0, Unit unit = Unit.Kilogram)
+#endif
         {
-            IStorage3dItem item = new Storage3dItem() { Material = material };
+#if SQL
+            Storage3dItem item = new()
+#else
+            IStorage3dItem item = new Storage3dItem() 
+#endif
+            {
+                Material = material
+            };
             if (amount != 0) UpdateStockAmount(item, amount, unit);
             Items.Add(item);
             return item;
         }
 
+#if SQL
+        public Storage3dTransaction? AddToStock(Storage3dItem item, double amount, Unit unit)
+#else
         public IStorage3dTransaction? AddToStock(IStorage3dItem item, double amount, Unit unit)
+#endif
         {
             if (item.Material is not null)
             {
+#if SQL
+                Storage3dTransaction transaction = new()
+#else
                 IStorage3dTransaction transaction = new Storage3dTransaction()
+#endif
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
@@ -78,9 +99,19 @@ namespace AndreasReitberger.Print3d.Core
             }
             else return null;
         }
+
+#if SQL
+        public Storage3dTransaction? AddToStock(Material3d material, double amount, Unit unit)
+#else
         public IStorage3dTransaction? AddToStock(IMaterial3d material, double amount, Unit unit)
+#endif
         {
-            IStorage3dItem? item = Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+#if SQL
+            Storage3dItem? item =
+#else
+            IStorage3dItem? item =
+#endif
+                Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
@@ -88,9 +119,18 @@ namespace AndreasReitberger.Print3d.Core
             return item?.Transactions.LastOrDefault();
         }
 
+#if SQL
+        public Storage3dTransaction? AddToStock(Material3d material, double amount, Unit unit, Guid? calculationId = null)
+#else
         public IStorage3dTransaction? AddToStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null)
+#endif
         {
-            IStorage3dItem? item = Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+#if SQL
+            Storage3dItem? item =
+#else
+            IStorage3dItem? item =
+#endif
+                Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item?.Material != null)
                 AddToStock(item: item, amount: amount, unit: unit);
             else
@@ -98,11 +138,19 @@ namespace AndreasReitberger.Print3d.Core
             return item?.Transactions.LastOrDefault();
         }
 
+#if SQL
+        public Storage3dTransaction? TakeFromStock(Storage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+#else
         public IStorage3dTransaction? TakeFromStock(IStorage3dItem item, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+#endif
         {
             if (item.Material is not null)
             {
+#if SQL
+                Storage3dTransaction transaction = new()
+#else
                 IStorage3dTransaction transaction = new Storage3dTransaction()
+#endif
                 {
                     DateTime = DateTimeOffset.Now,
                     Unit = unit,
@@ -136,21 +184,43 @@ namespace AndreasReitberger.Print3d.Core
             else return null;
         }
 
+#if SQL
+        public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+#else
         public IStorage3dTransaction? TakeFromStock(IMaterial3d material, double amount, Unit unit, bool throwIfMaterialIsNotInStock = false)
+#endif
         {
-            IStorage3dItem? item = Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+#if SQL
+            Storage3dItem? item =
+#else
+            IStorage3dItem? item = 
+#endif
+                Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item is null) return null;
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
+#if SQL
+        public Storage3dTransaction? TakeFromStock(Material3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
+#else
         public IStorage3dTransaction? TakeFromStock(IMaterial3d material, double amount, Unit unit, Guid? calculationId = null, bool throwIfMaterialIsNotInStock = false)
+#endif
         {
-            IStorage3dItem? item = Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
+#if SQL
+            Storage3dItem? item =
+#else
+            IStorage3dItem? item =
+#endif
+                Items.FirstOrDefault(curItem => curItem?.Material?.Id == material?.Id);
             if (item is null) return null;
             return TakeFromStock(item: item, amount: amount, unit: unit, throwIfMaterialIsNotInStock: throwIfMaterialIsNotInStock);
         }
 
+#if SQL
+        public Storage3dTransaction? UpdateStockAmount(Storage3dItem item, double amount, Unit unit = Unit.Kilogram)
+#else
         public IStorage3dTransaction? UpdateStockAmount(IStorage3dItem item, double amount, Unit unit = Unit.Kilogram)
+#endif
         {
             if (amount > 0)
             {

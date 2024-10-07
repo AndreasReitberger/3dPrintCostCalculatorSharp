@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public bool IsActive { get; set; }
         public string Website { get; set; }
 #if SQL
-        public IList<IManufacturer> Manufacturers { get; set; }
+        public List<Manufacturer> Manufacturers { get; set; }
 #else
         public IList<IManufacturer> Manufacturers { get; set; }
 #endif

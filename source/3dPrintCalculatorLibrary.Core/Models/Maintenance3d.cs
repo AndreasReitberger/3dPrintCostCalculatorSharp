@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite;
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Maintenance3d)}s")]

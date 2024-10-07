@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
 #if SQL
 namespace AndreasReitberger.Print3d.SQLite

@@ -96,7 +96,12 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [property: ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
-        Printer3dSlicerConfig slicerConfig = (Printer3dSlicerConfig)Printer3dSlicerConfig.Default;       
+        Printer3dSlicerConfig slicerConfig =
+#if NET6_0_OR_GREATER
+            (Printer3dSlicerConfig)Printer3dSlicerConfig.Default;
+#else
+            new();
+#endif
 #else
         [ObservableProperty]
         IList<IPrinter3dAttribute> attributes = [];
@@ -108,7 +113,12 @@ namespace AndreasReitberger.Print3d.Core
         IList<IMaintenance3d> maintenances = [];
 
         [ObservableProperty]
-        IPrinter3dSlicerConfig? slicerConfig = IPrinter3dSlicerConfig.Default;
+        IPrinter3dSlicerConfig? slicerConfig =
+#if NET6_0_OR_GREATER
+            IPrinter3dSlicerConfig.Default;
+#else
+            new Printer3dSlicerConfig();
+#endif
 #endif
         [ObservableProperty]
         byte[] image = [];

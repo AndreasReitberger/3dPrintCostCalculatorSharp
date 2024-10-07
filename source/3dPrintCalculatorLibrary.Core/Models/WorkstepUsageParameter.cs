@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 #if SQL
 namespace AndreasReitberger.Print3d.SQLite
 {
-    [Table($"{nameof(WorkstepUsage)}s")]
+    [Table($"{nameof(WorkstepUsageParameter)}s")]
 #else
 namespace AndreasReitberger.Print3d.Core
 {

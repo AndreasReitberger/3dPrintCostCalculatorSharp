@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 
 #if SQL
-namespace AndreasReitberger.Print3d.SQLite.FileAdditions
+namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(File3d)}s")]
 #else

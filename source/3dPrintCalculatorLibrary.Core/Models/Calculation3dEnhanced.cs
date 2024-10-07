@@ -97,7 +97,7 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
         public List<Printer3d?> AvailablePrinters => PrintInfos.Select(pi => pi?.Printer).Distinct().ToList();
 
-        public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.MaterialUsages).Select(mu => mu?.Material).Distinct().ToList();
+        public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu?.Material).Distinct().ToList();
 
         [ObservableProperty]
         [property: ManyToMany(typeof(CustomAdditionCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
@@ -117,7 +117,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [property: Ignore]
-        ObservableCollection<CalculationAttribute> materialUsage = [];
+        ObservableCollection<CalculationAttribute> materialUsages = [];
 
         [ObservableProperty]
         [property: Ignore]

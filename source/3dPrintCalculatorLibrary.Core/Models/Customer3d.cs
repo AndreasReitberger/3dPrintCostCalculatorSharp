@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 
 namespace AndreasReitberger.Print3d.SQLite
 {

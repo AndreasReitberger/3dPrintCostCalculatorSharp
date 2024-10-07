@@ -4,8 +4,6 @@ using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Material3d)}s")]

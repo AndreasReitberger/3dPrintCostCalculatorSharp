@@ -1,17 +1,9 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Print3d.SQLite.Interfaces;
-using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -90,7 +82,6 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(File3dUsage),
-            typeof(ModelWeight),
             typeof(Address),
             typeof(Email),
             typeof(PhoneNumber),

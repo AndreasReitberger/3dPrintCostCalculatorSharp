@@ -75,9 +75,7 @@ namespace AndreasReitberger.Print3d.Core
                 if (ReplacementCosts == 0 || InterestRate == 0)
                     return 0;
                 else
-                {
                     return (ReplacementCosts / 2) / 100 * InterestRate;
-                }
             }
         }
 

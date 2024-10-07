@@ -1,6 +1,5 @@
-﻿using AndreasReitberger.Print3d.Enums;
+﻿using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 
 namespace AndreasReitberger.Print3d.SQLite.MaterialAdditions
 {

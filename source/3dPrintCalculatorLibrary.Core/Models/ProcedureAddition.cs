@@ -83,10 +83,10 @@ namespace AndreasReitberger.Print3d.Core
             {
                 switch (para.Type)
                 {
-                    case Enums.ProcedureCalculationType.ReplacementCosts:
+                    case ProcedureCalculationType.ReplacementCosts:
                         costs = ((para.Price / para.QuantityInPackage) / 100) * para.WearFactor;
                         break;
-                    case Enums.ProcedureCalculationType.ConsumableGoods:
+                    case ProcedureCalculationType.ConsumableGoods:
                         costs = (para.Price / para.QuantityInPackage) * para.AmountTakenForCalculation;
                         break;
                     default:

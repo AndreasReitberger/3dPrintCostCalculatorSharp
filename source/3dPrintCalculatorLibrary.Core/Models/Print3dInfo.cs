@@ -2,9 +2,6 @@
 using Newtonsoft.Json;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Print3dInfo)}s")]
@@ -52,7 +49,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dUsage> materialUsages = [];
+        List<Material3dUsage> materials = [];
 #else
         [ObservableProperty]
         IFile3dUsage? fileUsage;

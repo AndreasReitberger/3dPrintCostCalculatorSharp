@@ -1,13 +1,13 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
-using System;
-using System.Collections.Generic;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
 namespace AndreasReitberger.Print3d.SQLite
 {
-    [Table("Suppliers")]
+    [Table($"{nameof(Supplier)}s")]
+#else
+namespace AndreasReitberger.Print3d.Core
+{
+#endif
     public partial class Supplier : ObservableObject, ICloneable, ISupplier
     {
         #region Clone
@@ -19,7 +19,9 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Properties 
         [ObservableProperty]
+#if SQL
         [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
@@ -34,13 +36,13 @@ namespace AndreasReitberger.Print3d.SQLite
         [ObservableProperty]
         string website = string.Empty;
 
-        #endregion
-
-        #region Collections
-
         [ObservableProperty]
+#if SQL
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Manufacturer> manufacturers = new();
+        List<Manufacturer> manufacturers = [];
+#else
+        IList<IManufacturer> manufacturers = [];
+#endif
         #endregion
 
         #region Constructor
@@ -48,19 +50,17 @@ namespace AndreasReitberger.Print3d.SQLite
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : string.Format("{0} ({1})", Name, DebitorNumber);
-        }
+        public override string ToString() => string.IsNullOrEmpty(DebitorNumber) ? Name : $"{Name} ({DebitorNumber})";
+        
         public override bool Equals(object? obj)
         {
             if (obj is not Supplier item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

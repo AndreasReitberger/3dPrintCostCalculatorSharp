@@ -1,17 +1,28 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(CalculationAttribute)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class CalculationAttribute : ObservableObject, ICalculationAttribute
     {
         #region Properties
 
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
+#if SQL
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+#endif
         Guid calculationId;
 
         [ObservableProperty]

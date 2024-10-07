@@ -1,17 +1,28 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Sparepart)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Sparepart : ObservableObject, ISparepart
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
+#if SQL
+        [property: ForeignKey(typeof(Maintenance3d))]
+#endif
         Guid maintenanceId;
+
 
         [ObservableProperty]
         string name = string.Empty;
@@ -31,10 +42,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
+        
         public override bool Equals(object? obj)
         {
             if (obj is not Sparepart item)

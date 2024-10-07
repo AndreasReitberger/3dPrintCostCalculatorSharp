@@ -1,20 +1,36 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 
+#if SQL
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Customer3d)}s")]
+#else
+using AndreasReitberger.Print3d.Core.Interfaces;
+
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Customer3d : ObservableObject, ICloneable, ICustomer3d
     {
-        #region Clone
-        public object Clone() => MemberwiseClone();
-
-        #endregion
 
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
+
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+
+        [ObservableProperty]
+        Guid contactPersonId;
+#endif
 
         [ObservableProperty]
         string customerId = string.Empty;
@@ -33,7 +49,23 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         string vAT = string.Empty;
+#if SQL
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
+        ContactPerson? contactPerson;
 
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Address> addresses = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Email> emailAddresses = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<PhoneNumber> phoneNumbers = [];
+#else
         [ObservableProperty]
         IPerson? contactPerson;
 
@@ -45,17 +77,18 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         IList<IPhoneNumber> phoneNumbers = [];
+#endif
 
         [ObservableProperty]
         string handler = string.Empty;
 
         [JsonIgnore]
-        public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
+        public string FullName => IsCompany ? Name : $"{LastName}, {Name}";
 
         [JsonIgnore]
         public string MainAddress => GetAddress(0);
 
-        #endregion
+#endregion
 
         #region Constructor
 
@@ -81,6 +114,11 @@ namespace AndreasReitberger.Print3d.Core
             else
                 return string.Empty;
         }
+        #endregion
+
+        #region Clone
+        public object Clone() => MemberwiseClone();
+
         #endregion
 
         #region Overrides

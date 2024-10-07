@@ -1,5 +1,4 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.Core.Utilities
 {

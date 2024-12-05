@@ -1,15 +1,29 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(ProcedureCalculationParameter)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class ProcedureCalculationParameter : ObservableObject, IProcedureCalculationParameter
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
+
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(ProcedureAddition))]
+        Guid procedureAdditionId;
+#endif
 
         [ObservableProperty]
         string name = string.Empty;

@@ -1,14 +1,8 @@
-using AndreasReitberger.Print3d.Enums;
+using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.SQLite;
-using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Print3d.SQLite.StorageAdditions;
-using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
+using AndreasReitberger.Shared.Core.Utilities;
 using NUnit.Framework;
 using SQLite;
-using AndreasReitberger.Shared.Core.Utilities;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -85,7 +79,7 @@ namespace AndreasReitberger.NUnitTest
                             },
                             Quantity = 5,
                         },
-                        MaterialUsages = [
+                        Materials = [
                             new Material3dUsage()
                             {
                                 Material = new Material3d()
@@ -153,7 +147,7 @@ namespace AndreasReitberger.NUnitTest
                             },
                             Quantity = 20,
                         },
-                        MaterialUsages = [
+                        Materials = [
                             new Material3dUsage()
                             {
                                 Material = new Material3d()
@@ -189,7 +183,7 @@ namespace AndreasReitberger.NUnitTest
                             },
                             Quantity = 3,
                         },
-                        MaterialUsages = [
+                        Materials = [
                             new Material3dUsage()
                             {
                                 Material = new Material3d()
@@ -690,6 +684,7 @@ namespace AndreasReitberger.NUnitTest
                     .WithDatabasePath(databasePath)
                     .WithTables([
                         typeof(Manufacturer),
+                        typeof(File3d),
                         typeof(Item3d),
                         typeof(Item3dUsage),
                     ])
@@ -1108,7 +1103,7 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         FileUsage = fileUsage,
-                        MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
+                        Materials = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
@@ -1117,7 +1112,7 @@ namespace AndreasReitberger.NUnitTest
                     {
                         FileUsage = fileUsage1,
                         // Multi-Material for one file
-                        MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
+                        Materials = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
                     };
                     await DatabaseHandler.Instance.SetPrintInfoWithChildrenAsync(info2);
@@ -1271,7 +1266,7 @@ namespace AndreasReitberger.NUnitTest
                     Print3dInfo info = new()
                     {
                         FileUsage = fileUsage,
-                        MaterialUsages = [new() { Material = material, PercentageValue = 1 }],
+                        Materials = [new() { Material = material, PercentageValue = 1 }],
                         Printer = printer,
                         Items = [usage],
                     };
@@ -1279,7 +1274,7 @@ namespace AndreasReitberger.NUnitTest
                     {
                         FileUsage = fileUsage2,
                         // Multi-Material for one file
-                        MaterialUsages = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
+                        Materials = [new() { Material = material, PercentageValue = 0.5 }, new() { Material = material2, PercentageValue = 0.5 }],
                         Printer = printer2,
                     };
 

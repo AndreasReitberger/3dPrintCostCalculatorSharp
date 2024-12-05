@@ -1,13 +1,26 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Printer3dSlicerConfig)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Printer3dSlicerConfig : ObservableObject, IPrinter3dSlicerConfig
     {
         #region Properties
+        public static IPrinter3dSlicerConfig Default => new Printer3dSlicerConfig()
+        {
+
+        };
+
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
@@ -38,6 +51,11 @@ namespace AndreasReitberger.Print3d.Core
         {
             Id = Guid.NewGuid();
         }
+        #endregion
+
+        #region Overrides
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         #endregion
     }
 }

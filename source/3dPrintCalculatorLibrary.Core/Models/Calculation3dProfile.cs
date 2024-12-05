@@ -1,21 +1,41 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+
+#if SQL
+using System.Collections.ObjectModel;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Calculation3dProfile)}s")]
+#else
+using AndreasReitberger.Print3d.Core.Interfaces;
 
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Calculation3dProfile : ObservableObject, ICalculation3dProfile
     {
         #region Properties
+
+        #region Basic
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         public Guid id;
 
         [ObservableProperty]
         string name = string.Empty;
+        #endregion
 
         #region Linked Customer
         [ObservableProperty]
+#if SQL
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        public List<Customer3d> customers = [];
+#else
         public IList<ICustomer3d> customers = [];
+#endif
         #endregion
 
         #region Presets
@@ -171,13 +191,35 @@ namespace AndreasReitberger.Print3d.Core
         #region Custom
 
         [ObservableProperty]
+#if SQL
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<ProcedureAddition> procedureAdditions = [];
+#else
         IList<IProcedureAddition> procedureAdditions = [];
+#endif
         #endregion
 
         #endregion
 
         #region Presets
 
+#if SQL
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Printer3d> printers = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Material3d> materials = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<Item3dUsage> items = [];
+
+        [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<WorkstepUsage> worksteps = [];
+#else
         [ObservableProperty]
         IList<IPrinter3d> printers = [];
 
@@ -189,6 +231,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         IList<IWorkstepUsage> worksteps = [];
+#endif
         #endregion
 
         #endregion

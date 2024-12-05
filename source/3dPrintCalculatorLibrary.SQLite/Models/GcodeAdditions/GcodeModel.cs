@@ -1,4 +1,5 @@
-﻿using AndreasReitberger.Print3d.Models.GcodeAdditions;
+﻿
+using AndreasReitberger.Print3d.Core;
 
 namespace AndreasReitberger.Print3d.SQLite.GcodeAdditions
 {

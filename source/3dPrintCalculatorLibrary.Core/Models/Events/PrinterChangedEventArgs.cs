@@ -6,6 +6,7 @@ namespace AndreasReitberger.Print3d.Core.Events
     public class PrinterChangedEventArgs : CalculatorEventArgs
     {
         #region Properties
+        //public Printer3d? Printer { get; set; }
         public IPrinter3d? Printer { get; set; }
         #endregion
 

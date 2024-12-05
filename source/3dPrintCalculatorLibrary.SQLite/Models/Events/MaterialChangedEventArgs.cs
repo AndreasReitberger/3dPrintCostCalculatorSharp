@@ -2,7 +2,8 @@
 
 namespace AndreasReitberger.Print3d.SQLite.Events
 {
-    public class MaterialChangedEventArgs : CalculatorEventArgs
+    [Obsolete("User core variant")]
+    public class MaterialChangedEventArgsOld : CalculatorEventArgsOld
     {
         #region Properties
         public Material3d? Material { get; set; }

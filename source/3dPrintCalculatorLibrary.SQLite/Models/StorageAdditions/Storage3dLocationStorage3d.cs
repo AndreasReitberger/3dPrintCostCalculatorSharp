@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SQLiteNetExtensions.Attributes;
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {

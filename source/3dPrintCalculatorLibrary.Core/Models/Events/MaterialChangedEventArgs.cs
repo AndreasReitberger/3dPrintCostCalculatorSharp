@@ -6,6 +6,8 @@ namespace AndreasReitberger.Print3d.Core.Events
     public class MaterialChangedEventArgs : CalculatorEventArgs
     {
         #region Properties
+
+        //public Material3d? Material { get; set; }
         public IMaterial3d? Material { get; set; }
         #endregion
 

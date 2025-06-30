@@ -12,6 +12,7 @@
         MultiMaterialChangeCosts,
         MultiMaterialCalculation,
         ResinTankWearCosts,
+        FilamentDryingCosts,
 
         Custom = 998,
         PlainCosts = 999,

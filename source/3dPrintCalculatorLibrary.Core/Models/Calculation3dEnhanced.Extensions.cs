@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
-using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.Core
 {
@@ -379,9 +378,7 @@ namespace AndreasReitberger.Print3d.Core
                         }
                     }
                     // Custom additions before adding the margin
-                    List<ICustomAddition> customAdditionsBeforeMargin = CustomAdditions
-                        .Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)
-                        .ToList();
+                    List<ICustomAddition> customAdditionsBeforeMargin = [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
 
                     if (customAdditionsBeforeMargin?.Count > 0)
                     {

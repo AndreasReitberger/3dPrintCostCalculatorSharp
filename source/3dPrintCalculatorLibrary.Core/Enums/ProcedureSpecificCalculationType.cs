@@ -5,5 +5,6 @@
         PerLayer,
         PerPart,
         PerHour,
+        PerOrder,
     }
 }

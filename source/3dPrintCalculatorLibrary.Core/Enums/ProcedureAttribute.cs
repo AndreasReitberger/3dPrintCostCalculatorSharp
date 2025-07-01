@@ -8,6 +8,7 @@
         PrintSheetWear,
         HeatedBedTemperature,
         MultiMaterial,
+        Drying,
 
         // Resin
         GlovesCosts,

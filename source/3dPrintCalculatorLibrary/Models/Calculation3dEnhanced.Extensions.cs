@@ -385,9 +385,7 @@ namespace AndreasReitberger.Print3d.Models
                         }
                     }
                     // Custom additions before adding the margin
-                    List<CustomAddition> customAdditionsBeforeMargin = CustomAdditions
-                        .Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)
-                        .ToList();
+                    List<CustomAddition> customAdditionsBeforeMargin = [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
 
                     if (customAdditionsBeforeMargin?.Count > 0)
                     {
@@ -586,8 +584,7 @@ namespace AndreasReitberger.Print3d.Models
 
             if (ApplyProcedureSpecificAdditions)
             {
-                List<CalculationProcedureAttribute> multiMaterialAttributes = ProcedureAttributes
-                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation).ToList();
+                List<CalculationProcedureAttribute> multiMaterialAttributes = [.. ProcedureAttributes.Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)];
                 for (int i = 0; i < multiMaterialAttributes?.Count; i++)
                 {
                     CalculationProcedureAttribute attribute = multiMaterialAttributes[i];

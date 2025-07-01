@@ -4,5 +4,6 @@
     {
         ReplacementCosts,
         ConsumableGoods,
+        MachineCosts,
     }
 }

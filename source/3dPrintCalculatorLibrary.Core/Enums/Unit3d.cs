@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AndreasReitberger.Print3d.Core.Enums
+﻿namespace AndreasReitberger.Print3d.Core.Enums
 {
     public enum Unit
     {

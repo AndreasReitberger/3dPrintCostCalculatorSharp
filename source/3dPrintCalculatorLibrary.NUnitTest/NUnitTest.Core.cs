@@ -1,6 +1,7 @@
 using AndreasReitberger.Print3d.Core;
 using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
+using AndreasReitberger.Print3d.Structs;
 using NUnit.Framework;
 
 namespace AndreasReitberger.NUnitTest
@@ -11,6 +12,7 @@ namespace AndreasReitberger.NUnitTest
         bool ApplyResinWashingCosts = true;
         bool ApplyResinFilterCosts = true;
         bool ApplyResinTankWearCosts = true;
+        bool ApplyFilamentDryingCosts = true;
 
 
         ICalculation3dEnhanced? calculation;
@@ -56,7 +58,7 @@ namespace AndreasReitberger.NUnitTest
                             City = "Muserstadt",
                             Zip = "93426",
                             CountryCode = "de",
-                            Street = "Musterstraße 4",
+                            Street = "MusterstraÃŸe 4",
                         }
                     ],
                 },
@@ -253,7 +255,7 @@ namespace AndreasReitberger.NUnitTest
                             PackagePrice = 9.99d,
                             Manufacturer = new Manufacturer()
                             {
-                                Name = "Würth",
+                                Name = "WÃ¼rth",
                                 DebitorNumber = "DE26265126",
                                 Website = "https://www.wuerth.de/",
                             },
@@ -270,7 +272,7 @@ namespace AndreasReitberger.NUnitTest
                             PackagePrice = 14.99d,
                             Manufacturer = new Manufacturer()
                             {
-                                Name = "Würth",
+                                Name = "WÃ¼rth",
                                 DebitorNumber = "DE26265126",
                                 Website = "https://www.wuerth.de/",
                             },
@@ -294,9 +296,9 @@ namespace AndreasReitberger.NUnitTest
                     // Needed if the calculation is reloaded later
                     additionalInfo =
                     [
-                        new CalculationProcedureParameterAddition("amount", 100),
-                        new CalculationProcedureParameterAddition("price", 25),
-                        new CalculationProcedureParameterAddition("perjob", 2),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Amount, 100),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Price, 25),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.PerJob, 2),
                     ];
 
                     parameters =
@@ -327,9 +329,9 @@ namespace AndreasReitberger.NUnitTest
                     // Needed if the calculation is reloaded later
                     additionalInfo =
                     [
-                        new CalculationProcedureParameterAddition("amount", 5),
-                        new CalculationProcedureParameterAddition("price", 50),
-                        new CalculationProcedureParameterAddition("perjob", 0.1d),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Amount, 5),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Price, 50),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.PerJob, 0.1d),
                     ];
 
                     parameters =
@@ -360,9 +362,9 @@ namespace AndreasReitberger.NUnitTest
                     // Needed if the calculation is reloaded later
                     additionalInfo =
                     [
-                        new CalculationProcedureParameterAddition("amount", 50),
-                        new CalculationProcedureParameterAddition("price", 25),
-                        new CalculationProcedureParameterAddition("perjob", 1),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Amount, 50),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Price, 25),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.PerJob, 1),
                     ];
 
                     parameters =
@@ -393,8 +395,8 @@ namespace AndreasReitberger.NUnitTest
                     // Needed if the calculation is reloaded later
                     additionalInfo =
                     [
-                        new CalculationProcedureParameterAddition("replacementcosts", 120),
-                        new CalculationProcedureParameterAddition("wearfactor", 0.01d)
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.ReplacementCosts, 120),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.WearFactor, 0.01d)
                     ];
                     parameters =
                     [
@@ -413,6 +415,39 @@ namespace AndreasReitberger.NUnitTest
                             Family = Material3dFamily.Resin,
                             Parameters = parameters,
                             Level = CalculationLevel.Printer,
+                            PerPiece = false,
+                            PerFile = true,
+                        });
+                }
+            }
+            if (ApplyFilamentDryingCosts)
+            {
+                if (true)
+                {
+                    // Needed if the calculation is reloaded later
+                    additionalInfo =
+                    [
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.ReplacementCosts, 120),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.WearFactor, 0.01d),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.Duration, 4d),
+                        new CalculationProcedureParameterAddition(ProcedureAdditionParameters.EnergyCosts, 0.4d),
+                    ];
+                    parameters =
+                    [
+                        new CalculationProcedureParameter()
+                        {
+                            Type = ProcedureParameter.FilamentDryingCosts,
+                            Value = 120d * 0.01d + 4d * 0.4d,
+                            Additions = additionalInfo,
+                        }
+                    ];
+                    calculation.ProcedureAttributes.Add(
+                        new CalculationProcedureAttribute()
+                        {
+                            Attribute = ProcedureAttribute.Drying,
+                            Family = Material3dFamily.Filament,
+                            Parameters = parameters,
+                            Level = CalculationLevel.Material,
                             PerPiece = false,
                             PerFile = true,
                         });
@@ -477,7 +512,7 @@ namespace AndreasReitberger.NUnitTest
             {
                 IManufacturer wuerth = new Manufacturer()
                 {
-                    Name = "Würth",
+                    Name = "WÃ¼rth",
                     DebitorNumber = "DE26265126",
                     Website = "https://www.wuerth.de/",
                 };
@@ -763,7 +798,7 @@ namespace AndreasReitberger.NUnitTest
                     };
                     IManufacturer wuerth = new Manufacturer()
                     {
-                        Name = "Würth",
+                        Name = "WÃ¼rth",
                         DebitorNumber = "DE26265126",
                         Website = "https://www.wuerth.de/",
                     };
@@ -840,7 +875,7 @@ namespace AndreasReitberger.NUnitTest
                 {
                     Target = CalculationAttributeTarget.Fee,
                     Type = CalculationAttributeType.HandlingFee,
-                    Value = 5, // 5€ fee
+                    Value = 5, // 5Â€ fee
                     IsPercentageValue = false,
                     ApplyPerFile = false,
                 });
@@ -865,7 +900,7 @@ namespace AndreasReitberger.NUnitTest
                 {
                     Target = CalculationAttributeTarget.Fee,
                     Type = CalculationAttributeType.HandlingFee,
-                    Value = 5, // 5€ fee
+                    Value = 5, // 5Â€ fee
                     IsPercentageValue = false,
                     ApplyPerFile = true,
                 });

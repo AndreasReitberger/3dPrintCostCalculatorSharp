@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SQLiteNetExtensions.Attributes;
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
-    public partial class Storage3dItemStorage3dTransaction : ObservableObject
+    [Table($"{nameof(Storage3dItemStorage3dTransaction)}s")]
+    public partial class Storage3dItemStorage3dTransaction : ObservableObject, IStorage3dItemStorage3dTransaction
     {
         [ObservableProperty]
         [property: ForeignKey(typeof(Storage3dTransaction))]

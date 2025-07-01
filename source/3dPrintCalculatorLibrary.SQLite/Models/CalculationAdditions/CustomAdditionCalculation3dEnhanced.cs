@@ -1,14 +1,15 @@
-﻿using SQLiteNetExtensions.Attributes;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
 {
-    public class CustomAdditionCalculation3dEnhanced
+    public partial class CustomAdditionCalculation3dEnhanced : ObservableObject, ICustomAdditionCalculation3dEnhanced
     {
-        [ForeignKey(typeof(CustomAddition))]
-        public Guid CustomAdditionId { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(CustomAddition))]
+        Guid customAdditionId;
 
-        [ForeignKey(typeof(Calculation3dEnhanced))]
-        public Guid CalculationId { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
     }
 }

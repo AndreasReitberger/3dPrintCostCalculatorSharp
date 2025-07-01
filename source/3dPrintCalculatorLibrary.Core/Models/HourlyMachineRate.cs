@@ -1,17 +1,35 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(HourlyMachineRate)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate, ICloneable
     {
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
+#if SQL
         [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
         Guid printerId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
+        Printer3d? printer;
+#else
+        [ObservableProperty]
+        IPrinter3d? printer;
+#endif
 
         [ObservableProperty]
         string name = string.Empty;
@@ -29,6 +47,9 @@ namespace AndreasReitberger.Print3d.Core
         int usefulLifeYears = 4;
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public double CalcDepreciation
         {
             get
@@ -44,6 +65,9 @@ namespace AndreasReitberger.Print3d.Core
         double interestRate = 3;
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public double CalcInterest
         {
             get
@@ -51,9 +75,7 @@ namespace AndreasReitberger.Print3d.Core
                 if (ReplacementCosts == 0 || InterestRate == 0)
                     return 0;
                 else
-                {
                     return (ReplacementCosts / 2) / 100 * InterestRate;
-                }
             }
         }
 
@@ -82,11 +104,17 @@ namespace AndreasReitberger.Print3d.Core
         double fixMachineHourRate = -1;
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public double CalcMachineHourRate => GetMachineHourRate();
 
         [JsonIgnore]
+#if SQL
+        [Ignore]
+#endif
         public double TotalCosts => GetTotalCosts();
-        #endregion
+#endregion
 
         #region Constructor
         public HourlyMachineRate()

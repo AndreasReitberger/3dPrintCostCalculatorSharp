@@ -1,17 +1,9 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Print3d.SQLite.Interfaces;
-using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -65,10 +57,10 @@ namespace AndreasReitberger.Print3d.SQLite
         List<Type> defaultTables = [
             typeof(Manufacturer),
             typeof(Supplier),
-            typeof(Printer3d),
-            typeof(Printer3dAttribute),
-            typeof(Printer3dSlicerConfig),
             typeof(Maintenance3d),
+            typeof(Printer3dAttribute),
+            typeof(Printer3d),
+            typeof(Printer3dSlicerConfig),
             typeof(Sparepart),
             typeof(Material3dColor),
             typeof(Material3dType),
@@ -79,6 +71,11 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepCategory),
             typeof(Workstep),
             typeof(HourlyMachineRate),
+            typeof(Print3dInfo),
+            typeof(ProcedureAddition),
+            typeof(ProcedureCalculationParameter),
+            typeof(Item3d),
+            typeof(Item3dUsage),
             typeof(Customer3d),
             typeof(CustomAddition),
             typeof(CalculationAttribute),
@@ -90,7 +87,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(File3dUsage),
-            typeof(ModelWeight),
+            typeof(File3dWeight),
             typeof(Address),
             typeof(Email),
             typeof(PhoneNumber),
@@ -98,19 +95,13 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Calculation3dProfile),
             typeof(WorkstepUsage),
             typeof(WorkstepUsageParameter),
-            typeof(Item3d),
-            typeof(Item3dUsage),
-            typeof(Storage3dLocation),
             typeof(Storage3dTransaction),
             typeof(Storage3dItem),
+            typeof(Storage3dLocation),
             typeof(Storage3d),
             typeof(Storage3dLocationStorage3d),
             typeof(Storage3dItemStorage3dLocation),
             typeof(Storage3dItemStorage3dTransaction),
-            typeof(ProcedureAddition),
-            typeof(ProcedureCalculationParameter),
-            typeof(Print3dInfo),
-
             typeof(DatabaseSettingsKeyValuePair)
         ];
 

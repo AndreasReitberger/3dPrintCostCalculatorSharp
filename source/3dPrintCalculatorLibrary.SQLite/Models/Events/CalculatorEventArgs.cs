@@ -3,7 +3,8 @@ using System;
 
 namespace AndreasReitberger.Print3d.SQLite.Events
 {
-    public class CalculatorEventArgs : EventArgs
+    [Obsolete("User core variant")]
+    public class CalculatorEventArgsOld : EventArgs
     {
         #region Properties
         public string Message { get; set; } = string.Empty;

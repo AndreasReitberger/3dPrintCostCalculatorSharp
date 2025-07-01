@@ -1,16 +1,21 @@
-﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Interfaces;
+﻿using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 
+#if SQL
 namespace AndreasReitberger.Print3d.SQLite
 {
-    [Table("Slicers")]
+    [Table($"{nameof(Slicer3d)}s")]
+#else
+namespace AndreasReitberger.Print3d.Core
+{
+#endif
     public partial class Slicer3d : ObservableObject, ISlicer3d
     {
         #region Properties
         [ObservableProperty]
+#if SQL
         [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]

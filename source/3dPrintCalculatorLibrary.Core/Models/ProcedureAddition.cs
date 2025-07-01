@@ -1,15 +1,34 @@
-﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
+﻿
+using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(ProcedureAddition)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class ProcedureAddition : ObservableObject, ICloneable, IProcedureAddition
     {
         #region Properties 
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
+
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dProfile))]
+        Guid calculationProfileId;
+#endif
 
         [ObservableProperty]
         string name = string.Empty;
@@ -32,9 +51,16 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Collections
+#if SQL
+
 
         [ObservableProperty]
+        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
+        List<ProcedureCalculationParameter> parameters = [];
+#else
+        [ObservableProperty]
         IList<IProcedureCalculationParameter> parameters = [];
+#endif
         #endregion
 
         #region Constructor
@@ -49,7 +75,11 @@ namespace AndreasReitberger.Print3d.Core
         public double CalculateCosts()
         {
             double costs = 0;
+#if SQL
+            foreach (ProcedureCalculationParameter para in Parameters)
+#else
             foreach (IProcedureCalculationParameter para in Parameters)
+#endif
             {
                 switch (para.Type)
                 {
@@ -66,7 +96,7 @@ namespace AndreasReitberger.Print3d.Core
             return costs;
         }
 
-        #endregion
+#endregion
 
         #region Clone
         public object Clone() => MemberwiseClone();

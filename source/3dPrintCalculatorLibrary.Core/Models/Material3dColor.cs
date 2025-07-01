@@ -1,13 +1,27 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Material3dColor)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Material3dColor : ObservableObject, IMaterial3dColor
     {
         #region Properties 
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
+
+#if SQL
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Material3d))]
+        Guid materialId;
+#endif
 
         [ObservableProperty]
         string name = string.Empty;
@@ -37,10 +51,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return $"{Name} (#{HexColorCode})";
-        }
+        public override string ToString() => $"{Name} (#{HexColorCode})";
+        
         public override bool Equals(object? obj)
         {
             if (obj is not Material3dColor item)

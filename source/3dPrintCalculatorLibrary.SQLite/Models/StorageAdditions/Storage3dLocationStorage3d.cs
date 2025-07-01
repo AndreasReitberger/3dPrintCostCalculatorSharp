@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using SQLiteNetExtensions.Attributes;
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
-    public partial class Storage3dLocationStorage3d : ObservableObject
+    public partial class Storage3dLocationStorage3d : ObservableObject, IStorage3dLocationStorage3d
     {
         [ObservableProperty]
         [property: ForeignKey(typeof(Storage3dLocation))]

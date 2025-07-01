@@ -1,14 +1,15 @@
-﻿using SQLiteNetExtensions.Attributes;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
 {
-    public class WorkstepUsageCalculation3dEnhanced
+    public partial class WorkstepUsageCalculation3dEnhanced : ObservableObject, IWorkstepUsageCalculation3dEnhanced
     {
-        [ForeignKey(typeof(WorkstepUsage))]
-        public Guid WorkstepUsageId { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(WorkstepUsage))]
+        Guid workstepUsageId;
 
-        [ForeignKey(typeof(Calculation3dEnhanced))]
-        public Guid CalculationId { get; set; }
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
     }
 }

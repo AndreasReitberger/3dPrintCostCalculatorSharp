@@ -2,7 +2,8 @@
 
 namespace AndreasReitberger.Print3d.SQLite.Events
 {
-    public class PrinterChangedEventArgs : CalculatorEventArgs
+    [Obsolete("User core variant")]
+    public class PrinterChangedEventArgsOld : CalculatorEventArgsOld
     {
         #region Properties
         public Printer3d? Printer { get; set; }

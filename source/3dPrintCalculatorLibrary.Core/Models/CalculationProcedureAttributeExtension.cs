@@ -1,4 +1,4 @@
-﻿namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+﻿namespace AndreasReitberger.Print3d.Core
 {
     public static class CalculationProcedureAttributeExtension
     {

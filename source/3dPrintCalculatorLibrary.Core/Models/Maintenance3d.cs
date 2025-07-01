@@ -1,29 +1,37 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
-using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
-using SQLiteNetExtensions.Attributes;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
 namespace AndreasReitberger.Print3d.SQLite
 {
-    [Table("Maintenances")]
+    [Table($"{nameof(Maintenance3d)}s")]
+#else
+namespace AndreasReitberger.Print3d.Core
+{
+#endif
     public partial class Maintenance3d : ObservableObject, ICloneable, IMaintenance3d
     {
-        #region Clone
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
-        #endregion
-
-        #region Properties
+        #region Properties 
         [ObservableProperty]
+#if SQL
         [property: PrimaryKey]
+#endif
         Guid id;
 
+#if SQL
         [ObservableProperty]
         [property: ForeignKey(typeof(Printer3d))]
         Guid printerId;
+
+        /*
+        [ObservableProperty]
+        [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
+        Printer3d? printer;
+        */
+#else
+        [ObservableProperty]
+        IPrinter3d? printer;
+#endif
 
         [ObservableProperty]
         string description = string.Empty;
@@ -41,10 +49,16 @@ namespace AndreasReitberger.Print3d.SQLite
         double additionalCosts;
 
         [ObservableProperty]
+#if SQL
         [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Sparepart> spareparts = new();
+        List<Sparepart> spareparts = [];
+#else
+        IList<ISparepart> spareparts = [];
+#endif
 
+#if SQL
         [Ignore]
+#endif
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
         #endregion
 
@@ -55,20 +69,22 @@ namespace AndreasReitberger.Print3d.SQLite
         }
         #endregion
 
-        #region Overrides
-        public override string ToString()
-        {
-            return this.Description;
-        }
+        #region Clone
+        public object Clone() => MemberwiseClone();
+
+        #endregion
+
+        #region Override
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Maintenance3d item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
         public override int GetHashCode()
         {
-            return this.Id.GetHashCode();
+            return Id.GetHashCode();
         }
         #endregion
     }

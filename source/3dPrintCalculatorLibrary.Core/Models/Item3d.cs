@@ -1,9 +1,15 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+using System.Xml.Serialization;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Item3d)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     /// <summary>
     /// This is an additional item which can be defined and used for calculations.
     /// </summary>
@@ -12,6 +18,9 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Properties
         [ObservableProperty]
+#if SQL
+        [property: PrimaryKey]
+#endif
         Guid id;
 
         [ObservableProperty]
@@ -20,8 +29,18 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         string sKU = string.Empty;
 
+#if SQL
+        [ObservableProperty]
+        [property: JsonIgnore, XmlIgnore]
+        Guid manufacturerId;
+
+        [ObservableProperty]
+        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
+        Manufacturer? manufacturer;
+#else
         [ObservableProperty]
         IManufacturer? manufacturer;
+#endif
 
         [ObservableProperty]
         double packageSize = 1;
@@ -47,6 +66,9 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         string technicalDatasheet = string.Empty;
 
+#if SQL
+        [Ignore]
+#endif
         public double PricePerPiece => PackagePrice / PackageSize;
         #endregion
 

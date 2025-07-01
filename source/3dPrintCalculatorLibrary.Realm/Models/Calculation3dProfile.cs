@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using Newtonsoft.Json;
 using Realms;
 using System;
 using System.Collections.Generic;
@@ -139,10 +140,7 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

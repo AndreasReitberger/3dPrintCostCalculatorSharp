@@ -1,34 +1,62 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using System;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Storage3dTransaction)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Storage3dTransaction : ObservableObject, IStorage3dTransaction
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        DateTimeOffset dateTime;
+        public partial DateTimeOffset DateTime { get; set; }
+
+#if SQL
+        /*
+        [ObservableProperty]
+        Guid? calculationId;
 
         [ObservableProperty]
-        IStorage3dItem? item;
+        [ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
+        Calculation3dEnhanced? calculation;
+        */
 
         [ObservableProperty]
-        double amount;
+        [ForeignKey(typeof(Storage3dItem))]
+        public partial Guid ItemId { get; set; }
+
+        /*
+        [ObservableProperty]
+        [ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
+        public partial Storage3dItem? Item { get; set; }
+        */
+#else
+        [ObservableProperty]
+        public partial IStorage3dItem? Item { get; set; }
+#endif
+
+        [ObservableProperty]
+        public partial double Amount { get; set; }
         partial void OnAmountChanged(double value)
         {
             IsAddition = value > 0;
         }
 
         [ObservableProperty]
-        Unit unit;
+        public partial Unit Unit { get; set; }
 
         [ObservableProperty]
-        bool isAddition = false;
+        public partial bool IsAddition { get; set; } = false;
         #endregion
 
         #region Ctor

@@ -12,16 +12,16 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string location = string.Empty;
+        public partial string Location { get; set; } = string.Empty;
 
         [ObservableProperty]
-        int capacity = 32;
+        public partial int Capacity { get; set; } = 32;
 
         [ObservableProperty]
-        ObservableCollection<Storage3dItem> items = [];
+        public partial ObservableCollection<Storage3dItem> Items { get; set; } = [];
         #endregion
 
         #region Ctor

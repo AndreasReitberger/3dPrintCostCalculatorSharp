@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Realm.WorkstepAdditions;
+using Newtonsoft.Json;
 using Realms;
 using System;
 
@@ -47,7 +48,7 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Overrides
-        public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object? obj)
         {
@@ -55,10 +56,8 @@ namespace AndreasReitberger.Print3d.Realm
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         public object Clone() => MemberwiseClone();
 
         #endregion

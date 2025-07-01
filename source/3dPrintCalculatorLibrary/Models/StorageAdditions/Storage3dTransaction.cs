@@ -9,29 +9,30 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid? calculationId;
+        public partial Guid? CalculationId { get; set; }
 
         [ObservableProperty]
-        DateTimeOffset dateTime;
+        public partial DateTimeOffset DateTime { get; set; }
 
         [ObservableProperty]
-        Storage3dItem? item;
+        public partial Storage3dItem? Item { get; set; }
 
         [ObservableProperty]
-        double amount;
+        public partial double Amount { get; set; }
+
         partial void OnAmountChanged(double value)
         {
             IsAddition = value > 0;
         }
 
         [ObservableProperty]
-        Unit unit;
+        public partial Unit Unit { get; set; }
 
         [ObservableProperty]
-        bool isAddition = false;
+        public partial bool IsAddition { get; set; } = false;
         #endregion
 
         #region Ctor

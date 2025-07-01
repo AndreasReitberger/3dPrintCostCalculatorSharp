@@ -1,28 +1,41 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Address)}es")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Address : ObservableObject, IAddress
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ForeignKey(typeof(Customer3d))]
+        [ObservableProperty]
+        public partial Guid CustomerId { get; set; }
+#endif
+        [ObservableProperty]
+        public partial string Supplement { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string supplement = string.Empty;
+        public partial string Street { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string street = string.Empty;
+        public partial string Zip { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string zip = string.Empty;
+        public partial string City { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string city = string.Empty;
-
-        [ObservableProperty]
-        string countryCode = string.Empty;
+        public partial string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

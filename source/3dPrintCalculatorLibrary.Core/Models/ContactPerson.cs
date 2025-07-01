@@ -1,31 +1,39 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(ContactPerson)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class ContactPerson : ObservableObject, IPerson
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string firstName = string.Empty;
+        public partial string FirstName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string email = string.Empty;
+        public partial string Email { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string phoneNumber = string.Empty;
+        public partial string PhoneNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool showOnDocuments = true;
+        public partial bool ShowOnDocuments { get; set; } = true;
         #endregion
 
         #region Constructor

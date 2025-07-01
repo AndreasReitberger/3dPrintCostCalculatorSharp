@@ -1,23 +1,32 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Material3dType)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Material3dType : ObservableObject, IMaterial3dType
     {
         #region Properties 
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        string material = string.Empty;
+        public partial string Material { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string polymer = string.Empty;
+        public partial string Polymer { get; set; } = string.Empty;
         #endregion
 
         #region Constructors
@@ -47,20 +56,15 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(Family.ToString()) ? Material : string.Format("{0} ({1})", Material, Family.ToString());
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Material3dType item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

@@ -1,9 +1,17 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
 
+#if SQL
+using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
+using System.Collections.ObjectModel;
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Calculation3dEnhanced
     {
         #region Methods
@@ -265,8 +273,12 @@ namespace AndreasReitberger.Print3d.Core
                         if (ApplyProcedureSpecificAdditions)
                         {
                             // Filter for the current printer procedure
-                            List<ICalculationProcedureAttribute> attributes = ProcedureAttributes.Where(
-                                attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer).ToList();
+#if SQL
+                            List<CalculationProcedureAttribute> attributes =
+#else
+                            List<ICalculationProcedureAttribute> attributes =
+#endif
+                                [.. ProcedureAttributes.Where(attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer)];
                             foreach (ICalculationProcedureAttribute attribute in attributes)
                             {
                                 foreach (ICalculationProcedureParameter parameter in attribute.Parameters)
@@ -378,7 +390,12 @@ namespace AndreasReitberger.Print3d.Core
                         }
                     }
                     // Custom additions before adding the margin
-                    List<ICustomAddition> customAdditionsBeforeMargin = [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
+#if SQL
+                    List<CustomAddition> customAdditionsBeforeMargin =
+#else
+                    List<ICustomAddition> customAdditionsBeforeMargin =
+#endif
+                        [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
 
                     if (customAdditionsBeforeMargin?.Count > 0)
                     {
@@ -432,7 +449,12 @@ namespace AndreasReitberger.Print3d.Core
                         }
 
                         // Get all items where margin calculation is disabled.
-                        List<ICalculationAttribute>? skipMarginCalculation = Rates?.Where(rate => rate.SkipForMargin && rate.ApplyPerFile).ToList();
+#if SQL
+                        List<CalculationAttribute>? skipMarginCalculation =
+#else
+                        List<ICalculationAttribute>? skipMarginCalculation =
+#endif
+                            Rates?.Where(rate => rate.SkipForMargin && rate.ApplyPerFile).ToList();
                         skipMarginCalculation?.ForEach((item) =>
                         {
                             costsSoFar -= item.Value;
@@ -454,8 +476,12 @@ namespace AndreasReitberger.Print3d.Core
                     }
 
                     // Custom additions before margin
+#if SQL
+                    List<CustomAddition> customAdditionsAfterMargin =
+#else
                     List<ICustomAddition> customAdditionsAfterMargin =
-                        CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
+#endif
+                        [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin)];
                     if (customAdditionsAfterMargin.Count > 0)
                     {
                         SortedDictionary<int, double> additions = [];
@@ -577,8 +603,12 @@ namespace AndreasReitberger.Print3d.Core
 
             if (ApplyProcedureSpecificAdditions)
             {
-                List<ICalculationProcedureAttribute> multiMaterialAttributes = ProcedureAttributes
-                    .Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation).ToList();
+#if SQL
+                List<CalculationProcedureAttribute> multiMaterialAttributes =
+#else
+                List<ICalculationProcedureAttribute> multiMaterialAttributes =
+#endif
+                    [.. ProcedureAttributes.Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)];
                 for (int i = 0; i < multiMaterialAttributes?.Count; i++)
                 {
                     ICalculationProcedureAttribute attribute = multiMaterialAttributes[i];

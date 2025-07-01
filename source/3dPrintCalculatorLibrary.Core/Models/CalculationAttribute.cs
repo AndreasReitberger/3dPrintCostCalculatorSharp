@@ -1,54 +1,65 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(CalculationAttribute)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class CalculationAttribute : ObservableObject, ICalculationAttribute
     {
         #region Properties
 
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+#endif
+        [ObservableProperty]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        Guid calculationId;
+        public partial Guid FileId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        Guid fileId = Guid.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial Guid LinkedId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        Guid linkedId = Guid.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial CalculationAttributeTarget Target { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeTarget target;
+        public partial CalculationAttributeType Type { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeType type;
+        public partial CalculationAttributeItem Item { get; set; } = CalculationAttributeItem.Default;
 
         [ObservableProperty]
-        CalculationAttributeItem item = CalculationAttributeItem.Default;
+        public partial double Value { get; set; } = 0;
 
         [ObservableProperty]
-        double value = 0;
+        public partial bool IsPercentageValue { get; set; } = false;
 
         [ObservableProperty]
-        bool isPercentageValue = false;
+        public partial bool ApplyPerFile { get; set; } = false;
 
         [ObservableProperty]
-        bool applyPerFile = false;
+        public partial bool SkipForCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool skipForCalculation = false;
-
-        [ObservableProperty]
-        bool skipForMargin = false;
+        public partial bool SkipForMargin { get; set; } = false;
         #endregion
 
         #region Constructor

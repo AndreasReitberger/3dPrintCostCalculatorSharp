@@ -17,26 +17,26 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid printInfoId;
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid fileId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        File3d? file;
+        public partial File3d? File { get; set; }
 
         [ObservableProperty]
-        int quantity = 1;
+        public partial int Quantity { get; set; } = 1;
 
         [ObservableProperty]
-        bool multiplyPrintTimeWithQuantity = true;
+        public partial bool MultiplyPrintTimeWithQuantity { get; set; } = true;
 
         [ObservableProperty]
-        double printTimeQuantityFactor = 1;
+        public partial double PrintTimeQuantityFactor { get; set; } = 1;
 
         #endregion
 
@@ -56,10 +56,8 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

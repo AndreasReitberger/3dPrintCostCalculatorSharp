@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -16,26 +17,26 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber = string.Empty;
+        public partial string DebitorNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isActive;
+        public partial bool IsActive { get; set; }
 
         [ObservableProperty]
-        string website = string.Empty;
+        public partial string Website { get; set; } = string.Empty;
 
         #endregion
 
         #region Collections
 
         [ObservableProperty]
-        List<Manufacturer> manufacturers = new();
+        public partial List<Manufacturer> Manufacturers { get; set; } = new();
         #endregion
 
         #region Constructor
@@ -46,20 +47,15 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : string.Format("{0} ({1})", Name, DebitorNumber);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Supplier item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

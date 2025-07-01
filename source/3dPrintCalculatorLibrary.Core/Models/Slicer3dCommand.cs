@@ -1,28 +1,47 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Slicer3dCommand)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Slicer3dCommand : ObservableObject, ISlicer3dCommand
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Slicer3d))]
+        public partial Guid SlicerId { get; set; }
 
         [ObservableProperty]
-        ISlicer3d? slicer;
+        [ManyToOne(nameof(SlicerId), CascadeOperations = CascadeOperation.All)]
+        public partial Slicer3d? Slicer { get; set; }
+#else
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial ISlicer3d? Slicer { get; set; }
+#endif
 
         [ObservableProperty]
-        string command = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string outputFilePatternString = string.Empty;
+        public partial string Command { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool autoAddFilePath = false;
+        public partial string OutputFilePatternString { get; set; } = string.Empty;
+
+        [ObservableProperty]
+        public partial bool AutoAddFilePath { get; set; } = false;
 
         #endregion
 

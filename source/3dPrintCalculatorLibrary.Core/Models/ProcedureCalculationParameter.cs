@@ -1,47 +1,61 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(ProcedureCalculationParameter)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class ProcedureCalculationParameter : ObservableObject, IProcedureCalculationParameter
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(ProcedureAddition))]
+        public partial Guid ProcedureAdditionId { get; set; }
+#endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        ProcedureCalculationType type;
+        public partial ProcedureCalculationType Type { get; set; }
 
         [ObservableProperty]
-        double quantityInPackage = 1;
+        public partial double QuantityInPackage { get; set; } = 1;
 
         [ObservableProperty]
-        double amountTakenForCalculation = 1;
+        public partial double AmountTakenForCalculation { get; set; } = 1;
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
         partial void OnPriceChanged(double value)
         {
             CalculatedCosts = value / WearFactor;
         }
 
         [ObservableProperty]
-        double wearFactor = 0;
+        public partial double WearFactor { get; set; } = 0;
         partial void OnWearFactorChanged(double value)
         {
             CalculatedCosts = Price / value;
         }
 
         [ObservableProperty]
-        double calculatedCosts;
+        public partial double CalculatedCosts { get; set; }
         #endregion
 
         #region Ctor

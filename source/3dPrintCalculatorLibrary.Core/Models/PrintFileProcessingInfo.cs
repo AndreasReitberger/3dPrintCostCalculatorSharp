@@ -1,39 +1,47 @@
-﻿using AndreasReitberger.Print3d.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace AndreasReitberger.Print3d.Core.Utilities
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
 {
+    [Table($"{nameof(PrintFileProcessingInfo)}s")]
+#else
+namespace AndreasReitberger.Print3d.Core
+{
+#endif
     public partial class PrintFileProcessingInfo : ObservableObject, IPrintFileProcessingInfo
     {
         #region Properties
 
         [ObservableProperty]
-        Guid id;
+#if SQL
+        [PrimaryKey]
+#endif
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid fileId;
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string filePath = string.Empty;
+        public partial string FilePath { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double progress = 0;
+        public partial double Progress { get; set; } = 0;
         partial void OnProgressChanged(double value)
         {
             IsDone = value >= 100;
         }
 
         [ObservableProperty]
-        bool isDone = false;
+        public partial bool IsDone { get; set; } = false;
 
         [ObservableProperty]
-        double printDuration = 0;
+        public partial double PrintDuration { get; set; } = 0;
 
         [ObservableProperty]
-        double volume = 0;
+        public partial double Volume { get; set; } = 0;
 
         #endregion
 

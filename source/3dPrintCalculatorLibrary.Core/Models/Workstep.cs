@@ -1,32 +1,57 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Workstep)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Workstep : ObservableObject, IWorkstep
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        IWorkstepCategory? category;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        CalculationType calculationType;
+        [ForeignKey(typeof(WorkstepCategory))]
+        public partial Guid CategoryId { get; set; }
 
         [ObservableProperty]
-        WorkstepType type;
+        [ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
+        public partial WorkstepCategory? Category { get; set; }
+#else
+        [ObservableProperty]
+        public partial IWorkstepCategory? Category { get; set; }
+#endif
+        [ObservableProperty]
+        public partial CalculationType CalculationType { get; set; }
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial WorkstepType Type { get; set; }
+
+        [ObservableProperty]
+        public partial string Note { get; set; } = string.Empty;
         #endregion
 
         #region Constructors
@@ -37,7 +62,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object? obj)
         {
@@ -45,10 +70,8 @@ namespace AndreasReitberger.Print3d.Core
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         public object Clone() => MemberwiseClone();
 
         #endregion

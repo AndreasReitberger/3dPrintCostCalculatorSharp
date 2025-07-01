@@ -1,21 +1,45 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Material3dUsage)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Material3dUsage : ObservableObject, ICloneable, IMaterial3dUsage
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Print3dInfo))]
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        IMaterial3d? material;
+        [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Material3d))]
+        public partial Guid MaterialId { get; set; }
+
+        [ObservableProperty]
+        [ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
+        public partial Material3d? Material { get; set; }
+#else
+
+        [ObservableProperty]
+        public partial IMaterial3d? Material { get; set; }
+#endif
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Percentage))]
-        double percentageValue = 1;
+        public partial double PercentageValue { get; set; } = 1;
 
         public double Percentage => PercentageValue * 100;
 
@@ -42,10 +66,7 @@ namespace AndreasReitberger.Print3d.Core
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
         #endregion
     }
 }

@@ -1,21 +1,31 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using AndreasReitberger.Print3d.Core.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(File3dWeight)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class File3dWeight : ObservableObject, IFile3dWeight
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        bool recalculateWeightInGramm = false;
+        public partial bool RecalculateWeightInGramm { get; set; } = false;
 
         [ObservableProperty]
-        double weight = 0;
+        public partial double Weight { get; set; } = 0;
+
         partial void OnWeightChanged(double value)
         {
             RecalculateWeightInGramm = true;
@@ -23,7 +33,8 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        Unit unit = Unit.Gram;
+        public partial Unit Unit { get; set; } = Unit.Gram;
+
         partial void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;
@@ -31,7 +42,7 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double weightInGramm = 0;
+        public partial double WeightInGramm { get; set; } = 0;
 
         #endregion
 
@@ -60,10 +71,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return string.Format("{0} {1}", Weight, Unit);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

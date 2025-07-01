@@ -9,33 +9,33 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayName))]
-        Slicer slicerName = Slicer.Unkown;
+        public partial Slicer SlicerName { get; set; } = Slicer.Unkown;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DisplayName))]
-        SlicerExecutionType executionType = SlicerExecutionType.GUI;
+        public partial SlicerExecutionType ExecutionType { get; set; } = SlicerExecutionType.GUI;
 
         [ObservableProperty]
-        string installationPath = string.Empty;
+        public partial string InstallationPath { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string downloadUri = string.Empty;
+        public partial string DownloadUri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string author = string.Empty;
+        public partial string Author { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string repoUri = string.Empty;
+        public partial string RepoUri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Version? version;
+        public partial Version? Version { get; set; }
 
         [ObservableProperty]
-        Version? latestVersion;
+        public partial Version? LatestVersion { get; set; }
 
         public string DisplayName => $"{SlicerName} ({ExecutionType})";
         #endregion

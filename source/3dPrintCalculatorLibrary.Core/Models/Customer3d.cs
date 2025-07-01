@@ -1,56 +1,90 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 using System.Xml.Serialization;
 
+#if SQL
+
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Customer3d)}s")]
+#else
+using AndreasReitberger.Print3d.Core.Interfaces;
+
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Customer3d : ObservableObject, ICloneable, ICustomer3d
     {
-        #region Clone
-        public object Clone() => MemberwiseClone();
-
-        #endregion
 
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        string customerId = string.Empty;
+        [ForeignKey(typeof(ContactPerson))]
+        public partial Guid ContactPersonId { get; set; }
+#endif
 
         [ObservableProperty]
-        bool isCompany = false;
+        public partial string CustomerId { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial bool IsCompany { get; set; } = false;
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string vAT = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        IPerson? contactPerson;
+        public partial string VAT { get; set; } = string.Empty;
+#if SQL
+        [ObservableProperty]
+        [ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
+        public partial ContactPerson? ContactPerson { get; set; }
 
         [ObservableProperty]
-        IList<IAddress> addresses = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Address> Addresses { get; set; } = [];
 
         [ObservableProperty]
-        IList<IEmail> emailAddresses = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Email> EmailAddresses { get; set; } = [];
 
         [ObservableProperty]
-        IList<IPhoneNumber> phoneNumbers = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<PhoneNumber> PhoneNumbers { get; set; } = [];
+#else
+        [ObservableProperty]
+        public partial IPerson? ContactPerson { get; set; }
 
         [ObservableProperty]
-        string handler = string.Empty;
+        public partial IList<IAddress> Addresses { get; set; } = [];
+
+        [ObservableProperty]
+        public partial IList<IEmail> EmailAddresses { get; set; } = [];
+
+        [ObservableProperty]
+        public partial IList<IPhoneNumber> PhoneNumbers { get; set; } = [];
+#endif
+
+        [ObservableProperty]
+        public partial string Handler { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public string FullName => IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
+        public string FullName => IsCompany ? Name : $"{LastName}, {Name}";
 
         [JsonIgnore]
         public string MainAddress => GetAddress(0);
@@ -71,7 +105,7 @@ namespace AndreasReitberger.Print3d.Core
         {
             if (Addresses?.Count > 0)
             {
-#if NETSTANDARD
+#if NETSTANDARD || NET6_0_OR_GREATER
                 IAddress address = index < Addresses.Count ? Addresses[index] : Addresses[^1];
 #else
                 IAddress address = index < Addresses.Count ? Addresses[index] : Addresses[Addresses.Count - 1];
@@ -83,21 +117,22 @@ namespace AndreasReitberger.Print3d.Core
         }
         #endregion
 
+        #region Clone
+        public object Clone() => MemberwiseClone();
+
+        #endregion
+
         #region Overrides
-        public override string ToString()
-        {
-            return IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         public override bool Equals(object? obj)
         {
             if (obj is not Customer3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
 
     }

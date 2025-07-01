@@ -4,6 +4,7 @@ using AndreasReitberger.Print3d.Realm.MaterialAdditions;
 using System;
 using System.Collections.Generic;
 using Realms;
+using Newtonsoft.Json;
 
 namespace AndreasReitberger.Print3d.Realm
 {
@@ -98,20 +99,15 @@ namespace AndreasReitberger.Print3d.Realm
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Material3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

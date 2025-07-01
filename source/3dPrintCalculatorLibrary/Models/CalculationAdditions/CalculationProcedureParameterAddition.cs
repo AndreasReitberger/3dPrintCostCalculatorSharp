@@ -8,16 +8,16 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationProcedureParameterId;
+        public partial Guid CalculationProcedureParameterId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
 
         #endregion
 

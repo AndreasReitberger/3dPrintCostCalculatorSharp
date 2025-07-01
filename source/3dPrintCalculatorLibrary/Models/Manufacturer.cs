@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
@@ -15,28 +16,28 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid supplierId;
+        public partial Guid SupplierId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber = string.Empty;
+        public partial string DebitorNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isActive = true;
+        public partial bool IsActive { get; set; } = true;
 
         [ObservableProperty]
-        string website = string.Empty;
+        public partial string Website { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string countryCode = string.Empty;
+        public partial string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor
@@ -47,20 +48,15 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : $"{Name} ({DebitorNumber})";
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Manufacturer item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

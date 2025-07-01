@@ -10,20 +10,20 @@ namespace AndreasReitberger.Print3d.Models.StorageAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Guid materialId;
+        public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
-        Material3d? material;
+        public partial Material3d? Material { get; set; }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]
-        ObservableCollection<Storage3dTransaction> transactions = [];
+        public partial ObservableCollection<Storage3dTransaction> Transactions { get; set; } = [];
 
         public double Amount => GetAvailableAmount();
         #endregion

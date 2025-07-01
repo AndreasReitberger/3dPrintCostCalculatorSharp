@@ -1,26 +1,43 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(CalculationProcedureParameter)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class CalculationProcedureParameter : ObservableObject, ICalculationProcedureParameter
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ForeignKey(typeof(CalculationProcedureAttribute))]
+#endif
+        [ObservableProperty]
+        public partial Guid CalculationProcedureAttributeId { get; set; }
 
         [ObservableProperty]
-        Guid calculationProcedureAttributeId;
+        public partial ProcedureParameter Type { get; set; }
 
         [ObservableProperty]
-        ProcedureParameter type;
+        public partial double Value { get; set; } = 0;
 
+#if SQL
         [ObservableProperty]
-        double value = 0;
-
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<CalculationProcedureParameterAddition> Additions { get; set; } = [];
+#else
         [ObservableProperty]
-        IList<ICalculationProcedureParameterAddition> additions = [];
+        public partial IList<ICalculationProcedureParameterAddition> Additions { get; set; } = [];
+#endif
 
         #endregion
 

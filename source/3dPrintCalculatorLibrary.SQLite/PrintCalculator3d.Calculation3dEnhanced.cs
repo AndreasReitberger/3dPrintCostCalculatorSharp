@@ -1,5 +1,5 @@
-﻿using AndreasReitberger.Print3d.Enums;
-using AndreasReitberger.Print3d.Utilities;
+﻿using AndreasReitberger.Print3d.Core.Enums;
+using AndreasReitberger.Print3d.Core.Utilities;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -25,7 +25,7 @@ namespace AndreasReitberger.Print3d.SQLite
         {
             if (!calculation.IsCalculated) return [];
             var usage = new List<Calculation3dChartItem>(
-                calculation.MaterialUsage.Select(cost => new Calculation3dChartItem()
+                calculation.MaterialUsages.Select(cost => new Calculation3dChartItem()
                 {
                     Name = cost.Attribute,
                     Value = cost.Value,

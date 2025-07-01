@@ -1,26 +1,49 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(File3dUsage)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Print3dInfo))]
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        IFile3d? file;
+        [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(File3d))]
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        int quantity = 1;
+        [ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        public partial File3d? File { get; set; }
+#else
+        [ObservableProperty]
+        public partial IFile3d? File { get; set; }
+#endif
 
         [ObservableProperty]
-        bool multiplyPrintTimeWithQuantity = true;
+        public partial int Quantity { get; set; } = 1;
 
         [ObservableProperty]
-        double printTimeQuantityFactor = 1;
+        public partial bool MultiplyPrintTimeWithQuantity { get; set; } = true;
+
+        [ObservableProperty]
+        public partial double PrintTimeQuantityFactor { get; set; } = 1;
 
         #endregion
 
@@ -45,10 +68,7 @@ namespace AndreasReitberger.Print3d.Core
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
         #endregion
     }
 }

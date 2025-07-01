@@ -1,29 +1,39 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System.IO;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(File3d)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class File3d : ObservableObject, IFile3d
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
+
+#if SQL
+        [Ignore]
+#endif
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial object? File { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        object? file;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FilePath { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        string filePath = string.Empty;
         partial void OnFilePathChanged(string value)
         {
             if (value is not null)
@@ -34,16 +44,26 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double volume = 0;
+        public partial double Volume { get; set; } = 0;
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(File3dWeight))]
+        public partial Guid WeightId { get; set; }
 
         [ObservableProperty]
-        IFile3dWeight weight = new File3dWeight(-1, Enums.Unit.Gram);
+        [ManyToOne(nameof(WeightId), CascadeOperations = CascadeOperation.All)]
+        public partial File3dWeight? Weight { get; set; } = new(-1, Core.Enums.Unit.Gram);
+#else
+        [ObservableProperty]
+        public partial IFile3dWeight? Weight { get; set; } = new File3dWeight(-1, Enums.Unit.Gram);
+#endif
 
         [ObservableProperty]
-        double printTime = 0;
+        public partial double PrintTime { get; set; } = 0;
 
         [ObservableProperty]
-        byte[] image = [];
+        public partial byte[] Image { get; set; } = [];
         #endregion
 
         #region Constructor
@@ -59,20 +79,16 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         public override bool Equals(object? obj)
         {
             if (obj is not File3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

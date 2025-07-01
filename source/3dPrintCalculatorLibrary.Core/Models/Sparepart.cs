@@ -1,26 +1,37 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Sparepart)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Sparepart : ObservableObject, ISparepart
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ForeignKey(typeof(Maintenance3d))]
+#endif
+        [ObservableProperty]
+        public partial Guid MaintenanceId { get; set; }
 
         [ObservableProperty]
-        Guid maintenanceId;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Partnumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string partnumber = string.Empty;
-
-        [ObservableProperty]
-        double costs = 0;
+        public partial double Costs { get; set; } = 0;
         #endregion
 
         #region Constructor
@@ -31,20 +42,16 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         public override bool Equals(object? obj)
         {
             if (obj is not Sparepart item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

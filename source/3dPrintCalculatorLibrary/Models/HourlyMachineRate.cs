@@ -9,25 +9,25 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid printerId;
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool perYear = true;
+        public partial bool PerYear { get; set; } = true;
 
         [ObservableProperty]
-        double machineHours = 0;
+        public partial double MachineHours { get; set; } = 0;
 
         [ObservableProperty]
-        double replacementCosts = 0;
+        public partial double ReplacementCosts { get; set; } = 0;
 
         [ObservableProperty]
-        int usefulLifeYears = 4;
+        public partial int UsefulLifeYears { get; set; } = 4;
 
         [JsonIgnore]
         public double CalcDepreciation
@@ -42,7 +42,7 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        double interestRate = 3;
+        public partial double InterestRate { get; set; } = 3;
 
         [JsonIgnore]
         public double CalcInterest
@@ -59,28 +59,28 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        double maintenanceCosts = 0;
+        public partial double MaintenanceCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double locationCosts = 0;
+        public partial double LocationCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCosts = 0;
+        public partial double EnergyCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double additionalCosts = 0;
+        public partial double AdditionalCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double maintenanceCostsVariable = 0;
+        public partial double MaintenanceCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCostsVariable = 0;
+        public partial double EnergyCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double additionalCostsVariable = 0;
+        public partial double AdditionalCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double fixMachineHourRate = -1;
+        public partial double FixMachineHourRate { get; set; } = -1;
 
         [JsonIgnore]
         public double CalcMachineHourRate => GetMachineHourRate();
@@ -135,15 +135,9 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            //return string.Format("{0} {1}", CalcMachineHourRate, CurrencySymbol);
-            return string.Format("{0:C2}", CalcMachineHourRate);
-        }
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public object Clone() => MemberwiseClone();
+
         #endregion
     }
 }

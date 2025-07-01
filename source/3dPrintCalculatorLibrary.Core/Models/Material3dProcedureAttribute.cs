@@ -1,23 +1,37 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(Material3dProcedureAttribute)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class Material3dProcedureAttribute : ObservableObject, IMaterial3dProcedureAttribute
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Material3d))]
+        public partial Guid MaterialId { get; set; }
+#endif
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        ProcedureAttribute attribute;
+        public partial ProcedureAttribute Attribute { get; set; }
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
         #endregion
 
         #region Constructor

@@ -1,40 +1,64 @@
-﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Interfaces;
+﻿
+using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(ProcedureAddition)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class ProcedureAddition : ObservableObject, ICloneable, IProcedureAddition
     {
         #region Properties 
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
+#endif
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string toolTip = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool enabled = true;
+        public partial string ToolTip { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Material3dFamily targetFamily;
+        public partial bool Enabled { get; set; } = true;
 
         [ObservableProperty]
-        ProcedureAdditionTarget target = ProcedureAdditionTarget.General;
+        public partial Material3dFamily TargetFamily { get; set; }
+
+        [ObservableProperty]
+        public partial ProcedureAdditionTarget Target { get; set; } = ProcedureAdditionTarget.General;
 
         #endregion
 
         #region Collections
-
+#if SQL
         [ObservableProperty]
-        IList<IProcedureCalculationParameter> parameters = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<ProcedureCalculationParameter> Parameters { get; set; } = [];
+#else
+        [ObservableProperty]
+        public partial IList<IProcedureCalculationParameter> Parameters { get; set; } = [];
+#endif
         #endregion
 
         #region Constructor
@@ -49,7 +73,11 @@ namespace AndreasReitberger.Print3d.Core
         public double CalculateCosts()
         {
             double costs = 0;
+#if SQL
+            foreach (ProcedureCalculationParameter para in Parameters)
+#else
             foreach (IProcedureCalculationParameter para in Parameters)
+#endif
             {
                 switch (para.Type)
                 {
@@ -62,7 +90,8 @@ namespace AndreasReitberger.Print3d.Core
                     default:
                         break;
                 }
-            };
+            }
+            ;
             return costs;
         }
 

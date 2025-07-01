@@ -19,47 +19,47 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationProfileId;
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        string customerId = string.Empty;
+        public partial string CustomerId { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isCompany = false;
+        public partial bool IsCompany { get; set; } = false;
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string vAT = string.Empty;
+        public partial string VAT { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid contactPersonId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid ContactPersonId { get; set; }
 
         [ObservableProperty]
-        ContactPerson? contactPerson;
+        public partial ContactPerson? ContactPerson { get; set; }
 
         [ObservableProperty]
-        List<Address> addresses = [];
+        public partial List<Address> Addresses { get; set; } = [];
 
         [ObservableProperty]
-        List<Email> emailAddresses = [];
+        public partial List<Email> EmailAddresses { get; set; } = [];
 
         [ObservableProperty]
-        List<PhoneNumber> phoneNumbers = [];
+        public partial List<PhoneNumber> PhoneNumbers { get; set; } = [];
 
         [ObservableProperty]
-        string handler = string.Empty;
+        public partial string Handler { get; set; } = string.Empty;
 
         [JsonIgnore]
         public string FullName => IsCompany ? Name : $"{LastName}, {Name}";
@@ -96,20 +96,15 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Customer3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
 
     }

@@ -58,7 +58,7 @@ namespace AndreasReitberger.NUnitTest
                             City = "Muserstadt",
                             Zip = "93426",
                             CountryCode = "de",
-                            Street = "Musterstraße 4",
+                            Street = "MusterstraÃŸe 4",
                         }
                     ],
                 },
@@ -255,7 +255,7 @@ namespace AndreasReitberger.NUnitTest
                             PackagePrice = 9.99d,
                             Manufacturer = new Manufacturer()
                             {
-                                Name = "Würth",
+                                Name = "WÃ¼rth",
                                 DebitorNumber = "DE26265126",
                                 Website = "https://www.wuerth.de/",
                             },
@@ -272,7 +272,7 @@ namespace AndreasReitberger.NUnitTest
                             PackagePrice = 14.99d,
                             Manufacturer = new Manufacturer()
                             {
-                                Name = "Würth",
+                                Name = "WÃ¼rth",
                                 DebitorNumber = "DE26265126",
                                 Website = "https://www.wuerth.de/",
                             },
@@ -512,7 +512,7 @@ namespace AndreasReitberger.NUnitTest
             {
                 IManufacturer wuerth = new Manufacturer()
                 {
-                    Name = "Würth",
+                    Name = "WÃ¼rth",
                     DebitorNumber = "DE26265126",
                     Website = "https://www.wuerth.de/",
                 };
@@ -798,7 +798,7 @@ namespace AndreasReitberger.NUnitTest
                     };
                     IManufacturer wuerth = new Manufacturer()
                     {
-                        Name = "Würth",
+                        Name = "WÃ¼rth",
                         DebitorNumber = "DE26265126",
                         Website = "https://www.wuerth.de/",
                     };
@@ -875,7 +875,7 @@ namespace AndreasReitberger.NUnitTest
                 {
                     Target = CalculationAttributeTarget.Fee,
                     Type = CalculationAttributeType.HandlingFee,
-                    Value = 5, // 5€ fee
+                    Value = 5, // 5Â€ fee
                     IsPercentageValue = false,
                     ApplyPerFile = false,
                 });
@@ -900,7 +900,7 @@ namespace AndreasReitberger.NUnitTest
                 {
                     Target = CalculationAttributeTarget.Fee,
                     Type = CalculationAttributeType.HandlingFee,
-                    Value = 5, // 5€ fee
+                    Value = 5, // 5Â€ fee
                     IsPercentageValue = false,
                     ApplyPerFile = true,
                 });

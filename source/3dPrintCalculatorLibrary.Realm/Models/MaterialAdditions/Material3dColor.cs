@@ -1,4 +1,5 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
+using Newtonsoft.Json;
 using Realms;
 using System;
 
@@ -38,20 +39,15 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return $"{Name} (#{HexColorCode})";
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Material3dColor item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+
         #endregion
     }
 }

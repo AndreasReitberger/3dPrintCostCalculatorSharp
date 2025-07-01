@@ -1,17 +1,9 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.CustomerAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
-using AndreasReitberger.Print3d.SQLite.FileAdditions;
-using AndreasReitberger.Print3d.SQLite.Interfaces;
-using AndreasReitberger.Print3d.SQLite.MaintenanceAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
-using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-using AndreasReitberger.Print3d.SQLite.ProcedureAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SQLite;
 using System.Diagnostics;
 
 namespace AndreasReitberger.Print3d.SQLite
@@ -44,31 +36,31 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Properties
         [ObservableProperty]
-        bool isInitialized = false;
+        public partial bool IsInitialized { get; set; } = false;
 
         [ObservableProperty]
-        string databasePath = string.Empty;
+        public partial string DatabasePath { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string passphrase = string.Empty;
+        public partial string Passphrase { get; set; } = string.Empty;
 
         [ObservableProperty]
-        SQLiteAsyncConnection databaseAsync;
+        public partial SQLiteAsyncConnection DatabaseAsync { get; set; }
 
         [ObservableProperty]
-        List<Action> delegates = [];
+        public partial List<Action> Delegates { get; set; } = [];
 
         [ObservableProperty]
-        List<Type> tables = [];
+        public partial List<Type> Tables { get; set; } = [];
 
         [ObservableProperty]
-        List<Type> defaultTables = [
+        public partial List<Type> DefaultTables { get; set; } = [
             typeof(Manufacturer),
             typeof(Supplier),
-            typeof(Printer3d),
-            typeof(Printer3dAttribute),
-            typeof(Printer3dSlicerConfig),
             typeof(Maintenance3d),
+            typeof(Printer3dAttribute),
+            typeof(Printer3d),
+            typeof(Printer3dSlicerConfig),
             typeof(Sparepart),
             typeof(Material3dColor),
             typeof(Material3dType),
@@ -79,6 +71,11 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepCategory),
             typeof(Workstep),
             typeof(HourlyMachineRate),
+            typeof(Print3dInfo),
+            typeof(ProcedureAddition),
+            typeof(ProcedureCalculationParameter),
+            typeof(Item3d),
+            typeof(Item3dUsage),
             typeof(Customer3d),
             typeof(CustomAddition),
             typeof(CalculationAttribute),
@@ -90,7 +87,7 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(File3dUsage),
-            typeof(ModelWeight),
+            typeof(File3dWeight),
             typeof(Address),
             typeof(Email),
             typeof(PhoneNumber),
@@ -98,33 +95,27 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Calculation3dProfile),
             typeof(WorkstepUsage),
             typeof(WorkstepUsageParameter),
-            typeof(Item3d),
-            typeof(Item3dUsage),
-            typeof(Storage3dLocation),
-            typeof(Storage3dTransaction),
-            typeof(Storage3dItem),
-            typeof(Storage3d),
             typeof(Storage3dLocationStorage3d),
             typeof(Storage3dItemStorage3dLocation),
             typeof(Storage3dItemStorage3dTransaction),
-            typeof(ProcedureAddition),
-            typeof(ProcedureCalculationParameter),
-            typeof(Print3dInfo),
-
+            typeof(Storage3dTransaction),
+            typeof(Storage3dItem),
+            typeof(Storage3dLocation),
+            typeof(Storage3d),
             typeof(DatabaseSettingsKeyValuePair)
         ];
 
         [ObservableProperty]
-        Func<Type, Task>? onDatabaseOpertions;
+        public partial Func<Type, Task>? OnDatabaseOpertions { get; set; }
         #endregion
 
         #region Collections
 
         [ObservableProperty]
-        List<Calculation3dEnhanced> enhancedCalculations = [];
+        public partial List<Calculation3dEnhanced> EnhancedCalculations { get; set; } = [];
 
         [ObservableProperty]
-        List<Printer3d> printers = [];
+        public partial List<Printer3d> Printers { get; set; } = [];
         partial void OnPrintersChanged(List<Printer3d> value)
         {
             OnPrintersChangedEvent(new PrintersChangedDatabaseEventArgs()
@@ -134,7 +125,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Material3d> materials = [];
+        public partial List<Material3d> Materials { get; set; } = [];
         partial void OnMaterialsChanged(List<Material3d> value)
         {
             OnMaterialsChangedEvent(new MaterialsChangedDatabaseEventArgs()
@@ -144,7 +135,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Customer3d> customers = [];
+        public partial List<Customer3d> Customers { get; set; } = [];
         partial void OnCustomersChanged(List<Customer3d> value)
         {
             OnCustomersChangedEvent(new CustomersChangedDatabaseEventArgs()
@@ -154,7 +145,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<File3d> files = [];
+        public partial List<File3d> Files { get; set; } = [];
         partial void OnFilesChanged(List<File3d> value)
         {
             OnFilesChangedEvent(new FilesChangedDatabaseEventArgs()
@@ -164,7 +155,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Workstep> worksteps = [];
+        public partial List<Workstep> Worksteps { get; set; } = [];
         partial void OnWorkstepsChanged(List<Workstep> value)
         {
             OnWorkstepsChangedEvent(new WorkstepsChangedDatabaseEventArgs()
@@ -174,7 +165,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsage> workstepUsages = [];
+        public partial List<WorkstepUsage> WorkstepUsages { get; set; } = [];
         partial void OnWorkstepUsagesChanged(List<WorkstepUsage> value)
         {
             /*
@@ -186,7 +177,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsageParameter> workstepUsageParameters = [];
+        public partial List<WorkstepUsageParameter> WorkstepUsageParameters { get; set; } = [];
         partial void OnWorkstepUsageParametersChanged(List<WorkstepUsageParameter> value)
         {
             /*
@@ -198,7 +189,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<HourlyMachineRate> hourlyMachineRates = [];
+        public partial List<HourlyMachineRate> HourlyMachineRates { get; set; } = [];
         partial void OnHourlyMachineRatesChanged(List<HourlyMachineRate> value)
         {
             OnHourlyMachineRatesChangedEvent(new HourlyMachineRatesChangedDatabaseEventArgs()
@@ -243,7 +234,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task UpdateAllDelegatesAsync()
         {
             //var actions = Delegates.Select(task => new Task(task));
-            List<Task> tasks = new(Delegates.Select(task => new Task(task)));
+            List<Task> tasks = [.. Delegates.Select(task => new Task(task))];
             await Task.WhenAll(tasks);
         }
         #endregion
@@ -385,7 +376,22 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task CloseAsync() => DatabaseAsync.CloseAsync();
         public void Close() => DatabaseAsync?.CloseAsync();
 
-        public void Dispose() => Close();
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (DatabaseAsync != null)
+                {
+                    Close();
+                }
+            }
+        }
 
         #endregion
 

@@ -1,24 +1,65 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
+﻿using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
-using System;
 
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite
+{
+    [Table($"{nameof(WorkstepUsage)}s")]
+#else
 namespace AndreasReitberger.Print3d.Core
 {
+#endif
     public partial class WorkstepUsage : ObservableObject, IWorkstepUsage
     {
         #region Properties
+#if SQL
+        [PrimaryKey]
+#endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ObservableProperty]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        IWorkstep? workstep;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        IWorkstepUsageParameter? usageParameter;
+        [ForeignKey(typeof(Workstep))]
+        public partial Guid WorkstepId { get; set; }
 
         [ObservableProperty]
-        double totalCosts = 0;
+        [ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
+        public partial Workstep? Workstep { get; set; }
+        partial void OnWorkstepChanged(Workstep? value) => TotalCosts = GetTotalCosts();
+
+        [ObservableProperty]
+        [ForeignKey(typeof(WorkstepUsageParameter))]
+        public partial Guid UsageParameterId { get; set; }
+
+        [ObservableProperty]
+        [ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
+        public partial WorkstepUsageParameter? UsageParameter { get; set; }
+        partial void OnUsageParameterChanged(WorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
+#else
+
+        [ObservableProperty]
+        public partial IWorkstep? Workstep { get; set; }
+
+        partial void OnWorkstepChanged(IWorkstep? value) => TotalCosts = GetTotalCosts();
+
+        [ObservableProperty]
+        public partial IWorkstepUsageParameter? UsageParameter { get; set; }
+
+        partial void OnUsageParameterChanged(IWorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
+#endif
+
+        [ObservableProperty]
+        public partial double TotalCosts { get; set; } = 0;
 
         #endregion
 
@@ -35,7 +76,7 @@ namespace AndreasReitberger.Print3d.Core
             double cost;
             cost = (UsageParameter?.ParameterType) switch
             {
-                Enums.WorkstepUsageParameterType.Duration => (Workstep?.Price * UsageParameter?.Value) ?? 0,
+                WorkstepUsageParameterType.Duration => (Workstep?.Price * UsageParameter?.Value) ?? 0,
                 _ => (Workstep?.Price * UsageParameter?.Value) ?? 0,
             };
             return cost;
@@ -51,10 +92,7 @@ namespace AndreasReitberger.Print3d.Core
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
         #endregion
     }
 }

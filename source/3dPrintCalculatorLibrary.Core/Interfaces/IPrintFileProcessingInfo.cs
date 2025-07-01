@@ -1,6 +1,10 @@
 ﻿using AndreasReitberger.Print3d.Core;
 
-namespace AndreasReitberger.Print3d.Interfaces
+#if SQL
+namespace AndreasReitberger.Print3d.SQLite.Interfaces
+#else
+namespace AndreasReitberger.Print3d.Core.Interfaces
+#endif
 {
     public interface IPrintFileProcessingInfo
     {

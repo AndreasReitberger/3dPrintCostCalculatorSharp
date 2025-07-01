@@ -8,16 +8,16 @@ namespace AndreasReitberger.Print3d.Models.PrinterAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid printerId;
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value;
+        public partial double Value { get; set; }
         #endregion
 
         #region Constructor

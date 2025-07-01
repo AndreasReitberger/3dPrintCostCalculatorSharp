@@ -13,16 +13,16 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        int capacity = 32;
+        public partial int Capacity { get; set; } = 32;
 
         [ObservableProperty]
-        ObservableCollection<Storage3dLocation> locations = [];
+        public partial ObservableCollection<Storage3dLocation> Locations { get; set; } = [];
 
         #endregion
 

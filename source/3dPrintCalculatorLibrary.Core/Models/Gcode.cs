@@ -12,64 +12,64 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Gcode : ObservableObject, IGcode
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string slicer = "Unknown";
+        public partial string Slicer { get; set; } = "Unknown";
 
         [ObservableProperty]
-        double printTime = 0;
+        public partial double PrintTime { get; set; } = 0;
 
         [ObservableProperty]
-        double totalFilament = 0;
+        public partial double TotalFilament { get; set; } = 0;
 
         [ObservableProperty]
-        int speedIndex = 0;
+        public partial int SpeedIndex { get; set; } = 0;
 
         [ObservableProperty]
-        double width = 0;
+        public partial double Width { get; set; } = 0;
 
         [ObservableProperty]
-        double height = 0;
+        public partial double Height { get; set; } = 0;
 
         [ObservableProperty]
-        double depth = 0;
+        public partial double Depth { get; set; } = 0;
 
         [ObservableProperty]
-        int layers = 0;
+        public partial int Layers { get; set; } = 0;
 
         [ObservableProperty]
-        double layerHeight = 0;
+        public partial double LayerHeight { get; set; } = 0;
 
         [ObservableProperty]
-        List<double> volSpeeds = [];
+        public partial List<double> VolSpeeds { get; set; } = [];
 
         [ObservableProperty]
-        List<double> extrusionSpeeds = [];
+        public partial List<double> ExtrusionSpeeds { get; set; } = [];
 
         [ObservableProperty]
-        Dictionary<double, List<double>> volSpeedsByLayer = [];
+        public partial Dictionary<double, List<double>> VolSpeedsByLayer { get; set; } = [];
 
         [ObservableProperty]
-        Dictionary<double, List<double>> extrusionSpeedsByLayer = [];
+        public partial Dictionary<double, List<double>> ExtrusionSpeedsByLayer { get; set; } = [];
 
         [ObservableProperty]
-        Dictionary<string, double> speedsByLayer = [];
+        public partial Dictionary<string, double> SpeedsByLayer { get; set; } = [];
 
         [ObservableProperty]
-        Dictionary<double, int> zHeights = [];
+        public partial Dictionary<double, int> ZHeights { get; set; } = [];
 
 #if SQL
 
         [ObservableProperty]
-        List<List<GcodeCommand>> commands = [];
+        public partial List<List<GcodeCommand>> Commands { get; set; } = [];
 #else
         [ObservableProperty]
-        IList<IList<IGcodeCommand>> commands = [];
+        public partial IList<IList<IGcodeCommand>> Commands { get; set; } = [];
 #endif
 
         #endregion

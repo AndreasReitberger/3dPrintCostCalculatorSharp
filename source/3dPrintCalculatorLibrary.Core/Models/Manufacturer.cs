@@ -12,35 +12,35 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Manufacturer : ObservableObject, ICloneable, IManufacturer
     {
         #region Properties 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Supplier))]
-        Guid supplierId;
+        [ForeignKey(typeof(Supplier))]
+        public partial Guid SupplierId { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber = string.Empty;
+        public partial string DebitorNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isActive = true;
+        public partial bool IsActive { get; set; } = true;
 
         [ObservableProperty]
-        string website = string.Empty;
+        public partial string Website { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string countryCode = string.Empty;
+        public partial string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

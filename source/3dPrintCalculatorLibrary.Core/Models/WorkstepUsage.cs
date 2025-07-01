@@ -13,49 +13,51 @@ namespace AndreasReitberger.Print3d.Core
     public partial class WorkstepUsage : ObservableObject, IWorkstepUsage
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
-        
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
+
         [ObservableProperty]
-        Guid workstepId;
-        
+        public partial Guid WorkstepId { get; set; }
+
         [ObservableProperty]
-        [property: ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
-        Workstep? workstep;
+        [ManyToOne(nameof(WorkstepId), CascadeOperations = CascadeOperation.All)]
+        public partial Workstep? Workstep { get; set; }
         partial void OnWorkstepChanged(Workstep? value) => TotalCosts = GetTotalCosts();
-        
-        [ObservableProperty]
-        Guid usageParameterId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
-        WorkstepUsageParameter? usageParameter;
+        public partial Guid UsageParameterId { get; set; }
+
+        [ObservableProperty]
+        [ManyToOne(nameof(UsageParameterId), CascadeOperations = CascadeOperation.All)]
+        public partial WorkstepUsageParameter? UsageParameter { get; set; }
         partial void OnUsageParameterChanged(WorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
 #else
 
         [ObservableProperty]
-        IWorkstep? workstep;
+        public partial IWorkstep? Workstep { get; set; }
+
         partial void OnWorkstepChanged(IWorkstep? value) => TotalCosts = GetTotalCosts();
 
         [ObservableProperty]
-        IWorkstepUsageParameter? usageParameter;
+        public partial IWorkstepUsageParameter? UsageParameter { get; set; }
+
         partial void OnUsageParameterChanged(IWorkstepUsageParameter? value) => TotalCosts = GetTotalCosts();
 #endif
 
         [ObservableProperty]
-        double totalCosts = 0;
+        public partial double TotalCosts { get; set; } = 0;
 
         #endregion
 

@@ -10,16 +10,16 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
     {
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        string material = string.Empty;
+        public partial string Material { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string polymer = string.Empty;
+        public partial string Polymer { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

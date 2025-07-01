@@ -11,31 +11,31 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationId;
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
 
         [ObservableProperty]
-        Guid categoryId;
+        public partial Guid CategoryId { get; set; }
 
         [ObservableProperty]
-        WorkstepCategory? category;
+        public partial WorkstepCategory? Category { get; set; }
 
         [ObservableProperty]
-        CalculationType calculationType;
+        public partial CalculationType CalculationType { get; set; }
 
         [ObservableProperty]
-        WorkstepType type;
+        public partial WorkstepType Type { get; set; }
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

@@ -14,89 +14,88 @@ namespace AndreasReitberger.Print3d.Core
     {
 
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 #endif
 
         [ObservableProperty]
-        string model = string.Empty;
+        public partial string Model { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Printer3dType type = Printer3dType.FDM;
+        public partial Printer3dType Type { get; set; } = Printer3dType.FDM;
 
 #if SQL
         [ObservableProperty]
-        Guid manufacturerId;
+        public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer? manufacturer;
+        [ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
+        public partial Manufacturer? Manufacturer { get; set; }
 #else
         [ObservableProperty]
-        IManufacturer? manufacturer;
+        public partial IManufacturer? Manufacturer { get; set; }
 #endif
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
 
         [ObservableProperty]
-        double tax = 0;
+        public partial double Tax { get; set; } = 0;
 
         [ObservableProperty]
-        bool priceIncludesTax = true;
+        public partial bool PriceIncludesTax { get; set; } = true;
 
         [ObservableProperty]
-        string uri = string.Empty;
+        public partial string Uri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Material3dFamily materialType = Material3dFamily.Filament;
+        public partial Material3dFamily MaterialType { get; set; } = Material3dFamily.Filament;
 
         [ObservableProperty]
-        double powerConsumption = 0;
+        public partial double PowerConsumption { get; set; } = 0;
 
         [ObservableProperty]
-        double width = 1;
+        public partial double Width { get; set; } = 1;
 
         [ObservableProperty]
-        double depth = 1;
+        public partial double Depth { get; set; } = 1;
 
         [ObservableProperty]
-        double height = 1;
+        public partial double Height { get; set; } = 1;
 
 #if SQL
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Printer3dAttribute> attributes = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Printer3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
-        Guid hourlyMachineRateId;
+        public partial Guid HourlyMachineRateId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(HourlyMachineRateId), CascadeOperations = CascadeOperation.All)]
-        HourlyMachineRate? hourlyMachineRate;
+        [ManyToOne(nameof(HourlyMachineRateId), CascadeOperations = CascadeOperation.All)]
+        public partial HourlyMachineRate? HourlyMachineRate { get; set; }
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Maintenance3d> maintenances = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Maintenance3d> Maintenances { get; set; } = [];
 
         [ObservableProperty]
-        Guid slicerConfigId;
-
+        public partial Guid SlicerConfigId { get; set; }
         [ObservableProperty]
-        [property: ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
-        Printer3dSlicerConfig slicerConfig =
+        [ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
+        public partial Printer3dSlicerConfig? SlicerConfig { get; set; } =
 #if NET6_0_OR_GREATER
             (Printer3dSlicerConfig)Printer3dSlicerConfig.Default;
 #else
@@ -104,16 +103,15 @@ namespace AndreasReitberger.Print3d.Core
 #endif
 #else
         [ObservableProperty]
-        IList<IPrinter3dAttribute> attributes = [];
+        public partial IList<IPrinter3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
-        IHourlyMachineRate? hourlyMachineRate;
+        public partial IHourlyMachineRate? HourlyMachineRate { get; set; }
 
         [ObservableProperty]
-        IList<IMaintenance3d> maintenances = [];
-
+        public partial IList<IMaintenance3d> Maintenances { get; set; } = [];
         [ObservableProperty]
-        IPrinter3dSlicerConfig? slicerConfig =
+        public partial IPrinter3dSlicerConfig? SlicerConfig { get; set; } =
 #if NET6_0_OR_GREATER
             IPrinter3dSlicerConfig.Default;
 #else
@@ -121,10 +119,10 @@ namespace AndreasReitberger.Print3d.Core
 #endif
 #endif
         [ObservableProperty]
-        byte[] image = [];
+        public partial byte[] Image { get; set; } = [];
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
 
         [JsonIgnore]
 #if SQL

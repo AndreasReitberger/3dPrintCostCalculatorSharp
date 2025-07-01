@@ -13,20 +13,20 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3dType : ObservableObject, IMaterial3dType
     {
         #region Properties 
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        string material = string.Empty;
+        public partial string Material { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string polymer = string.Empty;
+        public partial string Polymer { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

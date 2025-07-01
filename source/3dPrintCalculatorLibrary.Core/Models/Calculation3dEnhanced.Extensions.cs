@@ -276,9 +276,9 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
                             List<CalculationProcedureAttribute> attributes =
 #else
-                            List<ICalculationProcedureAttribute> attributes = 
+                            List<ICalculationProcedureAttribute> attributes =
 #endif
-                                ProcedureAttributes.Where(attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer).ToList();
+                                [.. ProcedureAttributes.Where(attr => attr.Family == printer.MaterialType && attr.Level == CalculationLevel.Printer)];
                             foreach (ICalculationProcedureAttribute attribute in attributes)
                             {
                                 foreach (ICalculationProcedureParameter parameter in attribute.Parameters)
@@ -395,8 +395,7 @@ namespace AndreasReitberger.Print3d.Core
 #else
                     List<ICustomAddition> customAdditionsBeforeMargin =
 #endif
-                        CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)
-                        .ToList();
+                        [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
 
                     if (customAdditionsBeforeMargin?.Count > 0)
                     {
@@ -482,7 +481,7 @@ namespace AndreasReitberger.Print3d.Core
 #else
                     List<ICustomAddition> customAdditionsAfterMargin =
 #endif
-                        CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin).ToList();
+                        [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.AfterApplingMargin)];
                     if (customAdditionsAfterMargin.Count > 0)
                     {
                         SortedDictionary<int, double> additions = [];
@@ -609,7 +608,7 @@ namespace AndreasReitberger.Print3d.Core
 #else
                 List<ICalculationProcedureAttribute> multiMaterialAttributes =
 #endif
-                    ProcedureAttributes.Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation).ToList();
+                    [.. ProcedureAttributes.Where(attr => attr.Family == Procedure && attr.Level == CalculationLevel.Calculation)];
                 for (int i = 0; i < multiMaterialAttributes?.Count; i++)
                 {
                     ICalculationProcedureAttribute attribute = multiMaterialAttributes[i];

@@ -17,52 +17,52 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Item3dUsage : ObservableObject, IItem3dUsage
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationEnhancedId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationEnhancedId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Print3dInfo))]
-        Guid printInfoId;
+        [ForeignKey(typeof(Print3dInfo))]
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid itemId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid ItemId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
-        Item3d? item;
+        [ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
+        public partial Item3d? Item { get; set; }
 #else
         [ObservableProperty]
-        IItem3d? item;
+        public partial IItem3d? Item { get; set; }
 #endif
         [ObservableProperty]
-        double quantity;
+        public partial double Quantity { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid fileId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid FileId { get; set; }
 #endif
 
         [ObservableProperty]
 #if SQL
-        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3d? file;
+        [ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        public partial File3d? File { get; set; }
         partial void OnFileChanged(File3d? value)
 #else
-        IFile3d? file;
+        public partial IFile3d? File { get; set; }
         partial void OnFileChanged(IFile3d? value)
 #endif
         {
@@ -73,7 +73,7 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        bool linkedToFile = false;
+        public partial bool LinkedToFile { get; set; } = false;
         #endregion
 
         #region Constructor

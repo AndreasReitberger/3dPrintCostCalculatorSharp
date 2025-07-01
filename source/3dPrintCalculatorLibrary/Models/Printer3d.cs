@@ -14,76 +14,77 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationId;
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        string model = string.Empty;
+        public partial string Model { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Printer3dType type = Printer3dType.FDM;
+        public partial Printer3dType Type { get; set; } = Printer3dType.FDM;
 
         [ObservableProperty]
-        Guid manufacturerId;
+        public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]
-        Manufacturer? manufacturer;
+        public partial Manufacturer? Manufacturer { get; set; }
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
 
         [ObservableProperty]
-        double tax = 0;
+        public partial double Tax { get; set; } = 0;
 
         [ObservableProperty]
-        bool priceIncludesTax = true;
+        public partial bool PriceIncludesTax { get; set; } = true;
 
         [ObservableProperty]
-        string uri = string.Empty;
+        public partial string Uri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Material3dFamily materialType = Material3dFamily.Filament;
+        public partial Material3dFamily MaterialType { get; set; } = Material3dFamily.Filament;
 
         [ObservableProperty]
-        List<Printer3dAttribute> attributes = [];
+        public partial List<Printer3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
-        double powerConsumption = 0;
+        public partial double PowerConsumption { get; set; } = 0;
 
         [ObservableProperty]
-        double width = 1;
+        public partial double Width { get; set; } = 1;
 
         [ObservableProperty]
-        double depth = 1;
+        public partial double Depth { get; set; } = 1;
 
         [ObservableProperty]
-        double height = 1;
-
-        [ObservableProperty, Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
-        bool useFixedMachineHourRating = false;
+        public partial double Height { get; set; } = 1;
 
         [ObservableProperty]
-        Guid hourlyMachineRateId;
+        [field: Obsolete("No longer supported, assign a `HourlyMachineRate` instead.")]
+        public partial bool UseFixedMachineHourRating { get; set; } = false;
 
         [ObservableProperty]
-        HourlyMachineRate? hourlyMachineRate;
+        public partial Guid HourlyMachineRateId { get; set; }
 
         [ObservableProperty]
-        ObservableCollection<Maintenance3d> maintenances = [];
+        public partial HourlyMachineRate? HourlyMachineRate { get; set; }
 
         [ObservableProperty]
-        Guid slicerConfigId;
+        public partial ObservableCollection<Maintenance3d> Maintenances { get; set; } = [];
 
         [ObservableProperty]
-        Printer3dSlicerConfig slicerConfig = new();
+        public partial Guid SlicerConfigId { get; set; }
 
         [ObservableProperty]
-        byte[] image = [];
+        public partial Printer3dSlicerConfig SlicerConfig { get; set; } = new();
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial byte[] Image { get; set; } = [];
+
+        [ObservableProperty]
+        public partial string Note { get; set; } = string.Empty;
 
         [JsonIgnore]
         public string Name => !string.IsNullOrEmpty(Manufacturer?.Name) ? $"{Manufacturer?.Name}, {Model}" : Model;

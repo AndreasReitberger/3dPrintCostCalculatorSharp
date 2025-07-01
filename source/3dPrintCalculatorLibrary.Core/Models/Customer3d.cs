@@ -17,70 +17,70 @@ namespace AndreasReitberger.Print3d.Core
     {
 
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        Guid contactPersonId;
+        public partial Guid ContactPersonId { get; set; }
 #endif
 
         [ObservableProperty]
-        string customerId = string.Empty;
+        public partial string CustomerId { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isCompany = false;
+        public partial bool IsCompany { get; set; } = false;
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string vAT = string.Empty;
+        public partial string VAT { get; set; } = string.Empty;
 #if SQL
         [ObservableProperty]
-        [property: ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
-        ContactPerson? contactPerson;
+        [ManyToOne(nameof(ContactPersonId), CascadeOperations = CascadeOperation.All)]
+        public partial ContactPerson? ContactPerson { get; set; }
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Address> addresses = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Address> Addresses { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Email> emailAddresses = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Email> EmailAddresses { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<PhoneNumber> phoneNumbers = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<PhoneNumber> PhoneNumbers { get; set; } = [];
 #else
         [ObservableProperty]
-        IPerson? contactPerson;
+        public partial IPerson? ContactPerson { get; set; }
 
         [ObservableProperty]
-        IList<IAddress> addresses = [];
+        public partial IList<IAddress> Addresses { get; set; } = [];
 
         [ObservableProperty]
-        IList<IEmail> emailAddresses = [];
+        public partial IList<IEmail> EmailAddresses { get; set; } = [];
 
         [ObservableProperty]
-        IList<IPhoneNumber> phoneNumbers = [];
+        public partial IList<IPhoneNumber> PhoneNumbers { get; set; } = [];
 #endif
 
         [ObservableProperty]
-        string handler = string.Empty;
+        public partial string Handler { get; set; } = string.Empty;
 
         [JsonIgnore]
         public string FullName => IsCompany ? Name : $"{LastName}, {Name}";
@@ -88,7 +88,7 @@ namespace AndreasReitberger.Print3d.Core
         [JsonIgnore]
         public string MainAddress => GetAddress(0);
 
-#endregion
+        #endregion
 
         #region Constructor
 
@@ -104,7 +104,7 @@ namespace AndreasReitberger.Print3d.Core
         {
             if (Addresses?.Count > 0)
             {
-#if NETSTANDARD
+#if NETSTANDARD || NET6_0_OR_GREATER
                 IAddress address = index < Addresses.Count ? Addresses[index] : Addresses[^1];
 #else
                 IAddress address = index < Addresses.Count ? Addresses[index] : Addresses[Addresses.Count - 1];

@@ -9,19 +9,19 @@ namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid maintenanceId;
+        public partial Guid MaintenanceId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string partnumber = string.Empty;
+        public partial string Partnumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double costs;
+        public partial double Costs { get; set; }
         #endregion
 
         #region Constructor

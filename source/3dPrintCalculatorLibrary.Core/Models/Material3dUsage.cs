@@ -12,33 +12,33 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3dUsage : ObservableObject, ICloneable, IMaterial3dUsage
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Print3dInfo))]
-        Guid printInfoId;
+        [ForeignKey(typeof(Print3dInfo))]
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid materialId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
-        Material3d? material;
+        [ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
+        public partial Material3d? Material { get; set; }
 #else
 
         [ObservableProperty]
-        IMaterial3d? material;
+        public partial IMaterial3d? Material { get; set; }
 #endif
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Percentage))]
-        double percentageValue = 1;
+        public partial double PercentageValue { get; set; } = 1;
 
         public double Percentage => PercentageValue * 100;
 

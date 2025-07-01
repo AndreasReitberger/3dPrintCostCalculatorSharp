@@ -8,13 +8,13 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid customerId;
+        public partial Guid CustomerId { get; set; }
 
         [ObservableProperty]
-        string emailAddress = string.Empty;
+        public partial string EmailAddress { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

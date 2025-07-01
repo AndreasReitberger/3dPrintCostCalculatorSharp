@@ -7,22 +7,22 @@ namespace AndreasReitberger.Print3d.Core.Utilities
     {
         #region Properties
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value;
+        public partial double Value { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeType attributeType;
+        public partial CalculationAttributeType AttributeType { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeItem attributeItem;
+        public partial CalculationAttributeItem AttributeItem { get; set; }
 
         [ObservableProperty]
-        Guid fileId;
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

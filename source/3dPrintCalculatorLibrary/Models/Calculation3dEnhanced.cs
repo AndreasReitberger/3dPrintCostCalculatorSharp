@@ -18,32 +18,33 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         #region Basics
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        CalculationState state = CalculationState.Draft;
+        public partial CalculationState State { get; set; } = CalculationState.Draft;
 
         [ObservableProperty]
-        DateTimeOffset created = DateTime.Now;
+        public partial DateTimeOffset Created { get; set; } = DateTime.Now;
 
         [ObservableProperty]
-        Guid customerId;
+        public partial Guid CustomerId { get; set; }
 
         [ObservableProperty]
-        Customer3d? customer;
+        public partial Customer3d? Customer { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        bool isCalculated = false;
+        [JsonIgnore, XmlIgnore]
+        public partial bool IsCalculated { get; set; } = false;
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        bool recalculationRequired = false;
+        [JsonIgnore, XmlIgnore]
+        public partial bool RecalculationRequired { get; set; } = false;
+
         partial void OnRecalculationRequiredChanged(bool value)
         {
             if (value)
@@ -56,29 +57,29 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        int quantity = 1;
+        public partial int Quantity { get; set; } = 1;
 
         [ObservableProperty]
-        double powerLevel = 0;
+        public partial double PowerLevel { get; set; } = 0;
 
         [ObservableProperty]
-        double failRate = 0;
+        public partial double FailRate { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCostsPerkWh = 0;
+        public partial double EnergyCostsPerkWh { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyEnergyCost = false;
+        public partial bool ApplyEnergyCost { get; set; } = false;
 
         [ObservableProperty]
-        double totalCosts = 0;
+        public partial double TotalCosts { get; set; } = 0;
 
         [ObservableProperty]
-        [property: Obsolete("Not needed anymore, will be removed")]
-        bool combineMaterialCosts = false;
+        [Obsolete("Not needed anymore, will be removed")]
+        public partial bool CombineMaterialCosts { get; set; } = false;
 
         [ObservableProperty]
-        bool differFileCosts = true;
+        public partial bool DifferFileCosts { get; set; } = true;
 
         #endregion
 
@@ -88,36 +89,37 @@ namespace AndreasReitberger.Print3d.Models
         public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.MaterialUsages).Select(mu => mu.Material).Distinct().ToList();
 
         [ObservableProperty]
-        List<CustomAddition> customAdditions = [];
+        public partial List<CustomAddition> CustomAdditions { get; set; } = [];
 
         [ObservableProperty]
-        List<WorkstepUsage> workstepUsages = [];
+        public partial List<WorkstepUsage> WorkstepUsages { get; set; } = [];
 
         [ObservableProperty]
-        List<Item3dUsage> additionalItems = [];
+        public partial List<Item3dUsage> AdditionalItems { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<CalculationAttribute> printTimes = [];
+        public partial ObservableCollection<CalculationAttribute> PrintTimes { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<CalculationAttribute> materialUsage = [];
+        public partial ObservableCollection<CalculationAttribute> MaterialUsage { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<CalculationAttribute> overallMaterialCosts = [];
+        public partial ObservableCollection<CalculationAttribute> OverallMaterialCosts { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<CalculationAttribute> overallPrinterCosts = [];
+        public partial ObservableCollection<CalculationAttribute> OverallPrinterCosts { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<CalculationAttribute> costs = [];
+        public partial ObservableCollection<CalculationAttribute> Costs { get; set; } = [];
 
         [ObservableProperty]
-        List<CalculationAttribute> rates = [];
+        public partial List<CalculationAttribute> Rates { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
         [NotifyPropertyChangedFor(nameof(AvailableMaterials))]
-        List<Print3dInfo> printInfos = [];
+        public partial List<Print3dInfo> PrintInfos { get; set; } = [];
+
         partial void OnPrintInfosChanged(List<Print3dInfo> value)
         {
 
@@ -126,31 +128,31 @@ namespace AndreasReitberger.Print3d.Models
 
         #region AdditionalSettings
         [ObservableProperty]
-        bool applyEnhancedMarginSettings = false;
+        public partial bool ApplyEnhancedMarginSettings { get; set; } = false;
 
         [ObservableProperty]
-        bool excludePrinterCostsFromMarginCalculation = false;
+        public partial bool ExcludePrinterCostsFromMarginCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool excludeMaterialCostsFromMarginCalculation = false;
+        public partial bool ExcludeMaterialCostsFromMarginCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool excludeWorkstepsFromMarginCalculation = false;
+        public partial bool ExcludeWorkstepsFromMarginCalculation { get; set; } = false;
 
         #endregion
 
         #region ProcedureSpecific
         [ObservableProperty]
-        bool applyProcedureSpecificAdditions = false;
+        public partial bool ApplyProcedureSpecificAdditions { get; set; } = false;
 
         [ObservableProperty]
-        Material3dFamily procedure = Material3dFamily.Misc;
+        public partial Material3dFamily Procedure { get; set; } = Material3dFamily.Misc;
 
         [ObservableProperty]
-        ObservableCollection<CalculationProcedureAttribute> procedureAttributes = [];
+        public partial ObservableCollection<CalculationProcedureAttribute> ProcedureAttributes { get; set; } = [];
 
         [ObservableProperty]
-        ObservableCollection<ProcedureAddition> procedureAdditions = [];
+        public partial ObservableCollection<ProcedureAddition> ProcedureAdditions { get; set; } = [];
 
         #endregion
 

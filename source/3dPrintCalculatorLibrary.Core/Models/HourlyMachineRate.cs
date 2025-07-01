@@ -12,39 +12,39 @@ namespace AndreasReitberger.Print3d.Core
     public partial class HourlyMachineRate : ObservableObject, IHourlyMachineRate, ICloneable
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid printerId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
-        Printer3d? printer;
+        [ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
+        public partial Printer3d? Printer { get; set; }
 #else
         [ObservableProperty]
-        IPrinter3d? printer;
+        public partial IPrinter3d? Printer { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool perYear = true;
+        public partial bool PerYear { get; set; } = true;
 
         [ObservableProperty]
-        double machineHours = 0;
+        public partial double MachineHours { get; set; } = 0;
 
         [ObservableProperty]
-        double replacementCosts = 0;
+        public partial double ReplacementCosts { get; set; } = 0;
 
         [ObservableProperty]
-        int usefulLifeYears = 4;
+        public partial int UsefulLifeYears { get; set; } = 4;
 
         [JsonIgnore]
 #if SQL
@@ -62,7 +62,7 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double interestRate = 3;
+        public partial double InterestRate { get; set; } = 3;
 
         [JsonIgnore]
 #if SQL
@@ -80,28 +80,28 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double maintenanceCosts = 0;
+        public partial double MaintenanceCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double locationCosts = 0;
+        public partial double LocationCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCosts = 0;
+        public partial double EnergyCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double additionalCosts = 0;
+        public partial double AdditionalCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double maintenanceCostsVariable = 0;
+        public partial double MaintenanceCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCostsVariable = 0;
+        public partial double EnergyCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double additionalCostsVariable = 0;
+        public partial double AdditionalCostsVariable { get; set; } = 0;
 
         [ObservableProperty]
-        double fixMachineHourRate = -1;
+        public partial double FixMachineHourRate { get; set; } = -1;
 
         [JsonIgnore]
 #if SQL

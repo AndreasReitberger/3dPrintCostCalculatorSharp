@@ -12,14 +12,14 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Storage3dTransaction : ObservableObject, IStorage3dTransaction
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        DateTimeOffset dateTime;
+        public partial DateTimeOffset DateTime { get; set; }
 
 #if SQL
         /*
@@ -32,28 +32,28 @@ namespace AndreasReitberger.Print3d.Core
         */
 
         [ObservableProperty]
-        Guid itemId;
+        public partial Guid ItemId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
-        Storage3dItem? item;
+        [ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
+        public partial Storage3dItem? Item { get; set; }
 #else
         [ObservableProperty]
-        IStorage3dItem? item;
+        public partial IStorage3dItem? Item { get; set; }
 #endif
 
         [ObservableProperty]
-        double amount;
+        public partial double Amount { get; set; }
         partial void OnAmountChanged(double value)
         {
             IsAddition = value > 0;
         }
 
         [ObservableProperty]
-        Unit unit;
+        public partial Unit Unit { get; set; }
 
         [ObservableProperty]
-        bool isAddition = false;
+        public partial bool IsAddition { get; set; } = false;
         #endregion
 
         #region Ctor

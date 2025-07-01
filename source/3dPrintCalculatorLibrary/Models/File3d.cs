@@ -18,23 +18,24 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationId;
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: JsonIgnore]
-        object? file;
+        [JsonIgnore]
+        public partial object? File { get; set; }
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string filePath = string.Empty;
+        public partial string FilePath { get; set; } = string.Empty;
+
         partial void OnFilePathChanged(string value)
         {
             if (value is not null)
@@ -45,19 +46,19 @@ namespace AndreasReitberger.Print3d.Models
         }
 
         [ObservableProperty]
-        double volume = 0;
+        public partial double Volume { get; set; } = 0;
 
         [ObservableProperty]
-        Guid modelWeightId;
+        public partial Guid ModelWeightId { get; set; }
 
         [ObservableProperty]
-        ModelWeight weight = new(-1, Enums.Unit.Gram);
+        public partial ModelWeight Weight { get; set; } = new(-1, Enums.Unit.Gram);
 
         [ObservableProperty]
-        double printTime = 0;
+        public partial double PrintTime { get; set; } = 0;
 
         [ObservableProperty]
-        byte[] image = [];
+        public partial byte[] Image { get; set; } = [];
         #endregion
 
         #region Constructor

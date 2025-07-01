@@ -19,30 +19,31 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Properties 
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber = string.Empty;
+        public partial string DebitorNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isActive;
+        public partial bool IsActive { get; set; }
 
         [ObservableProperty]
-        string website = string.Empty;
+        public partial string Website { get; set; } = string.Empty;
 
-        [ObservableProperty]
 #if SQL
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Manufacturer> manufacturers = [];
+        [ObservableProperty]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Manufacturer> Manufacturers { get; set; } = [];
 #else
-        IList<IManufacturer> manufacturers = [];
+        [ObservableProperty]
+        public partial IList<IManufacturer> Manufacturers { get; set; } = [];
 #endif
         #endregion
 

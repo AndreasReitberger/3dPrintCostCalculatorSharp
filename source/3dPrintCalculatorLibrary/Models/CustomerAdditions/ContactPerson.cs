@@ -8,25 +8,25 @@ namespace AndreasReitberger.Print3d.Models.CustomerAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string firstName = string.Empty;
+        public partial string FirstName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string email = string.Empty;
+        public partial string Email { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string phoneNumber = string.Empty;
+        public partial string PhoneNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool showOnDocuments;
+        public partial bool ShowOnDocuments { get; set; }
         #endregion
 
         #region Constructor

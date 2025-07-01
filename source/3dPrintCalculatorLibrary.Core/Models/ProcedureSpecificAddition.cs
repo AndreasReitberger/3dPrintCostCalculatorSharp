@@ -12,23 +12,23 @@ namespace AndreasReitberger.Print3d.Core
     public partial class ProcedureSpecificAddition : ObservableObject, IProcedureSpecificAddition
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Printer3dType procedure = Printer3dType.FDM;
+        public partial Printer3dType Procedure { get; set; } = Printer3dType.FDM;
 
         [ObservableProperty]
-        ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
+        public partial ProcedureSpecificCalculationType CalculationType { get; set; } = ProcedureSpecificCalculationType.PerPart;
 
         [ObservableProperty]
-        double addition;
+        public partial double Addition { get; set; }
 
         [ObservableProperty]
-        bool isPercantageAddition;
+        public partial bool IsPercantageAddition { get; set; }
         #endregion
     }
 }

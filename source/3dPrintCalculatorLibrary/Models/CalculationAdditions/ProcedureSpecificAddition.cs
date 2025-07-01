@@ -9,19 +9,19 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Printer3dType procedure = Printer3dType.FDM;
+        public partial Printer3dType Procedure { get; set; } = Printer3dType.FDM;
 
         [ObservableProperty]
-        ProcedureSpecificCalculationType calculationType = ProcedureSpecificCalculationType.PerPart;
+        public partial ProcedureSpecificCalculationType CalculationType { get; set; } = ProcedureSpecificCalculationType.PerPart;
 
         [ObservableProperty]
-        double addition;
+        public partial double Addition { get; set; }
 
         [ObservableProperty]
-        bool isPercantageAddition;
+        public partial bool IsPercantageAddition { get; set; }
         #endregion
     }
 }

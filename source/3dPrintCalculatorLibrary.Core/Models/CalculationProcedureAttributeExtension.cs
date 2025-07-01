@@ -5,7 +5,7 @@
         #region Methods
         public static void AddRange(this CalculationProcedureAttribute parameter, List<CalculationProcedureParameter> items)
         {
-            items?.ForEach(item => parameter.Parameters.Add(item));
+            items?.ForEach(parameter.Parameters.Add);
         }
         #endregion
     }

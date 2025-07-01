@@ -11,6 +11,9 @@ namespace AndreasReitberger.Print3d.Core
     public partial class GcodeCommand : ObservableObject, IGcodeCommand
     {
         [ObservableProperty]
+#if SQL
+        [PrimaryKey]
+#endif
         public partial Guid Id {  get; set; }
 
         [ObservableProperty]

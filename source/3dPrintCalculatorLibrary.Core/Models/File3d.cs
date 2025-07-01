@@ -12,27 +12,28 @@ namespace AndreasReitberger.Print3d.Core
     public partial class File3d : ObservableObject, IFile3d
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
-        [ObservableProperty]
-        [property: JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
-        object? file;
+        [ObservableProperty]
+        [JsonIgnore]
+        public partial object? File { get; set; }
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string filePath = string.Empty;
+        public partial string FilePath { get; set; } = string.Empty;
+
         partial void OnFilePathChanged(string value)
         {
             if (value is not null)
@@ -43,28 +44,28 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double volume = 0;
+        public partial double Volume { get; set; } = 0;
 
 #if SQL
         [ObservableProperty]
-        //[property: ForeignKey(typeof(File3dWeight))]
-        Guid weightId;
+        public partial Guid WeightId { get; set; }
 #endif
 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
-        [property: ManyToOne(nameof(WeightId), CascadeOperations = CascadeOperation.All)]
-        File3dWeight weight = new(-1, Core.Enums.Unit.Gram);
+        [ObservableProperty]
+        [PrimaryKey]
+        [ManyToOne(nameof(WeightId), CascadeOperations = CascadeOperation.All)]
+        public partial File3dWeight? Weight { get; set; } = new(-1, Core.Enums.Unit.Gram);
 #else
-        IFile3dWeight weight = new File3dWeight(-1, Enums.Unit.Gram);
+        [ObservableProperty]
+        public partial IFile3dWeight? Weight { get; set; } = new File3dWeight(-1, Enums.Unit.Gram);
 #endif
 
         [ObservableProperty]
-        double printTime = 0;
+        public partial double PrintTime { get; set; } = 0;
 
         [ObservableProperty]
-        byte[] image = [];
+        public partial byte[] Image { get; set; } = [];
         #endregion
 
         #region Constructor

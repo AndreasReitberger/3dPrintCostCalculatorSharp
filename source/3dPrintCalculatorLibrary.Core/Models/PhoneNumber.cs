@@ -11,20 +11,20 @@ namespace AndreasReitberger.Print3d.Core
     public partial class PhoneNumber : ObservableObject, IPhoneNumber
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
-
         [ObservableProperty]
+        public partial Guid Id { get; set; }
+
 #if SQL
         [property: ForeignKey(typeof(Customer3d))]
 #endif
-        Guid customerId;
+        [ObservableProperty]
+        public partial Guid CustomerId { get; set; }
 
         [ObservableProperty]
-        string phone = string.Empty;
+        public partial string Phone { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

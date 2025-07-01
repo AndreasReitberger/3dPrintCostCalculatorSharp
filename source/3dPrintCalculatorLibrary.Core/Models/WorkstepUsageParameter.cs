@@ -13,17 +13,17 @@ namespace AndreasReitberger.Print3d.Core
     public partial class WorkstepUsageParameter : ObservableObject, IWorkstepUsageParameter
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        WorkstepUsageParameterType parameterType = WorkstepUsageParameterType.Quantity;
+        public partial WorkstepUsageParameterType ParameterType { get; set; } = WorkstepUsageParameterType.Quantity;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
         #endregion
 
         #region Constructors

@@ -11,23 +11,23 @@ namespace AndreasReitberger.Print3d.Core
     public partial class CalculationProcedureParameterAddition : ObservableObject, ICalculationProcedureParameterAddition
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
-
         [ObservableProperty]
+        public partial Guid Id { get; set; }
+
 #if SQL
         [property: ForeignKey(typeof(CalculationProcedureParameter))]
 #endif
-        Guid calculationProcedureParameterId;
+        [ObservableProperty]
+        public partial Guid CalculationProcedureParameterId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
 
         #endregion
 

@@ -13,34 +13,35 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Storage3dItem : ObservableObject, IStorage3dItem
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
 #if SQL
         [ObservableProperty]
-        Guid materialId;
+        public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
-        Material3d? material;
+        [ManyToOne(nameof(MaterialId), CascadeOperations = CascadeOperation.All)]
+        public partial Material3d? Material { get; set; }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]
-        [property: ManyToMany(typeof(Storage3dItemStorage3dTransaction), CascadeOperations = CascadeOperation.All)]
-        List<Storage3dTransaction> transactions = [];
+        [ManyToMany(typeof(Storage3dItemStorage3dTransaction), CascadeOperations = CascadeOperation.All)]
+        public partial List<Storage3dTransaction> Transactions { get; set; } = [];
+
 #else
         [ObservableProperty]
-        IMaterial3d? material;
+        public partial IMaterial3d? Material { get; set; }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]
-        IList<IStorage3dTransaction> transactions = [];
+        public partial IList<IStorage3dTransaction> Transactions { get; set; } = [];
 #endif
         public double Amount => GetAvailableAmount();
         #endregion

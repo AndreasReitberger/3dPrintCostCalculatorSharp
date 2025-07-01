@@ -17,26 +17,26 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string debitorNumber = string.Empty;
+        public partial string DebitorNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool isActive;
+        public partial bool IsActive { get; set; }
 
         [ObservableProperty]
-        string website = string.Empty;
+        public partial string Website { get; set; } = string.Empty;
 
         #endregion
 
         #region Collections
 
         [ObservableProperty]
-        List<Manufacturer> manufacturers = new();
+        public partial List<Manufacturer> Manufacturers { get; set; } = new();
         #endregion
 
         #region Constructor

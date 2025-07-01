@@ -12,43 +12,44 @@ namespace AndreasReitberger.Print3d.Core
     public partial class CalculationProcedureAttribute : ObservableObject, ICalculationProcedureAttribute
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
-
         [ObservableProperty]
+        public partial Guid Id { get; set; }
+
 #if SQL
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
 #endif
-        Guid calculationId;
+        [ObservableProperty]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        ProcedureAttribute attribute;
+        public partial ProcedureAttribute Attribute { get; set; }
 
-        [ObservableProperty]
 #if SQL
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<CalculationProcedureParameter> parameters = [];
+        [ObservableProperty]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<CalculationProcedureParameter> Parameters { get; set; } = [];
 #else
-        IList<ICalculationProcedureParameter> parameters = [];
+        [ObservableProperty]
+        public partial IList<ICalculationProcedureParameter> Parameters { get; set; } = [];
 #endif
 
         [ObservableProperty]
-        CalculationLevel level = CalculationLevel.Printer;
+        public partial CalculationLevel Level { get; set; } = CalculationLevel.Printer;
 
         /// <summary>
         /// Multiplies the costs per piece (quantity of the files)
         /// </summary>
         [ObservableProperty]
-        bool perPiece = false;
+        public partial bool PerPiece { get; set; } = false;
 
         [ObservableProperty]
-        bool perFile = false;
+        public partial bool PerFile { get; set; } = false;
         #endregion
 
         #region Constructor

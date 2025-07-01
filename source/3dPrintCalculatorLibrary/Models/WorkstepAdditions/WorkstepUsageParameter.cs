@@ -35,7 +35,7 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

@@ -88,7 +88,7 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-        
+
         public override bool Equals(object? obj)
         {
             if (obj is not Gcode item)
@@ -96,7 +96,7 @@ namespace AndreasReitberger.Print3d.Core
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

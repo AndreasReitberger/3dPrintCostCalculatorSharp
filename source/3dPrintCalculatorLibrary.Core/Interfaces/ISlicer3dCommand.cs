@@ -19,6 +19,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public string OutputFilePatternString { get; set; }
         public bool AutoAddFilePath { get; set; }
 
-    #endregion
+        #endregion
     }
 }

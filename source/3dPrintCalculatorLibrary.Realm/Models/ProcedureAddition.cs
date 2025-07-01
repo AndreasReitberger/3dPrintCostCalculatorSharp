@@ -75,7 +75,8 @@ namespace AndreasReitberger.Print3d.Realm
                     default:
                         break;
                 }
-            };
+            }
+            ;
             return costs;
         }
 
@@ -91,7 +92,7 @@ namespace AndreasReitberger.Print3d.Realm
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

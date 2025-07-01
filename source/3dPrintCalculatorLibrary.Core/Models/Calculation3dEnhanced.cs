@@ -192,7 +192,7 @@ namespace AndreasReitberger.Print3d.Core
 
         }
 #endif
-#endregion
+        #endregion
 
         #region AdditionalSettings
         [ObservableProperty]
@@ -472,7 +472,7 @@ namespace AndreasReitberger.Print3d.Core
 
         #region Clone
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
         #region Overrides

@@ -47,7 +47,7 @@ namespace AndreasReitberger.Print3d.Realm.MaterialAdditions
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

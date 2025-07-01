@@ -71,7 +71,8 @@ namespace AndreasReitberger.Print3d.Models
                     default:
                         break;
                 }
-            };
+            }
+            ;
             return costs;
         }
 
@@ -87,7 +88,7 @@ namespace AndreasReitberger.Print3d.Models
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

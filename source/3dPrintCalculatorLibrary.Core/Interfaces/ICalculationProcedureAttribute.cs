@@ -23,6 +23,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public CalculationLevel Level { get; set; }
         public bool PerPiece { get; set; }
         public bool PerFile { get; set; }
-    #endregion
+        #endregion
     }
 }

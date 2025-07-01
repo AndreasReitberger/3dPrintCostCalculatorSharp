@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }
@@ -27,16 +27,19 @@ namespace AndreasReitberger.Print3d.Core
         Guid? calculationId;
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
+        [ManyToOne(nameof(CalculationId), CascadeOperations = CascadeOperation.All)]
         Calculation3dEnhanced? calculation;
         */
 
         [ObservableProperty]
+        [ForeignKey(typeof(Storage3dItem))]
         public partial Guid ItemId { get; set; }
 
+        /*
         [ObservableProperty]
         [ManyToOne(nameof(ItemId), CascadeOperations = CascadeOperation.All)]
         public partial Storage3dItem? Item { get; set; }
+        */
 #else
         [ObservableProperty]
         public partial IStorage3dItem? Item { get; set; }

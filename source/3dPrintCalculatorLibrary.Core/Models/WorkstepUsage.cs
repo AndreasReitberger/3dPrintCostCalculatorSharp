@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }
@@ -29,6 +29,7 @@ namespace AndreasReitberger.Print3d.Core
         public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
+        [ForeignKey(typeof(Workstep))]
         public partial Guid WorkstepId { get; set; }
 
         [ObservableProperty]
@@ -37,6 +38,7 @@ namespace AndreasReitberger.Print3d.Core
         partial void OnWorkstepChanged(Workstep? value) => TotalCosts = GetTotalCosts();
 
         [ObservableProperty]
+        [ForeignKey(typeof(WorkstepUsageParameter))]
         public partial Guid UsageParameterId { get; set; }
 
         [ObservableProperty]

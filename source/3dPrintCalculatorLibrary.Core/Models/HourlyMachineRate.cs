@@ -21,6 +21,7 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Printer3d))]
         public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]

@@ -38,6 +38,7 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        [ForeignKey(typeof(Manufacturer))]
         public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]
@@ -81,6 +82,7 @@ namespace AndreasReitberger.Print3d.Core
         public partial List<Printer3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
+        [ForeignKey(typeof(HourlyMachineRate))]
         public partial Guid HourlyMachineRateId { get; set; }
 
         [ObservableProperty]
@@ -92,7 +94,9 @@ namespace AndreasReitberger.Print3d.Core
         public partial List<Maintenance3d> Maintenances { get; set; } = [];
 
         [ObservableProperty]
+        [ForeignKey(typeof(Printer3dSlicerConfig))]
         public partial Guid SlicerConfigId { get; set; }
+
         [ObservableProperty]
         [ManyToOne(nameof(SlicerConfigId), CascadeOperations = CascadeOperation.All)]
         public partial Printer3dSlicerConfig? SlicerConfig { get; set; } =

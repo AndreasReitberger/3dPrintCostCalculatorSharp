@@ -29,6 +29,7 @@ namespace AndreasReitberger.Print3d.Core
         public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
+        [ForeignKey(typeof(ContactPerson))]
         public partial Guid ContactPersonId { get; set; }
 #endif
 

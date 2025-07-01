@@ -34,6 +34,7 @@ namespace AndreasReitberger.Print3d.Core
         public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
+        [ForeignKey(typeof(WorkstepCategory))]
         public partial Guid CategoryId { get; set; }
 
         [ObservableProperty]

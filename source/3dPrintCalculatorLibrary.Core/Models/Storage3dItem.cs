@@ -14,7 +14,7 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }
@@ -24,6 +24,7 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        [ForeignKey(typeof(Material3d))]
         public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
@@ -32,7 +33,8 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Amount))]
-        [ManyToMany(typeof(Storage3dItemStorage3dTransaction), CascadeOperations = CascadeOperation.All)]
+        //[ManyToMany(typeof(Storage3dItemStorage3dTransaction), CascadeOperations = CascadeOperation.All)]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
         public partial List<Storage3dTransaction> Transactions { get; set; } = [];
 
 #else

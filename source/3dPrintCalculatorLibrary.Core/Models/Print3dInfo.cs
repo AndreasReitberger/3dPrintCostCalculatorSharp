@@ -29,6 +29,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(File3dUsage))]
         public partial Guid FileId { get; set; }
 
         [ObservableProperty]
@@ -37,6 +38,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Printer3d))]
         public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]

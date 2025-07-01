@@ -27,11 +27,12 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         public partial int Capacity { get; set; } = 32;
 
-        [ObservableProperty]
 #if SQL
+        [ObservableProperty]
         [ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
         public partial List<Storage3dLocation> Locations { get; set; } = [];
 #else
+        [ObservableProperty]
         public partial IList<IStorage3dLocation> Locations { get; set; } = [];
 #endif
         #endregion

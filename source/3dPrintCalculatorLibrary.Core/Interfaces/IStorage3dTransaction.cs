@@ -13,7 +13,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public DateTimeOffset DateTime { get; set; }
 #if SQL
         public Guid ItemId { get; set; }
-        public Storage3dItem? Item { get; set; }
+        //public Storage3dItem? Item { get; set; }
 #else
         public IStorage3dItem? Item { get; set; }
 #endif

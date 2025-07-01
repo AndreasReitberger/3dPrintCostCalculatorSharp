@@ -15,7 +15,7 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }
@@ -63,6 +63,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Material3dType))]
         public partial Guid MaterialTypeId { get; set; }
 
         [ObservableProperty]
@@ -71,6 +72,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Manufacturer))]
         public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]

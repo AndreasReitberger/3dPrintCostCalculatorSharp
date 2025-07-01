@@ -2,7 +2,6 @@ using AndreasReitberger.Print3d.Core;
 using AndreasReitberger.Print3d.Core.Enums;
 using AndreasReitberger.Print3d.Core.Interfaces;
 using NUnit.Framework;
-using Remotion.Linq.Utilities;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -394,7 +393,7 @@ namespace AndreasReitberger.NUnitTest
                     // Needed if the calculation is reloaded later
                     additionalInfo =
                     [
-                            new CalculationProcedureParameterAddition("replacementcosts", 120),
+                        new CalculationProcedureParameterAddition("replacementcosts", 120),
                         new CalculationProcedureParameterAddition("wearfactor", 0.01d)
                     ];
                     parameters =

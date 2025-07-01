@@ -25,6 +25,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Material3d))]
         public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]

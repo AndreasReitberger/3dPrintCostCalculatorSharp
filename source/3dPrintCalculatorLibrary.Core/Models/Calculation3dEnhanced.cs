@@ -43,6 +43,7 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        [ForeignKey(typeof(Customer3d))]
         public partial Guid CustomerId { get; set; }
 
         [ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
@@ -66,7 +67,6 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
         public partial bool RecalculationRequired { get; set; } = false;
-
         partial void OnRecalculationRequiredChanged(bool value)
         {
             if (value)

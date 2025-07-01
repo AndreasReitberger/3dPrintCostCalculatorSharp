@@ -18,7 +18,7 @@ namespace AndreasReitberger.Print3d.Core
         };
 
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }

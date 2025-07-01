@@ -38,6 +38,7 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(Item3d))]
         public partial Guid ItemId { get; set; }
 
         [ObservableProperty]
@@ -53,15 +54,15 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
         [ObservableProperty]
         [JsonIgnore, XmlIgnore]
+        [ForeignKey(typeof(File3d))]
         public partial Guid FileId { get; set; }
-#endif
 
         [ObservableProperty]
-#if SQL
         [ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
         public partial File3d? File { get; set; }
         partial void OnFileChanged(File3d? value)
 #else
+        [ObservableProperty]
         public partial IFile3d? File { get; set; }
         partial void OnFileChanged(IFile3d? value)
 #endif

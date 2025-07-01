@@ -48,12 +48,10 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        [ForeignKey(typeof(File3dWeight))]
         public partial Guid WeightId { get; set; }
-#endif
 
-#if SQL
         [ObservableProperty]
-        [PrimaryKey]
         [ManyToOne(nameof(WeightId), CascadeOperations = CascadeOperation.All)]
         public partial File3dWeight? Weight { get; set; } = new(-1, Core.Enums.Unit.Gram);
 #else

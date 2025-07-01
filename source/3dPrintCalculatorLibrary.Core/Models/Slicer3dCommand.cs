@@ -19,6 +19,7 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
+        [ForeignKey(typeof(Slicer3d))]
         public partial Guid SlicerId { get; set; }
 
         [ObservableProperty]

@@ -12,13 +12,13 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
         public partial Guid Id { get; set; }
 
 #if SQL
-        [property: ForeignKey(typeof(Customer3d))]
+        [ForeignKey(typeof(Customer3d))]
 #endif
         [ObservableProperty]
         public partial Guid CustomerId { get; set; }

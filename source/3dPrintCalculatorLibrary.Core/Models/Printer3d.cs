@@ -139,7 +139,7 @@ namespace AndreasReitberger.Print3d.Core
         [Ignore]
 #endif
         public double Volume => CalculateVolume();
-#endregion
+        #endregion
 
         #region Constructor
 
@@ -169,9 +169,9 @@ namespace AndreasReitberger.Print3d.Core
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
     }

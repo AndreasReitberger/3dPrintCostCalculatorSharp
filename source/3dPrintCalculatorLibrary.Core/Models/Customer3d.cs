@@ -132,7 +132,7 @@ namespace AndreasReitberger.Print3d.Core
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
 
     }

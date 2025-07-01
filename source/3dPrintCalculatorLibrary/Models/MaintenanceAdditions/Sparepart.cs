@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         #endregion
     }
 }

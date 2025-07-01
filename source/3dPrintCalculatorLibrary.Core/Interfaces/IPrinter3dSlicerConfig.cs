@@ -19,6 +19,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public double AMax_eRetract { get; set; }
         public double PrintDurationCorrection { get; set; }
 
-#endregion
+        #endregion
     }
 }

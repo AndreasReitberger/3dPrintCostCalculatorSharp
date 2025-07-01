@@ -90,11 +90,12 @@ namespace AndreasReitberger.Print3d.Core
                     default:
                         break;
                 }
-            };
+            }
+            ;
             return costs;
         }
 
-#endregion
+        #endregion
 
         #region Clone
         public object Clone() => MemberwiseClone();

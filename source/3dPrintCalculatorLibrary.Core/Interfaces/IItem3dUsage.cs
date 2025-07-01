@@ -22,6 +22,6 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
 #endif
         public double Quantity { get; set; }
         public bool LinkedToFile { get; set; }
-    #endregion
+        #endregion
     }
 }

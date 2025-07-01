@@ -123,9 +123,9 @@ namespace AndreasReitberger.Print3d.Models
             return Id.Equals(item.Id);
         }
         public override int GetHashCode() => Id.GetHashCode();
-        
+
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
 
     }

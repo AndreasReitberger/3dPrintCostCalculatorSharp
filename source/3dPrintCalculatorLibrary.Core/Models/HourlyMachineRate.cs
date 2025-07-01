@@ -115,7 +115,7 @@ namespace AndreasReitberger.Print3d.Core
         [Ignore]
 #endif
         public double TotalCosts => GetTotalCosts();
-#endregion
+        #endregion
 
         #region Constructor
         public HourlyMachineRate()
@@ -165,7 +165,7 @@ namespace AndreasReitberger.Print3d.Core
         #region Overrides
         public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public object Clone() => MemberwiseClone();
-        
+
         #endregion
     }
 }

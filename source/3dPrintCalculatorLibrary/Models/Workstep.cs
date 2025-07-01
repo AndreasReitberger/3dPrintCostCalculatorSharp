@@ -2,6 +2,7 @@
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.WorkstepAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.Print3d.Models
@@ -42,7 +43,7 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object? obj)
         {
@@ -50,14 +51,10 @@ namespace AndreasReitberger.Print3d.Models
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
+        public object Clone() => MemberwiseClone();
+        
         #endregion
     }
 }

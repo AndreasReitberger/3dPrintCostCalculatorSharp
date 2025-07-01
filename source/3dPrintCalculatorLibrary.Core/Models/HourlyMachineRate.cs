@@ -162,15 +162,9 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            //return string.Format("{0} {1}", CalcMachineHourRate, CurrencySymbol);
-            return string.Format("{0:C2}", CalcMachineHourRate);
-        }
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public object Clone() => MemberwiseClone();
+        
         #endregion
     }
 }

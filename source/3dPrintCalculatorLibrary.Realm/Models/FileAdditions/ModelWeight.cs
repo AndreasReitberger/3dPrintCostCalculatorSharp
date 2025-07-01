@@ -1,6 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Enums;
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
+using Newtonsoft.Json;
 using Realms;
 using System;
 
@@ -77,10 +78,7 @@ namespace AndreasReitberger.Print3d.Realm.FileAdditions
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return string.Format("{0} {1}", Weight, Unit);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

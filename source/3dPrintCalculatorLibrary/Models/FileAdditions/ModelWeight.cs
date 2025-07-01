@@ -2,6 +2,7 @@
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Utilities;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.FileAdditions
@@ -64,10 +65,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return string.Format("{0} {1}", Weight, Unit);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

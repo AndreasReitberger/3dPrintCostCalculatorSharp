@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
 #if SQL
 namespace AndreasReitberger.Print3d.SQLite
@@ -55,20 +56,15 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : $"{Name} ({DebitorNumber})";
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Manufacturer item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
     }
 }

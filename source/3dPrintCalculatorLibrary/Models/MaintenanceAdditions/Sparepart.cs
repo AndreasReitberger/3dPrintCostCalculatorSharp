@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 
 namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
@@ -31,20 +32,15 @@ namespace AndreasReitberger.Print3d.Models.MaintenanceAdditions
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Sparepart item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
     }
 }

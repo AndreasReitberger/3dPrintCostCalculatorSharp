@@ -13,53 +13,53 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
-
         [ObservableProperty]
+        public partial Guid Id { get; set; }
+
 #if SQL
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        [ForeignKey(typeof(Calculation3dEnhanced))]
 #endif
-        Guid calculationId;
+        [ObservableProperty]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        Guid fileId = Guid.Empty;
+        public partial Guid FileId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Guid linkedId = Guid.Empty;
+        public partial Guid LinkedId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        CalculationAttributeTarget target;
+        public partial CalculationAttributeTarget Target { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeType type;
+        public partial CalculationAttributeType Type { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeItem item = CalculationAttributeItem.Default;
+        public partial CalculationAttributeItem Item { get; set; } = CalculationAttributeItem.Default;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
 
         [ObservableProperty]
-        bool isPercentageValue = false;
+        public partial bool IsPercentageValue { get; set; } = false;
 
         [ObservableProperty]
-        bool applyPerFile = false;
+        public partial bool ApplyPerFile { get; set; } = false;
 
         [ObservableProperty]
-        bool skipForCalculation = false;
+        public partial bool SkipForCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool skipForMargin = false;
+        public partial bool SkipForMargin { get; set; } = false;
         #endregion
 
         #region Constructor

@@ -14,52 +14,50 @@ namespace AndreasReitberger.Print3d.Core
     public partial class ProcedureAddition : ObservableObject, ICloneable, IProcedureAddition
     {
         #region Properties 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string toolTip = string.Empty;
+        public partial string ToolTip { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool enabled = true;
+        public partial bool Enabled { get; set; } = true;
 
         [ObservableProperty]
-        Material3dFamily targetFamily;
+        public partial Material3dFamily TargetFamily { get; set; }
 
         [ObservableProperty]
-        ProcedureAdditionTarget target = ProcedureAdditionTarget.General;
+        public partial ProcedureAdditionTarget Target { get; set; } = ProcedureAdditionTarget.General;
 
         #endregion
 
         #region Collections
 #if SQL
-
-
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<ProcedureCalculationParameter> parameters = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<ProcedureCalculationParameter> Parameters { get; set; } = [];
 #else
         [ObservableProperty]
-        IList<IProcedureCalculationParameter> parameters = [];
+        public partial IList<IProcedureCalculationParameter> Parameters { get; set; } = [];
 #endif
         #endregion
 

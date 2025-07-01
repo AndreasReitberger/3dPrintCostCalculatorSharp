@@ -11,20 +11,20 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Email : ObservableObject, IEmail
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
+
+#if SQL
+        [ForeignKey(typeof(Customer3d))]
+#endif
+        [ObservableProperty]
+        public partial Guid CustomerId { get; set; }
 
         [ObservableProperty]
-#if SQL
-        [property: ForeignKey(typeof(Customer3d))]
-#endif
-        Guid customerId;
-
-        [ObservableProperty]
-        string emailAddress = string.Empty;
+        public partial string EmailAddress { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

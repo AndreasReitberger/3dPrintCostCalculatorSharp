@@ -10,9 +10,9 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public Guid Id { get; set; }
 #if SQL
         public Guid PrinterId { get; set; }
-        public Printer3d Printer { get; set; }
+        public Printer3d? Printer { get; set; }
 #else
-        public IPrinter3d Printer { get; set; }
+        public IPrinter3d? Printer { get; set; }
 #endif
         public string Name { get; set; }
         public bool PerYear { get; set; }

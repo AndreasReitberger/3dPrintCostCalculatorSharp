@@ -12,23 +12,23 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3dColor : ObservableObject, IMaterial3dColor
     {
         #region Properties 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Material3d))]
-        Guid materialId;
+        [ForeignKey(typeof(Material3d))]
+        public partial Guid MaterialId { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string hexColorCode = string.Empty;
+        public partial string HexColorCode { get; set; } = string.Empty;
 
         #endregion
 

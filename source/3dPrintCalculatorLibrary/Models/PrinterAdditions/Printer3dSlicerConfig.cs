@@ -8,28 +8,28 @@ namespace AndreasReitberger.Print3d.Models.PrinterAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string printerName = string.Empty;
+        public partial string PrinterName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double aMax_xy = 1000;
+        public partial double AMax_xy { get; set; } = 1000;
 
         [ObservableProperty]
-        double aMax_z = 1000;
+        public partial double AMax_z { get; set; } = 1000;
 
         [ObservableProperty]
-        double aMax_e = 5000;
+        public partial double AMax_e { get; set; } = 5000;
 
         [ObservableProperty]
-        double aMax_eExtrude = 1250;
+        public partial double AMax_eExtrude { get; set; } = 1250;
 
         [ObservableProperty]
-        double aMax_eRetract = 1250;
+        public partial double AMax_eRetract { get; set; } = 1250;
 
         [ObservableProperty]
-        double printDurationCorrection = 1;
+        public partial double PrintDurationCorrection { get; set; } = 1;
 
         #endregion
 

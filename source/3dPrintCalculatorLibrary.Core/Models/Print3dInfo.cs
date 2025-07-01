@@ -13,55 +13,54 @@ namespace AndreasReitberger.Print3d.Core
     {
 
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationEnhancedId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationEnhancedId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid fileId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3dUsage? fileUsage;
+        [ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        public partial File3dUsage? FileUsage { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid printerId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
-        Printer3d? printer;
+        [ManyToOne(nameof(PrinterId), CascadeOperations = CascadeOperation.All)]
+        public partial Printer3d? Printer { get; set; }
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Item3dUsage> items = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Item3dUsage> Items { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dUsage> materials = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3dUsage> Materials { get; set; } = [];
 #else
         [ObservableProperty]
-        IFile3dUsage? fileUsage;
+        public partial IFile3dUsage? FileUsage { get; set; }
 
         [ObservableProperty]
-        IPrinter3d? printer;
+        public partial IPrinter3d? Printer { get; set; }
 
         [ObservableProperty]
-        IList<IItem3dUsage> items = [];
-
+        public partial IList<IItem3dUsage> Items { get; set; } = [];
         [ObservableProperty]
-        IList<IMaterial3dUsage> materials = [];
+        public partial IList<IMaterial3dUsage> Materials { get; set; } = [];
 #endif
 
         #endregion

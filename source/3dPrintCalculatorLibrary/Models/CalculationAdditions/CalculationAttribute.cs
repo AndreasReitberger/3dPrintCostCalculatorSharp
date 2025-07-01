@@ -11,46 +11,46 @@ namespace AndreasReitberger.Print3d.Models.CalculationAdditions
         #region Properties
 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationEnhancedId;
+        public partial Guid CalculationEnhancedId { get; set; }
 
         [ObservableProperty]
-        Guid fileId = Guid.Empty;
+        public partial Guid FileId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        string fileName = string.Empty;
+        public partial string FileName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Guid linkedId = Guid.Empty;
+        public partial Guid LinkedId { get; set; } = Guid.Empty;
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        CalculationAttributeType type;
+        public partial CalculationAttributeType Type { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeTarget target;
+        public partial CalculationAttributeTarget Target { get; set; }
 
         [ObservableProperty]
-        CalculationAttributeItem item = CalculationAttributeItem.Default;
+        public partial CalculationAttributeItem Item { get; set; } = CalculationAttributeItem.Default;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
 
         [ObservableProperty]
-        bool isPercentageValue = false;
+        public partial bool IsPercentageValue { get; set; } = false;
 
         [ObservableProperty]
-        bool applyPerFile = false;
+        public partial bool ApplyPerFile { get; set; } = false;
 
         [ObservableProperty]
-        bool skipForCalculation = false;
+        public partial bool SkipForCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool skipForMargin = false;
+        public partial bool SkipForMargin { get; set; } = false;
         #endregion
 
         #region Constructor

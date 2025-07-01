@@ -2,7 +2,9 @@
 using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
+#if !SQL
 using System.Xml.Serialization;
+#endif
 
 #if SQL
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
@@ -22,49 +24,49 @@ namespace AndreasReitberger.Print3d.Core
     {
 
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         #region Basics
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        CalculationState state = CalculationState.Draft;
+        public partial CalculationState State { get; set; } = CalculationState.Draft;
 
         [ObservableProperty]
-        DateTimeOffset created = DateTime.Now;
+        public partial DateTimeOffset Created { get; set; } = DateTime.Now;
 
 #if SQL
         [ObservableProperty]
-        //[property: ForeignKey(typeof(Customer3d))]
-        Guid customerId;
+        public partial Guid CustomerId { get; set; }
 
+        [ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
         [ObservableProperty]
-        [property: ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
-        Customer3d? customer;
+        public partial Customer3d? Customer { get; set; }
 #else
         [ObservableProperty]
-        ICustomer3d? customer;
+        public partial ICustomer3d? Customer { get; set; }
 #endif
 
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
-        bool isCalculated = false;
+        [ObservableProperty]
+        [JsonIgnore, XmlIgnore]
+        public partial bool IsCalculated { get; set; } = false;
 
-        [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
-        bool recalculationRequired = false;
+        [ObservableProperty]
+        [JsonIgnore, XmlIgnore]
+        public partial bool RecalculationRequired { get; set; } = false;
+
         partial void OnRecalculationRequiredChanged(bool value)
         {
             if (value)
@@ -77,157 +79,157 @@ namespace AndreasReitberger.Print3d.Core
         }
 
         [ObservableProperty]
-        double powerLevel = 0;
+        public partial double PowerLevel { get; set; } = 0;
 
         [ObservableProperty]
-        double failRate = 0;
+        public partial double FailRate { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCostsPerkWh = 0;
+        public partial double EnergyCostsPerkWh { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyEnergyCost = false;
+        public partial bool ApplyEnergyCost { get; set; } = false;
 
         [ObservableProperty]
-        double totalCosts = 0;
+        public partial double TotalCosts { get; set; } = 0;
 
         [ObservableProperty]
-        bool differFileCosts = true;
+        public partial bool DifferFileCosts { get; set; } = true;
 
         #endregion
 
         #region Details
 
 #if SQL
-        public List<Printer3d?> AvailablePrinters => PrintInfos.Select(pi => pi?.Printer).Distinct().ToList();
+        public List<Printer3d?> AvailablePrinters => [.. PrintInfos.Select(pi => pi?.Printer).Distinct()];
 
-        public List<Material3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu?.Material).Distinct().ToList();
-
-        [ObservableProperty]
-        [property: ManyToMany(typeof(CustomAdditionCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
-        List<CustomAddition> customAdditions = [];
+        public List<Material3d?> AvailableMaterials => [.. PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu?.Material).Distinct()];
 
         [ObservableProperty]
-        [property: ManyToMany(typeof(WorkstepUsageCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
-        List<WorkstepUsage> workstepUsages = [];
+        [ManyToMany(typeof(CustomAdditionCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
+        public partial List<CustomAddition> CustomAdditions { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Item3dUsage> additionalItems = [];
+        [ManyToMany(typeof(WorkstepUsageCalculation3dEnhanced), CascadeOperations = CascadeOperation.All)]
+        public partial List<WorkstepUsage> WorkstepUsages { get; set; } = [];
 
         [ObservableProperty]
-        [property: Ignore]
-        ObservableCollection<CalculationAttribute> printTimes = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Item3dUsage> AdditionalItems { get; set; } = [];
 
         [ObservableProperty]
-        [property: Ignore]
-        ObservableCollection<CalculationAttribute> materialUsages = [];
+        [Ignore]
+        public partial ObservableCollection<CalculationAttribute> PrintTimes { get; set; } = [];
 
         [ObservableProperty]
-        [property: Ignore]
-        ObservableCollection<CalculationAttribute> overallMaterialCosts = [];
+        [Ignore]
+        public partial ObservableCollection<CalculationAttribute> MaterialUsages { get; set; } = [];
 
         [ObservableProperty]
-        [property: Ignore]
-        ObservableCollection<CalculationAttribute> overallPrinterCosts = [];
+        [Ignore]
+        public partial ObservableCollection<CalculationAttribute> OverallMaterialCosts { get; set; } = [];
 
         [ObservableProperty]
-        [property: Ignore]
-        ObservableCollection<CalculationAttribute> costs = [];
+        [Ignore]
+        public partial ObservableCollection<CalculationAttribute> OverallPrinterCosts { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<CalculationAttribute> rates = [];
+        [Ignore]
+        public partial ObservableCollection<CalculationAttribute> Costs { get; set; } = [];
+
+        [ObservableProperty]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<CalculationAttribute> Rates { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
         [NotifyPropertyChangedFor(nameof(AvailableMaterials))]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Print3dInfo> printInfos = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Print3dInfo> PrintInfos { get; set; } = [];
         partial void OnPrintInfosChanged(List<Print3dInfo> value)
         {
 
         }
 #else
-        public IList<IPrinter3d?> AvailablePrinters => PrintInfos.Select(pi => pi.Printer).Distinct().ToList();
+        public IList<IPrinter3d?> AvailablePrinters => [.. PrintInfos.Select(pi => pi.Printer).Distinct()];
 
-        public IList<IMaterial3d?> AvailableMaterials => PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu.Material).Distinct().ToList();
-
-        [ObservableProperty]
-        IList<ICustomAddition> customAdditions = [];
+        public IList<IMaterial3d?> AvailableMaterials => [.. PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu.Material).Distinct()];
 
         [ObservableProperty]
-        IList<IWorkstepUsage> workstepUsages = [];
+        public partial IList<ICustomAddition> CustomAdditions { get; set; } = [];
 
         [ObservableProperty]
-        IList<IItem3dUsage> additionalItems = [];
+        public partial IList<IWorkstepUsage> WorkstepUsages { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> printTimes = [];
+        public partial IList<IItem3dUsage> AdditionalItems { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> materialUsages = [];
+        public partial IList<ICalculationAttribute> PrintTimes { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> overallMaterialCosts = [];
+        public partial IList<ICalculationAttribute> MaterialUsages { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> overallPrinterCosts = [];
+        public partial IList<ICalculationAttribute> OverallMaterialCosts { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> costs = [];
+        public partial IList<ICalculationAttribute> OverallPrinterCosts { get; set; } = [];
 
         [ObservableProperty]
-        IList<ICalculationAttribute> rates = [];
+        public partial IList<ICalculationAttribute> Costs { get; set; } = [];
+
+        [ObservableProperty]
+        public partial IList<ICalculationAttribute> Rates { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
         [NotifyPropertyChangedFor(nameof(AvailableMaterials))]
-        IList<IPrint3dInfo> printInfos = [];
+        public partial IList<IPrint3dInfo> PrintInfos { get; set; } = [];
+
         partial void OnPrintInfosChanged(IList<IPrint3dInfo> value)
         {
 
         }
 #endif
-        #endregion
+#endregion
 
         #region AdditionalSettings
         [ObservableProperty]
-        bool applyEnhancedMarginSettings = false;
+        public partial bool ApplyEnhancedMarginSettings { get; set; } = false;
 
         [ObservableProperty]
-        bool excludePrinterCostsFromMarginCalculation = false;
+        public partial bool ExcludePrinterCostsFromMarginCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool excludeMaterialCostsFromMarginCalculation = false;
+        public partial bool ExcludeMaterialCostsFromMarginCalculation { get; set; } = false;
 
         [ObservableProperty]
-        bool excludeWorkstepsFromMarginCalculation = false;
+        public partial bool ExcludeWorkstepsFromMarginCalculation { get; set; } = false;
 
         #endregion
 
         #region ProcedureSpecific
         [ObservableProperty]
-        bool applyProcedureSpecificAdditions = false;
+        public partial bool ApplyProcedureSpecificAdditions { get; set; } = false;
 
         [ObservableProperty]
-        Material3dFamily procedure = Material3dFamily.Misc;
-
+        public partial Material3dFamily Procedure { get; set; } = Material3dFamily.Misc;
 
 #if SQL
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<CalculationProcedureAttribute> procedureAttributes = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial ObservableCollection<CalculationProcedureAttribute> ProcedureAttributes { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        ObservableCollection<ProcedureAddition> procedureAdditions = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial ObservableCollection<ProcedureAddition> ProcedureAdditions { get; set; } = [];
 #else
         [ObservableProperty]
-        IList<ICalculationProcedureAttribute> procedureAttributes = [];
+        public partial IList<ICalculationProcedureAttribute> ProcedureAttributes { get; set; } = [];
 
         [ObservableProperty]
-        IList<IProcedureAddition> procedureAdditions = [];
+        public partial IList<IProcedureAddition> ProcedureAdditions { get; set; } = [];
 #endif
 
         #endregion
@@ -235,13 +237,13 @@ namespace AndreasReitberger.Print3d.Core
         #region Calculated
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public int TotalQuantity => GetTotalQuantity();
 
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double TotalPrintTime
         {
@@ -255,7 +257,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double TotalVolume
         {
@@ -269,7 +271,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double TotalMaterialUsed
         {
@@ -283,7 +285,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double MachineCosts
         {
@@ -297,7 +299,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double MaterialCosts
         {
@@ -311,7 +313,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double ItemsCost
         {
@@ -325,7 +327,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double EnergyCosts
         {
@@ -339,7 +341,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double HandlingCosts
         {
@@ -353,7 +355,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double CustomAdditionCosts
         {
@@ -367,7 +369,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double WorkstepCosts
         {
@@ -381,7 +383,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double CalculatedMargin
         {
@@ -395,7 +397,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double CalculatedTax
         {
@@ -409,7 +411,7 @@ namespace AndreasReitberger.Print3d.Core
         }
         [XmlIgnore, JsonIgnore]
 #if SQL
-        [property: Ignore]
+        [Ignore]
 #endif
         public double CostsPerPiece
         {

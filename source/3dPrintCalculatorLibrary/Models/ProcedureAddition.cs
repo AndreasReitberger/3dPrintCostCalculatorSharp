@@ -18,32 +18,32 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string toolTip = string.Empty;
+        public partial string ToolTip { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool enabled;
+        public partial bool Enabled { get; set; }
 
         [ObservableProperty]
-        Material3dFamily targetFamily;
+        public partial Material3dFamily TargetFamily { get; set; }
 
         [ObservableProperty]
-        ProcedureAdditionTarget target = ProcedureAdditionTarget.General;
+        public partial ProcedureAdditionTarget Target { get; set; } = ProcedureAdditionTarget.General;
 
         #endregion
 
         #region Collections
 
         [ObservableProperty]
-        ObservableCollection<IProcedureCalculationParameter> parameters = new();
+        public partial ObservableCollection<IProcedureCalculationParameter> Parameters { get; set; } = new();
         #endregion
 
         #region Constructor

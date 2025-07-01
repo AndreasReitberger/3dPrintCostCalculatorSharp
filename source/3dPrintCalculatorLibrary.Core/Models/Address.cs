@@ -12,30 +12,30 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Properties
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
 #if SQL
+        [ForeignKey(typeof(Customer3d))]
         [ObservableProperty]
-        [property: ForeignKey(typeof(Customer3d))]
-        Guid customerId;
+        public partial Guid CustomerId { get; set; }
 #endif
         [ObservableProperty]
-        string supplement = string.Empty;
+        public partial string Supplement { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string street = string.Empty;
+        public partial string Street { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string zip = string.Empty;
+        public partial string Zip { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string city = string.Empty;
+        public partial string City { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string countryCode = string.Empty;
+        public partial string CountryCode { get; set; } = string.Empty;
         #endregion
 
         #region Constructor

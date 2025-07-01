@@ -14,121 +14,121 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3d : ObservableObject, IMaterial3d
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string sKU = string.Empty;
+        public partial string SKU { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Unit unit = Unit.Kilogram;
+        public partial Unit Unit { get; set; } = Unit.Kilogram;
 
         [ObservableProperty]
-        double packageSize = 1;
+        public partial double PackageSize { get; set; } = 1;
 
         [ObservableProperty]
-        double density = 1;
+        public partial double Density { get; set; } = 1;
 
         [ObservableProperty]
-        double factorLToKg = 1;
+        public partial double FactorLToKg { get; set; } = 1;
 
 #if SQL
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dAttribute> attributes = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dProcedureAttribute> procedureAttributes = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3dProcedureAttribute> ProcedureAttributes { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3dColor> colors = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3dColor> Colors { get; set; } = [];
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid materialTypeId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid MaterialTypeId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(MaterialTypeId), CascadeOperations = CascadeOperation.All)]
-        Material3dType? typeOfMaterial;
+        [ManyToOne(nameof(MaterialTypeId), CascadeOperations = CascadeOperation.All)]
+        public partial Material3dType? TypeOfMaterial { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid manufacturerId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer? manufacturer;
+        [ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
+        public partial Manufacturer? Manufacturer { get; set; }
 #else
         [ObservableProperty]
-        IList<IMaterial3dAttribute> attributes = [];
+        public partial IList<IMaterial3dAttribute> Attributes { get; set; } = [];
 
         [ObservableProperty]
-        IList<IMaterial3dProcedureAttribute> procedureAttributes = [];
+        public partial IList<IMaterial3dProcedureAttribute> ProcedureAttributes { get; set; } = [];
 
         [ObservableProperty]
-        IList<IMaterial3dColor> colors = [];
+        public partial IList<IMaterial3dColor> Colors { get; set; } = [];
 
         [ObservableProperty]
-        IMaterial3dType? typeOfMaterial;
+        public partial IMaterial3dType? TypeOfMaterial { get; set; }
 
         [ObservableProperty]
-        IManufacturer? manufacturer;
+        public partial IManufacturer? Manufacturer { get; set; }
 #endif
 
         [ObservableProperty]
-        Material3dFamily materialFamily = Material3dFamily.Filament;
+        public partial Material3dFamily MaterialFamily { get; set; } = Material3dFamily.Filament;
 
         [ObservableProperty]
-        double unitPrice;
+        public partial double UnitPrice { get; set; }
 
         [ObservableProperty]
-        double tax = 0;
+        public partial double Tax { get; set; } = 0;
 
         [ObservableProperty]
-        bool priceIncludesTax = true;
+        public partial bool PriceIncludesTax { get; set; } = true;
 
         [ObservableProperty]
-        string uri = string.Empty;
+        public partial string Uri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string colorCode = string.Empty;
+        public partial string ColorCode { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string safetyDatasheet = string.Empty;
+        public partial string SafetyDatasheet { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string technicalDatasheet = string.Empty;
+        public partial string TechnicalDatasheet { get; set; } = string.Empty;
 
         [ObservableProperty]
-        Unit spoolWeightUnit = Unit.Gram;
+        public partial Unit SpoolWeightUnit { get; set; } = Unit.Gram;
 
         [ObservableProperty]
-        double spoolWeight = 200;
+        public partial double SpoolWeight { get; set; } = 200;
 
         [ObservableProperty]
-        byte[] image = [];
-#endregion
+        public partial byte[] Image { get; set; } = [];
+        #endregion
 
         #region Constructor
         public Material3d()

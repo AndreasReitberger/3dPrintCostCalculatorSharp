@@ -12,23 +12,23 @@ namespace AndreasReitberger.Print3d.Core
     public partial class CustomAddition : ObservableObject, ICloneable, ICustomAddition
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double percentage = 1;
+        public partial double Percentage { get; set; } = 1;
 
         [ObservableProperty]
-        int order = 0;
+        public partial int Order { get; set; } = 0;
 
         [ObservableProperty]
-        CustomAdditionCalculationType calculationType;
+        public partial CustomAdditionCalculationType CalculationType { get; set; }
         #endregion
 
         #region Constructor

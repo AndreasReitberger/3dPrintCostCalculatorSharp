@@ -11,36 +11,36 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Slicer3dCommand : ObservableObject, ISlicer3dCommand
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        Guid slicerId;
+        public partial Guid SlicerId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(SlicerId), CascadeOperations = CascadeOperation.All)]
-        Slicer3d? slicer;
+        [ManyToOne(nameof(SlicerId), CascadeOperations = CascadeOperation.All)]
+        public partial Slicer3d? Slicer { get; set; }
 #else
 
         [ObservableProperty]
-        ISlicer3d? slicer;
+        public partial ISlicer3d? Slicer { get; set; }
 #endif
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string command = string.Empty;
+        public partial string Command { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string outputFilePatternString = string.Empty;
+        public partial string OutputFilePatternString { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool autoAddFilePath = false;
+        public partial bool AutoAddFilePath { get; set; } = false;
 
         #endregion
 

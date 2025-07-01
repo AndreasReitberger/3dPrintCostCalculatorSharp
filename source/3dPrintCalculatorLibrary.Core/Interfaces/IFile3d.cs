@@ -9,7 +9,7 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         #region Properties
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public object File { get; set; }
+        public object? File { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
         public double Volume { get; set; }

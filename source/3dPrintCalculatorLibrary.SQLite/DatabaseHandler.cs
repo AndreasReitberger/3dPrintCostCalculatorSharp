@@ -36,25 +36,25 @@ namespace AndreasReitberger.Print3d.SQLite
 
         #region Properties
         [ObservableProperty]
-        bool isInitialized = false;
+        public partial bool IsInitialized { get; set; } = false;
 
         [ObservableProperty]
-        string databasePath = string.Empty;
+        public partial string DatabasePath { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string passphrase = string.Empty;
+        public partial string Passphrase { get; set; } = string.Empty;
 
         [ObservableProperty]
-        SQLiteAsyncConnection databaseAsync;
+        public partial SQLiteAsyncConnection DatabaseAsync { get; set; }
 
         [ObservableProperty]
-        List<Action> delegates = [];
+        public partial List<Action> Delegates { get; set; } = [];
 
         [ObservableProperty]
-        List<Type> tables = [];
+        public partial List<Type> Tables { get; set; } = [];
 
         [ObservableProperty]
-        List<Type> defaultTables = [
+        public partial List<Type> DefaultTables { get; set; } = [
             typeof(Manufacturer),
             typeof(Supplier),
             typeof(Maintenance3d),
@@ -106,16 +106,16 @@ namespace AndreasReitberger.Print3d.SQLite
         ];
 
         [ObservableProperty]
-        Func<Type, Task>? onDatabaseOpertions;
+        public partial Func<Type, Task>? OnDatabaseOpertions { get; set; }
         #endregion
 
         #region Collections
 
         [ObservableProperty]
-        List<Calculation3dEnhanced> enhancedCalculations = [];
+        public partial List<Calculation3dEnhanced> EnhancedCalculations { get; set; } = [];
 
         [ObservableProperty]
-        List<Printer3d> printers = [];
+        public partial List<Printer3d> Printers { get; set; } = [];
         partial void OnPrintersChanged(List<Printer3d> value)
         {
             OnPrintersChangedEvent(new PrintersChangedDatabaseEventArgs()
@@ -125,7 +125,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Material3d> materials = [];
+        public partial List<Material3d> Materials { get; set; } = [];
         partial void OnMaterialsChanged(List<Material3d> value)
         {
             OnMaterialsChangedEvent(new MaterialsChangedDatabaseEventArgs()
@@ -135,7 +135,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Customer3d> customers = [];
+        public partial List<Customer3d> Customers { get; set; } = [];
         partial void OnCustomersChanged(List<Customer3d> value)
         {
             OnCustomersChangedEvent(new CustomersChangedDatabaseEventArgs()
@@ -145,7 +145,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<File3d> files = [];
+        public partial List<File3d> Files { get; set; } = [];
         partial void OnFilesChanged(List<File3d> value)
         {
             OnFilesChangedEvent(new FilesChangedDatabaseEventArgs()
@@ -155,7 +155,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<Workstep> worksteps = [];
+        public partial List<Workstep> Worksteps { get; set; } = [];
         partial void OnWorkstepsChanged(List<Workstep> value)
         {
             OnWorkstepsChangedEvent(new WorkstepsChangedDatabaseEventArgs()
@@ -165,7 +165,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsage> workstepUsages = [];
+        public partial List<WorkstepUsage> WorkstepUsages { get; set; } = [];
         partial void OnWorkstepUsagesChanged(List<WorkstepUsage> value)
         {
             /*
@@ -177,7 +177,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<WorkstepUsageParameter> workstepUsageParameters = [];
+        public partial List<WorkstepUsageParameter> WorkstepUsageParameters { get; set; } = [];
         partial void OnWorkstepUsageParametersChanged(List<WorkstepUsageParameter> value)
         {
             /*
@@ -189,7 +189,7 @@ namespace AndreasReitberger.Print3d.SQLite
         }
 
         [ObservableProperty]
-        List<HourlyMachineRate> hourlyMachineRates = [];
+        public partial List<HourlyMachineRate> HourlyMachineRates { get; set; } = [];
         partial void OnHourlyMachineRatesChanged(List<HourlyMachineRate> value)
         {
             OnHourlyMachineRatesChangedEvent(new HourlyMachineRatesChangedDatabaseEventArgs()
@@ -234,7 +234,7 @@ namespace AndreasReitberger.Print3d.SQLite
         public async Task UpdateAllDelegatesAsync()
         {
             //var actions = Delegates.Select(task => new Task(task));
-            List<Task> tasks = new(Delegates.Select(task => new Task(task)));
+            List<Task> tasks = [.. Delegates.Select(task => new Task(task))];
             await Task.WhenAll(tasks);
         }
         #endregion
@@ -376,7 +376,22 @@ namespace AndreasReitberger.Print3d.SQLite
         public Task CloseAsync() => DatabaseAsync.CloseAsync();
         public void Close() => DatabaseAsync?.CloseAsync();
 
-        public void Dispose() => Close();
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (DatabaseAsync != null)
+                {
+                    Close();
+                }
+            }
+        }
 
         #endregion
 

@@ -14,37 +14,37 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: Obsolete("Use Calculation3dEnhanced instead")]
-        Guid calculationId;
+        [Obsolete("Use Calculation3dEnhanced instead")]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        Guid calculationEnhancedId;
+        public partial Guid CalculationEnhancedId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid fileId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        File3dUsage? fileUsage;
+        public partial File3dUsage? FileUsage { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid printerId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        Printer3d? printer;
+        public partial Printer3d? Printer { get; set; }
 
         [ObservableProperty]
-        List<Item3dUsage> items = [];
+        public partial List<Item3dUsage> Items { get; set; } = [];
 
         [ObservableProperty]
-        List<Material3dUsage> materialUsages = [];
+        public partial List<Material3dUsage> MaterialUsages { get; set; } = [];
         #endregion
 
         #region Constructor

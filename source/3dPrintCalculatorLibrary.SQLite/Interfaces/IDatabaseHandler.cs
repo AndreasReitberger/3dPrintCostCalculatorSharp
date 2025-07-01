@@ -1,5 +1,4 @@
-﻿using SQLite;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
 {
@@ -9,7 +8,7 @@ namespace AndreasReitberger.Print3d.SQLite.Interfaces
         public bool IsInitialized { get; }
         public string DatabasePath { get; }
         public string Passphrase { get; }
-        public SQLiteAsyncConnection DatabaseAsync { get; }
+        public SQLiteAsyncConnection? DatabaseAsync { get; }
         #endregion
 
         #region Methods

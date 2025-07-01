@@ -10,25 +10,25 @@ namespace AndreasReitberger.Print3d.Models
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid calculationId;
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        Guid workstepId;
+        public partial Guid WorkstepId { get; set; }
 
         [ObservableProperty]
-        Workstep? workstep;
+        public partial Workstep? Workstep { get; set; }
 
         [ObservableProperty]
-        Guid usageParameterId;
+        public partial Guid UsageParameterId { get; set; }
 
         [ObservableProperty]
-        WorkstepUsageParameter? usageParameter;
+        public partial WorkstepUsageParameter? UsageParameter { get; set; }
 
         [ObservableProperty]
-        double totalCosts = 0;
+        public partial double TotalCosts { get; set; } = 0;
 
         #endregion
 

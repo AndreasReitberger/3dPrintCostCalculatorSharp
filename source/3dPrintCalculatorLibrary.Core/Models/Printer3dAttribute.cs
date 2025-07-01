@@ -13,24 +13,24 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Printer3dAttribute : ObservableObject, IPrinter3dAttribute
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Printer3d))]
-        Guid printerId;
+        [ForeignKey(typeof(Printer3d))]
+        public partial Guid PrinterId { get; set; }
 #endif
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value;
-#endregion
+        public partial double Value { get; set; }
+        #endregion
 
         #region Constructor
         public Printer3dAttribute()

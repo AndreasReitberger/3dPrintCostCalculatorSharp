@@ -12,14 +12,14 @@ namespace AndreasReitberger.Print3d.Core
     public partial class WorkstepCategory : ObservableObject, IWorkstepCategory
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

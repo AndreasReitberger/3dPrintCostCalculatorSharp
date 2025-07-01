@@ -17,54 +17,54 @@ namespace AndreasReitberger.Print3d.Core
     {
 
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string sKU = string.Empty;
+        public partial string SKU { get; set; } = string.Empty;
 
 #if SQL
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid manufacturerId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid ManufacturerId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
-        Manufacturer? manufacturer;
+        [ManyToOne(nameof(ManufacturerId), CascadeOperations = CascadeOperation.All)]
+        public partial Manufacturer? Manufacturer { get; set; }
 #else
         [ObservableProperty]
-        IManufacturer? manufacturer;
+        public partial IManufacturer? Manufacturer { get; set; }
 #endif
 
         [ObservableProperty]
-        double packageSize = 1;
+        public partial double PackageSize { get; set; } = 1;
 
         [ObservableProperty]
-        double packagePrice;
+        public partial double PackagePrice { get; set; }
 
         [ObservableProperty]
-        double tax = 0;
+        public partial double Tax { get; set; } = 0;
 
         [ObservableProperty]
-        bool priceIncludesTax = true;
+        public partial bool PriceIncludesTax { get; set; } = true;
 
         [ObservableProperty]
-        string uri = string.Empty;
+        public partial string Uri { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string safetyDatasheet = string.Empty;
+        public partial string SafetyDatasheet { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string technicalDatasheet = string.Empty;
+        public partial string TechnicalDatasheet { get; set; } = string.Empty;
 
 #if SQL
         [Ignore]

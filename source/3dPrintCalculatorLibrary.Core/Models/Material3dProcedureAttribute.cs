@@ -12,26 +12,26 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3dProcedureAttribute : ObservableObject, IMaterial3dProcedureAttribute
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Material3d))]
-        Guid materialId;
+        [ForeignKey(typeof(Material3d))]
+        public partial Guid MaterialId { get; set; }
 #endif
 
         [ObservableProperty]
-        Material3dFamily family;
+        public partial Material3dFamily Family { get; set; }
 
         [ObservableProperty]
-        ProcedureAttribute attribute;
+        public partial ProcedureAttribute Attribute { get; set; }
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
         #endregion
 
         #region Constructor

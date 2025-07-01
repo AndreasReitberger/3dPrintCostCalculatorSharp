@@ -12,37 +12,37 @@ namespace AndreasReitberger.Print3d.Core
     public partial class File3dUsage : ObservableObject, ICloneable, IFile3dUsage
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Print3dInfo))]
-        Guid printInfoId;
+        [ForeignKey(typeof(Print3dInfo))]
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid fileId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
-        File3d? file;
+        [ManyToOne(nameof(FileId), CascadeOperations = CascadeOperation.All)]
+        public partial File3d? File { get; set; }
 #else
         [ObservableProperty]
-        IFile3d? file;
+        public partial IFile3d? File { get; set; }
 #endif
 
         [ObservableProperty]
-        int quantity = 1;
+        public partial int Quantity { get; set; } = 1;
 
         [ObservableProperty]
-        bool multiplyPrintTimeWithQuantity = true;
+        public partial bool MultiplyPrintTimeWithQuantity { get; set; } = true;
 
         [ObservableProperty]
-        double printTimeQuantityFactor = 1;
+        public partial double PrintTimeQuantityFactor { get; set; } = 1;
 
         #endregion
 

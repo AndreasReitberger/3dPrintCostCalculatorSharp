@@ -8,25 +8,25 @@ namespace AndreasReitberger.Print3d.Models.SlicerAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid slicerId;
+        public partial Guid SlicerId { get; set; }
 
         [ObservableProperty]
-        Slicer3d? slicer;
+        public partial Slicer3d? Slicer { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string command = string.Empty;
+        public partial string Command { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string outputFilePatternString = string.Empty;
+        public partial string OutputFilePatternString { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool autoAddFilePath;
+        public partial bool AutoAddFilePath { get; set; }
 
         #endregion
 

@@ -10,13 +10,13 @@ namespace AndreasReitberger.Print3d.Models.WorkstepAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        WorkstepUsageParameterType parameterType = WorkstepUsageParameterType.Quantity;
+        public partial WorkstepUsageParameterType ParameterType { get; set; } = WorkstepUsageParameterType.Quantity;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
         #endregion
 
         #region Constructors

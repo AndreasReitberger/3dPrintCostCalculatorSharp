@@ -19,28 +19,28 @@ namespace AndreasReitberger.Print3d.Models
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid printerId;
+        public partial Guid PrinterId { get; set; }
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string category = string.Empty;
+        public partial string Category { get; set; } = string.Empty;
 
         [ObservableProperty]
-        DateTimeOffset date;
+        public partial DateTimeOffset Date { get; set; }
 
         [ObservableProperty]
-        double duration;
+        public partial double Duration { get; set; }
 
         [ObservableProperty]
-        double additionalCosts;
+        public partial double AdditionalCosts { get; set; }
 
         [ObservableProperty]
-        List<Sparepart> spareparts = [];
+        public partial List<Sparepart> Spareparts { get; set; } = [];
 
         public double Costs => Spareparts?.Sum(sparepart => sparepart.Costs) ?? 0 + AdditionalCosts;
         #endregion

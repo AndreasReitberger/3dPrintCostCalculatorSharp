@@ -12,16 +12,16 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Maintenance3d : ObservableObject, ICloneable, IMaintenance3d
     {
         #region Properties 
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Printer3d))]
-        Guid printerId;
+        [ForeignKey(typeof(Printer3d))]
+        public partial Guid PrinterId { get; set; }
 
         /*
         [ObservableProperty]
@@ -30,30 +30,31 @@ namespace AndreasReitberger.Print3d.Core
         */
 #else
         [ObservableProperty]
-        IPrinter3d? printer;
+        public partial IPrinter3d? Printer { get; set; }
 #endif
 
         [ObservableProperty]
-        string description = string.Empty;
+        public partial string Description { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string category = string.Empty;
+        public partial string Category { get; set; } = string.Empty;
 
         [ObservableProperty]
-        DateTimeOffset date;
+        public partial DateTimeOffset Date { get; set; }
 
         [ObservableProperty]
-        double duration;
+        public partial double Duration { get; set; }
 
         [ObservableProperty]
-        double additionalCosts;
+        public partial double AdditionalCosts { get; set; }
 
-        [ObservableProperty]
 #if SQL
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Sparepart> spareparts = [];
+        [ObservableProperty]
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Sparepart> Spareparts { get; set; } = [];
 #else
-        IList<ISparepart> spareparts = [];
+        [ObservableProperty]
+        public partial IList<ISparepart> Spareparts { get; set; } = [];
 #endif
 
 #if SQL

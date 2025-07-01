@@ -11,29 +11,29 @@ namespace AndreasReitberger.Print3d.Core
     public partial class ContactPerson : ObservableObject, IPerson
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
         [property: PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string salutation = string.Empty;
+        public partial string Salutation { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string firstName = string.Empty;
+        public partial string FirstName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string lastName = string.Empty;
+        public partial string LastName { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string email = string.Empty;
+        public partial string Email { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string phoneNumber = string.Empty;
+        public partial string PhoneNumber { get; set; } = string.Empty;
 
         [ObservableProperty]
-        bool showOnDocuments = true;
+        public partial bool ShowOnDocuments { get; set; } = true;
         #endregion
 
         #region Constructor

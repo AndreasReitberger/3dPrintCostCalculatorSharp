@@ -9,16 +9,16 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
     {
         #region Properties 
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid materialId;
+        public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string hexColorCode = string.Empty;
+        public partial string HexColorCode { get; set; } = string.Empty;
 
         #endregion
 

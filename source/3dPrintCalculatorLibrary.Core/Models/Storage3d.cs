@@ -15,24 +15,24 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Storage3d : ObservableObject, IStorage3d
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        int capacity = 32;
+        public partial int Capacity { get; set; } = 32;
 
         [ObservableProperty]
 #if SQL
-        [property: ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
-        List<Storage3dLocation> locations = [];
-        #else
-        IList<IStorage3dLocation> locations = [];
+        [ManyToMany(typeof(Storage3dLocationStorage3d), CascadeOperations = CascadeOperation.All)]
+        public partial List<Storage3dLocation> Locations { get; set; } = [];
+#else
+        public partial IList<IStorage3dLocation> Locations { get; set; } = [];
 #endif
         #endregion
 

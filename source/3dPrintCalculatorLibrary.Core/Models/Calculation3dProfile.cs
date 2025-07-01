@@ -18,23 +18,23 @@ namespace AndreasReitberger.Print3d.Core
         #region Properties
 
         #region Basic
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        public Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
         #endregion
 
         #region Linked Customer
         [ObservableProperty]
 #if SQL
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        public List<Customer3d> customers = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Customer3d> Customers { get; set; } = [];
 #else
-        public IList<ICustomer3d> customers = [];
+        public partial IList<ICustomer3d> Customers { get; set; } = [];
 #endif
         #endregion
 
@@ -43,36 +43,36 @@ namespace AndreasReitberger.Print3d.Core
         #region Rates
 
         [ObservableProperty]
-        double failRate = 0;
+        public partial double FailRate { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyTaxRate = false;
+        public partial bool ApplyTaxRate { get; set; } = false;
 
         [ObservableProperty]
-        double taxRate = 0;
+        public partial double TaxRate { get; set; } = 0;
 
         [ObservableProperty]
-        double marginRate = 0;
+        public partial double MarginRate { get; set; } = 0;
 
         #endregion
 
         #region Handling
 
         [ObservableProperty]
-        double handlingsFee = 0;
+        public partial double HandlingsFee { get; set; } = 0;
 
         #endregion
 
         #region Energy
 
         [ObservableProperty]
-        bool applyEnergyCost = false;
+        public partial bool ApplyEnergyCost { get; set; } = false;
 
         [ObservableProperty]
-        double powerLevel = 0;
+        public partial double PowerLevel { get; set; } = 0;
 
         [ObservableProperty]
-        double energyCostsPerkWh = 0;
+        public partial double EnergyCostsPerkWh { get; set; } = 0;
 
         #endregion
 
@@ -81,110 +81,110 @@ namespace AndreasReitberger.Print3d.Core
         #region Filament
 
         [ObservableProperty]
-        bool applyNozzleWearCosts = false;
+        public partial bool ApplyNozzleWearCosts { get; set; } = false;
 
         [ObservableProperty]
-        double nozzleReplacementCosts = 0;
+        public partial double NozzleReplacementCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double nozzleWearFactorPerPrintJob = 0;
+        public partial double NozzleWearFactorPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        double nozzleWearCostsPerPrintJob = 0;
+        public partial double NozzleWearCostsPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyPrintSheetWearCosts = false;
+        public partial bool ApplyPrintSheetWearCosts { get; set; } = false;
 
         [ObservableProperty]
-        double printSheetReplacementCosts = 0;
+        public partial double PrintSheetReplacementCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double printSheetWearFactorPerPrintJob = 0;
+        public partial double PrintSheetWearFactorPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        double printSheetWearCostsPerPrintJob = 0;
+        public partial double PrintSheetWearCostsPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyMultiMaterialCosts = false;
+        public partial bool ApplyMultiMaterialCosts { get; set; } = false;
 
         [ObservableProperty]
-        double multiMaterialChangeCosts = 0;
+        public partial double MultiMaterialChangeCosts { get; set; } = 0;
 
         [ObservableProperty]
-        bool multiMaterialAllSelectetMaterialsAreUsed = false;
+        public partial bool MultiMaterialAllSelectetMaterialsAreUsed { get; set; } = false;
 
         [ObservableProperty]
-        double multiMaterialChangesPerPrint = 0;
+        public partial double MultiMaterialChangesPerPrint { get; set; } = 0;
 
         #endregion
 
         #region Resin
 
         [ObservableProperty]
-        bool applyResinGlovesCosts = false;
+        public partial bool ApplyResinGlovesCosts { get; set; } = false;
 
         [ObservableProperty]
-        double glovesPerPrintJob = 0;
+        public partial double GlovesPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        double glovesInPackage = 0;
+        public partial double GlovesInPackage { get; set; } = 0;
 
         [ObservableProperty]
-        double glovesPackagePrice = 0;
+        public partial double GlovesPackagePrice { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyResinFilterCosts = false;
+        public partial bool ApplyResinFilterCosts { get; set; } = false;
 
         [ObservableProperty]
-        double filtersPerPrintJob = 0;
+        public partial double FiltersPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        double filtersInPackage = 0;
+        public partial double FiltersInPackage { get; set; } = 0;
 
         [ObservableProperty]
-        double filtersPackagePrice = 0;
+        public partial double FiltersPackagePrice { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyResinWashingCosts = false;
+        public partial bool ApplyResinWashingCosts { get; set; } = false;
 
         [ObservableProperty]
-        double isopropanolContainerContent = 0;
+        public partial double IsopropanolContainerContent { get; set; } = 0;
 
         [ObservableProperty]
-        double isopropanolContainerPrice = 0;
+        public partial double IsopropanolContainerPrice { get; set; } = 0;
 
         [ObservableProperty]
-        double isopropanolPerPrintJob = 0;
+        public partial double IsopropanolPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyResinCuringCosts = false;
+        public partial bool ApplyResinCuringCosts { get; set; } = false;
 
         [ObservableProperty]
-        double curingCostsPerHour = 0;
+        public partial double CuringCostsPerHour { get; set; } = 0;
 
         [ObservableProperty]
-        double curingDurationInMintues = 0;
+        public partial double CuringDurationInMintues { get; set; } = 0;
 
         [ObservableProperty]
-        bool applyResinTankWearCosts = false;
+        public partial bool ApplyResinTankWearCosts { get; set; } = false;
 
         [ObservableProperty]
-        double resinTankReplacementCosts = 0;
+        public partial double ResinTankReplacementCosts { get; set; } = 0;
 
         [ObservableProperty]
-        double resinTankWearFactorPerPrintJob = 0;
+        public partial double ResinTankWearFactorPerPrintJob { get; set; } = 0;
 
         [ObservableProperty]
-        double resinTankWearCostsPerPrintJob = 0;
+        public partial double ResinTankWearCostsPerPrintJob { get; set; } = 0;
         #endregion
 
         #region Powder
 
         [ObservableProperty]
-        bool applySLSRefreshing = false;
+        public partial bool ApplySLSRefreshing { get; set; } = false;
 
         [ObservableProperty]
-        double powderInBuildArea = 0;
+        public partial double PowderInBuildArea { get; set; } = 0;
 
         #endregion
 
@@ -192,10 +192,10 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
 #if SQL
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<ProcedureAddition> procedureAdditions = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<ProcedureAddition> ProcedureAdditions { get; set; } = [];
 #else
-        IList<IProcedureAddition> procedureAdditions = [];
+        public partial IList<IProcedureAddition> ProcedureAdditions { get; set; } = [];
 #endif
         #endregion
 
@@ -205,32 +205,32 @@ namespace AndreasReitberger.Print3d.Core
 
 #if SQL
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Printer3d> printers = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Printer3d> Printers { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Material3d> materials = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3d> Materials { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<Item3dUsage> items = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<Item3dUsage> Items { get; set; } = [];
 
         [ObservableProperty]
-        [property: OneToMany(CascadeOperations = CascadeOperation.All)]
-        List<WorkstepUsage> worksteps = [];
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
+        public partial List<WorkstepUsage> Worksteps { get; set; } = [];
 #else
         [ObservableProperty]
-        IList<IPrinter3d> printers = [];
+        public partial IList<IPrinter3d> Printers { get; set; } = [];
 
         [ObservableProperty]
-        IList<IMaterial3d> materials = [];
+        public partial IList<IMaterial3d> Materials { get; set; } = [];
 
         [ObservableProperty]
-        IList<IItem3dUsage> items = [];
+        public partial IList<IItem3dUsage> Items { get; set; } = [];
 
         [ObservableProperty]
-        IList<IWorkstepUsage> worksteps = [];
+        public partial IList<IWorkstepUsage> Worksteps { get; set; } = [];
 #endif
         #endregion
 

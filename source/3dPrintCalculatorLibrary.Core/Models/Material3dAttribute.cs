@@ -11,23 +11,23 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Material3dAttribute : ObservableObject, IMaterial3dAttribute
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Material3d))]
-        Guid materialId;
+        [ForeignKey(typeof(Material3d))]
+        public partial Guid MaterialId { get; set; }
 #endif
 
         [ObservableProperty]
-        string attribute = string.Empty;
+        public partial string Attribute { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double value = 0;
+        public partial double Value { get; set; } = 0;
         #endregion
 
         #region Constructor

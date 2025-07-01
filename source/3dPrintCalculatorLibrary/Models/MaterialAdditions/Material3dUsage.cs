@@ -17,21 +17,21 @@ namespace AndreasReitberger.Print3d.Models.MaterialAdditions
 
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid printInfoId;
+        public partial Guid PrintInfoId { get; set; }
 
         [ObservableProperty]
-        [property: JsonIgnore, XmlIgnore]
-        Guid materialId;
+        [JsonIgnore, XmlIgnore]
+        public partial Guid MaterialId { get; set; }
 
         [ObservableProperty]
-        Material3d? material;
+        public partial Material3d? Material { get; set; }
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(Percentage))]
-        double percentageValue = 1;
+        public partial double PercentageValue { get; set; } = 1;
 
         public double Percentage => PercentageValue * 100;
 

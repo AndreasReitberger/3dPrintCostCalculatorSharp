@@ -13,44 +13,44 @@ namespace AndreasReitberger.Print3d.Core
     public partial class Workstep : ObservableObject, IWorkstep
     {
         #region Properties
-        [ObservableProperty]
 #if SQL
-        [property: PrimaryKey]
+        [PrimaryKey]
 #endif
-        Guid id;
+        [ObservableProperty]
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        string name = string.Empty;
+        public partial string Name { get; set; } = string.Empty;
 
         [ObservableProperty]
-        double price = 0;
+        public partial double Price { get; set; } = 0;
 #if SQL
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dEnhanced))]
-        Guid calculationId;
+        [ForeignKey(typeof(Calculation3dEnhanced))]
+        public partial Guid CalculationId { get; set; }
 
         [ObservableProperty]
-        [property: ForeignKey(typeof(Calculation3dProfile))]
-        Guid calculationProfileId;
-        
-        [ObservableProperty]
-        Guid categoryId;
+        [ForeignKey(typeof(Calculation3dProfile))]
+        public partial Guid CalculationProfileId { get; set; }
 
         [ObservableProperty]
-        [property: ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
-        WorkstepCategory? category;
+        public partial Guid CategoryId { get; set; }
+
+        [ObservableProperty]
+        [ManyToOne(nameof(CategoryId), CascadeOperations = CascadeOperation.All)]
+        public partial WorkstepCategory? Category { get; set; }
 #else
         [ObservableProperty]
-        IWorkstepCategory? category;
+        public partial IWorkstepCategory? Category { get; set; }
 #endif
         [ObservableProperty]
-        CalculationType calculationType;
+        public partial CalculationType CalculationType { get; set; }
 
         [ObservableProperty]
-        WorkstepType type;
+        public partial WorkstepType Type { get; set; }
 
         [ObservableProperty]
-        string note = string.Empty;
+        public partial string Note { get; set; } = string.Empty;
         #endregion
 
         #region Constructors

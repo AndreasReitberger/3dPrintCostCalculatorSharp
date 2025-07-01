@@ -11,16 +11,17 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
     {
         #region Properties
         [ObservableProperty]
-        Guid id;
+        public partial Guid Id { get; set; }
 
         [ObservableProperty]
-        Guid fileId;
+        public partial Guid FileId { get; set; }
 
         [ObservableProperty]
-        bool recalculateWeightInGramm = false;
+        public partial bool RecalculateWeightInGramm { get; set; } = false;
 
         [ObservableProperty]
-        double weight = 0;
+        public partial double Weight { get; set; } = 0;
+
         partial void OnWeightChanged(double value)
         {
             RecalculateWeightInGramm = true;
@@ -28,7 +29,8 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         }
 
         [ObservableProperty]
-        Unit unit = Unit.Gram;
+        public partial Unit Unit { get; set; } = Unit.Gram;
+
         partial void OnUnitChanged(Unit value)
         {
             RecalculateWeightInGramm = true;
@@ -36,7 +38,7 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
         }
 
         [ObservableProperty]
-        double weightInGramm = 0;
+        public partial double WeightInGramm { get; set; } = 0;
 
         #endregion
 

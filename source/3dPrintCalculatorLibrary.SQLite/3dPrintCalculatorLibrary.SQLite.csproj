@@ -81,6 +81,8 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3d.cs" Link="Models\File3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dUsage.cs" Link="Models\File3dUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dWeight.cs" Link="Models\File3dWeight.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Gcode.cs" Link="Models\Gcode.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\GcodeCommand.cs" Link="Models\GcodeCommand.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\HourlyMachineRate.cs" Link="Models\HourlyMachineRate.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3d.cs" Link="Models\Item3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Item3dUsage.cs" Link="Models\Item3dUsage.cs" />
@@ -121,7 +123,7 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="sqlite-net-sqlcipher" Version="1.9.172" />
 		<PackageReference Include="SQLiteNetCipherExtensions" Version="2.1.0" />

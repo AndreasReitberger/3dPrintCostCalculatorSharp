@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
-    public partial class Storage3dItemStorage3dLocation : ObservableObject
+    public partial class Storage3dItemStorage3dLocation : ObservableObject, IStorage3dItemStorage3dLocation
     {
         [ObservableProperty]
         [property: ForeignKey(typeof(Storage3dLocation))]

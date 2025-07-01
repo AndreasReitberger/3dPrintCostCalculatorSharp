@@ -1,11 +1,15 @@
-﻿namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
-{
-    public class CustomAdditionCalculation3dEnhanced
-    {
-        [ForeignKey(typeof(CustomAddition))]
-        public Guid CustomAdditionId { get; set; }
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-        [ForeignKey(typeof(Calculation3dEnhanced))]
-        public Guid CalculationId { get; set; }
+namespace AndreasReitberger.Print3d.SQLite.CalculationAdditions
+{
+    public partial class CustomAdditionCalculation3dEnhanced : ObservableObject, ICustomAdditionCalculation3dEnhanced
+    {
+        [ObservableProperty]
+        [property: ForeignKey(typeof(CustomAddition))]
+        Guid customAdditionId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
     }
 }

@@ -1,11 +1,15 @@
-﻿namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
-{
-    public class WorkstepUsageCalculation3dEnhanced
-    {
-        [ForeignKey(typeof(WorkstepUsage))]
-        public Guid WorkstepUsageId { get; set; }
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-        [ForeignKey(typeof(Calculation3dEnhanced))]
-        public Guid CalculationId { get; set; }
+namespace AndreasReitberger.Print3d.SQLite.WorkstepAdditions
+{
+    public partial class WorkstepUsageCalculation3dEnhanced : ObservableObject, IWorkstepUsageCalculation3dEnhanced
+    {
+        [ObservableProperty]
+        [property: ForeignKey(typeof(WorkstepUsage))]
+        Guid workstepUsageId;
+
+        [ObservableProperty]
+        [property: ForeignKey(typeof(Calculation3dEnhanced))]
+        Guid calculationId;
     }
 }

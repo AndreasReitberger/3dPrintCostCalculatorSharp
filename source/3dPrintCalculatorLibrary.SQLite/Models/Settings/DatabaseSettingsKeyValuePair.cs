@@ -46,10 +46,7 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this, Formatting.Indented);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         #endregion
     }
 }

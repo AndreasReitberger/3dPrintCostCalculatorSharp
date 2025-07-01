@@ -122,20 +122,16 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return IsCompany ? Name : string.Format("{0}, {1}", LastName, Name);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
         public override bool Equals(object? obj)
         {
             if (obj is not Customer3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
 
     }

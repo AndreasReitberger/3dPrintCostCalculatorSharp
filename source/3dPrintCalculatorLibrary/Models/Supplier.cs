@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -46,20 +47,15 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Override
-        public override string ToString()
-        {
-            return string.IsNullOrEmpty(DebitorNumber) ? Name : string.Format("{0} ({1})", Name, DebitorNumber);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Supplier item)
                 return false;
-            return this.Id.Equals(item.Id);
+            return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
     }
 }

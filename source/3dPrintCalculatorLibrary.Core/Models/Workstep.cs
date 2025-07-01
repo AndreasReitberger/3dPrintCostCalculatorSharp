@@ -1,5 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 
 #if SQL
 namespace AndreasReitberger.Print3d.SQLite
@@ -60,7 +61,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString() => $"{Name} ({Type}) - {Price:C2}";
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
 
         public override bool Equals(object? obj)
         {
@@ -68,10 +69,8 @@ namespace AndreasReitberger.Print3d.Core
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         public object Clone() => MemberwiseClone();
 
         #endregion

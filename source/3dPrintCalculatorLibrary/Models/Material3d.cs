@@ -2,6 +2,7 @@
 using AndreasReitberger.Print3d.Interfaces;
 using AndreasReitberger.Print3d.Models.MaterialAdditions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -107,20 +108,15 @@ namespace AndreasReitberger.Print3d.Models
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
         public override bool Equals(object? obj)
         {
             if (obj is not Material3d item)
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
     }
 }

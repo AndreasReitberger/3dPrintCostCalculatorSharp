@@ -56,10 +56,8 @@ namespace AndreasReitberger.Print3d.Models.FileAdditions
                 return false;
             return Id.Equals(item.Id);
         }
-        public override int GetHashCode()
-        {
-            return Id.GetHashCode();
-        }
+        public override int GetHashCode() => Id.GetHashCode();
+        
         #endregion
     }
 }

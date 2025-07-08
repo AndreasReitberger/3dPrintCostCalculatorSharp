@@ -186,7 +186,6 @@ namespace AndreasReitberger.Print3d.Core
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
         [NotifyPropertyChangedFor(nameof(AvailableMaterials))]
         public partial IList<IPrint3dInfo> PrintInfos { get; set; } = [];
-
         partial void OnPrintInfosChanged(IList<IPrint3dInfo> value)
         {
 

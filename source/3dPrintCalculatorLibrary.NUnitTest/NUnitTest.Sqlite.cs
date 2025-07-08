@@ -619,7 +619,7 @@ namespace AndreasReitberger.NUnitTest
                         PackageSize = 200,
                     };
 
-                    await DatabaseHandler.Instance.SetItemsWithChildrenAsync(new() { item, item2 });
+                    await DatabaseHandler.Instance.SetItemsWithChildrenAsync([item, item2]);
                     List<Item3d>? items = await DatabaseHandler.Instance.GetItemsWithChildrenAsync();
                     Assert.That(items?.Count == 2);
 
@@ -658,7 +658,7 @@ namespace AndreasReitberger.NUnitTest
                 using DatabaseHandler handler = await new DatabaseHandler.DatabaseHandlerBuilder()
                     .WithDatabasePath(databasePath)
                     .WithTable(typeof(Manufacturer))
-                    .WithTables(new List<Type> { typeof(Material3dType), typeof(Material3d) })
+                    .WithTables([typeof(Material3dType), typeof(Material3d)])
                     .BuildAsync();
 
                 List<TableMapping>? mappings = handler.GetTableMappings();
@@ -713,7 +713,7 @@ namespace AndreasReitberger.NUnitTest
                     Manufacturer = wuerth,
                     SKU = "2302423-6413"
                 };
-                await handler.SetItemsWithChildrenAsync(new() { item1, item2 });
+                await handler.SetItemsWithChildrenAsync([item1, item2]);
 
                 var loadedItem1 = await handler.GetItemWithChildrenAsync(item1.Id);
                 Assert.That(loadedItem1 is not null);
@@ -763,12 +763,12 @@ namespace AndreasReitberger.NUnitTest
                 }
                 using DatabaseHandler handler = await new DatabaseHandler.DatabaseHandlerBuilder()
                     .WithDatabasePath(databasePath)
-                    .WithTables(new List<Type> {
+                    .WithTables([
                         typeof(Workstep),
                         typeof(WorkstepCategory),
                         typeof(WorkstepUsage),
                         typeof(WorkstepUsageParameter),
-                    })
+                    ])
                     .BuildAsync();
                 WorkstepCategory category = new()
                 {
@@ -851,13 +851,13 @@ namespace AndreasReitberger.NUnitTest
                     {
                         Location = "LS-01-01-01",
                         Capacity = 20,
-                        Items = new() { item },
+                        Items = [item],
                     };
 
                     Storage3d storage = new()
                     {
                         Name = "Main material storage",
-                        Locations = new() { location },
+                        Locations = [location],
                     };
                     await Task.Delay(250);
                     await DatabaseHandler.Instance.SetStorageWithChildrenAsync(storage);

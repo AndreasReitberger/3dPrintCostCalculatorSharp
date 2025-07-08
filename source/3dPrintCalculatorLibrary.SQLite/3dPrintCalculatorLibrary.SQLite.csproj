@@ -16,7 +16,6 @@
     <DefineConstants>$(DefineConstants);SQL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Global.cs" Link="Global.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IAddress.cs" Link="Interfaces\IAddress.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculation3dEnhanced.cs" Link="Interfaces\ICalculation3dEnhanced.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculation3dProfile.cs" Link="Interfaces\ICalculation3dProfile.cs" />
@@ -68,7 +67,8 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsageParameter.cs" Link="Interfaces\IWorkstepUsageParameter.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Address.cs" Link="Models\Address.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.cs" Link="Models\Calculation3dEnhanced.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Extensions.cs" Link="Models\Calculation3dEnhanced.Extensions.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Methods.cs" Link="Models\Calculation3dEnhanced.Methods.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhancedExtension.cs" Link="Models\Calculation3dEnhancedExtension.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dProfile.cs" Link="Models\Calculation3dProfile.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationAttribute.cs" Link="Models\CalculationAttribute.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureAttribute.cs" Link="Models\CalculationProcedureAttribute.cs" />
@@ -114,6 +114,7 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepCategory.cs" Link="Models\WorkstepCategory.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsage.cs" Link="Models\WorkstepUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsageParameter.cs" Link="Models\WorkstepUsageParameter.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Usings.cs" Link="Usings.cs" />
   </ItemGroup>
 
   <ItemGroup>

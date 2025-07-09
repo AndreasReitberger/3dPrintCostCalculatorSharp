@@ -2,7 +2,7 @@
 
 namespace AndreasReitberger.Print3d.Core.Events
 {
-    public class CalculatorEventArgs : EventArgs
+    public class CalculatorEventArgs : EventArgs, ICalculatorEventArgs
     {
         #region Properties
         public string? Message { get; set; }

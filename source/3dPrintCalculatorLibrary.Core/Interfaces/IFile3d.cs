@@ -1,6 +1,8 @@
 ﻿#if SQL
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
 #else
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace AndreasReitberger.Print3d.Core.Interfaces
 #endif
 {
@@ -21,6 +23,18 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
 #endif
         public double PrintTime { get; set; }
         public byte[] Image { get; set; }
+
+        #region Legacy
+        [Obsolete("Only for legacy support of the `Calculation3d` class")]
+        public int Quantity { get; set; }
+
+        [Obsolete("Only for legacy support of the `Calculation3d` class")]
+        public bool MultiplyPrintTimeWithQuantity { get; set; }
+
+        [Obsolete("Only for legacy support of the `Calculation3d` class")]
+        public double PrintTimeQuantityFactor { get; set; }
+        #endregion
+
         #endregion
 
     }

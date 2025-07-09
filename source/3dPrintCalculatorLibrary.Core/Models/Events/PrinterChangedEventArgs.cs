@@ -1,12 +1,10 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace AndreasReitberger.Print3d.Core.Events
 {
-    public class PrinterChangedEventArgs : CalculatorEventArgs
+    public class PrinterChangedEventArgs : CalculatorEventArgs, IPrinterChangedEventArgs
     {
         #region Properties
-        //public Printer3d? Printer { get; set; }
         public IPrinter3d? Printer { get; set; }
         #endregion
 

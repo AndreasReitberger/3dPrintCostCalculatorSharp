@@ -1,13 +1,10 @@
-﻿using AndreasReitberger.Print3d.Core.Interfaces;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace AndreasReitberger.Print3d.Core.Events
 {
-    public class MaterialChangedEventArgs : CalculatorEventArgs
+    public class MaterialChangedEventArgs : CalculatorEventArgs, IMaterialChangedEventArgs
     {
         #region Properties
-
-        //public Material3d? Material { get; set; }
         public IMaterial3d? Material { get; set; }
         #endregion
 

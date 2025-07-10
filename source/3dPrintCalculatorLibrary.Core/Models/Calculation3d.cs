@@ -4,22 +4,28 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Newtonsoft.Json;
 #if !SQL
 using System.Xml.Serialization;
+using AndreasReitberger.Print3d.Core.Interfaces;
 #endif
 
 #if SQL
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using System.Collections.ObjectModel;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.Core.Interfaces;
+using IPrinterChangedEventArgs = AndreasReitberger.Print3d.SQLite.Interfaces.IPrinterChangedEventArgs;
+using IMaterialChangedEventArgs = AndreasReitberger.Print3d.SQLite.Interfaces.IMaterialChangedEventArgs;
+using ICalculation3d = AndreasReitberger.Print3d.SQLite.Interfaces.ICalculation3d;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Calculation3d)}s")]
 #else
-using AndreasReitberger.Print3d.Core.Interfaces;
-
 namespace AndreasReitberger.Print3d.Core
 {
 #endif
+    [Obsolete("Use the Calculation3dEnhanced class instead. This class is deprecated and will be removed later.")]
     public partial class Calculation3d : ObservableObject, ICalculation3d, ICloneable
     {
 
@@ -63,7 +69,7 @@ namespace AndreasReitberger.Print3d.Core
             {
                 RecalculationRequired = true;
                 IsCalculated = false;
-                OnPrinterChangedEvent(new()
+                OnPrinterChangedEvent(new Events.PrinterChangedEventArgs()
                 {
                     CalculationId = Id,
                     Printer = value,
@@ -84,7 +90,7 @@ namespace AndreasReitberger.Print3d.Core
             {
                 RecalculationRequired = true;
                 IsCalculated = false;
-                OnMaterialChangedEvent(new()
+                OnMaterialChangedEvent(new Events.MaterialChangedEventArgs()
                 {
                     CalculationId = Id,
                     Material = value,
@@ -183,12 +189,12 @@ namespace AndreasReitberger.Print3d.Core
 #if SQL
 
         [ObservableProperty]
-        [ManyToMany(typeof(Printer3dCalculation), CascadeOperations = CascadeOperation.All)]
-        public partial List<Printer3d?> Printers = [];
+        [ManyToMany(typeof(Printer3dCalculation3d), CascadeOperations = CascadeOperation.All)]
+        public partial List<Printer3d> Printers { get; set; } = [];
         
         [ObservableProperty]
-        [ManyToMany(typeof(Material3dCalculation), CascadeOperations = CascadeOperation.All)]
-        public partial List<Material3d?> Materials = [];
+        [ManyToMany(typeof(Material3dCalculation3d), CascadeOperations = CascadeOperation.All)]
+        public partial List<Material3d> Materials { get; set; } = [];
 
         [ObservableProperty]
         [ManyToMany(typeof(CustomAdditionCalculation3d), CascadeOperations = CascadeOperation.All)]
@@ -231,10 +237,10 @@ namespace AndreasReitberger.Print3d.Core
         public partial List<File3d> Files { get; set; } = [];
 #else
         [ObservableProperty]
-        public partial IList<IPrinter3d?> Printers { get; set; } = [];
+        public partial IList<IPrinter3d> Printers { get; set; } = [];
 
         [ObservableProperty]
-        public partial IList<IMaterial3d?> Materials { get; set; } = [];
+        public partial IList<IMaterial3d> Materials { get; set; } = [];
 
         [ObservableProperty]
         public partial IList<ICustomAddition> CustomAdditions { get; set; } = [];

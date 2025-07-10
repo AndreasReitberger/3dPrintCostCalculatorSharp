@@ -1,8 +1,7 @@
 ﻿using AndreasReitberger.Print3d.Core.Enums;
-using AndreasReitberger.Print3d.Core.Events;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
+using AndreasReitberger.Print3d.Core.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace AndreasReitberger.Print3d.SQLite.Interfaces
@@ -50,8 +49,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
 
         #region Details
 #if SQL
-        public List<Printer3d?> Printers { get; set; }
-        public List<Material3d?> Materials { get; set; }
+        public List<Printer3d> Printers { get; set; }
+        public List<Material3d> Materials { get; set; }
         public List<CustomAddition> CustomAdditions { get; set; }
         public List<WorkstepUsage> WorkstepUsages { get; set; }
         public List<Item3dUsage> AdditionalItems { get; set; }
@@ -65,8 +64,8 @@ namespace AndreasReitberger.Print3d.Core.Interfaces
         public List<CalculationAttribute> Rates { get; set; }
         public List<File3d> Files { get; set; }
 #else
-        public IList<IPrinter3d?> Printers { get; set; }
-        public IList<IMaterial3d?> Materials { get; set; }
+        public IList<IPrinter3d> Printers { get; set; }
+        public IList<IMaterial3d> Materials { get; set; }
         public IList<ICustomAddition> CustomAdditions { get; set; }
         public IList<IWorkstepUsage> WorkstepUsages { get; set; }
         public IList<IItem3dUsage> AdditionalItems { get; set; }

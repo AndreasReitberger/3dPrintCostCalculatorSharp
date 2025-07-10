@@ -16,7 +16,7 @@ namespace AndreasReitberger.Print3d.Core
     {
         #region Methods
 
-        public void ClearCalculation()
+        public override void ClearCalculation()
         {
             PrintTimes ??= [];
             MaterialUsages ??= [];
@@ -31,7 +31,7 @@ namespace AndreasReitberger.Print3d.Core
             Costs.Clear();
         }
 
-        public void CalculateCosts()
+        public override void CalculateCosts()
         {
             ClearCalculation();
             int quantity = PrintInfos.Select(f => f.FileUsage).Select(file => file?.Quantity ?? 0).ToList().Sum();
@@ -679,9 +679,9 @@ namespace AndreasReitberger.Print3d.Core
             RecalculationRequired = false;
         }
 
-        public Task CalculateCostsAsync() => Task.Run(CalculateCosts);
+        public override Task CalculateCostsAsync() => Task.Run(CalculateCosts);
 
-        public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
+        public override double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
             {
@@ -720,7 +720,7 @@ namespace AndreasReitberger.Print3d.Core
             }
         }
 
-        public double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
+        public override double GetTotalCosts(Guid fileId, CalculationAttributeType calculationAttributeType = CalculationAttributeType.All)
         {
             try
             {
@@ -806,7 +806,7 @@ namespace AndreasReitberger.Print3d.Core
 
         //public double GetTotalCosts(CalculationAttributeType calculationAttributeType = CalculationAttributeType.All) => GetTotalCosts(Guid.Empty, calculationAttributeType);
 
-        public int GetTotalQuantity()
+        public override int GetTotalQuantity()
         {
             try
             {
@@ -822,7 +822,7 @@ namespace AndreasReitberger.Print3d.Core
                 return 0;
             }
         }
-        public double GetTotalPrintTime()
+        public override double GetTotalPrintTime()
         {
             try
             {
@@ -839,7 +839,7 @@ namespace AndreasReitberger.Print3d.Core
                 return 0;
             }
         }
-        public double GetTotalVolume()
+        public override double GetTotalVolume()
         {
             try
             {
@@ -859,7 +859,7 @@ namespace AndreasReitberger.Print3d.Core
             }
         }
 
-        public double GetTotalMaterialUsed()
+        public override double GetTotalMaterialUsed()
         {
             try
             {

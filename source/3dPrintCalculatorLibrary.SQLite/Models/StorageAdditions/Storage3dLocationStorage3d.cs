@@ -2,6 +2,7 @@
 
 namespace AndreasReitberger.Print3d.SQLite.StorageAdditions
 {
+    [Table($"{nameof(Storage3dLocationStorage3d)}s")]
     public partial class Storage3dLocationStorage3d : ObservableObject, IStorage3dLocationStorage3d
     {
         [ObservableProperty]

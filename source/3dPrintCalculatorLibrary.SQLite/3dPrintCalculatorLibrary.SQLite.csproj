@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IAddress.cs" Link="Interfaces\IAddress.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculation3d.cs" Link="Interfaces\ICalculation3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculation3dEnhanced.cs" Link="Interfaces\ICalculation3dEnhanced.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculation3dProfile.cs" Link="Interfaces\ICalculation3dProfile.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\ICalculationAttribute.cs" Link="Interfaces\ICalculationAttribute.cs" />
@@ -43,12 +44,14 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IMaterial3dProcedureAttribute.cs" Link="Interfaces\IMaterial3dProcedureAttribute.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IMaterial3dType.cs" Link="Interfaces\IMaterial3dType.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IMaterial3dUsage.cs" Link="Interfaces\IMaterial3dUsage.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IMaterialChangedEventArgs.cs" Link="Interfaces\IMaterialChangedEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPerson.cs" Link="Interfaces\IPerson.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPhoneNumber.cs" Link="Interfaces\IPhoneNumber.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrint3dInfo.cs" Link="Interfaces\IPrint3dInfo.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrinter3d.cs" Link="Interfaces\IPrinter3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrinter3dAttribute.cs" Link="Interfaces\IPrinter3dAttribute.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrinter3dSlicerConfig.cs" Link="Interfaces\IPrinter3dSlicerConfig.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrinterChangedEventArgs.cs" Link="Interfaces\IPrinterChangedEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IPrintFileProcessingInfo.cs" Link="Interfaces\IPrintFileProcessingInfo.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IProcedureAddition.cs" Link="Interfaces\IProcedureAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IProcedureCalculationParameter.cs" Link="Interfaces\IProcedureCalculationParameter.cs" />
@@ -66,9 +69,12 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsage.cs" Link="Interfaces\IWorkstepUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsageParameter.cs" Link="Interfaces\IWorkstepUsageParameter.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Address.cs" Link="Models\Address.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.cs" Link="Models\Calculation3d.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.Extension.cs" Link="Models\Calculation3d.Extension.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.Methods.cs" Link="Models\Calculation3d.Methods.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.cs" Link="Models\Calculation3dEnhanced.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Extension.cs" Link="Models\Calculation3dEnhanced.Extension.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Methods.cs" Link="Models\Calculation3dEnhanced.Methods.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhancedExtension.cs" Link="Models\Calculation3dEnhancedExtension.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dProfile.cs" Link="Models\Calculation3dProfile.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationAttribute.cs" Link="Models\CalculationAttribute.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationProcedureAttribute.cs" Link="Models\CalculationProcedureAttribute.cs" />
@@ -78,6 +84,8 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CustomAddition.cs" Link="Models\CustomAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Customer3d.cs" Link="Models\Customer3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Email.cs" Link="Models\Email.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Events\MaterialChangedEventArgs.cs" Link="Models\Events\MaterialChangedEventArgs.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Events\PrinterChangedEventArgs.cs" Link="Models\Events\PrinterChangedEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3d.cs" Link="Models\File3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dUsage.cs" Link="Models\File3dUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3dWeight.cs" Link="Models\File3dWeight.cs" />

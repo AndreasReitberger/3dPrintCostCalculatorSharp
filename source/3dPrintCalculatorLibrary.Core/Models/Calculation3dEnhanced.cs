@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
 using System.Collections.ObjectModel;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -67,15 +69,17 @@ namespace AndreasReitberger.Print3d.Core
 
         public List<Material3d?> AvailableMaterials => [.. PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu?.Material).Distinct()];
                 
-        [ObservableProperty]
-        [ManyToMany(typeof(Printer3dCalculation), CascadeOperations = CascadeOperation.All)]
         [Obsolete("Will be removed")]
-        public new partial List<Printer3d?> Printers = [];
+        [ObservableProperty]
+        [Ignore]
+        //[ManyToMany(typeof(Printer3dCalculation3d), CascadeOperations = CascadeOperation.All)]
+        public new partial List<Printer3d> Printers { get; set; } = [];
         
-        [ObservableProperty]
-        [ManyToMany(typeof(Material3dCalculation), CascadeOperations = CascadeOperation.All)]
         [Obsolete("Will be removed")]
-        public new partial List<Material3d?> Materials = [];
+        [ObservableProperty]
+        [Ignore]
+        //[ManyToMany(typeof(Material3dCalculation3d), CascadeOperations = CascadeOperation.All)]
+        public new partial List<Material3d> Materials { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]
@@ -83,9 +87,10 @@ namespace AndreasReitberger.Print3d.Core
         [OneToMany(CascadeOperations = CascadeOperation.All)]
         public partial List<Print3dInfo> PrintInfos { get; set; } = [];
 
-        [ObservableProperty]
-        [OneToMany(CascadeOperations = CascadeOperation.All)]
         [Obsolete("Will be removed")]
+        [ObservableProperty]
+        [Ignore]
+        //[OneToMany(CascadeOperations = CascadeOperation.All)]
         public new partial List<File3d> Files { get; set; } = [];
 #else
         public IList<IPrinter3d?> AvailablePrinters => [.. PrintInfos.Select(pi => pi.Printer).Distinct()];
@@ -94,11 +99,11 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         [Obsolete("Will be removed")]
-        public new partial IList<IPrinter3d?> Printers { get; set; } = [];
+        public new partial IList<IPrinter3d> Printers { get; set; } = [];
 
         [ObservableProperty]
         [Obsolete("Will be removed")]
-        public new partial IList<IMaterial3d?> Materials { get; set; } = [];
+        public new partial IList<IMaterial3d> Materials { get; set; } = [];
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(AvailablePrinters))]

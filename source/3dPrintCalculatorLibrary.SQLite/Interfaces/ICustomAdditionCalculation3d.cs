@@ -1,9 +1,9 @@
 ﻿namespace AndreasReitberger.Print3d.SQLite.Interfaces
 {
-    public interface IWorkstepUsageCalculation3dEnhanced
+    internal interface ICustomAdditionCalculation3d
     {
         #region Properties
-        public Guid WorkstepUsageId { get; set; }
+        public Guid CustomAdditionId { get; set; }
 
         public Guid CalculationId { get; set; }
         #endregion

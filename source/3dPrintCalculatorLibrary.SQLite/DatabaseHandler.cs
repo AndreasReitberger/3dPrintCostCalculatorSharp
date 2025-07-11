@@ -1,5 +1,7 @@
 ﻿using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
 using AndreasReitberger.Print3d.SQLite.Events;
+using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
+using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
 using AndreasReitberger.Print3d.SQLite.Settings;
 using AndreasReitberger.Print3d.SQLite.StorageAdditions;
 using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
@@ -82,8 +84,13 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(CalculationProcedureAttribute),
             typeof(CalculationProcedureParameter),
             typeof(CalculationProcedureParameterAddition),
+            typeof(Calculation3d),
             typeof(Calculation3dEnhanced),
+            typeof(Printer3dCalculation3d),
+            typeof(Material3dCalculation3d),
+            typeof(CustomAdditionCalculation3d),
             typeof(CustomAdditionCalculation3dEnhanced),
+            typeof(WorkstepUsageCalculation3d),
             typeof(WorkstepUsageCalculation3dEnhanced),
             typeof(File3d),
             typeof(File3dUsage),
@@ -95,13 +102,13 @@ namespace AndreasReitberger.Print3d.SQLite
             typeof(Calculation3dProfile),
             typeof(WorkstepUsage),
             typeof(WorkstepUsageParameter),
-            typeof(Storage3dLocationStorage3d),
-            typeof(Storage3dItemStorage3dLocation),
-            typeof(Storage3dItemStorage3dTransaction),
             typeof(Storage3dTransaction),
             typeof(Storage3dItem),
             typeof(Storage3dLocation),
             typeof(Storage3d),
+            typeof(Storage3dLocationStorage3d),
+            typeof(Storage3dItemStorage3dLocation),
+            typeof(Storage3dItemStorage3dTransaction),
             typeof(DatabaseSettingsKeyValuePair)
         ];
 

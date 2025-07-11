@@ -64,6 +64,15 @@ namespace AndreasReitberger.Print3d.Core
 
         [ObservableProperty]
         public partial byte[] Image { get; set; } = [];
+
+        [ObservableProperty]
+        public partial int Quantity { get; set; } = 0;
+
+        [ObservableProperty]
+        public partial bool MultiplyPrintTimeWithQuantity { get; set; } = true;
+
+        [ObservableProperty]
+        public partial double PrintTimeQuantityFactor { get; set; } = 1;
         #endregion
 
         #region Constructor

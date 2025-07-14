@@ -138,10 +138,10 @@
 		<PackageReference Include="SQLiteNetCipherExtensions" Version="2.1.0" />
 		<PackageReference Include="SQLiteNetCipherExtensions.Async" Version="2.1.0" />
 		<!-- Ref: https://stackoverflow.com/questions/46915404/the-type-initializer-for-sqlite-sqliteconnection-threw-an-exception -->
-		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.10" />
-		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.10" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
+		<PackageReference Include="SQLitePCLRaw.core" Version="2.1.11" />
+		<PackageReference Include="SQLitePCLRaw.provider.dynamic_cdecl" Version="2.1.11" />
+		<PackageReference Include="SQLitePCLRaw.provider.sqlite3" Version="2.1.11" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -14,6 +14,7 @@ namespace AndreasReitberger.NUnitTest
         bool ApplyResinTankWearCosts = true;
 
         string key = "K4eO9Qq4GTO9D0g0aBPzYGp0KsBoYYyFT9S3SX1VgOg=";
+
         Calculation3dEnhanced? calculation;
 
         [SetUp]
@@ -22,7 +23,7 @@ namespace AndreasReitberger.NUnitTest
             // Example for key generation
             //string t = EncryptionManager.GenerateBase64Key();
 
-            Printer3d printerFDM = new Printer3d()
+            Printer3d printerFDM = new()
             {
                 Type = Printer3dType.FDM,
                 Model = "i3 MK3S",
@@ -30,7 +31,7 @@ namespace AndreasReitberger.NUnitTest
                 Price = 899,
                 MaterialType = Material3dFamily.Filament,
             };
-            Printer3d printerDLP = new Printer3d()
+            Printer3d printerDLP = new()
             {
                 Type = Printer3dType.DLP,
                 Model = "Photon X",
@@ -1355,6 +1356,9 @@ namespace AndreasReitberger.NUnitTest
                         .WithTables([typeof(Material3dType), typeof(Material3d)])
                         //.WithPassphrase(key)
                         .BuildAsync();
+                    mappings = handler.GetTableMappings();
+                    types = await handler.GetMaterialTypesWithChildrenAsync();
+
                     Assert.Fail("Building without the key should throw an exception");
                 }
                 catch (Exception) { }

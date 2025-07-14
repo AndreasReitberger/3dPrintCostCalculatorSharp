@@ -55,7 +55,7 @@ namespace AndreasReitberger.Print3d.Core
         [ManyToOne(nameof(CustomerId), CascadeOperations = CascadeOperation.All)]
         [ObservableProperty]
         public partial Customer3d? Customer { get; set; }
-      
+
         [ObservableProperty]
         [ForeignKey(typeof(Printer3d))]
         public partial Guid PrinterId { get; set; }
@@ -76,7 +76,7 @@ namespace AndreasReitberger.Print3d.Core
                 });
             }
         }
-   
+
         [ObservableProperty]
         [ForeignKey(typeof(Material3d))]
         public partial Guid MaterialId { get; set; }
@@ -191,7 +191,7 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         [ManyToMany(typeof(Printer3dCalculation3d), CascadeOperations = CascadeOperation.All)]
         public partial List<Printer3d> Printers { get; set; } = [];
-        
+
         [ObservableProperty]
         [ManyToMany(typeof(Material3dCalculation3d), CascadeOperations = CascadeOperation.All)]
         public partial List<Material3d> Materials { get; set; } = [];

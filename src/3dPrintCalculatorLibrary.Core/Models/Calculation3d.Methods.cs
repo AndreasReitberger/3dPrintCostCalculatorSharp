@@ -382,7 +382,7 @@ namespace AndreasReitberger.Print3d.Core
                 }
 
                 // Custom additions before adding the margin
-                List<ICustomAddition> customAdditionsBeforeMargin = 
+                List<ICustomAddition> customAdditionsBeforeMargin =
                     [.. CustomAdditions.Where(addition => addition.CalculationType == CustomAdditionCalculationType.BeforeApplingMargin)];
                 if (customAdditionsBeforeMargin?.Count > 0)
                 {
@@ -842,6 +842,6 @@ namespace AndreasReitberger.Print3d.Core
                 return 0;
             }
         }
-#endregion
+        #endregion
     }
 }

@@ -1366,7 +1366,7 @@ namespace AndreasReitberger.NUnitTest
                 {
                     Debug.WriteLine($"SQlite-Exception: {sqlite_exc.Message}");
                 }
-                catch (Exception exc) 
+                catch (Exception exc)
                 {
                     Assert.Fail($"{exc.Message}");
                 }

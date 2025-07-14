@@ -29,8 +29,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore source/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj
+      run: dotnet restore src/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj
     - name: Build
-      run: dotnet build -c Release source/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj
+      run: dotnet build -c Release src/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj
     - name: Test
-      run: dotnet test -c Release --no-build --verbosity normal source/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj
+      run: dotnet test -c Release --no-build --verbosity normal src/3dPrintCalculatorLibrary.NUnitTest/3dPrintCalculatorLibrary.NUnitTest.csproj

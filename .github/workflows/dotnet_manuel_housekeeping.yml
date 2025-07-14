@@ -28,7 +28,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           action: "fix"
           #only-changed-files: true # only works for PRs
-          workspace: "source/3dPrintCalculatorLibrary.sln"
+          workspace: "src/3dPrintCalculatorLibrary.sln"
     
       - name: Commit files
         if: steps.format.outputs.has-changes == 'true'

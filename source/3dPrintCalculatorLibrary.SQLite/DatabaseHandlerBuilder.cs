@@ -1,5 +1,6 @@
 ﻿
 using SQLite;
+using System.Linq;
 
 namespace AndreasReitberger.Print3d.SQLite
 {
@@ -22,11 +23,15 @@ namespace AndreasReitberger.Print3d.SQLite
                         new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
                     _databaseHandler.DatabaseAsync = new(con);
                     _databaseHandler.IsInitialized = true;
-                    if (_databaseHandler.Tables?.Count > 0)
+
+                    List<Type> existingTables = [.. _databaseHandler.DatabaseAsync.TableMappings.Select(mapping => mapping.MappedType)];
+                    List<Type> changedTables = [.. _databaseHandler.Tables.Except(existingTables)];
+
+                    if (changedTables.Count > 0)
                     {
-                        await _databaseHandler.CreateTablesAsync(_databaseHandler.Tables);
+                        await _databaseHandler.CreateTablesAsync(changedTables);
                     }
-                    else
+                    else if (_databaseHandler.Tables?.Count == 0)
                         await _databaseHandler.InitTablesAsync();
                 }
                 return _databaseHandler;
@@ -40,11 +45,15 @@ namespace AndreasReitberger.Print3d.SQLite
                         new(_databaseHandler.DatabasePath, true, key: _databaseHandler.Passphrase);
                     _databaseHandler.DatabaseAsync = new(con);
                     _databaseHandler.IsInitialized = true;
-                    if (_databaseHandler.Tables?.Count > 0)
+
+                    List<Type> existingTables = [.. _databaseHandler.DatabaseAsync.TableMappings.Select(mapping => mapping.MappedType)];
+                    List<Type> changedTables = [.. _databaseHandler.Tables.Except(existingTables)];
+
+                    if (changedTables.Count > 0)
                     {
-                        _databaseHandler.CreateTables(_databaseHandler.Tables);
+                        _databaseHandler.CreateTablesAsync(changedTables);
                     }
-                    else
+                    else if (_databaseHandler.Tables?.Count == 0)
                         _databaseHandler.InitTables();
                 }
                 return _databaseHandler;

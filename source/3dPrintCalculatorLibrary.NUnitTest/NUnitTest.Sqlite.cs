@@ -3,6 +3,7 @@ using AndreasReitberger.Print3d.SQLite;
 using AndreasReitberger.Shared.Core.Utilities;
 using NUnit.Framework;
 using SQLite;
+using System.Diagnostics;
 
 namespace AndreasReitberger.NUnitTest
 {
@@ -1361,7 +1362,14 @@ namespace AndreasReitberger.NUnitTest
 
                     Assert.Fail("Building without the key should throw an exception");
                 }
-                catch (Exception) { }
+                catch (SQLiteException sqlite_exc)
+                {
+                    Debug.WriteLine($"SQlite-Exception: {sqlite_exc.Message}");
+                }
+                catch (Exception exc) 
+                {
+                    Assert.Fail($"{exc.Message}");
+                }
 
                 try
                 {
@@ -1372,9 +1380,20 @@ namespace AndreasReitberger.NUnitTest
                         .WithTables([typeof(Material3dType), typeof(Material3d)])
                         .WithPassphrase(EncryptionManager.GenerateBase64Key())
                         .BuildAsync();
-                    Assert.Fail("Building without the key should throw an exception");
+
+                    mappings = handlerUnseure.GetTableMappings();
+                    types = await handlerUnseure.GetMaterialTypesWithChildrenAsync();
+
+                    Assert.Fail("Building with a different key should throw an exception");
                 }
-                catch (Exception) { }
+                catch (SQLiteException sqlite_exc)
+                {
+                    Debug.WriteLine($"SQlite-Exception: {sqlite_exc.Message}");
+                }
+                catch (Exception exc)
+                {
+                    Assert.Fail($"{exc.Message}");
+                }
             }
             catch (Exception exc)
             {
@@ -1432,10 +1451,18 @@ namespace AndreasReitberger.NUnitTest
                         .WithTables([typeof(Material3dType), typeof(Material3d)])
                         .WithPassphrase(key)
                         .BuildAsync();
+                    types = await handler2.GetMaterialTypesWithChildrenAsync();
                     await handler2.CloseDatabaseAsync();
                     Assert.Fail("Should throw on wrong key");
                 }
-                catch (Exception) { }
+                catch (SQLiteException sqlite_exc)
+                {
+                    Debug.WriteLine($"SQlite-Exception: {sqlite_exc.Message}");
+                }
+                catch (Exception exc)
+                {
+                    Assert.Fail($"{exc.Message}");
+                }
             }
             catch (Exception exc)
             {

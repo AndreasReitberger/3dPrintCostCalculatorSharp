@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\common.props = ..\common.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3dPrintCalculatorLibrary.Realm", "3dPrintCalculatorLibrary.Realm\3dPrintCalculatorLibrary.Realm.csproj", "{6EB82246-7B8C-43CE-866F-76B65CCB1FCB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3dPrintCalculatorLibrary.Core", "3dPrintCalculatorLibrary.Core\3dPrintCalculatorLibrary.Core.csproj", "{9AE76F61-F3A9-441E-8D86-DDC4FF8B5E50}"
 EndProject
 Global
@@ -36,10 +34,6 @@ Global
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1422614-8919-48B7-BAFD-F9E292C9B74C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EB82246-7B8C-43CE-866F-76B65CCB1FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EB82246-7B8C-43CE-866F-76B65CCB1FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EB82246-7B8C-43CE-866F-76B65CCB1FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EB82246-7B8C-43CE-866F-76B65CCB1FCB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9AE76F61-F3A9-441E-8D86-DDC4FF8B5E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9AE76F61-F3A9-441E-8D86-DDC4FF8B5E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AE76F61-F3A9-441E-8D86-DDC4FF8B5E50}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -40,7 +40,7 @@ namespace AndreasReitberger.Print3d.Core
         [Ignore]
         [Obsolete("Will be removed")]
         public new partial Printer3d? Printer { get; set; }
-   
+
         [ObservableProperty]
         [ForeignKey(typeof(Material3d))]
         [Obsolete("Will be removed")]
@@ -68,13 +68,13 @@ namespace AndreasReitberger.Print3d.Core
         public List<Printer3d?> AvailablePrinters => [.. PrintInfos.Select(pi => pi?.Printer).Distinct()];
 
         public List<Material3d?> AvailableMaterials => [.. PrintInfos.SelectMany(pi => pi.Materials).Select(mu => mu?.Material).Distinct()];
-                
+
         [Obsolete("Will be removed")]
         [ObservableProperty]
         [Ignore]
         //[ManyToMany(typeof(Printer3dCalculation3d), CascadeOperations = CascadeOperation.All)]
         public new partial List<Printer3d> Printers { get; set; } = [];
-        
+
         [Obsolete("Will be removed")]
         [ObservableProperty]
         [Ignore]

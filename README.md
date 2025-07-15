@@ -21,6 +21,7 @@ Get the latest version from nuget.org<br>
 | Package                             | Nuget  | Downloads |
 | ----------------------------------- |:-----:| -------:|
 | 3dPrintCalculatorLibrary | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) |
+|  3dPrintCalculatorLibrary.Core | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.Core.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Core) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.Core.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Core) |
 |  3dPrintCalculatorLibrary.SQLite | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.SQLite.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.SQLite) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.SQLite.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.SQLite) |
 |  3dPrintCalculatorLibrary.Realm | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.Realm.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Realm) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.Realm.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Realm) |
 
@@ -29,7 +30,7 @@ In order to perform a calculation, create a new 3d material and 3d printer.
 
 ```csharp
 // Create a material
-var material = new Material3d()
+IMaterial3d material = new Material3d()
 {
     Id = Guid.NewGuid(),
     Density = 1.24,
@@ -46,7 +47,7 @@ var material = new Material3d()
     }
 };
 // Create a printer
-var printer = new Printer3d()
+IPrinter3d printer = new Printer3d()
 {
     Id = Guid.NewGuid(),
     Manufacturer = new Manufacturer()
@@ -66,7 +67,7 @@ var printer = new Printer3d()
 
 Next, create some 3d files.
 ```csharp
-var files = new List<File3d>() {
+  List<IFile3d> files = new() {
   new File3d()
   {
       Id = Guid.NewGuid(),
@@ -86,7 +87,7 @@ var files = new List<File3d>() {
 ```
 Eventually create the Calculation3dEnhanced object and apply your information.
 ```csharp
-_calculation = new Calculation3dEnhanced();
+ICalculation3dEnhanced _calculation = new Calculation3dEnhanced();
 // Add data
 _calculation.Files = files;
 _calculation.Printers.Add(printer);
@@ -103,7 +104,3 @@ _calculation.Calculate();
 ```
 
 That's it ;)
-
-# Dependencies
-
-RCoreSharp: https://github.com/AndreasReitberger/CoreSharp

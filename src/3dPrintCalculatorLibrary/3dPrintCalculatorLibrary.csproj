@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\..\common.props" />
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net472;net6</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net472;net8</TargetFrameworks>
 
     <Description>A simple C# library to calculate 3D printing costs.</Description>    
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -36,7 +36,7 @@
 
   <ItemGroup>
 	<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 

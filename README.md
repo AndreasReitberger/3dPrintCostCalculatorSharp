@@ -20,10 +20,9 @@ Get the latest version from nuget.org<br>
 
 | Package                             | Nuget  | Downloads |
 | ----------------------------------- |:-----:| -------:|
-| 3dPrintCalculatorLibrary | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) |
+| ~~3dPrintCalculatorLibrary~~ (deprecated) | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary) |
 |  3dPrintCalculatorLibrary.Core | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.Core.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Core) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.Core.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Core) |
 |  3dPrintCalculatorLibrary.SQLite | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.SQLite.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.SQLite) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.SQLite.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.SQLite) |
-|  3dPrintCalculatorLibrary.Realm | [![NuGet](https://img.shields.io/nuget/v/3dPrintCalculatorLibrary.Realm.svg?style=flat-square&label=nuget)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Realm) | [![NuGet](https://img.shields.io/nuget/dt/3dPrintCalculatorLibrary.Realm.svg)](https://www.nuget.org/packages/3dPrintCalculatorLibrary.Realm) |
 
 # Usage
 In order to perform a calculation, create a new 3d material and 3d printer.

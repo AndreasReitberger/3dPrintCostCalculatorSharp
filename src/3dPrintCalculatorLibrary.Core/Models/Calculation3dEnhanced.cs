@@ -4,11 +4,6 @@ using Newtonsoft.Json;
 #endif
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
-using System.Collections.ObjectModel;
-using AndreasReitberger.Print3d.SQLite.PrinterAdditions;
-using AndreasReitberger.Print3d.SQLite.MaterialAdditions;
 
 namespace AndreasReitberger.Print3d.SQLite
 {

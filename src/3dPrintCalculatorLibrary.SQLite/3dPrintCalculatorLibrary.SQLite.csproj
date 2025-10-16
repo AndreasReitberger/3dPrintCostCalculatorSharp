@@ -107,6 +107,7 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3d.cs" Link="Models\Printer3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3dAttribute.cs" Link="Models\Printer3dAttribute.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Printer3dSlicerConfig.cs" Link="Models\Printer3dSlicerConfig.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\PrintFileProcessingInfo.cs" Link="Models\PrintFileProcessingInfo.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureAddition.cs" Link="Models\ProcedureAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureCalculationParameter.cs" Link="Models\ProcedureCalculationParameter.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\ProcedureSpecificAddition.cs" Link="Models\ProcedureSpecificAddition.cs" />

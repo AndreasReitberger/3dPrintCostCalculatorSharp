@@ -196,9 +196,10 @@ namespace AndreasReitberger.Print3d.Core
                             Convert.ToDouble(Convert.ToDouble(material.PackageSize) * Convert.ToDouble(UnitFactor.GetUnitFactor(material.Unit)));
 
                         // Calculate the cost for each material usage of the current file
-                        foreach (ICalculationAttribute materialUsage in MaterialUsages?.Where(mu => mu.FileId == file.Id))
+                        foreach (ICalculationAttribute? materialUsage in MaterialUsages?.Where(mu => mu.FileId == file.Id))
                         {
-                            double totalCosts = Convert.ToDouble(materialUsage?.Value * pricePerGramm);
+                            if (materialUsage is null) continue;
+                            double totalCosts = Convert.ToDouble(materialUsage.Value * pricePerGramm);
                             OverallMaterialCosts?.Add(new CalculationAttribute()
                             {
                                 LinkedId = material.Id,
@@ -239,11 +240,11 @@ namespace AndreasReitberger.Print3d.Core
                     Printer = Printers.FirstOrDefault(printer => printer.Id == Printer?.Id) ?? Printers.FirstOrDefault();
                     foreach (IPrinter3d? printer in Printers)
                     {
-                        Printer ??= printer as Printer3d;
-                        foreach (ICalculationAttribute pt in PrintTimes?.Where(pt => pt.FileId == file.Id))
+                        Printer ??= printer as Printer3d;               
+                        foreach (ICalculationAttribute? pt in PrintTimes?.Where(pt => pt.FileId == file.Id))
                         {
                             // Calculate the machine costs based on the hourly machine rate
-                            if (printer?.HourlyMachineRate != null)
+                            if (pt is not null && printer?.HourlyMachineRate is not null)
                             {
                                 double machineHourRate = Convert.ToDouble(printer.HourlyMachineRate.CalcMachineHourRate) * pt.Value;
                                 if (machineHourRate > 0)
@@ -264,14 +265,14 @@ namespace AndreasReitberger.Print3d.Core
                             // Add energy costs if applied
                             if (ApplyEnergyCost)
                             {
-                                double consumption = Convert.ToDouble(pt?.Value * Convert.ToDouble(printer?.PowerConsumption) / 1000.0) / 100.0 * Convert.ToDouble(PowerLevel);
+                                double consumption = Convert.ToDouble(pt.Value * Convert.ToDouble(printer?.PowerConsumption) / 1000.0) / 100.0 * Convert.ToDouble(PowerLevel);
                                 double totalEnergyCost = consumption * EnergyCostsPerkWh;
                                 if (totalEnergyCost > 0)
                                 {
                                     OverallPrinterCosts?.Add(new CalculationAttribute()
                                     {
-                                        LinkedId = printer.Id,
-                                        Attribute = printer.Name,
+                                        LinkedId = printer?.Id ?? Guid.Empty,
+                                        Attribute = printer?.Name ?? string.Empty,
                                         Type = CalculationAttributeType.Energy,
                                         Target = CalculationAttributeTarget.File,
                                         Item = pt.Item,
@@ -292,11 +293,11 @@ namespace AndreasReitberger.Print3d.Core
                                 foreach (ICalculationProcedureParameter parameter in attribute.Parameters)
                                 {
                                     if (attribute.PerFile || (OverallPrinterCosts?
-                                            .FirstOrDefault(attr => attr.Attribute == parameter.Type.ToString() && attr.LinkedId == printer?.Id) is null))
+                                        .FirstOrDefault(attr => attr.Attribute == parameter.Type.ToString() && attr.LinkedId == printer?.Id) is null))
                                     {
                                         OverallPrinterCosts?.Add(new CalculationAttribute()
                                         {
-                                            LinkedId = printer.Id,
+                                            LinkedId = printer?.Id ?? Guid.Empty,
                                             Attribute = parameter.Type.ToString(),
                                             Type = CalculationAttributeType.ProcedureSpecificAddition,
                                             Target = CalculationAttributeTarget.File,
@@ -307,7 +308,6 @@ namespace AndreasReitberger.Print3d.Core
                                     }
                                 }
                             }
-
                             // Custom procedure additions
                             if (ProcedureAdditions?.Count > 0)
                             {
@@ -316,19 +316,22 @@ namespace AndreasReitberger.Print3d.Core
                                         && addition.Target == ProcedureAdditionTarget.Machine
                                         && addition.Enabled
                                         );
-                                foreach (IProcedureAddition? add in procedureAdditions)
+                                if (procedureAdditions is not null)
                                 {
-                                    double costs = add.CalculateCosts();
-                                    OverallPrinterCosts?.Add(new CalculationAttribute()
+                                    foreach (IProcedureAddition? add in procedureAdditions)
                                     {
-                                        LinkedId = printer.Id,
-                                        Attribute = add.Name,
-                                        Type = CalculationAttributeType.ProcedureSpecificAddition,
-                                        Target = CalculationAttributeTarget.File,
-                                        Value = costs,
-                                        FileId = file.Id,
-                                        FileName = file.FileName,
-                                    });
+                                        double costs = add.CalculateCosts();
+                                        OverallPrinterCosts?.Add(new CalculationAttribute()
+                                        {
+                                            LinkedId = printer?.Id ?? Guid.Empty,
+                                            Attribute = add.Name,
+                                            Type = CalculationAttributeType.ProcedureSpecificAddition,
+                                            Target = CalculationAttributeTarget.File,
+                                            Value = costs,
+                                            FileId = file.Id,
+                                            FileName = file.FileName,
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -337,7 +340,6 @@ namespace AndreasReitberger.Print3d.Core
 
                 // Worksteps
                 // Delete once migrated to `WorkstepUsage` instead
-
                 if (WorkstepUsages?.Count > 0)
                 {
                     // Only take the worksteps, which are set as `PerPiece` here
@@ -358,7 +360,6 @@ namespace AndreasReitberger.Print3d.Core
                         });
                     }
                 }
-
                 // Additional items
                 if (AdditionalItems?.Count > 0)
                 {
@@ -367,7 +368,7 @@ namespace AndreasReitberger.Print3d.Core
                         // If the item is not for the current file, continue
                         if (item?.Item == null || file.Id != item.File?.Id) continue;
 
-                        double totalPerPiece = (item?.Item?.PricePerPiece ?? 0) * item.Quantity * file.Quantity;
+                        double totalPerPiece = item.Item.PricePerPiece * item.Quantity * file.Quantity;
                         Costs?.Add(new CalculationAttribute()
                         {
                             LinkedId = item.Id,
@@ -521,7 +522,7 @@ namespace AndreasReitberger.Print3d.Core
                     FileId = Guid.Empty,
                     FileName = string.Empty,
                 });
-                if (handlingsFee?.SkipForMargin == false)
+                if (handlingsFee?.SkipForMargin == false && margin is not null)
                 {
                     double marginValue = handlingsFee.Value * margin.Value / (margin.IsPercentageValue ? 100.0 : 1.0);
                     if (marginValue > 0)

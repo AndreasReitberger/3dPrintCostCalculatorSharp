@@ -70,10 +70,10 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Interfaces\IWorkstepUsageParameter.cs" Link="Interfaces\IWorkstepUsageParameter.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Address.cs" Link="Models\Address.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.cs" Link="Models\Calculation3d.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.Extension.cs" Link="Models\Calculation3d.Extension.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dExtension.cs" Link="Models\Calculation3dExtension.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3d.Methods.cs" Link="Models\Calculation3d.Methods.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.cs" Link="Models\Calculation3dEnhanced.cs" />
-    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Extension.cs" Link="Models\Calculation3dEnhanced.Extension.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhancedExtension.cs" Link="Models\Calculation3dEnhancedExtension.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dEnhanced.Methods.cs" Link="Models\Calculation3dEnhanced.Methods.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Calculation3dProfile.cs" Link="Models\Calculation3dProfile.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CalculationAttribute.cs" Link="Models\CalculationAttribute.cs" />

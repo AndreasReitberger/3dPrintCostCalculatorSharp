@@ -1,7 +1,7 @@
 
 <Project>
     <PropertyGroup>
-        <Version>2.0.0-preview4</Version>
+        <Version>2.0.0-preview5</Version>
 		<PackageIcon>ar_128.png</PackageIcon>
         <NeutralLanguage>en</NeutralLanguage>
 		<PackageProjectUrl>https://github.com/AndreasReitberger/3dPrintCostCalculatorSharp</PackageProjectUrl>

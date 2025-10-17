@@ -2,14 +2,10 @@
 using AndreasReitberger.Print3d.Core.Utilities;
 
 #if SQL
-using AndreasReitberger.Print3d.SQLite.CalculationAdditions;
-using AndreasReitberger.Print3d.SQLite.WorkstepAdditions;
-using System.Collections.ObjectModel;
-
-namespace AndreasReitberger.Print3d.SQLite
+namespace AndreasReitberger.Print3d.SQLite.Extension
 {
 #else
-namespace AndreasReitberger.Print3d.Core
+namespace AndreasReitberger.Print3d.Core.Extension
 {
 #endif
     public static class Calculation3dExtension

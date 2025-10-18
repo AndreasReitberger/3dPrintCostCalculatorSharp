@@ -12,6 +12,18 @@ namespace AndreasReitberger.Print3d.Core.Extension
     public static class Calculation3dEnhancedExtension
     {
         #region Extensions
+        public static List<Calculation3dChartItem> GetAllCosts(this Calculation3dEnhanced calculation)
+        {
+            if (!calculation.IsCalculated) return [];
+            //List<Calculation3dChartItem> costs = calculation.GetCosts();
+            List<Calculation3dChartItem> costs = calculation.GetMachineCosts();
+            costs.AddRange(calculation.GetMaterialCosts());
+            costs.AddRange(calculation.GetItemCosts());
+            costs.AddRange(calculation.GetWorkstepCosts());
+            costs.AddRange(calculation.GetCustomAdditionsCosts());
+            costs.AddRange(calculation.GetRatesCosts());
+            return costs;
+        }
         public static List<Calculation3dChartItem> GetCosts(this Calculation3dEnhanced calculation)
         {
             if (!calculation.IsCalculated) return [];

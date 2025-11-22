@@ -1,6 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿
+#if NETFRAMEWORK || NET6_0_OR_GREATER
+using System.Security.Cryptography;
 using System.Text;
-using System.Xml.Serialization;
+#endif
 
 namespace AndreasReitberger.Print3d.SQLite
 {

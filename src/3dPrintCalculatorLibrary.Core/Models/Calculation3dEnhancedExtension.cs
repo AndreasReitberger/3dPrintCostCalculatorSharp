@@ -158,7 +158,7 @@ namespace AndreasReitberger.Print3d.Core.Extension
             return costs;
         }
 
-        public static Stream? ToStream(this Calculation3dEnhanced calc)
+        public static MemoryStream? ToStream(this Calculation3dEnhanced calc)
         {
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             MemoryStream stream = new();
@@ -169,8 +169,22 @@ namespace AndreasReitberger.Print3d.Core.Extension
             return stream;
         }
 
-        public static Calculation3dEnhanced? FromStream(this Stream stream)
+        public static byte[]? ToByteArray(this Calculation3dEnhanced calc)
         {
+            MemoryStream? stream = calc?.ToStream();
+            return stream?.ToArray();
+        }
+
+        public static Calculation3dEnhanced? FromStream(this MemoryStream stream)
+        {
+            XmlSerializer x = new(typeof(Calculation3dEnhanced));
+            Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
+            return retval;
+        }
+
+        public static Calculation3dEnhanced? FromByteArray(this byte[] bytes)
+        {
+            using MemoryStream stream = new(bytes);
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
             return retval;

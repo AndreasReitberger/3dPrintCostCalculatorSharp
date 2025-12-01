@@ -158,6 +158,38 @@ namespace AndreasReitberger.Print3d.Core.Extension
             return costs;
         }
 
+        public static MemoryStream? ToStream(this Calculation3dEnhanced calc)
+        {
+            XmlSerializer x = new(typeof(Calculation3dEnhanced));
+            MemoryStream stream = new();
+            TextWriter writer = new StreamWriter(stream);
+            x.Serialize(writer, calc);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+        public static byte[]? ToByteArray(this Calculation3dEnhanced calc)
+        {
+            MemoryStream? stream = calc?.ToStream();
+            return stream?.ToArray();
+        }
+
+        public static Calculation3dEnhanced? FromStream(this MemoryStream stream)
+        {
+            XmlSerializer x = new(typeof(Calculation3dEnhanced));
+            Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
+            return retval;
+        }
+
+        public static Calculation3dEnhanced? FromByteArray(this byte[] bytes)
+        {
+            using MemoryStream stream = new(bytes);
+            XmlSerializer x = new(typeof(Calculation3dEnhanced));
+            Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
+            return retval;
+        }
+
 #if NETFRAMEWORK || NET6_0_OR_GREATER
         public static bool SaveAsXml(this Calculation3dEnhanced calc, string path)
         {

@@ -160,11 +160,18 @@ namespace AndreasReitberger.Print3d.Core.Extension
 
         public static MemoryStream? ToStream(this Calculation3dEnhanced calc)
         {
+            /*
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             MemoryStream stream = new();
             TextWriter writer = new StreamWriter(stream);
             x.Serialize(writer, calc);
             writer.Flush();
+            stream.Position = 0;
+            return stream;
+            */
+            MemoryStream stream = new();
+            JsonSerializer.Serialize(stream, calc,
+                SourceGenerationContext.Default.Calculation3dEnhanced);
             stream.Position = 0;
             return stream;
         }
@@ -177,22 +184,31 @@ namespace AndreasReitberger.Print3d.Core.Extension
 
         public static Calculation3dEnhanced? FromStream(this MemoryStream stream)
         {
+            /*
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
             return retval;
+            */
+            return JsonSerializer.Deserialize(stream,
+                SourceGenerationContext.Default.Calculation3dEnhanced);
         }
 
         public static Calculation3dEnhanced? FromByteArray(this byte[] bytes)
         {
+            /*
             using MemoryStream stream = new(bytes);
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             Calculation3dEnhanced? retval = (Calculation3dEnhanced?)x.Deserialize(stream);
             return retval;
+            */
+            return JsonSerializer.Deserialize(bytes,
+                SourceGenerationContext.Default.Calculation3dEnhanced);
         }
 
 #if NETFRAMEWORK || NET6_0_OR_GREATER
-        public static bool SaveAsXml(this Calculation3dEnhanced calc, string path)
+        public static bool SaveAsJson(this Calculation3dEnhanced calc, string path)
         {
+            /*
             XmlSerializer x = new(typeof(Calculation3dEnhanced));
             DirectoryInfo tempDir = new(path);
             if (tempDir.Parent is not null)
@@ -201,6 +217,17 @@ namespace AndreasReitberger.Print3d.Core.Extension
                 TextWriter writer = new StreamWriter(tempDir.FullName);
                 x.Serialize(writer, calc);
                 writer.Close();
+                return true;
+            }
+            return false;
+            */
+            FileInfo fileInfo = new(path);
+            if (fileInfo.Directory is not null)
+            {
+                Directory.CreateDirectory(fileInfo.Directory.FullName);
+                using FileStream stream = File.Create(fileInfo.FullName);
+                JsonSerializer.Serialize(stream, calc,
+                    SourceGenerationContext.Default.Calculation3dEnhanced);
                 return true;
             }
             return false;

@@ -1,7 +1,6 @@
 ﻿
 using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 
 #if SQL
 namespace AndreasReitberger.Print3d.SQLite
@@ -103,7 +102,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Override
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.ProcedureAddition);
 
         public override bool Equals(object? obj)
         {

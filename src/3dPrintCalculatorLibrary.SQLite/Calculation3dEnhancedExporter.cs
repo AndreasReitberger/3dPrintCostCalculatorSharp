@@ -1,12 +1,12 @@
 ﻿
-#if NETFRAMEWORK || NET6_0_OR_GREATER
+#if (NETFRAMEWORK || NET6_0_OR_GREATER) && OBSOLETE
 using System.Security.Cryptography;
 using System.Text;
 #endif
 
 namespace AndreasReitberger.Print3d.SQLite
 {
-#if NETFRAMEWORK || NET6_0_OR_GREATER
+#if (NETFRAMEWORK || NET6_0_OR_GREATER) && OBSOLETE
     //#if net472
     public static class Calculator3dExporter
     {
@@ -77,60 +77,6 @@ namespace AndreasReitberger.Print3d.SQLite
             myFileStream.Close();
             calcs = retval;
             return true;
-        }
-
-        // https://stackoverflow.com/questions/965042/c-sharp-serializing-deserializing-a-des-encrypted-file-from-a-stream
-        [Obsolete("Will be deleted")]
-        internal static bool EncryptAndSerialize(string filename, Calculation3dEnhanced obj)
-        {
-            DESCryptoServiceProvider key = new();
-            ICryptoTransform e = key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
-
-            using FileStream fs = File.Open(filename, FileMode.Create);
-            using CryptoStream cs = new(fs, e, CryptoStreamMode.Write);
-
-            XmlSerializer xmlser = new(typeof(Calculation3dEnhanced));
-            xmlser.Serialize(cs, obj);
-            return true;
-        }
-        [Obsolete("Will be deleted")]
-        internal static bool EncryptAndSerialize(string filename, Calculation3dEnhanced[] objs)
-        {
-            DESCryptoServiceProvider key = new();
-            ICryptoTransform e = key.CreateEncryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
-
-            using FileStream fs = File.Open(filename, FileMode.Create);
-            using CryptoStream cs = new(fs, e, CryptoStreamMode.Write);
-
-            XmlSerializer xmlser = new(typeof(Calculation3dEnhanced[]));
-            xmlser.Serialize(cs, objs);
-            return true;
-        }
-
-        [Obsolete("Will be deleted")]
-        internal static Calculation3dEnhanced? DecryptAndDeserialize(string filename)
-        {
-            DESCryptoServiceProvider key = new();
-            ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
-
-            using FileStream fs = File.Open(filename, FileMode.Open);
-            using CryptoStream cs = new(fs, d, CryptoStreamMode.Read);
-
-            XmlSerializer xmlser = new(typeof(Calculation3dEnhanced));
-            return (Calculation3dEnhanced?)xmlser.Deserialize(cs);
-        }
-
-        [Obsolete("Will be deleted")]
-        internal static Calculation3dEnhanced[]? DecryptAndDeserializeArray(string filename)
-        {
-            DESCryptoServiceProvider key = new();
-            ICryptoTransform d = key.CreateDecryptor(Encoding.ASCII.GetBytes("64bitPas"), Encoding.ASCII.GetBytes(_encryptionPhrase));
-
-            using FileStream fs = File.Open(filename, FileMode.Open);
-            using CryptoStream cs = new(fs, d, CryptoStreamMode.Read);
-
-            XmlSerializer xmlser = new(typeof(Calculation3dEnhanced[]));
-            return (Calculation3dEnhanced[]?)xmlser.Deserialize(cs);
         }
     }
 #endif

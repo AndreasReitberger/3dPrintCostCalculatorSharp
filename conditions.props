@@ -1,0 +1,7 @@
+
+<Project>
+	<PropertyGroup>
+		<!-- Sample -->
+		<!--<DefineConstants>$(DefineConstants);SAMPLE</DefineConstants>-->
+	</PropertyGroup>
+</Project>

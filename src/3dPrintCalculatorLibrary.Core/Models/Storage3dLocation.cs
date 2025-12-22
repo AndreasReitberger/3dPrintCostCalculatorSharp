@@ -233,5 +233,9 @@ namespace AndreasReitberger.Print3d.Core
             return null;
         }
         #endregion
+
+        #region Overrides
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Storage3dLocation);
+        #endregion
     }
 }

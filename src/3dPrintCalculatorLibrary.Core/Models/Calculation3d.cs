@@ -1,7 +1,6 @@
 ﻿using AndreasReitberger.Print3d.Core.Events;
 using AndreasReitberger.Print3d.Core.Enums;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 #if !SQL
 using System.Xml.Serialization;
 using AndreasReitberger.Print3d.Core.Interfaces;
@@ -556,7 +555,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Calculation3d);
         public override bool Equals(object? obj)
         {
             if (obj is not Calculation3d item)

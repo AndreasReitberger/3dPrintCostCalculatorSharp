@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using System.Xml.Serialization;
 
 #if SQL
@@ -86,7 +85,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Item3d);
 
         public override bool Equals(object? obj)
         {

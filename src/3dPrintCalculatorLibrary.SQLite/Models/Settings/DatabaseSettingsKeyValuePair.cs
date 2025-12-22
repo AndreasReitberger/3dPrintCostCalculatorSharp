@@ -1,6 +1,5 @@
 ﻿using AndreasReitberger.Print3d.SQLite.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 using SQLite;
 
 namespace AndreasReitberger.Print3d.SQLite.Settings
@@ -10,43 +9,33 @@ namespace AndreasReitberger.Print3d.SQLite.Settings
     {
         #region Properties
         [ObservableProperty]
-        [property: PrimaryKey]
-        string key = string.Empty;
+        [PrimaryKey]
+        public partial string Key { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string jsonValue = string.Empty;
+        public partial string JsonValue { get; set; } = string.Empty;
 
         [ObservableProperty]
-        string valueType = string.Empty;
-        partial void OnValueTypeChanged(string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-                Type = Type.GetType(value, throwOnError: false);
-        }
+        public partial string ValueType { get; set; } = string.Empty;
 
         [ObservableProperty]
-        [property: Ignore]
-        Type? type;
+        [Ignore]
+        public partial Type? Type { get; set; }
         #endregion
 
         #region Constructor
         public DatabaseSettingsKeyValuePair() { }
-        public DatabaseSettingsKeyValuePair(string key, string value)
+        public DatabaseSettingsKeyValuePair(string key, string jsonValue, Type type)
         {
             Key = key;
-            JsonValue = value;
-            ValueType = value.GetType().Name;
-        }
-        public DatabaseSettingsKeyValuePair(string key, object value)
-        {
-            Key = key;
-            JsonValue = JsonConvert.SerializeObject(value);
-            ValueType = value.GetType().Name;
+            JsonValue = jsonValue;
+            Type = type;
+            ValueType = type.ToString();
         }
         #endregion
 
         #region Override
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.DatabaseSettingsKeyValuePair);
         #endregion
     }
 }

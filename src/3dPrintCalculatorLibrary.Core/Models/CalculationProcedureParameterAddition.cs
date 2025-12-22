@@ -43,5 +43,9 @@ namespace AndreasReitberger.Print3d.Core
             Value = value;
         }
         #endregion
+
+        #region Override
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.CalculationProcedureParameterAddition);
+        #endregion
     }
 }

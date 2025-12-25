@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-#if SQL
+﻿#if SQL
 using AndreasReitberger.Print3d.Core.Events;
 
 namespace AndreasReitberger.Print3d.SQLite.Events
@@ -20,7 +18,7 @@ namespace AndreasReitberger.Print3d.Core.Events
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.MaterialChangedEventArgs);
 
         #endregion
     }

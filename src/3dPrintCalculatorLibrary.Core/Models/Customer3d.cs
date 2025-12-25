@@ -1,15 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
-using System.Xml.Serialization;
 
 #if SQL
-
 namespace AndreasReitberger.Print3d.SQLite
 {
     [Table($"{nameof(Customer3d)}s")]
 #else
-using AndreasReitberger.Print3d.Core.Interfaces;
-
 namespace AndreasReitberger.Print3d.Core
 {
 #endif
@@ -123,8 +118,8 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
-
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Customer3d);
+        
         public override bool Equals(object? obj)
         {
             if (obj is not Customer3d item)

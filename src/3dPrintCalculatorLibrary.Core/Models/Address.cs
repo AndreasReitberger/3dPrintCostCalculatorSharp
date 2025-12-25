@@ -44,5 +44,18 @@ namespace AndreasReitberger.Print3d.Core
             Id = Guid.NewGuid();
         }
         #endregion
+
+        #region Overrides
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Address);
+
+        public override bool Equals(object? obj)
+        {
+            if (obj is not Address item)
+                return false;
+            return Id.Equals(item.Id);
+        }
+        public override int GetHashCode() => Id.GetHashCode();
+
+        #endregion
     }
 }

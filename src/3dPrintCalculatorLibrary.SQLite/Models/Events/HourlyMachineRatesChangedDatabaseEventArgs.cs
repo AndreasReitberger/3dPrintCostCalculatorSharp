@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace AndreasReitberger.Print3d.SQLite.Events
+﻿namespace AndreasReitberger.Print3d.SQLite.Events
 {
     public class HourlyMachineRatesChangedDatabaseEventArgs : DatabaseEventArgs
     {
@@ -9,7 +7,7 @@ namespace AndreasReitberger.Print3d.SQLite.Events
         #endregion
 
         #region Overrides
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.HourlyMachineRatesChangedDatabaseEventArgs);
         #endregion
     }
 }

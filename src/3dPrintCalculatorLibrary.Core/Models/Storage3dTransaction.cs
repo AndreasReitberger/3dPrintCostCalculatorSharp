@@ -65,5 +65,9 @@ namespace AndreasReitberger.Print3d.Core
             Id = Guid.NewGuid();
         }
         #endregion
+
+        #region Overrides
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Storage3dTransaction);
+        #endregion
     }
 }

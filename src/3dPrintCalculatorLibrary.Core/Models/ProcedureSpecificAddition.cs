@@ -30,5 +30,11 @@ namespace AndreasReitberger.Print3d.Core
         [ObservableProperty]
         public partial bool IsPercantageAddition { get; set; }
         #endregion
+
+        #region Override
+
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.ProcedureSpecificAddition);
+
+        #endregion
     }
 }

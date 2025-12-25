@@ -84,6 +84,7 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\CustomAddition.cs" Link="Models\CustomAddition.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Customer3d.cs" Link="Models\Customer3d.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Email.cs" Link="Models\Email.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Events\CalculatorEventArgs.cs" Link="Models\Events\CalculatorEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Events\MaterialChangedEventArgs.cs" Link="Models\Events\MaterialChangedEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\Events\PrinterChangedEventArgs.cs" Link="Models\Events\PrinterChangedEventArgs.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\File3d.cs" Link="Models\File3d.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepCategory.cs" Link="Models\WorkstepCategory.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsage.cs" Link="Models\WorkstepUsage.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Models\WorkstepUsageParameter.cs" Link="Models\WorkstepUsageParameter.cs" />
+    <Compile Include="..\3dPrintCalculatorLibrary.Core\SourceGeneration\SourceGenerationContext.cs" Link="SourceGeneration\SourceGenerationContext.cs" />
     <Compile Include="..\3dPrintCalculatorLibrary.Core\Usings.cs" Link="Usings.cs" />
   </ItemGroup>
 
@@ -134,6 +136,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="sqlite-net-sqlcipher" Version="1.9.172" />
 		<PackageReference Include="SQLiteNetCipherExtensions" Version="2.1.0" />
 		<PackageReference Include="SQLiteNetCipherExtensions.Async" Version="2.1.0" />
@@ -150,4 +153,8 @@
     <ProjectReference Include="..\3dPrintCalculatorLibrary.Core\3dPrintCalculatorLibrary.Core.csproj" />
 		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="SourceGeneration\" />
+	</ItemGroup>
 </Project>

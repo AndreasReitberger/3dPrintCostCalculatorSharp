@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Newtonsoft.Json;
 
 #if SQL
 using System.Collections.ObjectModel;
@@ -251,7 +250,7 @@ namespace AndreasReitberger.Print3d.Core
         #endregion
 
         #region Override
-        public override string ToString() => JsonConvert.SerializeObject(this, Formatting.Indented);
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Calculation3dProfile);
         #endregion
     }
 }

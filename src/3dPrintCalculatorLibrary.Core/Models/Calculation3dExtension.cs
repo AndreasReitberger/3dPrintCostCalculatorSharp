@@ -160,6 +160,7 @@ namespace AndreasReitberger.Print3d.Core.Extension
 #if NETFRAMEWORK || NET6_0_OR_GREATER
         public static bool SaveAsXml(this Calculation3d calc, string path)
         {
+            /*
             XmlSerializer x = new(typeof(Calculation3d));
             DirectoryInfo tempDir = new(path);
             if (tempDir.Parent is not null)
@@ -168,6 +169,17 @@ namespace AndreasReitberger.Print3d.Core.Extension
                 TextWriter writer = new StreamWriter(tempDir.FullName);
                 x.Serialize(writer, calc);
                 writer.Close();
+                return true;
+            }
+            return false;
+            */
+            FileInfo fileInfo = new(path);
+            if (fileInfo.Directory is not null)
+            {
+                Directory.CreateDirectory(fileInfo.Directory.FullName);
+                using FileStream stream = File.Create(fileInfo.FullName);
+                JsonSerializer.Serialize(stream, calc,
+                    SourceGenerationContext.Default.Calculation3dEnhanced);
                 return true;
             }
             return false;

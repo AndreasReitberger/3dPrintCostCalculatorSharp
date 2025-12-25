@@ -59,5 +59,9 @@ namespace AndreasReitberger.Print3d.Core
         public double GetAvailableAmount() => Transactions?.Select(x => x.Amount).Sum() ?? 0;
 
         #endregion
+
+        #region Overrides
+        public override string ToString() => JsonSerializer.Serialize(this!, SourceGenerationContext.Default.Storage3dItem);
+        #endregion
     }
 }

@@ -23,7 +23,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="SharedNetCoreLibrary" Version="1.2.5" />
+	  <PackageReference Include="SharedNetCoreLibrary" Version="1.2.6" />
   </ItemGroup>
 
   <ItemGroup>
